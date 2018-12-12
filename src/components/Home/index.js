@@ -17,7 +17,7 @@ import RecipeRecipe from "../Recipes/Recipe/index.js";
 import RecipeProduct from "../Recipes/Product/index.js";
 import RecipeFavorite from "../Recipes/Favorite/index.js";
 import RecipeFeedback from "../Recipes/Feedback/index.js";
-import ProductCardScreen from "../ProductCard/index.js";
+import ProductCard from "../ProductCard/index.js";
 
 const HomeScreenRouter = DrawerNavigator(
   {
@@ -36,7 +36,7 @@ const HomeScreenRouter = DrawerNavigator(
     RecipeFavoriteScreen: { screen: RecipeFavorite },
     RecipeFeedbackScreen: { screen: RecipeFeedback },
     Delivery: { screen: Delivery },
-    ProductCardScreen: { screen: ProductCardScreen }
+    ProductCard: { screen: ProductCard }
   },
   {
     contentComponent: props => <SideBar {...props} />,

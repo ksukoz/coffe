@@ -24,7 +24,8 @@ import {
   Tabs,
   Header,
   TabHeading,
-  ScrollableTab
+  ScrollableTab,
+  Accordion
 } from "native-base";
 import KawaIcon from "../KawaIcon";
 import SearchBar from "../common/SearchBar";
@@ -33,9 +34,13 @@ StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
 
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+
 export default class ProductCardScreen extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       currentTab: 0,
       productItem: null,
@@ -58,9 +63,10 @@ export default class ProductCardScreen extends Component {
     )
       .then(response => response.json())
       .then(responseJson => {
+        console.log(responseJson);
         this.setState(
           state => ({
-            productItem: responseJson,
+            productItem: responseJson.item,
             loading: false
           }),
           function() {}
@@ -71,179 +77,245 @@ export default class ProductCardScreen extends Component {
       });
   }
 
+  _renderHeader(item, expanded) {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          padding: 10,
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: "transparent"
+        }}
+      >
+        <Text style={{ color: "#302c23" }}> {item.title}</Text>
+        {expanded ? (
+          <KawaIcon
+            style={{ color: "#302c23", position: "absolute", right: 10 }}
+            name={"arrow-next"}
+            size={14}
+          />
+        ) : (
+          <KawaIcon
+            style={{ color: "#302c23", position: "absolute", right: 10 }}
+            name={"arrow-down"}
+            size={8}
+          />
+        )}
+      </View>
+    );
+  }
+  _renderContent(item) {
+    return (
+      <Text
+        style={{
+          color: "#302c23",
+          padding: 20,
+          backgroundColor: "transparent",
+          fontSize: 13
+        }}
+      >
+        {item.content}
+      </Text>
+    );
+  }
+
   render() {
+    const { productItem } = this.state;
+    const dataArray = [];
+
+    if (productItem) {
+      dataArray.push({
+        title: "Описание",
+        content: productItem.text.replace(/<\/?[^>]+>/g, "")
+      });
+    }
+
     return (
       <Container style={styles.default}>
         <StatusBar barStyle="light-content" hidden={false} translucent={true} />
         <Image source={require(MAIN_BG)} style={styles.background} />
-        <View style={styles.container}>
-          <Content>
-            <SearchBar
-              catalogId={this.props.navigation.getParam("categoryId", "0")}
-              placeholder={this.props.navigation.getParam(
-                "searchPlaceholder",
-                "Найти кофе"
+        <Content style={{ height: SCREEN_HEIGHT }}>
+          <SearchBar
+            catalogId={this.props.navigation.getParam("categoryId", "0")}
+            placeholder={this.props.navigation.getParam(
+              "searchPlaceholder",
+              "Найти кофе"
+            )}
+            style={{ marginBottom: 20 }}
+          />
+          <View>
+            <Tabs
+              transparent
+              tabBarUnderlineStyle={{
+                backgroundColor: "transparent"
+              }}
+              renderTabBar={() => (
+                <ScrollableTab
+                  backgroundColor={"transparent"}
+                  style={{ borderWidth: 0 }}
+                />
               )}
-              style={{ marginBottom: 20 }}
-            />
-            <View>
-              <Tabs
-                transparent
-                tabBarUnderlineStyle={{
-                  backgroundColor: "transparent"
-                }}
-                renderTabBar={() => (
-                  <ScrollableTab
-                    backgroundColor={"transparent"}
-                    style={{ borderWidth: 0 }}
-                  />
-                )}
-                initialPage={this.state.currentTab}
-                onChangeTab={({ i }) => this.setState({ currentTab: i })}
+              initialPage={this.state.currentTab}
+              onChangeTab={({ i }) => this.setState({ currentTab: i })}
+            >
+              <Tab
+                heading={
+                  <TabHeading
+                    style={
+                      this.state.currentTab === 0
+                        ? [
+                            styles.productTabHeading,
+                            styles.productActiveTabHeading
+                          ]
+                        : styles.productTabHeading
+                    }
+                  >
+                    <Text
+                      style={[
+                        {
+                          color:
+                            this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
+                          backgroundColor:
+                            this.state.currentTab === 0
+                              ? "rgba(255,255,255,.4)"
+                              : "transparent"
+                        },
+                        styles.tabText
+                      ]}
+                    >
+                      {"О товаре".toUpperCase()}
+                    </Text>
+                  </TabHeading>
+                }
+                style={styles.productTab}
               >
-                <Tab
-                  heading={
-                    <TabHeading
-                      style={
-                        this.state.currentTab === 0
-                          ? [
-                              styles.productTabHeading,
-                              styles.productActiveTabHeading
-                            ]
-                          : styles.productTabHeading
-                      }
+                <View style={styles.container}>
+                  <Accordion
+                    dataArray={dataArray}
+                    animation={true}
+                    expanded={true}
+                    renderHeader={this._renderHeader}
+                    renderContent={this._renderContent}
+                  />
+                </View>
+              </Tab>
+              <Tab
+                heading={
+                  <TabHeading
+                    style={
+                      this.state.currentTab === 1
+                        ? [
+                            styles.productTabHeading,
+                            styles.productActiveTabHeading
+                          ]
+                        : styles.productTabHeading
+                    }
+                  >
+                    <Text
+                      style={[
+                        {
+                          color:
+                            this.state.currentTab === 1 ? "#fff" : "#c9c0b6",
+                          backgroundColor:
+                            this.state.currentTab === 1
+                              ? "rgba(255,255,255,.4)"
+                              : "transparent"
+                        },
+                        styles.tabText
+                      ]}
                     >
-                      <Text
-                        style={[
-                          {
-                            color:
-                              this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
-                            backgroundColor:
-                              this.state.currentTab === 0
-                                ? "rgba(255,255,255,.4)"
-                                : "transparent"
-                          },
-                          styles.tabText
-                        ]}
-                      >
-                        {"О товаре".toUpperCase()}
-                      </Text>
-                    </TabHeading>
-                  }
-                >
-                  {/* <Tab1 /> */}
-                </Tab>
-                <Tab
-                  heading={
-                    <TabHeading
-                      style={
-                        this.state.currentTab === 1
-                          ? [
-                              styles.productTabHeading,
-                              styles.productActiveTabHeading
-                            ]
-                          : styles.productTabHeading
-                      }
+                      {"Карта кофе".toUpperCase()}
+                    </Text>
+                  </TabHeading>
+                }
+                style={styles.productTab}
+              >
+                {/* <Tab2 /> */}
+              </Tab>
+              <Tab
+                heading={
+                  <TabHeading
+                    style={
+                      this.state.currentTab === 2
+                        ? [
+                            styles.productTabHeading,
+                            styles.productActiveTabHeading
+                          ]
+                        : styles.productTabHeading
+                    }
+                  >
+                    <Text
+                      style={[
+                        {
+                          color:
+                            this.state.currentTab === 2 ? "#fff" : "#c9c0b6",
+                          backgroundColor:
+                            this.state.currentTab === 2
+                              ? "rgba(255,255,255,.4)"
+                              : "transparent"
+                        },
+                        styles.tabText
+                      ]}
                     >
-                      <Text
-                        style={[
-                          {
-                            color:
-                              this.state.currentTab === 1 ? "#fff" : "#c9c0b6",
-                            backgroundColor:
-                              this.state.currentTab === 1
-                                ? "rgba(255,255,255,.4)"
-                                : "transparent"
-                          },
-                          styles.tabText
-                        ]}
-                      >
-                        {"Карта кофе".toUpperCase()}
-                      </Text>
-                    </TabHeading>
-                  }
-                  style={styles.productTab}
-                >
-                  {/* <Tab2 /> */}
-                </Tab>
-                <Tab
-                  heading={
-                    <TabHeading
-                      style={
-                        this.state.currentTab === 2
-                          ? [
-                              styles.productTabHeading,
-                              styles.productActiveTabHeading
-                            ]
-                          : styles.productTabHeading
-                      }
+                      {"Отзывы".toUpperCase()}
+                    </Text>
+                  </TabHeading>
+                }
+                style={styles.productTab}
+              >
+                {/* <Tab3 /> */}
+              </Tab>
+              <Tab
+                heading={
+                  <TabHeading
+                    style={
+                      this.state.currentTab === 3
+                        ? [
+                            styles.productTabHeading,
+                            styles.productActiveTabHeading
+                          ]
+                        : styles.productTabHeading
+                    }
+                  >
+                    <Text
+                      style={[
+                        {
+                          color:
+                            this.state.currentTab === 3 ? "#fff" : "#c9c0b6",
+                          backgroundColor:
+                            this.state.currentTab === 3
+                              ? "rgba(255,255,255,.4)"
+                              : "transparent"
+                        },
+                        styles.tabText
+                      ]}
                     >
-                      <Text
-                        style={[
-                          {
-                            color:
-                              this.state.currentTab === 2 ? "#fff" : "#c9c0b6",
-                            backgroundColor:
-                              this.state.currentTab === 2
-                                ? "rgba(255,255,255,.4)"
-                                : "transparent"
-                          },
-                          styles.tabText
-                        ]}
-                      >
-                        {"Отзывы".toUpperCase()}
-                      </Text>
-                    </TabHeading>
-                  }
-                  style={styles.productTab}
-                >
-                  {/* <Tab3 /> */}
-                </Tab>
-                <Tab
-                  heading={
-                    <TabHeading
-                      style={
-                        this.state.currentTab === 3
-                          ? [
-                              styles.productTabHeading,
-                              styles.productActiveTabHeading
-                            ]
-                          : styles.productTabHeading
-                      }
-                    >
-                      <Text
-                        style={[
-                          {
-                            color:
-                              this.state.currentTab === 3 ? "#fff" : "#c9c0b6",
-                            backgroundColor:
-                              this.state.currentTab === 3
-                                ? "rgba(255,255,255,.4)"
-                                : "transparent"
-                          },
-                          styles.tabText
-                        ]}
-                      >
-                        {"Видео".toUpperCase()}
-                      </Text>
-                    </TabHeading>
-                  }
-                >
-                  {/* <Tab3 /> */}
-                </Tab>
-              </Tabs>
-            </View>
-          </Content>
-        </View>
+                      {"Видео".toUpperCase()}
+                    </Text>
+                  </TabHeading>
+                }
+              >
+                {/* <Tab3 /> */}
+              </Tab>
+            </Tabs>
+          </View>
+        </Content>
       </Container>
     );
   }
 }
 
 const styles = {
+  container: {
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: "rgba(255,255,255,.72)",
+    borderRadius: 5
+  },
   productTab: {
     backgroundColor: "transparent",
-    textTransform: "uppercase"
+    flex: 1
   },
   productTabHeading: {
     backgroundColor: "transparent",
@@ -270,47 +342,10 @@ const styles = {
     left: 0,
     right: 0
   },
-  container: {
-    width: "100%",
-    height: 130
-  },
-  head: {
-    marginTop: 35
-  },
   default: {
     color: "#fff"
   },
-  alphabet: {
-    color: "#fff",
-    padding: 10,
-    fontSize: 13,
-    paddingRight: 25
-  },
-  search: {
-    backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
-  },
-  searchIcon: {
-    paddingTop: 3,
-    color: "#58554e"
-  },
-  codeIcon: {
-    marginRight: 10,
-    color: "#58554e"
-  },
-  searchInput: {
-    fontSize: 13
-  },
-  alphabetMenu: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 10,
-    marginTop: 10
-  },
+
   iconMenu: {
     color: "#58554e",
     marginBottom: 5

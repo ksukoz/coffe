@@ -330,9 +330,10 @@ export default class HomeScreen extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                AsyncStorage.setItem("idOfProduct", JSON.stringify(item));
-                this.props.navigation.navigate("ProductCardScreen");
-                console.log("ProductCardScreen");
+                // AsyncStorage.setItem("idOfProduct", JSON.stringify(item));
+                this.props.navigation.navigate("ProductCardScreen", {
+                  productId: item.id
+                });
               }}
               style={styles.product}
             >
