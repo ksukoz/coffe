@@ -22,6 +22,7 @@ import {
   Button
 } from "native-base";
 import KawaIcon from "../KawaIcon";
+import SearchBar from "../common/SearchBar";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -150,24 +151,13 @@ export default class ProductCardScreen extends Component {
         <Image source={require(MAIN_BG)} style={styles.background} />
         <View style={styles.container}>
           <Content>
-            <View style={styles.head}>
-              <Item style={styles.search} rounded>
-                <Button
-                  transparent
-                  onPress={() => this.props.navigation.openDrawer()}
-                >
-                  <Icon style={styles.iconMenu} name="ios-menu" />
-                </Button>
-                <Icon style={{ color: "#58554e" }} name="ios-search" />
-                <Input
-                  style={styles.searchInput}
-                  placeholderTextColor="#becdcf"
-                  placeholder="Найти кофе"
-                  onChangeText={this.handleSearch}
-                />
-                <KawaIcon style={styles.codeIcon} size={20} name="code" />
-              </Item>
-            </View>
+            <SearchBar
+              catalogId={this.props.navigation.getParam("categoryId", "0")}
+              placeholder={this.props.navigation.getParam(
+                "searchPlaceholder",
+                "Найти кофе"
+              )}
+            />
             <ScrollView horizontal={true} style={styles.alphabetMenu}>
               {this.state.alphabet.map(item => {
                 return (
