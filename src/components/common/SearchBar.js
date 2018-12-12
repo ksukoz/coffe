@@ -75,8 +75,8 @@ const styles = {
   },
   search: {
     backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
+    marginRight: 10,
+    marginLeft: 10,
     height: 40,
     paddingLeft: 5,
     paddingRight: 10

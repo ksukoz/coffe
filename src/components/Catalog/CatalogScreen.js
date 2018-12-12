@@ -332,7 +332,11 @@ export default class HomeScreen extends Component {
               onPress={() => {
                 // AsyncStorage.setItem("idOfProduct", JSON.stringify(item));
                 this.props.navigation.navigate("ProductCardScreen", {
-                  productId: item.id
+                  productId: item.id,
+                  categoryName: this.props.navigation.getParam(
+                    "categoryName",
+                    "0"
+                  )
                 });
               }}
               style={styles.product}
