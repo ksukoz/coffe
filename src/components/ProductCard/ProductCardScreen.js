@@ -19,7 +19,12 @@ import {
   Input,
   Item,
   Icon,
-  Button
+  Button,
+  Tab,
+  Tabs,
+  Header,
+  TabHeading,
+  ScrollableTab
 } from "native-base";
 import KawaIcon from "../KawaIcon";
 import SearchBar from "../common/SearchBar";
@@ -32,8 +37,8 @@ export default class ProductCardScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alphabet: [],
-      products: [],
+      currentTab: 0,
+      productItem: null,
       search: "",
       page: 0,
       english: true,
@@ -43,35 +48,19 @@ export default class ProductCardScreen extends Component {
   }
 
   componentDidMount() {
-    fetch("http://kawaapi.gumione.pro/api/catalog/letters/1")
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            alphabet: responseJson.letters
-          },
-          function() {}
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
     this.fetchData();
   }
 
   fetchData() {
     fetch(
-      "http://kawaapi.gumione.pro/api/catalog/items/" +
-        `${this.props.navigation.getParam("categoryId", "0")}` +
-        "/10/" +
-        `${this.state.page}`
+      "http://kawaapi.gumione.pro/api/catalog/item/" +
+        `${this.props.navigation.getParam("productId", "0")}`
     )
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
           state => ({
-            products: [...state.products, ...responseJson.items],
+            productItem: responseJson,
             loading: false
           }),
           function() {}
@@ -82,68 +71,6 @@ export default class ProductCardScreen extends Component {
       });
   }
 
-  handleSearch = text => {
-    this.setState(
-      state => ({ page: 0, search: text }),
-      () => {
-        fetch(
-          "http://kawaapi.gumione.pro/api/catalog/search/" +
-            `${this.state.search}` +
-            "/0/both/10/" +
-            `${this.state.page}`
-        )
-          .then(response => response.json())
-          .then(responseJson => {
-            this.setState({
-              products: responseJson.items,
-              loading: false
-            }),
-              function() {};
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
-    );
-  };
-
-  handleEnd = () => {
-    this.setState(state => ({ page: state.page + 10 }), () => this.fetchData());
-  };
-
-  changeAlphabet() {
-    if (this.state.english) {
-      return fetch("http://kawaapi.gumione.pro/api/catalog/letters/2")
-        .then(response => response.json())
-        .then(responseJson => {
-          this.setState(
-            {
-              alphabet: responseJson.letters,
-              english: false
-            },
-            function() {}
-          );
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    } else {
-      return fetch("http://kawaapi.gumione.pro/api/catalog/letters/1")
-        .then(response => response.json())
-        .then(responseJson => {
-          this.setState(
-            {
-              alphabet: responseJson.letters,
-              english: true
-            },
-            function() {}
-          );
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
-  }
   render() {
     return (
       <Container style={styles.default}>
@@ -157,20 +84,155 @@ export default class ProductCardScreen extends Component {
                 "searchPlaceholder",
                 "Найти кофе"
               )}
+              style={{ marginBottom: 20 }}
             />
-            <ScrollView horizontal={true} style={styles.alphabetMenu}>
-              {this.state.alphabet.map(item => {
-                return (
-                  <Text
-                    onLongPress={() => this.changeAlphabet()}
-                    key={item.letter}
-                    style={styles.alphabet}
-                  >
-                    {item.letter}
-                  </Text>
-                );
-              })}
-            </ScrollView>
+            <View>
+              <Tabs
+                transparent
+                tabBarUnderlineStyle={{
+                  backgroundColor: "transparent"
+                }}
+                renderTabBar={() => (
+                  <ScrollableTab
+                    backgroundColor={"transparent"}
+                    style={{ borderWidth: 0 }}
+                  />
+                )}
+                initialPage={this.state.currentTab}
+                onChangeTab={({ i }) => this.setState({ currentTab: i })}
+              >
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 0
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 0
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"О товаре".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                >
+                  {/* <Tab1 /> */}
+                </Tab>
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 1
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 1 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 1
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"Карта кофе".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                  style={styles.productTab}
+                >
+                  {/* <Tab2 /> */}
+                </Tab>
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 2
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 2 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 2
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"Отзывы".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                  style={styles.productTab}
+                >
+                  {/* <Tab3 /> */}
+                </Tab>
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 3
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 3 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 3
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"Видео".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                >
+                  {/* <Tab3 /> */}
+                </Tab>
+              </Tabs>
+            </View>
           </Content>
         </View>
       </Container>
@@ -179,6 +241,26 @@ export default class ProductCardScreen extends Component {
 }
 
 const styles = {
+  productTab: {
+    backgroundColor: "transparent",
+    textTransform: "uppercase"
+  },
+  productTabHeading: {
+    backgroundColor: "transparent",
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  productActiveTabHeading: {
+    borderBottomWidth: 0
+  },
+  tabText: {
+    fontSize: 13,
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+    borderRadius: 3
+  },
   background: {
     width: "100%",
     height: Dimensions.get("window").height * 1.5,
