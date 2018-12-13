@@ -5,10 +5,15 @@ import {
   Dimensions,
   Image,
   Modal,
-  WebView
+  WebView,
+  TouchableHighlight
 } from "react-native";
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
+import StarRating from "react-native-star-rating";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default class AboutProduct extends Component {
   constructor(props) {
@@ -61,6 +66,10 @@ export default class AboutProduct extends Component {
     this.setState({ modalVisible: visible });
   }
 
+  // closeModal(visible) {
+  //   this.setState({ modalVisible: visible });
+  // }
+
   render() {
     const { productItem } = this.props;
     const dataArray = [];
@@ -95,21 +104,14 @@ export default class AboutProduct extends Component {
                 resizeMode="contain"
               />
             </CardItem>
-            <CardItem
-              style={{
-                backgroundColor: "transparent",
-                flexDirection: "row",
-                alignItems: "flex-end",
-                justifyContent: "space-between"
-              }}
-            >
+            <CardItem style={styles.cardItem}>
               <View
                 style={{
                   flexDirection: "column",
                   width: "70%",
                   borderBottomWidth: 1,
                   borderBottomColor: "#89a6aa",
-                  paddingBottom: 10
+                  padding: 10
                 }}
               >
                 <Text style={{ fontSize: 18, fontWeight: "bold" }}>
@@ -134,45 +136,31 @@ export default class AboutProduct extends Component {
               </View>
             </CardItem>
             <CardItem
-              style={{
-                backgroundColor: "transparent",
-
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}
+              style={[
+                styles.cardItem,
+                { paddingLeft: 10, paddingTop: 5, alignItems: "center" }
+              ]}
             >
               <View>
                 <View
                   style={{
                     flexDirection: "row",
-                    alignItems: "center"
+                    alignItems: "center",
+                    marginBottom: 5
                   }}
                 >
-                  <KawaIcon
-                    style={styles.starIcon}
-                    size={25}
-                    name="small-star-in-catalog"
-                  />
-                  <KawaIcon
-                    style={styles.starIcon}
-                    size={25}
-                    name="small-star-in-catalog"
-                  />
-                  <KawaIcon
-                    style={styles.starIcon}
-                    size={25}
-                    name="small-star-in-catalog"
-                  />
-                  <KawaIcon
-                    style={styles.starIcon}
-                    size={25}
-                    name="small-star-in-catalog"
-                  />
-                  <KawaIcon
-                    style={styles.starIcon}
-                    size={25}
-                    name="small-star-in-catalog"
+                  <StarRating
+                    disabled={true}
+                    emptyStar={"ios-star-outline"}
+                    fullStar={"ios-star"}
+                    halfStar={"ios-star-half"}
+                    iconSet={"Ionicons"}
+                    maxStars={5}
+                    rating={3.5}
+                    starSize={30}
+                    starStyle={{ marginRight: 2 }}
+                    emptyStarColor={"#ffea00"}
+                    fullStarColor={"#ffea00"}
                   />
                 </View>
                 <Text style={styles.numberOfReviews}>27 отзывов</Text>
@@ -222,22 +210,13 @@ export default class AboutProduct extends Component {
           <Accordion
             dataArray={dataArray}
             animation={true}
-            expanded={true}
+            expanded={0}
             renderHeader={this._renderHeader}
             renderContent={this._renderContent}
           />
         </View>
         <TouchableOpacity
-          style={{
-            backgroundColor: "#89a6aa",
-            alignSelf: "center",
-            justifyContent: "center",
-            position: "absolute",
-            flexDirection: "row",
-            padding: 5,
-            bottom: 0,
-            borderRadius: 3
-          }}
+          style={styles.questionsBtn}
           onPress={() => this.setModalVisible(true)}
         >
           <KawaIcon
@@ -264,10 +243,18 @@ export default class AboutProduct extends Component {
           transparent={false}
           onRequestClose={() => {}}
           visible={this.state.modalVisible}
+          style={styles.contactModal}
         >
           <View style={{ marginTop: 22 }}>
             <View>
               <Text>Hello World!</Text>
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}
+              >
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </Modal>
@@ -283,17 +270,15 @@ const styles = {
     backgroundColor: "rgba(255,255,255,.72)",
     borderRadius: 5
   },
-  productTab: {
+  cardItem: {
     backgroundColor: "transparent",
-    flex: 1
-  },
-  productTabHeading: {
-    backgroundColor: "transparent",
-    paddingLeft: 5,
-    paddingRight: 5
-  },
-  productActiveTabHeading: {
-    borderBottomWidth: 0
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    paddingLeft: 0,
+    paddingRight: 10,
+    paddingTop: 0,
+    paddingBottom: 0
   },
   tabText: {
     fontSize: 13,
@@ -317,6 +302,20 @@ const styles = {
     padding: 20,
     backgroundColor: "transparent",
     fontSize: 13
+  },
+  questionsBtn: {
+    backgroundColor: "#89a6aa",
+    alignSelf: "center",
+    justifyContent: "center",
+    position: "absolute",
+    flexDirection: "row",
+    padding: 5,
+    bottom: 0,
+    borderRadius: 3,
+    marginBottom: 5
+  },
+  contactModal: {
+    width: SCREEN_WIDTH * 0.7
   },
   background: {
     width: "100%",
@@ -400,8 +399,8 @@ const styles = {
   btnText: {
     fontSize: 12,
     color: "#f8f8f8",
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingRight: 7,
     paddingLeft: 7,
     fontWeight: "300"

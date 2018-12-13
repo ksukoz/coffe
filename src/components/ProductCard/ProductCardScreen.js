@@ -119,7 +119,7 @@ export default class ProductCardScreen extends Component {
                 heading={
                   <TabHeading
                     style={
-                      this.props.currentTab === 0
+                      this.state.currentTab === 0
                         ? [
                             styles.productTabHeading,
                             styles.productActiveTabHeading
@@ -131,9 +131,9 @@ export default class ProductCardScreen extends Component {
                       style={[
                         {
                           color:
-                            this.props.currentTab === 0 ? "#fff" : "#c9c0b6",
+                            this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
                           backgroundColor:
-                            this.props.currentTab === 0
+                            this.state.currentTab === 0
                               ? "rgba(255,255,255,.4)"
                               : "transparent"
                         },
@@ -148,7 +148,6 @@ export default class ProductCardScreen extends Component {
               >
                 <AboutProduct
                   productItem={productItem}
-                  currentTab={this.state.currentTab}
                   onPressDelivery={() =>
                     this.props.navigation.navigate("Delivery")
                   }
