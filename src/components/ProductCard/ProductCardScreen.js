@@ -12,7 +12,8 @@ import {
   Alert,
   AsyncStorage,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  WebView
 } from "react-native";
 import {
   Container,
@@ -69,7 +70,7 @@ export default class ProductCardScreen extends Component {
     )
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson);
+        // console.error(responseJson);
         this.setState(
           state => ({
             productItem: responseJson.item,
@@ -105,17 +106,22 @@ export default class ProductCardScreen extends Component {
   }
   _renderContent(item) {
     return (
-      <Text
-        style={{
-          color: "#302c23",
-          padding: 20,
-          backgroundColor: "transparent",
-          fontSize: 13
-        }}
-      >
-        {item.content}
-      </Text>
+      <View style={{ height: 200 }}>
+        <WebView
+          style={styles.accordionText}
+          scrollEnabled={false}
+          automaticallyAdjustContentInsets={false}
+          source={{
+            baseUrl: "",
+            html: `${item.content}<p>Страна производитель: ${item.country}</p>`
+          }}
+        />
+      </View>
     );
+    {
+      /* {item.content}
+    </WebView> */
+    }
   }
 
   setModalVisible(visible) {
@@ -130,8 +136,8 @@ export default class ProductCardScreen extends Component {
     if (productItem) {
       dataArray.push({
         title: "Описание",
-        content: productItem.text
-        // .replace(/<\/?[^>]+>/g, "")
+        content: productItem.text,
+        country: productItem.country
       });
 
       product = productItem;
@@ -398,6 +404,7 @@ export default class ProductCardScreen extends Component {
                 <Modal
                   animationType="slide"
                   transparent={false}
+                  onRequestClose={() => {}}
                   visible={this.state.modalVisible}
                 >
                   <View style={{ marginTop: 22 }}>
@@ -548,6 +555,12 @@ const styles = {
     backgroundColor: "transparent",
     borderBottomWidth: 1,
     borderBottomColor: "#89a6aa"
+  },
+  accordionText: {
+    color: "#302c23",
+    padding: 20,
+    backgroundColor: "transparent",
+    fontSize: 13
   },
   background: {
     width: "100%",
