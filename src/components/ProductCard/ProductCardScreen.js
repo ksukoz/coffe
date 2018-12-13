@@ -1,38 +1,26 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
   View,
-  ScrollView,
   StatusBar,
-  TouchableOpacity,
   Dimensions,
-  ActivityIndicator,
   Image,
-  FlatList,
-  Alert,
-  AsyncStorage,
-  Modal,
-  TouchableHighlight,
-  WebView
+  TouchableOpacity,
+  Linking,
+  // Modal,
+  BackHandler
 } from "react-native";
 import {
   Container,
   Content,
   Text,
   Input,
-  Item,
-  Icon,
-  Button,
   Tab,
   Tabs,
-  Header,
   TabHeading,
-  ScrollableTab,
-  Accordion,
-  Card,
-  CardItem,
-  Body
+  ScrollableTab
 } from "native-base";
+import Modal from "react-native-modal";
+
 import KawaIcon from "../KawaIcon";
 import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
@@ -49,6 +37,8 @@ export default class ProductCardScreen extends Component {
     super(props);
 
     this.state = {
+      modalVisible: false,
+      opacity: 0,
       currentTab: 0,
       productItem: null,
       search: "",
@@ -61,6 +51,11 @@ export default class ProductCardScreen extends Component {
 
   componentDidMount() {
     this.fetchData();
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   fetchData() {
@@ -71,27 +66,47 @@ export default class ProductCardScreen extends Component {
       .then(response => response.json())
       .then(responseJson => {
         // console.error(responseJson);
-        this.setState(
-          state => ({
-            productItem: responseJson.item,
-            loading: false
-          }),
-          function() {}
-        );
+        this.setState({
+          ...this.state,
+          productItem: responseJson.item,
+          loading: false
+        });
       })
       .catch(error => {
         console.error(error);
       });
   }
 
+  setModalVisible(visible) {
+    // let opacity;
+
+    // if (visible) {
+    //   StatusBar.setHidden(true);
+    // } else {
+    //   StatusBar.setHidden(false);
+    // }
+
+    this.setState({ ...this.state, modalVisible: visible });
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate("Home");
+    return true;
+  };
+
   render() {
-    const { productItem } = this.state;
+    const { productItem, modalVisible } = this.state;
 
     return (
       <Container style={styles.default}>
-        <StatusBar barStyle="light-content" hidden={false} translucent={true} />
+        <StatusBar
+          barStyle="light-content"
+          hidden={false}
+          translucent={true}
+          backgroundColor={modalVisible ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
+        />
         <Image source={require(MAIN_BG)} style={styles.background} />
-        <Content style={{ height: SCREEN_HEIGHT }}>
+        <Content>
           <SearchBar
             catalogId={this.props.navigation.getParam("categoryId", "0")}
             placeholder={this.props.navigation.getParam(
@@ -161,6 +176,29 @@ export default class ProductCardScreen extends Component {
                     "0"
                   )}
                 />
+                <TouchableOpacity
+                  style={styles.questionsBtn}
+                  onPress={() => this.setModalVisible(true)}
+                >
+                  <KawaIcon
+                    style={{
+                      color: "#f8f8f8",
+                      position: "relative",
+                      paddingTop: 2,
+                      paddingRight: 5
+                    }}
+                    name={"telephone"}
+                    size={15}
+                  />
+                  <Text
+                    style={{
+                      color: "#f8f8f8",
+                      fontSize: 13
+                    }}
+                  >
+                    Возникли вопросы?
+                  </Text>
+                </TouchableOpacity>
               </Tab>
               <Tab
                 heading={
@@ -262,6 +300,90 @@ export default class ProductCardScreen extends Component {
               </Tab>
             </Tabs>
           </View>
+          <Modal
+            backdropTransitionInTiming={0}
+            backdropTransitionOutTiming={0}
+            animationInTiming={0}
+            animationOutTiming={0}
+            style={{ backgroundColor: "rgba(0,0,0,0.7)", margin: 0 }}
+            visible={this.state.modalVisible}
+            onBackdropPress={() => {
+              this.setModalVisible(!this.state.modalVisible);
+            }}
+            onBackButtonPress={() => {
+              this.setModalVisible(!this.state.modalVisible);
+            }}
+          >
+            <View
+              style={{
+                borderRadius: 5,
+                padding: 20,
+                alignSelf: "center",
+                backgroundColor: "#fff",
+                width: SCREEN_WIDTH * 0.8
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontWeight: "bold",
+                  marginBottom: 20,
+                  color: "#302c23"
+                }}
+              >
+                Выбрать номер
+              </Text>
+              <View
+                style={styles.phoneNumber}
+                onPress={() => Linking.openURL(`tel:+380994556565`)}
+              >
+                <Image
+                  source={require("../../static/img/vodafon.png")}
+                  style={{ width: 30, height: 30, marginRight: 5 }}
+                />
+                <Text>(099) 455 65 65</Text>
+              </View>
+              <View
+                style={styles.phoneNumber}
+                onPress={() => Linking.openURL(`tel:+380674556565`)}
+              >
+                <Image
+                  source={require("../../static/img/kyivstar.png")}
+                  style={{ width: 30, height: 30, marginRight: 5 }}
+                />
+                <Text>(067) 455 65 65</Text>
+              </View>
+              <View
+                style={styles.phoneNumber}
+                onPress={() => Linking.openURL(`tel:+380934556565`)}
+              >
+                <Image
+                  source={require("../../static/img/lifecell.png")}
+                  style={{ width: 30, height: 30, marginRight: 5 }}
+                />
+                <Text>(093) 455 65 65</Text>
+              </View>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "transparent",
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    marginTop: 20,
+                    color: "#302c23"
+                  }}
+                >
+                  {"Отмена".toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </Content>
       </Container>
     );
@@ -309,6 +431,21 @@ const styles = {
     padding: 20,
     backgroundColor: "transparent",
     fontSize: 13
+  },
+  questionsBtn: {
+    backgroundColor: "#89a6aa",
+    alignSelf: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    padding: 5,
+    borderRadius: 3,
+    marginBottom: 5,
+    marginTop: 5
+  },
+  phoneNumber: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8
   },
   background: {
     width: "100%",

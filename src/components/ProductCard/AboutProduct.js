@@ -4,9 +4,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  Modal,
-  WebView,
-  TouchableHighlight
+  WebView
 } from "react-native";
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -61,14 +59,6 @@ export default class AboutProduct extends Component {
       </View>
     );
   }
-
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-
-  // closeModal(visible) {
-  //   this.setState({ modalVisible: visible });
-  // }
 
   render() {
     const { productItem } = this.props;
@@ -176,7 +166,7 @@ export default class AboutProduct extends Component {
             </CardItem>
           </Card>
         </View>
-        <View style={[styles.container, { marginBottom: 40 }]}>
+        <View style={styles.container}>
           <TouchableOpacity
             style={styles.accordionLinks}
             onPress={this.props.onPressDelivery}
@@ -215,49 +205,6 @@ export default class AboutProduct extends Component {
             renderContent={this._renderContent}
           />
         </View>
-        <TouchableOpacity
-          style={styles.questionsBtn}
-          onPress={() => this.setModalVisible(true)}
-        >
-          <KawaIcon
-            style={{
-              color: "#f8f8f8",
-              position: "relative",
-              paddingTop: 2,
-              paddingRight: 5
-            }}
-            name={"telephone"}
-            size={15}
-          />
-          <Text
-            style={{
-              color: "#f8f8f8",
-              fontSize: 13
-            }}
-          >
-            Возникли вопросы?
-          </Text>
-        </TouchableOpacity>
-        <Modal
-          animationType="slide"
-          transparent={false}
-          onRequestClose={() => {}}
-          visible={this.state.modalVisible}
-          style={styles.contactModal}
-        >
-          <View style={{ marginTop: 22 }}>
-            <View>
-              <Text>Hello World!</Text>
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}
-              >
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
       </View>
     );
   }
@@ -303,19 +250,9 @@ const styles = {
     backgroundColor: "transparent",
     fontSize: 13
   },
-  questionsBtn: {
-    backgroundColor: "#89a6aa",
-    alignSelf: "center",
-    justifyContent: "center",
-    position: "absolute",
-    flexDirection: "row",
-    padding: 5,
-    bottom: 0,
-    borderRadius: 3,
-    marginBottom: 5
-  },
   contactModal: {
-    width: SCREEN_WIDTH * 0.7
+    // width: SCREEN_WIDTH * 0.7
+    backgroundColor: "#fff"
   },
   background: {
     width: "100%",
