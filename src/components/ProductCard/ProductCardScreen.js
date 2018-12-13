@@ -35,6 +35,7 @@ import {
 } from "native-base";
 import KawaIcon from "../KawaIcon";
 import SearchBar from "../common/SearchBar";
+import AboutProduct from "./AboutProduct";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -48,7 +49,6 @@ export default class ProductCardScreen extends Component {
     super(props);
 
     this.state = {
-      modalVisible: false,
       currentTab: 0,
       productItem: null,
       search: "",
@@ -84,64 +84,8 @@ export default class ProductCardScreen extends Component {
       });
   }
 
-  _renderHeader(item, expanded) {
-    return (
-      <View style={[styles.accordionLinks, { borderBottomWidth: 0 }]}>
-        <Text style={{ color: "#302c23" }}> {item.title}</Text>
-        {expanded ? (
-          <KawaIcon
-            style={{ color: "#302c23", position: "absolute", right: 10 }}
-            name={"arrow-down"}
-            size={8}
-          />
-        ) : (
-          <KawaIcon
-            style={{ color: "#302c23", position: "absolute", right: 10 }}
-            name={"arrow-next"}
-            size={14}
-          />
-        )}
-      </View>
-    );
-  }
-  _renderContent(item) {
-    return (
-      <View style={{ height: 200 }}>
-        <WebView
-          style={styles.accordionText}
-          scrollEnabled={false}
-          automaticallyAdjustContentInsets={false}
-          source={{
-            baseUrl: "",
-            html: `${item.content}<p>Страна производитель: ${item.country}</p>`
-          }}
-        />
-      </View>
-    );
-    {
-      /* {item.content}
-    </WebView> */
-    }
-  }
-
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-
   render() {
     const { productItem } = this.state;
-    const dataArray = [];
-    let product = {};
-
-    if (productItem) {
-      dataArray.push({
-        title: "Описание",
-        content: productItem.text,
-        country: productItem.country
-      });
-
-      product = productItem;
-    }
 
     return (
       <Container style={styles.default}>
@@ -175,7 +119,7 @@ export default class ProductCardScreen extends Component {
                 heading={
                   <TabHeading
                     style={
-                      this.state.currentTab === 0
+                      this.props.currentTab === 0
                         ? [
                             styles.productTabHeading,
                             styles.productActiveTabHeading
@@ -187,9 +131,9 @@ export default class ProductCardScreen extends Component {
                       style={[
                         {
                           color:
-                            this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
+                            this.props.currentTab === 0 ? "#fff" : "#c9c0b6",
                           backgroundColor:
-                            this.state.currentTab === 0
+                            this.props.currentTab === 0
                               ? "rgba(255,255,255,.4)"
                               : "transparent"
                         },
@@ -202,217 +146,22 @@ export default class ProductCardScreen extends Component {
                 }
                 style={styles.productTab}
               >
-                <View style={[styles.container, { marginBottom: 5 }]}>
-                  <Card transparent style={{ backgroundColor: "transparent" }}>
-                    <CardItem
-                      style={{ backgroundColor: "transparent", paddingTop: 20 }}
-                      cardBody
-                    >
-                      <Image
-                        source={{
-                          uri: `http://kawa.gumione.pro${product.file}`
-                        }}
-                        style={{
-                          flex: 1,
-                          height: 150,
-                          width: null
-                        }}
-                        resizeMode="contain"
-                      />
-                    </CardItem>
-                    <CardItem
-                      style={{
-                        backgroundColor: "transparent",
-                        flexDirection: "row",
-                        alignItems: "flex-end",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "column",
-                          width: "70%",
-                          borderBottomWidth: 1,
-                          borderBottomColor: "#89a6aa",
-                          paddingBottom: 10
-                        }}
-                      >
-                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                          {product.name} {product.weight} g
-                        </Text>
-                        <Text>
-                          {this.props.navigation.getParam("categoryName", "0")},{" "}
-                          {product.arabic_percent}%
-                        </Text>
-                        <Text>Обжарка {product.roast_human}</Text>
-                        <Text>Код товара: {product.code}</Text>
-                      </View>
-                      <View>
-                        <Text
-                          style={{
-                            fontSize: 25,
-                            fontWeight: "bold"
-                          }}
-                        >
-                          {product.price
-                            ? product.price.split(".")[0]
-                            : product.price}{" "}
-                          грн
-                        </Text>
-                      </View>
-                    </CardItem>
-                    <CardItem
-                      style={{
-                        backgroundColor: "transparent"
-                      }}
-                    >
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center"
-                        }}
-                      >
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center"
-                            }}
-                          >
-                            <KawaIcon
-                              style={styles.starIcon}
-                              size={16}
-                              name="small-star-in-catalog"
-                            />
-                            <KawaIcon
-                              style={styles.starIcon}
-                              size={16}
-                              name="small-star-in-catalog"
-                            />
-                            <KawaIcon
-                              style={styles.starIcon}
-                              size={16}
-                              name="small-star-in-catalog"
-                            />
-                            <KawaIcon
-                              style={styles.starIcon}
-                              size={16}
-                              name="small-star-in-catalog"
-                            />
-                            <KawaIcon
-                              style={styles.starIcon}
-                              size={16}
-                              name="small-star-in-catalog"
-                            />
-                            <KawaIcon
-                              style={styles.starIcon}
-                              size={16}
-                              name="small-star-in-catalog"
-                            />
-                            <Text style={styles.productRating}>4.8</Text>
-                          </View>
-                          <Text style={styles.numberOfReviews}>27 отзывов</Text>
-                        </View>
-                        <KawaIcon
-                          style={styles.cartIcon}
-                          size={26}
-                          name="big-cart-in-catalog"
-                        />
-                        <View style={styles.btn}>
-                          <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
-                        </View>
-                      </View>
-                    </CardItem>
-                  </Card>
-                </View>
-                <View style={[styles.container, { marginBottom: 40 }]}>
-                  <TouchableOpacity
-                    style={styles.accordionLinks}
-                    onPress={() => this.props.navigation.navigate("Delivery")}
-                  >
-                    <Text>Доставка и оплата</Text>
-                    <KawaIcon
-                      style={{
-                        color: "#302c23",
-                        position: "absolute",
-                        right: 10
-                      }}
-                      name={"arrow-next"}
-                      size={14}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.accordionLinks}
-                    onPress={() =>
-                      this.props.navigation.navigate("CatalogScreen", {
-                        categoryId: 7
-                      })
-                    }
-                  >
-                    <Text>Другие товары</Text>
-                    <KawaIcon
-                      style={{
-                        color: "#302c23",
-                        position: "absolute",
-                        right: 10
-                      }}
-                      name={"arrow-next"}
-                      size={14}
-                    />
-                  </TouchableOpacity>
-                  <Accordion
-                    dataArray={dataArray}
-                    animation={true}
-                    expanded={true}
-                    renderHeader={this._renderHeader}
-                    renderContent={this._renderContent}
-                  />
-                </View>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "#89a6aa",
-                    alignSelf: "center",
-                    justifyContent: "center",
-                    position: "absolute",
-                    flexDirection: "row",
-                    padding: 5,
-                    bottom: 0,
-                    borderRadius: 3
-                  }}
-                  onPress={() => this.setModalVisible(true)}
-                >
-                  <KawaIcon
-                    style={{
-                      color: "#f8f8f8",
-                      position: "relative",
-                      paddingTop: 2,
-                      paddingRight: 5
-                    }}
-                    name={"telephone"}
-                    size={15}
-                  />
-                  <Text
-                    style={{
-                      color: "#f8f8f8",
-                      fontSize: 13
-                    }}
-                  >
-                    Возникли вопросы?
-                  </Text>
-                </TouchableOpacity>
-                <Modal
-                  animationType="slide"
-                  transparent={false}
-                  onRequestClose={() => {}}
-                  visible={this.state.modalVisible}
-                >
-                  <View style={{ marginTop: 22 }}>
-                    <View>
-                      <Text>Hello World!</Text>
-                    </View>
-                  </View>
-                </Modal>
+                <AboutProduct
+                  productItem={productItem}
+                  currentTab={this.state.currentTab}
+                  onPressDelivery={() =>
+                    this.props.navigation.navigate("Delivery")
+                  }
+                  onPressOtherProducts={() =>
+                    this.props.navigation.navigate("CatalogScreen", {
+                      categoryId: 7
+                    })
+                  }
+                  categoryName={this.props.navigation.getParam(
+                    "categoryName",
+                    "0"
+                  )}
+                />
               </Tab>
               <Tab
                 heading={
