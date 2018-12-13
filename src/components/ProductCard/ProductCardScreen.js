@@ -51,11 +51,11 @@ export default class ProductCardScreen extends Component {
 
   componentDidMount() {
     this.fetchData();
-    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillUnmount() {
-    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   fetchData() {
@@ -65,7 +65,6 @@ export default class ProductCardScreen extends Component {
     )
       .then(response => response.json())
       .then(responseJson => {
-        // console.error(responseJson);
         this.setState({
           ...this.state,
           productItem: responseJson.item,
@@ -78,19 +77,17 @@ export default class ProductCardScreen extends Component {
   }
 
   setModalVisible(visible) {
-    // let opacity;
-
-    // if (visible) {
-    //   StatusBar.setHidden(true);
-    // } else {
-    //   StatusBar.setHidden(false);
-    // }
-
     this.setState({ ...this.state, modalVisible: visible });
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("Home");
+    this.props.navigation.navigate("Catalog", {
+      categoryId: this.props.navigation.getParam("categoryId", "0"),
+      categoryName: this.props.navigation.getParam(
+        "categoryName",
+        "Кофе в зернах"
+      )
+    });
     return true;
   };
 
@@ -124,7 +121,7 @@ export default class ProductCardScreen extends Component {
               renderTabBar={() => (
                 <ScrollableTab
                   backgroundColor={"transparent"}
-                  style={{ borderWidth: 0 }}
+                  style={{ borderWidth: 0, marginTop: 5, marginBottom: 5 }}
                 />
               )}
               initialPage={this.state.currentTab}
@@ -184,11 +181,10 @@ export default class ProductCardScreen extends Component {
                     style={{
                       color: "#f8f8f8",
                       position: "relative",
-                      paddingTop: 2,
                       paddingRight: 5
                     }}
                     name={"telephone"}
-                    size={15}
+                    size={20}
                   />
                   <Text
                     style={{
@@ -438,6 +434,7 @@ const styles = {
     justifyContent: "center",
     flexDirection: "row",
     padding: 5,
+    paddingRight: 10,
     borderRadius: 3,
     marginBottom: 5,
     marginTop: 5

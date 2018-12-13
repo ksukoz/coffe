@@ -27,7 +27,7 @@ export default class AboutProduct extends Component {
   _renderHeader(item, expanded) {
     return (
       <View style={[styles.accordionLinks, { borderBottomWidth: 0 }]}>
-        <Text style={{ color: "#302c23" }}> {item.title}</Text>
+        <Text style={styles.text}> {item.title}</Text>
         {expanded ? (
           <KawaIcon
             style={{ color: "#302c23", position: "absolute", right: 10 }}
@@ -53,7 +53,9 @@ export default class AboutProduct extends Component {
           automaticallyAdjustContentInsets={false}
           source={{
             baseUrl: "",
-            html: `${item.content}<p>Страна производитель ${item.country}</p>`
+            html: `<style>p {color: #302c23;}</style>${
+              item.content
+            }<p>Страна производитель ${item.country}</p>`
           }}
         />
       </View>
@@ -80,8 +82,39 @@ export default class AboutProduct extends Component {
         <View style={[styles.container, { marginBottom: 5 }]}>
           <Card transparent style={{ backgroundColor: "transparent" }}>
             <CardItem
-              style={{ backgroundColor: "transparent", paddingTop: 20 }}
+              style={{
+                backgroundColor: "transparent",
+                paddingTop: 20,
+                position: "relative"
+              }}
             >
+              {product.new == 1 ? (
+                <View style={styles.imgHit}>
+                  <Text
+                    style={{
+                      fontSize: 8,
+                      padding: 5,
+                      color: "#fff",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {"Новинка".toUpperCase()}
+                  </Text>
+                </View>
+              ) : product.popular == 1 ? (
+                <View style={styles.imgHit}>
+                  <Text
+                    style={{
+                      fontSize: 8,
+                      padding: 5,
+                      color: "#fff",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    {"Хит".toUpperCase()}
+                  </Text>
+                </View>
+              ) : null}
               <Image
                 source={{
                   uri: `http://kawa.gumione.pro${product.file}`
@@ -93,6 +126,9 @@ export default class AboutProduct extends Component {
                 }}
                 resizeMode="contain"
               />
+              <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
+                <KawaIcon color="#302c23" size={30} name="share" />
+              </TouchableOpacity>
             </CardItem>
             <CardItem style={styles.cardItem}>
               <View
@@ -107,11 +143,11 @@ export default class AboutProduct extends Component {
                 <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                   {product.name} {product.weight} g
                 </Text>
-                <Text>
-                  {this.props.categoryName}, {product.arabic_percent}%
+                <Text style={styles.text}>
+                  {this.props.categoryName}, Арабика {product.arabic_percent}%
                 </Text>
-                <Text>Обжарка {product.roast_human}</Text>
-                <Text>Код товара: {product.code}</Text>
+                <Text style={styles.text}>Обжарка {product.roast_human}</Text>
+                <Text style={styles.text}>Код товара: {product.code}</Text>
               </View>
               <View>
                 <Text
@@ -147,13 +183,15 @@ export default class AboutProduct extends Component {
                     iconSet={"Ionicons"}
                     maxStars={5}
                     rating={3.5}
-                    starSize={30}
+                    starSize={27}
                     starStyle={{ marginRight: 2 }}
                     emptyStarColor={"#ffea00"}
                     fullStarColor={"#ffea00"}
                   />
                 </View>
-                <Text style={styles.numberOfReviews}>27 отзывов</Text>
+                <Text style={[styles.numberOfReviews, styles.text]}>
+                  27 отзывов
+                </Text>
               </View>
               <KawaIcon
                 style={styles.cartIcon}
@@ -171,7 +209,7 @@ export default class AboutProduct extends Component {
             style={styles.accordionLinks}
             onPress={this.props.onPressDelivery}
           >
-            <Text>Доставка и оплата</Text>
+            <Text style={styles.text}>Доставка и оплата</Text>
             <KawaIcon
               style={{
                 color: "#302c23",
@@ -186,7 +224,7 @@ export default class AboutProduct extends Component {
             style={styles.accordionLinks}
             onPress={this.props.onPressOtherProducts}
           >
-            <Text>Другие товары</Text>
+            <Text style={styles.text}>Другие товары</Text>
             <KawaIcon
               style={{
                 color: "#302c23",
@@ -245,15 +283,26 @@ const styles = {
     borderBottomColor: "#89a6aa"
   },
   accordionText: {
-    color: "#302c23",
     padding: 20,
-    backgroundColor: "transparent",
-    fontSize: 13
+    backgroundColor: "transparent"
   },
-  contactModal: {
-    // width: SCREEN_WIDTH * 0.7
-    backgroundColor: "#fff"
+  imgHit: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    backgroundColor: "#ef5350",
+    zIndex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopLeftRadius: 10,
+    borderBottomRightRadius: 10
   },
+  shareBtn: {
+    position: "absolute",
+    top: 10,
+    right: 10
+  },
+  text: { color: "rgba(48, 44, 35, 0.9)" },
   background: {
     width: "100%",
     height: Dimensions.get("window").height,
@@ -288,19 +337,6 @@ const styles = {
     marginRight: 12,
     marginLeft: 12,
     marginTop: 4
-  },
-  imgHit: {
-    position: "absolute",
-    top: -2,
-    left: 5,
-    backgroundColor: "#ef5350",
-    zIndex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 43,
-    height: 17,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10
   },
   productSort: {
     color: "#48433b",
