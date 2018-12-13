@@ -174,6 +174,7 @@ export default class ProductCardScreen extends Component {
                     "categoryName",
                     "0"
                   )}
+                  navigation={this.props.navigation}
                 />
                 <TouchableOpacity
                   style={styles.questionsBtn}

@@ -54,7 +54,7 @@ export default class AboutProduct extends Component {
           source={{
             baseUrl: "",
             html: `<style>p {color: #302c23;}</style>${
-              item.text
+              item.content
             }<p>Страна производитель ${item.country}</p>`
           }}
         />
@@ -70,7 +70,7 @@ export default class AboutProduct extends Component {
     if (productItem) {
       dataArray.push({
         title: "Описание",
-        content: productItem.caption,
+        content: productItem.text,
         country: productItem.country
       });
 
@@ -126,7 +126,16 @@ export default class AboutProduct extends Component {
                 }}
                 resizeMode="contain"
               />
-              <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
+              <TouchableOpacity
+                style={styles.shareBtn}
+                onPress={() =>
+                  this.props.navigation.navigate("CoffeeInfo", {
+                    linkName: "ProductCardScreen",
+                    productId: product.id,
+                    tab: 1
+                  })
+                }
+              >
                 <KawaIcon color="#302c23" size={30} name="share" />
               </TouchableOpacity>
             </CardItem>
