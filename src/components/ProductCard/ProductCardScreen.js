@@ -24,6 +24,7 @@ import Modal from "react-native-modal";
 import KawaIcon from "../KawaIcon";
 import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
+import CoffeeCard from "./CoffeeCard";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -111,6 +112,7 @@ export default class ProductCardScreen extends Component {
               "Найти кофе"
             )}
             style={{ marginBottom: 20 }}
+            navigation={this.props.navigation}
           />
           <View>
             <Tabs
@@ -227,7 +229,7 @@ export default class ProductCardScreen extends Component {
                 }
                 style={styles.productTab}
               >
-                {/* <Tab2 /> */}
+                <CoffeeCard caption={productItem ? productItem.caption : ""} />
               </Tab>
               <Tab
                 heading={

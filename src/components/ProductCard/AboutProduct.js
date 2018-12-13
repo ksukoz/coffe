@@ -54,7 +54,7 @@ export default class AboutProduct extends Component {
           source={{
             baseUrl: "",
             html: `<style>p {color: #302c23;}</style>${
-              item.content
+              item.text
             }<p>Страна производитель ${item.country}</p>`
           }}
         />
@@ -70,7 +70,7 @@ export default class AboutProduct extends Component {
     if (productItem) {
       dataArray.push({
         title: "Описание",
-        content: productItem.text,
+        content: productItem.caption,
         country: productItem.country
       });
 
@@ -88,7 +88,7 @@ export default class AboutProduct extends Component {
                 position: "relative"
               }}
             >
-              {product.new == 1 ? (
+              {product.new == 1 && +new Date() <= +product.new_date ? (
                 <View style={styles.imgHit}>
                   <Text
                     style={{
