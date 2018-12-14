@@ -1,17 +1,7 @@
 import React, { Component } from "react";
 import {
-  Container,
-  Content,
-  Text,
-  Item,
-  Button,
-  Form,
-  Input
-} from "native-base";
-import {
   StyleSheet,
   View,
-  ImageBackground,
   Image,
   ScrollView,
   StatusBar,
@@ -22,172 +12,22 @@ import {
   AsyncStorage,
   Platform
 } from "react-native";
-Input.defaultProps.selectionColor = "#ea9308";
-TextInputMask.defaultProps.selectionColor = "#ea9308";
+import { Container, Content, Text, Input } from "native-base";
 
-import RadioGroup, { Radio } from "react-native-radio-input";
 import TextInputMask from "react-native-text-input-mask";
-import DatePicker from "react-native-datepicker";
 import KawaIcon from "./../KawaIcon";
 import HeaderBar from "../common/HeaderBar";
 
-const styles = StyleSheet.create({
-  background: {
-    width: "100%",
-    height: Dimensions.get("window").height,
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  cardDouble: {
-    flex: 1,
-    flexDirection: "row",
-    color: "#fff",
-    marginLeft: 10,
-    marginRight: 5,
-    marginTop: 2,
-    shadowColor: "#fff",
-    justifyContent: "center"
-  },
-  cardFull: {
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 5,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    color: "#000000",
-    textAlign: "center",
-    shadowColor: "#fff",
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    alignItems: "flex-start",
-    borderRadius: 5,
-    justifyContent: "space-around",
-    resizeMode: "contain"
-  },
-  cardFullCity: {
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 5,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    paddingRight: 0,
-    color: "#fff",
-    textAlign: "center",
-    shadowColor: "#fff",
-    // backgroundColor: 'rgba(255,255,255, 0.7)',
-    alignItems: "flex-start",
-    borderRadius: 5,
-    justifyContent: "space-around",
-    resizeMode: "contain"
-  },
-  cardContent: {
-    color: "#000000"
-  },
-  container: {
-    flex: 1,
-    height: Dimensions.get("window").height
-  },
-  head: {
-    marginTop: 35,
-    marginLeft: 5,
-    display: "flex",
-    flex: 1,
-    color: "#ffffff"
-  },
-  default: {
-    color: "#fff"
-  },
-  alphabet: {
-    color: "#fff",
-    padding: 10,
-    fontSize: 13,
-    paddingRight: 25
-  },
-  search: {
-    backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
-  },
-  searchIcon: {
-    position: "absolute",
-    right: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  searchInput: {
-    fontSize: 13
-  },
-  alphabetMenu: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 10,
-    marginTop: 10
-  },
-  iconMenu: {
-    color: "#ffffff",
-    fontSize: 22,
-    fontWeight: "bold"
-  },
-  profileInput: {
-    fontSize: 20,
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0
-  },
-  profileInputPhone: {
-    fontSize: 20,
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  profileInputPhoneFocused: {
-    fontSize: 20,
-    borderBottomColor: "#ea9308",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  profileInputFocused: {
-    fontSize: 20,
-    borderBottomColor: "#ea9308",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0
-  },
-  birthdayInput: {
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingRight: 0,
-    marginLeft: 0,
-    marginRight: 0
-  },
-  profileInputCalendar: {
-    fontSize: 20,
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0
-  }
-});
+import { scaleSize } from "../../helpers/scaleSize";
+
+Input.defaultProps.selectionColor = "#ea9308";
+TextInputMask.defaultProps.selectionColor = "#ea9308";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 const MAIN_BG = "../../static/img/background.png";
 
 export default class ProfileEditScreen extends Component {
@@ -216,7 +56,13 @@ export default class ProfileEditScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("Home");
+    this.props.navigation.navigate("ProductCard", {
+      categoryId: this.props.navigation.getParam("categoryId", "0"),
+      categoryName: this.props.navigation.getParam(
+        "categoryName",
+        "Кофе в зернах"
+      )
+    });
     return true;
   };
   retrieveData = async name => {
@@ -585,3 +431,158 @@ export default class ProfileEditScreen extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  background: {
+    width: "100%",
+    height: Dimensions.get("window").height,
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  cardDouble: {
+    flex: 1,
+    flexDirection: "row",
+    color: "#fff",
+    marginLeft: 10,
+    marginRight: 5,
+    marginTop: 2,
+    shadowColor: "#fff",
+    justifyContent: "center"
+  },
+  cardFull: {
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 5,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    color: "#000000",
+    textAlign: "center",
+    shadowColor: "#fff",
+    backgroundColor: "rgba(255,255,255, 0.7)",
+    alignItems: "flex-start",
+    borderRadius: 5,
+    justifyContent: "space-around",
+    resizeMode: "contain"
+  },
+  cardFullCity: {
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 5,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    paddingRight: 0,
+    color: "#fff",
+    textAlign: "center",
+    shadowColor: "#fff",
+    // backgroundColor: 'rgba(255,255,255, 0.7)',
+    alignItems: "flex-start",
+    borderRadius: 5,
+    justifyContent: "space-around",
+    resizeMode: "contain"
+  },
+  cardContent: {
+    color: "#000000"
+  },
+  container: {
+    flex: 1,
+    height: Dimensions.get("window").height
+  },
+  head: {
+    marginTop: 35,
+    marginLeft: 5,
+    display: "flex",
+    flex: 1,
+    color: "#ffffff"
+  },
+  default: {
+    color: "#fff"
+  },
+  alphabet: {
+    color: "#fff",
+    padding: 10,
+    fontSize: 13,
+    paddingRight: 25
+  },
+  search: {
+    backgroundColor: "#fff",
+    marginRight: 15,
+    marginLeft: 15,
+    height: 40,
+    paddingLeft: 5,
+    paddingRight: 10
+  },
+  searchIcon: {
+    position: "absolute",
+    right: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  searchInput: {
+    fontSize: 13
+  },
+  alphabetMenu: {
+    flex: 1,
+    flexDirection: "row",
+    marginLeft: 10,
+    marginTop: 10
+  },
+  iconMenu: {
+    color: "#ffffff",
+    fontSize: 22,
+    fontWeight: "bold"
+  },
+  profileInput: {
+    fontSize: 20,
+    borderBottomColor: "#89a6aa",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0
+  },
+  profileInputPhone: {
+    fontSize: 20,
+    borderBottomColor: "#89a6aa",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  profileInputPhoneFocused: {
+    fontSize: 20,
+    borderBottomColor: "#ea9308",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  profileInputFocused: {
+    fontSize: 20,
+    borderBottomColor: "#ea9308",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0
+  },
+  birthdayInput: {
+    borderBottomColor: "#89a6aa",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 0,
+    marginRight: 0
+  },
+  profileInputCalendar: {
+    fontSize: 20,
+    borderBottomColor: "#89a6aa",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0
+  }
+});

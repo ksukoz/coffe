@@ -4,6 +4,8 @@ import { View } from "react-native";
 import { Item, Text, Button } from "native-base";
 import KawaIcon from "../KawaIcon";
 
+import { scaleSize } from "../../helpers/scaleSize";
+
 export default class HeaderBar extends Component {
   render() {
     const { navigation, title } = this.props;
@@ -25,15 +27,19 @@ export default class HeaderBar extends Component {
             }
           >
             <KawaIcon
-              style={{ color: "#fff", paddingLeft: 18, paddingRight: 20 }}
+              style={{
+                color: "#fff",
+                paddingLeft: scaleSize(18),
+                paddingRight: scaleSize(20)
+              }}
               name={"arrow-back2"}
-              size={20}
+              size={scaleSize(20)}
             />
           </Button>
           <Text
             style={{
               color: "#ffffff",
-              fontSize: 20,
+              fontSize: scaleSize(20),
               fontWeight: "bold"
             }}
           >
@@ -47,6 +53,6 @@ export default class HeaderBar extends Component {
 
 const styles = {
   head: {
-    marginTop: 25
+    marginTop: scaleSize(25)
   }
 };

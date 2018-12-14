@@ -22,7 +22,7 @@ StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-const width = Dimensions.get("window").width;
+const width = SCREEN_WIDTH;
 const yPadding = scaleSize(40);
 const radius = scaleSize(120);
 const total = 6;

@@ -479,7 +479,7 @@ const styles = {
   },
   background: {
     width: "100%",
-    height: Dimensions.get("window").height,
+    height: SCREEN_HEIGHT,
     position: "absolute",
     top: 0,
     bottom: 0,

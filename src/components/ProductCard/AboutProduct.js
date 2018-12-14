@@ -13,7 +13,6 @@ import Lightbox from "react-native-lightbox";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 export default class AboutProduct extends Component {

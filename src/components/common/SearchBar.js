@@ -5,6 +5,8 @@ import { Input, Item, Icon, Button } from "native-base";
 import { findProduct } from "../../store/actions/catalogActions";
 import KawaIcon from "../KawaIcon";
 
+import { scaleSize } from "../../helpers/scaleSize";
+
 class SearchBar extends Component {
   constructor(props) {
     super(props);
@@ -13,10 +15,6 @@ class SearchBar extends Component {
       page: 0
     };
     Input.defaultProps.selectionColor = "#000";
-  }
-
-  componentDidMount() {
-    // console.error(this.props);
   }
 
   handleSearchInput = text => {
@@ -49,7 +47,7 @@ class SearchBar extends Component {
             onChangeText={this.handleSearchInput}
             onSubmitEditing={this.handleSearch}
           />
-          <KawaIcon style={styles.codeIcon} size={20} name="code" />
+          <KawaIcon style={styles.codeIcon} size={scaleSize(20)} name="code" />
         </Item>
       </View>
     );
@@ -58,31 +56,32 @@ class SearchBar extends Component {
 
 const styles = {
   head: {
-    marginTop: 35
+    marginTop: scaleSize(35)
   },
   search: {
     backgroundColor: "#fff",
-    marginRight: 10,
-    marginLeft: 10,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
+    marginRight: scaleSize(10),
+    marginLeft: scaleSize(10),
+    height: scaleSize(40),
+    paddingLeft: scaleSize(5),
+    paddingRight: scaleSize(10)
   },
   searchIcon: {
-    paddingTop: 3,
+    paddingTop: scaleSize(3),
     color: "#58554e"
   },
   codeIcon: {
-    marginRight: 10,
+    marginRight: scaleSize(10),
     color: "#58554e"
   },
   searchInput: {
-    fontSize: 13,
-    paddingTop: 13
+    fontSize: scaleSize(13),
+    paddingTop: scaleSize(13)
   },
   iconMenu: {
     color: "#58554e",
-    marginBottom: 5
+    marginBottom: scaleSize(5),
+    marginTop: scaleSize(5)
   }
 };
 
