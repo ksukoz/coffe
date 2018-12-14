@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Linking,
-  // Modal,
+  ActivityIndicator,
   BackHandler
 } from "react-native";
 import {
@@ -114,191 +114,201 @@ export default class ProductCardScreen extends Component {
             style={{ marginBottom: 20 }}
             navigation={this.props.navigation}
           />
-          <View>
-            <Tabs
-              transparent
-              tabBarUnderlineStyle={{
-                backgroundColor: "transparent"
-              }}
-              renderTabBar={() => (
-                <ScrollableTab
-                  backgroundColor={"transparent"}
-                  style={{ borderWidth: 0, marginTop: 5, marginBottom: 5 }}
-                />
-              )}
-              initialPage={this.state.currentTab}
-              onChangeTab={({ i }) => this.setState({ currentTab: i })}
-            >
-              <Tab
-                heading={
-                  <TabHeading
-                    style={
-                      this.state.currentTab === 0
-                        ? [
-                            styles.productTabHeading,
-                            styles.productActiveTabHeading
-                          ]
-                        : styles.productTabHeading
-                    }
-                  >
-                    <Text
-                      style={[
-                        {
-                          color:
-                            this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
-                          backgroundColor:
-                            this.state.currentTab === 0
-                              ? "rgba(255,255,255,.4)"
-                              : "transparent"
-                        },
-                        styles.tabText
-                      ]}
-                    >
-                      {"О товаре".toUpperCase()}
-                    </Text>
-                  </TabHeading>
-                }
-                style={styles.productTab}
-              >
-                <AboutProduct
-                  productItem={productItem}
-                  onPressDelivery={() =>
-                    this.props.navigation.navigate("Delivery")
-                  }
-                  onPressOtherProducts={() =>
-                    this.props.navigation.navigate("CatalogScreen", {
-                      categoryId: 7
-                    })
-                  }
-                  categoryName={this.props.navigation.getParam(
-                    "categoryName",
-                    "0"
-                  )}
-                  navigation={this.props.navigation}
-                />
-                <TouchableOpacity
-                  style={styles.questionsBtn}
-                  onPress={() => this.setModalVisible(true)}
-                >
-                  <KawaIcon
-                    style={{
-                      color: "#f8f8f8",
-                      position: "relative",
-                      paddingRight: 5
-                    }}
-                    name={"telephone"}
-                    size={20}
+          {this.state.loading ? (
+            <ActivityIndicator size="large" animating />
+          ) : (
+            <View>
+              <Tabs
+                transparent
+                tabBarUnderlineStyle={{
+                  backgroundColor: "transparent"
+                }}
+                renderTabBar={() => (
+                  <ScrollableTab
+                    backgroundColor={"transparent"}
+                    style={{ borderWidth: 0, marginTop: 5, marginBottom: 5 }}
                   />
-                  <Text
-                    style={{
-                      color: "#f8f8f8",
-                      fontSize: 13
-                    }}
-                  >
-                    Возникли вопросы?
-                  </Text>
-                </TouchableOpacity>
-              </Tab>
-              <Tab
-                heading={
-                  <TabHeading
-                    style={
-                      this.state.currentTab === 1
-                        ? [
-                            styles.productTabHeading,
-                            styles.productActiveTabHeading
-                          ]
-                        : styles.productTabHeading
-                    }
-                  >
-                    <Text
-                      style={[
-                        {
-                          color:
-                            this.state.currentTab === 1 ? "#fff" : "#c9c0b6",
-                          backgroundColor:
-                            this.state.currentTab === 1
-                              ? "rgba(255,255,255,.4)"
-                              : "transparent"
-                        },
-                        styles.tabText
-                      ]}
-                    >
-                      {"Карта кофе".toUpperCase()}
-                    </Text>
-                  </TabHeading>
-                }
-                style={styles.productTab}
+                )}
+                initialPage={this.state.currentTab}
+                onChangeTab={({ i }) => this.setState({ currentTab: i })}
               >
-                <CoffeeCard caption={productItem ? productItem.caption : ""} />
-              </Tab>
-              <Tab
-                heading={
-                  <TabHeading
-                    style={
-                      this.state.currentTab === 2
-                        ? [
-                            styles.productTabHeading,
-                            styles.productActiveTabHeading
-                          ]
-                        : styles.productTabHeading
-                    }
-                  >
-                    <Text
-                      style={[
-                        {
-                          color:
-                            this.state.currentTab === 2 ? "#fff" : "#c9c0b6",
-                          backgroundColor:
-                            this.state.currentTab === 2
-                              ? "rgba(255,255,255,.4)"
-                              : "transparent"
-                        },
-                        styles.tabText
-                      ]}
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 0
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
                     >
-                      {"Отзывы".toUpperCase()}
-                    </Text>
-                  </TabHeading>
-                }
-                style={styles.productTab}
-              >
-                {/* <Tab3 /> */}
-              </Tab>
-              <Tab
-                heading={
-                  <TabHeading
-                    style={
-                      this.state.currentTab === 3
-                        ? [
-                            styles.productTabHeading,
-                            styles.productActiveTabHeading
-                          ]
-                        : styles.productTabHeading
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 0 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 0
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"О товаре".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                  style={styles.productTab}
+                >
+                  <AboutProduct
+                    productItem={productItem}
+                    onPressDelivery={() =>
+                      this.props.navigation.navigate("DeliveryScreen", {
+                        linkName: "ProductCard",
+                        productId: productItem.id,
+                        tab: 0
+                      })
                     }
+                    onPressOtherProducts={() =>
+                      this.props.navigation.navigate("CatalogScreen", {
+                        categoryId: 7
+                      })
+                    }
+                    categoryName={this.props.navigation.getParam(
+                      "categoryName",
+                      "0"
+                    )}
+                    navigation={this.props.navigation}
+                  />
+                  <TouchableOpacity
+                    style={styles.questionsBtn}
+                    onPress={() => this.setModalVisible(true)}
                   >
+                    <KawaIcon
+                      style={{
+                        color: "#f8f8f8",
+                        position: "relative",
+                        paddingRight: 5
+                      }}
+                      name={"telephone"}
+                      size={20}
+                    />
                     <Text
-                      style={[
-                        {
-                          color:
-                            this.state.currentTab === 3 ? "#fff" : "#c9c0b6",
-                          backgroundColor:
-                            this.state.currentTab === 3
-                              ? "rgba(255,255,255,.4)"
-                              : "transparent"
-                        },
-                        styles.tabText
-                      ]}
+                      style={{
+                        color: "#f8f8f8",
+                        fontSize: 13
+                      }}
                     >
-                      {"Видео".toUpperCase()}
+                      Возникли вопросы?
                     </Text>
-                  </TabHeading>
-                }
-              >
-                {/* <Tab3 /> */}
-              </Tab>
-            </Tabs>
-          </View>
+                  </TouchableOpacity>
+                </Tab>
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 1
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 1 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 1
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"Карта кофе".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                  style={styles.productTab}
+                >
+                  <CoffeeCard
+                    caption={productItem ? productItem.caption : ""}
+                  />
+                </Tab>
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 2
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 2 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 2
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"Отзывы".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                  style={styles.productTab}
+                >
+                  {/* <Tab3 /> */}
+                </Tab>
+                <Tab
+                  heading={
+                    <TabHeading
+                      style={
+                        this.state.currentTab === 3
+                          ? [
+                              styles.productTabHeading,
+                              styles.productActiveTabHeading
+                            ]
+                          : styles.productTabHeading
+                      }
+                    >
+                      <Text
+                        style={[
+                          {
+                            color:
+                              this.state.currentTab === 3 ? "#fff" : "#c9c0b6",
+                            backgroundColor:
+                              this.state.currentTab === 3
+                                ? "rgba(255,255,255,.4)"
+                                : "transparent"
+                          },
+                          styles.tabText
+                        ]}
+                      >
+                        {"Видео".toUpperCase()}
+                      </Text>
+                    </TabHeading>
+                  }
+                >
+                  {/* <Tab3 /> */}
+                </Tab>
+              </Tabs>
+            </View>
+          )}
           <Modal
             backdropTransitionInTiming={0}
             backdropTransitionOutTiming={0}

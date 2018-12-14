@@ -29,6 +29,7 @@ import RadioGroup, { Radio } from "react-native-radio-input";
 import TextInputMask from "react-native-text-input-mask";
 import DatePicker from "react-native-datepicker";
 import KawaIcon from "./../KawaIcon";
+import HeaderBar from "../common/HeaderBar";
 
 const styles = StyleSheet.create({
   background: {
@@ -280,34 +281,8 @@ export default class ProfileEditScreen extends Component {
           />
           <View style={styles.container}>
             <Content>
-              {/* <Form> */}
-              <View style={styles.head}>
-                <Item style={{ borderBottomWidth: 0, color: "#fff" }}>
-                  <Button
-                    transparent
-                    onPress={() => this.props.navigation.goBack(null)}
-                  >
-                    <KawaIcon
-                      style={{
-                        color: "#fff",
-                        paddingLeft: 5,
-                        paddingRight: 20
-                      }}
-                      name={"arrow-back2"}
-                      size={22}
-                    />
-                  </Button>
-                  <Text
-                    style={{
-                      color: "#ffffff",
-                      fontSize: 22,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Доставка и оплата
-                  </Text>
-                </Item>
-              </View>
+              <HeaderBar navigation={this.props.navigation} title="Доставка" />
+
               <View style={styles.cardFullCity}>
                 <View
                   style={{

@@ -43,7 +43,7 @@ export default class CoffeeInfoScreen extends Component {
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
         <Content>
-          <HeaderBar navigation={this.props.navigation} />
+          <HeaderBar navigation={this.props.navigation} title="Справка" />
           <Text
             style={{
               marginTop: 20,
