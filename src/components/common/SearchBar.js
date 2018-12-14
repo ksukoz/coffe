@@ -86,12 +86,6 @@ const styles = {
   }
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   increment: () => { dispatch({ type: 'INCREMENT' }) },
-//   decrement: () => { dispatch({ type: 'DECREMENT' }) },
-//   reset: () => { dispatch({ type: 'RESET' }) },
-// })
-
 export default connect(
   null,
   { findProduct }

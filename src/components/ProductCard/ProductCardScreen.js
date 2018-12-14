@@ -26,6 +26,8 @@ import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
 import CoffeeCard from "./CoffeeCard";
 
+import { scaleSize } from "../../helpers/scaleSize";
+
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
@@ -110,7 +112,7 @@ export default class ProductCardScreen extends Component {
               "searchPlaceholder",
               "Найти кофе"
             )}
-            style={{ marginBottom: 20 }}
+            style={{ marginBottom: scaleSize(20) }}
             navigation={this.props.navigation}
           />
           {this.state.loading ? (
@@ -125,7 +127,11 @@ export default class ProductCardScreen extends Component {
                 renderTabBar={() => (
                   <ScrollableTab
                     backgroundColor={"transparent"}
-                    style={{ borderWidth: 0, marginTop: 5, marginBottom: 5 }}
+                    style={{
+                      borderWidth: 0,
+                      marginTop: scaleSize(5),
+                      marginBottom: scaleSize(5)
+                    }}
                   />
                 )}
                 initialPage={this.state.currentTab}
@@ -194,7 +200,7 @@ export default class ProductCardScreen extends Component {
                           style={{
                             color: "#f8f8f8",
                             position: "relative",
-                            paddingRight: 5
+                            paddingRight: scaleSize(5)
                           }}
                           name={"telephone"}
                           size={20}
@@ -202,7 +208,7 @@ export default class ProductCardScreen extends Component {
                         <Text
                           style={{
                             color: "#f8f8f8",
-                            fontSize: 13
+                            fontSize: scaleSize(13)
                           }}
                         >
                           Возникли вопросы?
@@ -345,8 +351,8 @@ export default class ProductCardScreen extends Component {
           >
             <View
               style={{
-                borderRadius: 5,
-                padding: 20,
+                borderRadius: scaleSize(5),
+                padding: scaleSize(20),
                 alignSelf: "center",
                 backgroundColor: "#fff",
                 width: SCREEN_WIDTH * 0.8
@@ -354,9 +360,9 @@ export default class ProductCardScreen extends Component {
             >
               <Text
                 style={{
-                  fontSize: 22,
+                  fontSize: scaleSize(22),
                   fontWeight: "bold",
-                  marginBottom: 20,
+                  marginBottom: scaleSize(20),
                   color: "#302c23"
                 }}
               >
@@ -368,7 +374,11 @@ export default class ProductCardScreen extends Component {
               >
                 <Image
                   source={require("../../static/img/vodafon.png")}
-                  style={{ width: 30, height: 30, marginRight: 5 }}
+                  style={{
+                    width: scaleSize(30),
+                    height: scaleSize(30),
+                    marginRight: scaleSize(5)
+                  }}
                 />
                 <Text>(099) 455 65 65</Text>
               </View>
@@ -378,7 +388,11 @@ export default class ProductCardScreen extends Component {
               >
                 <Image
                   source={require("../../static/img/kyivstar.png")}
-                  style={{ width: 30, height: 30, marginRight: 5 }}
+                  style={{
+                    width: scaleSize(30),
+                    height: scaleSize(30),
+                    marginRight: scaleSize(5)
+                  }}
                 />
                 <Text>(067) 455 65 65</Text>
               </View>
@@ -388,7 +402,11 @@ export default class ProductCardScreen extends Component {
               >
                 <Image
                   source={require("../../static/img/lifecell.png")}
-                  style={{ width: 30, height: 30, marginRight: 5 }}
+                  style={{
+                    width: scaleSize(30),
+                    height: scaleSize(30),
+                    marginRight: scaleSize(5)
+                  }}
                 />
                 <Text>(093) 455 65 65</Text>
               </View>
@@ -404,7 +422,7 @@ export default class ProductCardScreen extends Component {
                 <Text
                   style={{
                     fontWeight: "bold",
-                    marginTop: 20,
+                    marginTop: scaleSize(20),
                     color: "#302c23"
                   }}
                 >
@@ -421,10 +439,10 @@ export default class ProductCardScreen extends Component {
 
 const styles = {
   container: {
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: scaleSize(5),
+    marginRight: scaleSize(5),
     backgroundColor: "rgba(255,255,255,.72)",
-    borderRadius: 5
+    borderRadius: scaleSize(5)
   },
   productTab: {
     backgroundColor: "transparent",
@@ -432,50 +450,32 @@ const styles = {
   },
   productTabHeading: {
     backgroundColor: "transparent",
-    paddingLeft: 5,
-    paddingRight: 5
+    paddingLeft: scaleSize(5),
+    paddingRight: scaleSize(5)
   },
   productActiveTabHeading: {
     borderBottomWidth: 0
   },
   tabText: {
-    fontSize: 13,
-    padding: 5,
-    borderRadius: 3
-  },
-  accordionLinks: {
-    flexDirection: "row",
-    marginLeft: 10,
-    marginRight: 10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    borderBottomWidth: 1,
-    borderBottomColor: "#89a6aa"
-  },
-  accordionText: {
-    color: "#302c23",
-    padding: 20,
-    backgroundColor: "transparent",
-    fontSize: 13
+    fontSize: scaleSize(13),
+    padding: scaleSize(5),
+    borderRadius: scaleSize(3)
   },
   questionsBtn: {
     backgroundColor: "#89a6aa",
     alignSelf: "center",
     justifyContent: "center",
     flexDirection: "row",
-    padding: 5,
-    paddingRight: 10,
-    borderRadius: 3,
-    marginBottom: 5,
-    marginTop: 5
+    padding: scaleSize(5),
+    paddingRight: scaleSize(10),
+    borderRadius: scaleSize(3),
+    marginBottom: scaleSize(5),
+    marginTop: scaleSize(5)
   },
   phoneNumber: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 8
+    marginBottom: scaleSize(8)
   },
   background: {
     width: "100%",
@@ -485,84 +485,5 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0
-  },
-  default: {
-    color: "#fff"
-  },
-
-  iconMenu: {
-    color: "#58554e",
-    marginBottom: 5
-  },
-  product: {
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    marginRight: 12,
-    marginLeft: 12,
-    marginBottom: 7,
-    flexDirection: "row",
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingRight: 10,
-    borderRadius: 8
-  },
-  productImg: {
-    width: 70,
-    height: 120,
-    marginRight: 12,
-    marginLeft: 12,
-    marginTop: 4
-  },
-  imgHit: {
-    position: "absolute",
-    top: -2,
-    left: 5,
-    backgroundColor: "#ef5350",
-    zIndex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 43,
-    height: 17,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10
-  },
-  productSort: {
-    color: "#48433b",
-    marginBottom: 1
-  },
-  productRoast: {
-    color: "#48433b"
-  },
-  productName: {
-    marginBottom: 3,
-    color: "#010101"
-  },
-  starIcon: {
-    color: "#ffea00",
-    marginRight: 5
-  },
-  productRating: {
-    color: "#48433b",
-    fontSize: 13
-  },
-  numberOfReviews: {
-    color: "#48433b",
-    fontSize: 13,
-    marginTop: -2
-  },
-  cartIcon: {
-    color: "#48433b"
-  },
-  btn: {
-    backgroundColor: "#ea9308",
-    borderRadius: 3
-  },
-  btnText: {
-    fontSize: 12,
-    color: "#f8f8f8",
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 7,
-    paddingLeft: 7,
-    fontWeight: "300"
   }
 };
