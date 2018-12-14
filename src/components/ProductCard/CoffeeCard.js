@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Content,
-  Input,
-  Item,
-  Text,
-  Button,
-  List,
-  ListItem,
-  Card,
-  CardItem
-} from "native-base";
+import { Content, Input, Item, Text, Card, CardItem } from "native-base";
 import {
   View,
   ScrollView,
@@ -26,7 +16,7 @@ StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 
 const width = Dimensions.get("window").width;
 const yPadding = 40;
-const radius = 133;
+const radius = 120;
 const total = 6;
 const level = 6;
 const rangeMin = 0;
@@ -61,26 +51,6 @@ export default class CoffeeCard extends Component {
       position: [30, 60, 45, 40, 50, 60],
       positionRelease: 0,
       loading: false,
-      coffeeIcons: [
-        {
-          class: styles.iconTypeWhite
-        },
-        {
-          class: styles.iconTypeWhite
-        },
-        {
-          class: styles.iconTypeWhite
-        },
-        {
-          class: styles.iconTypeWhite
-        },
-        {
-          class: styles.iconTypeWhite
-        },
-        {
-          class: styles.iconTypeWhite
-        }
-      ],
       typeDescriptions: [
         styles.typeDescriptionInvisible,
         styles.typeDescriptionInvisible,
@@ -88,11 +58,7 @@ export default class CoffeeCard extends Component {
         styles.typeDescriptionInvisible,
         styles.typeDescriptionInvisible,
         styles.typeDescriptionInvisible
-      ],
-      arabica: styles.arabicaIconWhite,
-      rabusta: styles.rabustaIconWhite,
-      arabicaText: styles.arabicaTextWhite,
-      rabustaText: styles.rabustaTextWhite
+      ]
     };
     Input.defaultProps.selectionColor = "#000";
     selfObject = this;
@@ -413,54 +379,8 @@ export default class CoffeeCard extends Component {
 
   componentWillMount() {}
 
-  setTypeColor(index) {
-    let iconStyles = this.state.coffeeIcons[index];
-    let icons = this.state.coffeeIcons;
-    if (iconStyles.class == styles.iconTypeWhite) {
-      icons[index] = { class: styles.iconTypeOrange };
-    } else {
-      icons[index] = { class: styles.iconTypeWhite };
-    }
-    this.setState({
-      coffeeIcons: icons
-    });
-  }
-
-  setCoreColor(type) {
-    if (type == "rabusta") {
-      if (this.state.rabusta == styles.rabustaIconWhite) {
-        this.setState({
-          rabusta: styles.rabustaIconOrange,
-          rabustaText: styles.rabustaTextOrange
-        });
-      } else {
-        this.setState({
-          rabusta: styles.rabustaIconWhite,
-          rabustaText: styles.rabustaTextWhite
-        });
-      }
-    } else if (type == "arabica") {
-      if (this.state.arabica == styles.arabicaIconWhite) {
-        this.setState({
-          arabica: styles.arabicaIconOrange,
-          arabicaText: styles.arabicaTextOrange
-        });
-      } else {
-        this.setState({
-          arabica: styles.arabicaIconWhite,
-          arabicaText: styles.arabicaTextWhite
-        });
-      }
-    }
-  }
-
   render() {
-    const { caption } = this.props;
-    let text = "";
-
-    if (caption) {
-      text = caption;
-    }
+    const { caption, preparation } = this.props;
 
     var data = {
       fieldNames: [
@@ -561,17 +481,20 @@ export default class CoffeeCard extends Component {
     function getY(r, i) {
       return -r * Math.cos(i * onePiece);
     }
+
     return (
       <ScrollView ref="info" pagingEnabled={true} horizontal={true}>
         <View style={styles.container}>
           <Content>
-            <View style={styles.alphabetMenu}>
+            <Text style={{ paddingLeft: 15, color: "#fff", marginBottom: 10 }}>
+              Способы приготовления
+            </Text>
+            <View style={styles.iconsRow}>
               <TouchableOpacity
                 style={{ marginLeft: 25, paddingTop: 15, borderBottomWidth: 0 }}
               >
                 <KawaIcon
-                  onPress={() => this.setTypeColor(0)}
-                  style={this.state.coffeeIcons[0].class}
+                  color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
                   name={"cup"}
                   size={30}
                 />
@@ -580,8 +503,7 @@ export default class CoffeeCard extends Component {
                 style={{ marginLeft: 13, borderBottomWidth: 0 }}
               >
                 <KawaIcon
-                  onPress={() => this.setTypeColor(1)}
-                  style={this.state.coffeeIcons[1].class}
+                  color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
                   name={"turk"}
                   size={45}
                 />
@@ -590,8 +512,7 @@ export default class CoffeeCard extends Component {
                 style={{ marginLeft: 13, borderBottomWidth: 0 }}
               >
                 <KawaIcon
-                  onPress={() => this.setTypeColor(2)}
-                  style={this.state.coffeeIcons[2].class}
+                  color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
                   name={"pour-over"}
                   size={45}
                 />
@@ -600,8 +521,7 @@ export default class CoffeeCard extends Component {
                 style={{ marginLeft: 13, borderBottomWidth: 0 }}
               >
                 <KawaIcon
-                  onPress={() => this.setTypeColor(3)}
-                  style={this.state.coffeeIcons[3].class}
+                  color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
                   name={"coffee-maker"}
                   size={45}
                 />
@@ -610,8 +530,7 @@ export default class CoffeeCard extends Component {
                 style={{ marginLeft: 13, borderBottomWidth: 0 }}
               >
                 <KawaIcon
-                  onPress={() => this.setTypeColor(4)}
-                  style={this.state.coffeeIcons[4].class}
+                  color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
                   name={"french-press"}
                   size={45}
                 />
@@ -624,8 +543,7 @@ export default class CoffeeCard extends Component {
                 }}
               >
                 <KawaIcon
-                  onPress={() => this.setTypeColor(5)}
-                  style={this.state.coffeeIcons[5].class}
+                  color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
                   name={"coffee-maker-electric"}
                   size={45}
                 />
@@ -633,7 +551,7 @@ export default class CoffeeCard extends Component {
             </View>
 
             <View>
-              <Svg height="375" width="375">
+              <Svg height={"325"} width={"325"}>
                 <G x={width / 2} y={radius + yPadding}>
                   <G>
                     {result.webs.map((points, index) => {
@@ -745,7 +663,7 @@ export default class CoffeeCard extends Component {
                       }
                     ]}
                   >
-                    <Text>{this.props.caption}</Text>
+                    <Text>{caption}</Text>
                   </CardItem>
                 </Card>
               </View>
@@ -779,7 +697,7 @@ export default class CoffeeCard extends Component {
                   padding: 5,
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 260,
+                  top: 245,
                   left: Dimensions.get("window").width - 80
                 }}
               >
@@ -791,7 +709,7 @@ export default class CoffeeCard extends Component {
                   padding: 5,
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 305,
+                  top: 280,
                   left: Dimensions.get("window").width / 2 - 55
                 }}
               >
@@ -803,11 +721,13 @@ export default class CoffeeCard extends Component {
                   padding: 5,
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 260,
+                  top: 245,
                   left: 15
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Полнота</Text>
+                <Text style={{ color: "#fff", fontSize: 16 }}>
+                  Насыщенность
+                </Text>
               </Item>
               <Item
                 onPress={() => this.viewDescription(5)}
@@ -897,183 +817,23 @@ const styles = {
     paddingTop: 5,
     paddingBottom: 5
   },
-  cardDouble: {
-    flex: 1,
+  iconsRow: {
     flexDirection: "row",
-    color: "#fff",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 2,
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    justifyContent: "center"
-  },
-  cardDoubleLast: {
-    flex: 1,
-    flexDirection: "row",
-    color: "#fff",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 2,
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    justifyContent: "center",
     marginBottom: 20
-  },
-  cardFull: {
-    marginLeft: "2%",
-    marginRight: "1.5%",
-    width: "96.5%",
-    marginTop: 5,
-    color: "#fff",
-    textAlign: "center",
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.3,
-    borderRadius: 5,
-    justifyContent: "space-around",
-    resizeMode: "contain"
-  },
-  cardItemHalf: {
-    width: "49%",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    marginLeft: "1%",
-    marginTop: 3,
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.5 - 10,
-    borderRadius: 5,
-    justifyContent: "flex-end",
-    resizeMode: "contain",
-    paddingBottom: "20%"
-  },
-  cardItemHalfLast: {
-    width: "49%",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    marginRight: "1%",
-    marginLeft: "1%",
-    marginTop: 3,
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.5 - 10,
-    borderRadius: 5,
-    justifyContent: "flex-end",
-    resizeMode: "contain",
-    paddingBottom: "20%"
-  },
-  cardContent: {
-    color: "#fff"
   },
   container: {
     flex: 1,
     width: Dimensions.get("window").width
   },
-  head: {
-    marginTop: 35
-  },
-  default: {
-    color: "#fff"
-  },
-  alphabet: {
-    color: "#fff",
-    padding: 10,
-    fontSize: 13,
-    paddingRight: 25
-  },
-  search: {
-    backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
-  },
-  searchIcon: {
-    paddingTop: 3,
-    color: "#58554e"
-  },
-  codeIcon: {
-    marginRight: 10,
-    color: "#58554e"
-  },
-  searchInput: {
-    fontSize: 13
-  },
-  alphabetMenu: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 10,
-    marginTop: 20,
-    alignSelf: "center"
-  },
   iconMenu: {
     color: "#58554e",
     marginBottom: 5
-  },
-  iconTypeWhite: {
-    color: "#fff"
   },
   iconTypeOrange: {
     color: "#ea9308"
   },
   typeIcon: {
     color: "#000"
-  },
-  rabustaIconWhite: {
-    color: "#fff",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  rabustaIconOrange: {
-    color: "#ea9308",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  arabicaIconWhite: {
-    color: "#fff",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  arabicaIconOrange: {
-    color: "#ea9308",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  arabicaTextWhite: {
-    color: "#fff",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  arabicaTextOrange: {
-    color: "#ea9308",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  rabustaTextWhite: {
-    color: "#fff",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  rabustaTextOrange: {
-    color: "#ea9308",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
   },
   typeDescriptionVisible: {
     borderRadius: 5,
@@ -1086,6 +846,7 @@ const styles = {
     opacity: 1
   },
   typeDescriptionInvisible: {
+    display: "none",
     borderRadius: 5,
     marginLeft: "5%",
     padding: 15,

@@ -51,7 +51,6 @@ export default class ProductCardScreen extends Component {
   }
 
   componentDidMount() {
-    console.warn(this.props.navigation);
     this.fetchData();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.setState({ currentTab: this.props.navigation.getParam("tab", 0) });
@@ -241,6 +240,7 @@ export default class ProductCardScreen extends Component {
                 >
                   <CoffeeCard
                     caption={productItem ? productItem.caption : ""}
+                    preparation={productItem.preparation}
                   />
                 </Tab>
                 <Tab
