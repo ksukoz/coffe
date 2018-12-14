@@ -11,24 +11,26 @@ import {
 import KawaIcon from "../KawaIcon";
 import Svg, { G } from "react-native-svg";
 
+import Polygon from "react-native-svg/elements/Polygon";
+import Line from "react-native-svg/elements/Line";
+import Circle from "react-native-svg/elements/Circle";
+
+import { scaleSize } from "../../helpers/scaleSize";
+
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
 const width = Dimensions.get("window").width;
-const yPadding = 40;
-const radius = 120;
+const yPadding = scaleSize(40);
+const radius = scaleSize(120);
 const total = 6;
 const level = 6;
 const rangeMin = 0;
 const rangeMax = 50;
 const arc = 2 * Math.PI;
 const onePiece = arc / total;
-
-// import Web from "../MyCoffee/Web";
-// import Areas from "../MyCoffee/Areas";
-import Polygon from "react-native-svg/elements/Polygon";
-import Line from "react-native-svg/elements/Line";
-import Circle from "react-native-svg/elements/Circle";
 
 let timer;
 let selfObject;
@@ -486,72 +488,72 @@ export default class CoffeeCard extends Component {
       <ScrollView ref="info" pagingEnabled={true} horizontal={true}>
         <View style={styles.container}>
           <Content>
-            <Text style={{ paddingLeft: 15, color: "#fff", marginBottom: 10 }}>
+            <Text
+              style={{
+                paddingLeft: scaleSize(15),
+                color: "#fff",
+                marginBottom: scaleSize(10)
+              }}
+            >
               Способы приготовления
             </Text>
             <View style={styles.iconsRow}>
               <TouchableOpacity
-                style={{ marginLeft: 25, paddingTop: 15, borderBottomWidth: 0 }}
+                style={{ paddingTop: scaleSize(15), borderBottomWidth: 0 }}
               >
                 <KawaIcon
                   color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
                   name={"cup"}
-                  size={30}
+                  size={scaleSize(30)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginLeft: 13, borderBottomWidth: 0 }}
-              >
+              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
                 <KawaIcon
                   color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
                   name={"turk"}
-                  size={45}
+                  size={scaleSize(45)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginLeft: 13, borderBottomWidth: 0 }}
-              >
+              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
                 <KawaIcon
                   color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
                   name={"pour-over"}
-                  size={45}
+                  size={scaleSize(45)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginLeft: 13, borderBottomWidth: 0 }}
-              >
+              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
                 <KawaIcon
                   color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
                   name={"coffee-maker"}
-                  size={45}
+                  size={scaleSize(45)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginLeft: 13, borderBottomWidth: 0 }}
-              >
+              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
                 <KawaIcon
                   color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
                   name={"french-press"}
-                  size={45}
+                  size={scaleSize(45)}
                 />
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  marginRight: 25,
-                  marginLeft: 13,
                   borderBottomWidth: 0
                 }}
               >
                 <KawaIcon
                   color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
                   name={"coffee-maker-electric"}
-                  size={45}
+                  size={scaleSize(45)}
                 />
               </TouchableOpacity>
             </View>
 
             <TouchableOpacity
-              style={{ position: "absolute", top: 110, right: 10 }}
+              style={{
+                position: "absolute",
+                top: scaleSize(110),
+                right: scaleSize(10)
+              }}
               onPress={() =>
                 navigation.navigate("CoffeeInfo", {
                   linkName: "ProductCardScreen",
@@ -560,11 +562,15 @@ export default class CoffeeCard extends Component {
                 })
               }
             >
-              <KawaIcon color={"#f8f8f8"} name={"question"} size={25} />
+              <KawaIcon
+                color={"#f8f8f8"}
+                name={"question"}
+                size={scaleSize(25)}
+              />
             </TouchableOpacity>
 
             <View>
-              <Svg height={"325"} width={"325"}>
+              <Svg height={`${scaleSize(325)}`} width={`${scaleSize(325)}`}>
                 <G x={width / 2} y={radius + yPadding}>
                   <G>
                     {result.webs.map((points, index) => {
@@ -683,23 +689,25 @@ export default class CoffeeCard extends Component {
               <Item
                 onPress={() => this.viewDescription(0)}
                 style={{
-                  padding: 5,
+                  padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
                   top: 5,
-                  left: Dimensions.get("window").width / 2 - 55
+                  left: SCREEN_WIDTH / 2 - scaleSize(55)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Послевкусие</Text>
+                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                  Послевкусие
+                </Text>
               </Item>
               <Item
                 onPress={() => this.viewDescription(1)}
                 style={{
-                  padding: 5,
+                  padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 60,
-                  left: Dimensions.get("window").width - 80
+                  top: scaleSize(60),
+                  left: SCREEN_WIDTH - scaleSize(80)
                 }}
               >
                 <Text style={{ color: "#fff", fontSize: 16 }}>Тело</Text>
@@ -707,96 +715,148 @@ export default class CoffeeCard extends Component {
               <Item
                 onPress={() => this.viewDescription(2)}
                 style={{
-                  padding: 5,
+                  padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 245,
-                  left: Dimensions.get("window").width - 80
+                  top: scaleSize(245),
+                  left: SCREEN_WIDTH - scaleSize(80)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Баланс</Text>
+                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                  Баланс
+                </Text>
               </Item>
               <Item
                 onPress={() => this.viewDescription(3)}
                 style={{
-                  padding: 5,
+                  padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 280,
-                  left: Dimensions.get("window").width / 2 - 55
+                  top: scaleSize(280),
+                  left: SCREEN_WIDTH / 2 - scaleSize(55)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Кислотность</Text>
+                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                  Кислотность
+                </Text>
               </Item>
               <Item
                 onPress={() => this.viewDescription(4)}
                 style={{
-                  padding: 5,
+                  padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 245,
-                  left: 15
+                  top: scaleSize(245),
+                  left: scaleSize(15)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Полнота</Text>
+                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                  Полнота
+                </Text>
               </Item>
               <Item
                 onPress={() => this.viewDescription(5)}
                 style={{
-                  padding: 5,
+                  padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
-                  top: 60,
-                  left: 15
+                  top: scaleSize(60),
+                  left: scaleSize(15)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Аромат</Text>
+                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                  Аромат
+                </Text>
               </Item>
               <View style={this.state.typeDescriptions[0]}>
-                <Text style={{ fontSize: 19, textAlign: "left" }}>
+                <Text style={{ fontSize: scaleSize(19), textAlign: "left" }}>
                   Послевкусие
                 </Text>
-                <Text style={{ fontSize: 14.5, lineHeight: 20, marginTop: 5 }}>
+                <Text
+                  style={{
+                    fontSize: scaleSize(14.5),
+                    lineHeight: scaleSize(20),
+                    marginTop: scaleSize(5)
+                  }}
+                >
                   Вкусовые тона, которые ощущаются во рту некоторое время после
                   того, как кофе выпит. Например, ореховое, винное, хлебное,
                   шоколадное, цветочное послевкусие.
                 </Text>
               </View>
               <View style={this.state.typeDescriptions[1]}>
-                <Text style={{ fontSize: 19, textAlign: "left" }}>Тело</Text>
-                <Text style={{ fontSize: 14.5, lineHeight: 20, marginTop: 5 }}>
+                <Text style={{ fontSize: scaleSize(19), textAlign: "left" }}>
+                  Тело
+                </Text>
+                <Text
+                  style={{
+                    fontSize: scaleSize(14.5),
+                    lineHeight: scaleSize(20),
+                    marginTop: scaleSize(5)
+                  }}
+                >
                   Тело — ощущение богатства или тонкости вкуса, а так же
                   насыщенности дегустируемого напитка.
                 </Text>
               </View>
               <View style={this.state.typeDescriptions[2]}>
-                <Text style={{ fontSize: 19, textAlign: "left" }}>Баланс</Text>
-                <Text style={{ fontSize: 14.5, lineHeight: 20, marginTop: 5 }}>
+                <Text style={{ fontSize: scaleSize(19), textAlign: "left" }}>
+                  Баланс
+                </Text>
+                <Text
+                  style={{
+                    fontSize: scaleSize(14.5),
+                    lineHeight: scaleSize(20),
+                    marginTop: scaleSize(5)
+                  }}
+                >
                   Своеобразный паритет вкусовых характеристик и оттенков кофе.
                   Сбалансированным называют кофе у которого одни вкусовые
                   характеристики и оттенки не преобладают над другими.
                 </Text>
               </View>
               <View style={this.state.typeDescriptions[3]}>
-                <Text style={{ fontSize: 19, textAlign: "left" }}>
+                <Text style={{ fontSize: scaleSize(19), textAlign: "left" }}>
                   Кислотность
                 </Text>
-                <Text style={{ fontSize: 14.5, lineHeight: 20, marginTop: 5 }}>
+                <Text
+                  style={{
+                    fontSize: scaleSize(14.5),
+                    lineHeight: scaleSize(20),
+                    marginTop: scaleSize(5)
+                  }}
+                >
                   Кислотность не имеет ничего общего с кислым вкусом. Она
                   означает приятную остроту вкуса, подчеркивает высокое качество
                   напитка.
                 </Text>
               </View>
               <View style={this.state.typeDescriptions[4]}>
-                <Text style={{ fontSize: 19, textAlign: "left" }}>Полнота</Text>
-                <Text style={{ fontSize: 14.5, lineHeight: 20, marginTop: 5 }}>
+                <Text style={{ fontSize: scaleSize(19), textAlign: "left" }}>
+                  Полнота
+                </Text>
+                <Text
+                  style={{
+                    fontSize: scaleSize(14.5),
+                    lineHeight: scaleSize(20),
+                    marginTop: scaleSize(5)
+                  }}
+                >
                   Это плотность, которая ощущается от кофе на языке. Полнота
                   варьируется от легкой до высокой.
                 </Text>
               </View>
               <View style={this.state.typeDescriptions[5]}>
-                <Text style={{ fontSize: 19, textAlign: "left" }}>Аромат</Text>
-                <Text style={{ fontSize: 14.5, lineHeight: 20, marginTop: 5 }}>
+                <Text style={{ fontSize: scaleSize(19), textAlign: "left" }}>
+                  Аромат
+                </Text>
+                <Text
+                  style={{
+                    fontSize: scaleSize(14.5),
+                    lineHeight: scaleSize(20),
+                    marginTop: scaleSize(5)
+                  }}
+                >
                   Пахучие вещества, выделяемые при заваривании кофе.
                   Интенсивность аромата оценивается как слабая, умеренная,
                   сильная и яркая, зависит от свежести напитка.
@@ -812,10 +872,10 @@ export default class CoffeeCard extends Component {
 
 const styles = {
   cardContainer: {
-    marginLeft: 5,
-    marginRight: 5,
+    marginLeft: scaleSize(5),
+    marginRight: scaleSize(5),
     backgroundColor: "rgba(255,255,255,.72)",
-    borderRadius: 5
+    borderRadius: scaleSize(5)
   },
   cardItem: {
     backgroundColor: "transparent",
@@ -823,22 +883,25 @@ const styles = {
     alignItems: "flex-end",
     justifyContent: "space-between",
 
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingTop: 5,
-    paddingBottom: 5
+    paddingLeft: scaleSize(5),
+    paddingRight: scaleSize(5),
+    paddingTop: scaleSize(5),
+    paddingBottom: scaleSize(5)
   },
   iconsRow: {
     flexDirection: "row",
-    marginBottom: 20
+    justifyContent: "space-between",
+    marginBottom: scaleSize(20),
+    marginLeft: scaleSize(25),
+    marginRight: scaleSize(25)
   },
   container: {
     flex: 1,
-    width: Dimensions.get("window").width
+    width: SCREEN_WIDTH
   },
   iconMenu: {
     color: "#58554e",
-    marginBottom: 5
+    marginBottom: scaleSize(5)
   },
   iconTypeOrange: {
     color: "#ea9308"
@@ -847,22 +910,22 @@ const styles = {
     color: "#000"
   },
   typeDescriptionVisible: {
-    borderRadius: 5,
+    borderRadius: scaleSize(5),
     marginLeft: "5%",
-    padding: 15,
+    padding: scaleSize(15),
     backgroundColor: "rgba(255,255,255, 0.7)",
     position: "absolute",
-    top: Dimensions.get("window").width / 3.2,
+    top: SCREEN_WIDTH / 3.2,
     width: "90%",
     opacity: 1
   },
   typeDescriptionInvisible: {
     display: "none",
-    borderRadius: 5,
+    borderRadius: scaleSize(5),
     marginLeft: "5%",
-    padding: 15,
+    padding: scaleSize(15),
     backgroundColor: "rgba(255,255,255, 0.7)",
-    top: Dimensions.get("window").width / 3.2,
+    top: SCREEN_WIDTH / 3.2,
     width: "90%",
     opacity: 0
   }
