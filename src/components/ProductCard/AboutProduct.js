@@ -126,18 +126,7 @@ export default class AboutProduct extends Component {
                 }}
                 resizeMode="contain"
               />
-              <TouchableOpacity
-                style={styles.shareBtn}
-                onPress={() =>
-                  this.props.navigation.navigate("CoffeeInfo", {
-                    linkName: "ProductCardScreen",
-                    productId: product.id,
-                    tab: 1,
-
-                    preparation: product.preparation
-                  })
-                }
-              >
+              <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
                 <KawaIcon color="#302c23" size={30} name="share" />
               </TouchableOpacity>
             </CardItem>

@@ -20,7 +20,7 @@ const radius = 120;
 const total = 6;
 const level = 6;
 const rangeMin = 0;
-const rangeMax = 100;
+const rangeMax = 50;
 const arc = 2 * Math.PI;
 const onePiece = arc / total;
 
@@ -48,7 +48,7 @@ export default class CoffeeCard extends Component {
         5: [0, 0]
       },
       colors: ["#ea9308", "#ea9308", "#ea9308", "#ea9308", "#ea9308"],
-      position: [30, 60, 45, 40, 50, 60],
+      position: this.props.position,
       positionRelease: 0,
       loading: false,
       typeDescriptions: [
@@ -380,7 +380,7 @@ export default class CoffeeCard extends Component {
   componentWillMount() {}
 
   render() {
-    const { caption, preparation } = this.props;
+    const { caption, preparation, id, navigation } = this.props;
 
     var data = {
       fieldNames: [
@@ -549,6 +549,19 @@ export default class CoffeeCard extends Component {
                 />
               </TouchableOpacity>
             </View>
+
+            <TouchableOpacity
+              style={{ position: "absolute", top: 110, right: 10 }}
+              onPress={() =>
+                navigation.navigate("CoffeeInfo", {
+                  linkName: "ProductCardScreen",
+                  productId: id,
+                  preparation: preparation
+                })
+              }
+            >
+              <KawaIcon color={"#f8f8f8"} name={"question"} size={25} />
+            </TouchableOpacity>
 
             <View>
               <Svg height={"325"} width={"325"}>
@@ -725,9 +738,7 @@ export default class CoffeeCard extends Component {
                   left: 15
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>
-                  Насыщенность
-                </Text>
+                <Text style={{ color: "#fff", fontSize: 16 }}>Полнота</Text>
               </Item>
               <Item
                 onPress={() => this.viewDescription(5)}

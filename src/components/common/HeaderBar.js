@@ -20,8 +20,7 @@ export default class HeaderBar extends Component {
             transparent
             onPress={() =>
               navigation.navigate(linkName, {
-                productId: navigation.getParam("productId", "0"),
-                tab: 1
+                productId: navigation.getParam("productId", "0")
               })
             }
           >

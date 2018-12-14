@@ -29,9 +29,6 @@ StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
 
 export default class CoffeeInfoScreen extends Component {
-  componentDidMount() {
-    // console.error(this.props.navigation);
-  }
   render() {
     const { navigation } = this.props;
     let preparation = [];
@@ -47,11 +44,7 @@ export default class CoffeeInfoScreen extends Component {
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
         <Content>
-          <HeaderBar
-            back={() => this.props.navigation.goBack()}
-            navigation={this.props.navigation}
-            title="Справка"
-          />
+          <HeaderBar navigation={this.props.navigation} title="Справка" />
           <Text
             style={[
               styles.defaultFont,

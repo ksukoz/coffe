@@ -53,7 +53,6 @@ export default class ProductCardScreen extends Component {
   componentDidMount() {
     this.fetchData();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-    this.setState({ currentTab: this.props.navigation.getParam("tab", 0) });
   }
 
   componentWillUnmount() {
@@ -239,8 +238,18 @@ export default class ProductCardScreen extends Component {
                   style={styles.productTab}
                 >
                   <CoffeeCard
+                    navigation={this.props.navigation}
                     caption={productItem ? productItem.caption : ""}
                     preparation={productItem.preparation}
+                    id={productItem.id}
+                    position={[
+                      +productItem.cc_aftertaste.split(",").join(""),
+                      +productItem.cc_body.split(",").join(""),
+                      +productItem.cc_balance.split(",").join(""),
+                      +productItem.cc_acidity.split(",").join(""),
+                      +productItem.cc_saturation.split(",").join(""),
+                      +productItem.cc_aroma.split(",").join("")
+                    ]}
                   />
                 </Tab>
                 <Tab
