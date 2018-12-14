@@ -47,7 +47,11 @@ export default class CoffeeInfoScreen extends Component {
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
         <Content>
-          <HeaderBar navigation={this.props.navigation} title="Справка" />
+          <HeaderBar
+            back={() => this.props.navigation.goBack()}
+            navigation={this.props.navigation}
+            title="Справка"
+          />
           <Text
             style={[
               styles.defaultFont,

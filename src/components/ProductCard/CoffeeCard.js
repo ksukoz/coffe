@@ -735,6 +735,20 @@ export default class CoffeeCard extends Component {
                   ))}
                 </G>
               </Svg>
+              <View style={[styles.cardContainer, { marginBottom: 5 }]}>
+                <Card transparent style={{ backgroundColor: "transparent" }}>
+                  <CardItem
+                    style={[
+                      styles.cardItem,
+                      {
+                        position: "relative"
+                      }
+                    ]}
+                  >
+                    <Text>{this.props.caption}</Text>
+                  </CardItem>
+                </Card>
+              </View>
               <Item
                 onPress={() => this.viewDescription(0)}
                 style={{
@@ -858,19 +872,6 @@ export default class CoffeeCard extends Component {
                 </Text>
               </View>
             </View>
-            <View style={[styles.cardContainer, { marginBottom: 5 }]}>
-              <Card transparent style={{ backgroundColor: "transparent" }}>
-                <CardItem
-                  style={{
-                    backgroundColor: "transparent",
-                    paddingTop: 20,
-                    position: "relative"
-                  }}
-                >
-                  <Text>{this.props.caption}</Text>
-                </CardItem>
-              </Card>
-            </View>
           </Content>
         </View>
       </ScrollView>
@@ -890,10 +891,11 @@ const styles = {
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
-    paddingLeft: 0,
-    paddingRight: 10,
-    paddingTop: 0,
-    paddingBottom: 0
+
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 5,
+    paddingBottom: 5
   },
   cardDouble: {
     flex: 1,
