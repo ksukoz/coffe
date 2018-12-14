@@ -51,8 +51,10 @@ export default class ProductCardScreen extends Component {
   }
 
   componentDidMount() {
+    console.warn(this.props.navigation);
     this.fetchData();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    this.setState({ currentTab: this.props.navigation.getParam("tab", 0) });
   }
 
   componentWillUnmount() {

@@ -33,6 +33,10 @@ export default class CoffeeInfoScreen extends Component {
     // console.error(this.props.navigation);
   }
   render() {
+    const { navigation } = this.props;
+    let preparation = [];
+    preparation = navigation.getParam("preparation", []);
+
     return (
       <View style={styles.container}>
         <StatusBar
@@ -45,21 +49,22 @@ export default class CoffeeInfoScreen extends Component {
         <Content>
           <HeaderBar navigation={this.props.navigation} title="Справка" />
           <Text
-            style={{
-              marginTop: 20,
-              color: "#fff",
-              width: "100%",
-              textAlign: "left",
-              fontSize: 15,
-              marginBottom: 10,
-              marginLeft: 25
-            }}
+            style={[
+              styles.defaultFont,
+              {
+                marginTop: 20,
+                width: "100%",
+                textAlign: "left",
+                marginBottom: 10,
+                marginLeft: 25
+              }
+            ]}
           >
             Способы приготовления:
           </Text>
           <View
             style={{
-              marginBottom: 40,
+              marginBottom: 5,
               backgroundColor: "rgba(255,255,255, 0.7)",
               borderTopLeftRadius: 5,
               borderTopRightRadius: 5,
@@ -76,194 +81,157 @@ export default class CoffeeInfoScreen extends Component {
               style={{ borderBottomWidth: 1, borderBottomColor: "#89a6aa" }}
             >
               <ListItem
-                style={{ marginLeft: 10, paddingTop: 25, borderBottomWidth: 0 }}
+                style={[
+                  styles.listItem,
+                  {
+                    marginRight: 25,
+                    paddingTop: 25,
+                    borderBottomWidth: 0
+                  }
+                ]}
               >
                 <Text style={{ width: 50 }}>
-                  <KawaIcon style={styles.typeIcon} name={"cup"} size={30} />
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"cup"}
+                    size={30}
+                    color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
+                  />
                 </Text>
                 <Text style={{ fontSize: 18 }}>Чашка</Text>
               </ListItem>
-              <ListItem style={{ marginLeft: 13, borderBottomWidth: 0 }}>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  { marginLeft: 8, marginLeft: 5, borderBottomWidth: 0 }
+                ]}
+              >
                 <Text style={{ width: 50 }}>
-                  <KawaIcon style={styles.typeIcon} name={"turk"} size={45} />
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"turk"}
+                    size={45}
+                    color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
+                  />
                 </Text>
                 <Text style={{ fontSize: 18 }}>Турка</Text>
               </ListItem>
-              <ListItem style={{ marginLeft: 13, borderBottomWidth: 0 }}>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  { marginLeft: 10, marginRight: 3, borderBottomWidth: 0 }
+                ]}
+              >
                 <Text style={{ width: 50 }}>
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"pour-over"}
                     size={45}
+                    color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
                   />
                 </Text>
                 <Text style={{ fontSize: 18 }}>Гейзерная кофеварка</Text>
               </ListItem>
-              <ListItem style={{ marginLeft: 13, borderBottomWidth: 0 }}>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  { marginLeft: 8, marginLeft: 5, borderBottomWidth: 0 }
+                ]}
+              >
                 <Text style={{ width: 50 }}>
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"coffee-maker"}
                     size={45}
+                    color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
                   />
                 </Text>
                 <Text style={{ fontSize: 18 }}>Фильтр-кофеварка</Text>
               </ListItem>
-              <ListItem style={{ marginLeft: 13, borderBottomWidth: 0 }}>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  { marginLeft: 10, marginRight: 3, borderBottomWidth: 0 }
+                ]}
+              >
                 <Text style={{ width: 50 }}>
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"french-press"}
                     size={45}
+                    color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
                   />
                 </Text>
                 <Text style={{ fontSize: 18 }}>Френч-пресс</Text>
               </ListItem>
               <ListItem
-                style={{
-                  marginRight: 25,
-                  marginLeft: 5,
-                  borderBottomWidth: 0,
-                  marginBottom: 10
-                }}
+                style={[
+                  styles.listItem,
+                  {
+                    marginRight: 25,
+                    borderBottomWidth: 0,
+                    marginBottom: 10
+                  }
+                ]}
               >
                 <Text style={{ width: 50, marginRight: 10 }}>
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"coffee-maker-electric"}
                     size={45}
+                    color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
                   />
                 </Text>
                 <Text style={{ fontSize: 18 }}>Эспрессо кофемашина</Text>
               </ListItem>
             </List>
-            <ScrollView style={{ marginTop: 15 }}>
-              <Text
-                style={{ fontSize: 15, paddingLeft: 13, fontWeight: "bold" }}
+          </View>
+          <View style={styles.descView}>
+            <Text style={styles.defaultFont}>
+              Цвета способов приготовления:
+            </Text>
+            <List>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  {
+                    paddingTop: 25,
+                    paddingLeft: 5,
+                    borderBottomWidth: 0
+                  }
+                ]}
               >
-                Аромат
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  paddingTop: 10,
-                  paddingRight: 40
-                }}
+                <Text style={{ width: 50, marginRight: 10 }}>
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"cup"}
+                    size={30}
+                    color="#ffea00"
+                  />
+                </Text>
+                <Text style={[styles.defaultFont, { fontSize: 18 }]}>
+                  Желтый - нерекомендуемый
+                </Text>
+              </ListItem>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  { paddingLeft: 5, borderBottomWidth: 0 }
+                ]}
               >
-                Пахучие вещества, выделяемые при заваривании кофе. Интенсивность
-                аромата оценивается как слабая, умеренная, сильная и яркая,
-                зависит от свежести напитка.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  fontWeight: "bold",
-                  marginTop: 15
-                }}
-              >
-                Баланс
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  paddingTop: 10,
-                  paddingRight: 40
-                }}
-              >
-                Своеобразный паритет вкусовых характеристик и оттенков кофе.
-                Сбалансированным называют кофе у которого одни вкусовые
-                характеристики и оттенки не преобладают над другими.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  fontWeight: "bold",
-                  marginTop: 15
-                }}
-              >
-                Кислотность
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  paddingTop: 10,
-                  paddingRight: 40
-                }}
-              >
-                Кислотность не имеет ничего общего с кислым вкусом. Она означает
-                приятную остроту вкуса, подчеркивает высокое качество напитка.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  fontWeight: "bold",
-                  marginTop: 15
-                }}
-              >
-                Полнота
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  paddingTop: 10,
-                  paddingRight: 40
-                }}
-              >
-                Это плотность, которая ощущается от кофе на языке. Полнота
-                варьируется от легкой до высокой.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  fontWeight: "bold",
-                  marginTop: 15
-                }}
-              >
-                Послевкусие
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  paddingTop: 10,
-                  paddingRight: 40
-                }}
-              >
-                Вкусовые тона, которые ощущаются во рту некоторое время после
-                того, как кофе выпит. Например, ореховое, винное, хлебное,
-                шоколадное, цветочное послевкусие.
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  fontWeight: "bold",
-                  marginTop: 15
-                }}
-              >
-                Тело
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  paddingLeft: 13,
-                  paddingTop: 10,
-                  marginBottom: 20,
-                  paddingRight: 40
-                }}
-              >
-                Тело — ощущение богатства или тонкости вкуса, а так же
-                насыщенности дегустируемого напитка.
-              </Text>
-            </ScrollView>
+                <Text style={{ width: 50, marginRight: 10 }}>
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"cup"}
+                    size={30}
+                    color="#ea9308"
+                  />
+                </Text>
+                <Text style={[styles.defaultFont, { fontSize: 18 }]}>
+                  Оранжевый - рекомендуемый
+                </Text>
+              </ListItem>
+            </List>
           </View>
         </Content>
       </View>
@@ -272,6 +240,10 @@ export default class CoffeeInfoScreen extends Component {
 }
 
 const styles = {
+  container: {
+    flex: 1,
+    width: Dimensions.get("window").width
+  },
   background: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 1.5,
@@ -281,201 +253,20 @@ const styles = {
     left: 0,
     right: 0
   },
-  cardDouble: {
-    flex: 1,
-    flexDirection: "row",
-    color: "#fff",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 2,
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    justifyContent: "center"
+  listItem: {
+    paddingTop: 13,
+    paddingBottom: 13,
+    paddingRight: 13,
+    paddingLeft: 13,
+    marginLeft: 0
   },
-  cardDoubleLast: {
-    flex: 1,
-    flexDirection: "row",
-    color: "#fff",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 2,
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    justifyContent: "center",
-    marginBottom: 20
-  },
-  cardFull: {
-    marginLeft: "2%",
-    marginRight: "1.5%",
-    width: "96.5%",
-    marginTop: 5,
-    color: "#fff",
-    textAlign: "center",
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.3,
-    borderRadius: 5,
-    justifyContent: "space-around",
-    resizeMode: "contain"
-  },
-  cardItemHalf: {
-    width: "49%",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    marginLeft: "1%",
-    marginTop: 3,
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.5 - 10,
-    borderRadius: 5,
-    justifyContent: "flex-end",
-    resizeMode: "contain",
-    paddingBottom: "20%"
-  },
-  cardItemHalfLast: {
-    width: "49%",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    marginRight: "1%",
-    marginLeft: "1%",
-    marginTop: 3,
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.5 - 10,
-    borderRadius: 5,
-    justifyContent: "flex-end",
-    resizeMode: "contain",
-    paddingBottom: "20%"
-  },
-  cardContent: {
-    color: "#fff"
-  },
-  container: {
-    flex: 1,
-    width: Dimensions.get("window").width
-  },
-  head: {
-    marginTop: 35
-  },
-  default: {
-    color: "#fff"
-  },
-  alphabet: {
-    color: "#fff",
+  descView: {
     padding: 10,
-    fontSize: 13,
-    paddingRight: 25
-  },
-  search: {
-    backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
-  },
-  searchIcon: {
-    paddingTop: 3,
-    color: "#58554e"
-  },
-  codeIcon: {
     marginRight: 10,
-    color: "#58554e"
+    marginLeft: 10
   },
-  searchInput: {
-    fontSize: 13
-  },
-  alphabetMenu: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 10,
-    marginTop: 20,
-    alignSelf: "center"
-  },
-  iconMenu: {
-    color: "#58554e",
-    marginBottom: 5
-  },
-  iconTypeWhite: {
-    color: "#fff"
-  },
-  iconTypeOrange: {
-    color: "#ea9308"
-  },
-  typeIcon: {
-    color: "#000"
-  },
-  rabustaIconWhite: {
+  defaultFont: {
     color: "#fff",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  rabustaIconOrange: {
-    color: "#ea9308",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  arabicaIconWhite: {
-    color: "#fff",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  arabicaIconOrange: {
-    color: "#ea9308",
-    fontSize: 45,
-    marginLeft: 13,
-    alignItems: "center",
-    justifyContent: "space-around"
-  },
-  arabicaTextWhite: {
-    color: "#fff",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  arabicaTextOrange: {
-    color: "#ea9308",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  rabustaTextWhite: {
-    color: "#fff",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  rabustaTextOrange: {
-    color: "#ea9308",
-    justifyContent: "space-around",
-    height: "100%",
-    marginLeft: 6,
-    paddingTop: 13
-  },
-  typeDescriptionVisible: {
-    borderRadius: 5,
-    marginLeft: "5%",
-    padding: 15,
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    position: "absolute",
-    top: Dimensions.get("window").width / 3.2,
-    width: "90%",
-    opacity: 1
-  },
-  typeDescriptionInvisible: {
-    borderRadius: 5,
-    marginLeft: "5%",
-    padding: 15,
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    top: Dimensions.get("window").width / 3.2,
-    width: "90%",
-    opacity: 0
+    fontSize: 15
   }
 };

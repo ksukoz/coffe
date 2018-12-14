@@ -132,7 +132,9 @@ export default class AboutProduct extends Component {
                   this.props.navigation.navigate("CoffeeInfo", {
                     linkName: "ProductCardScreen",
                     productId: product.id,
-                    tab: 1
+                    tab: 1,
+
+                    preparation: product.preparation
                   })
                 }
               >

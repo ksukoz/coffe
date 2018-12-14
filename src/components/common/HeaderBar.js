@@ -5,9 +5,6 @@ import { Item, Text, Button } from "native-base";
 import KawaIcon from "../KawaIcon";
 
 export default class HeaderBar extends Component {
-  componentDidMount() {
-    // console.error(this.props.navigation);
-  }
   render() {
     const { navigation, title } = this.props;
     let linkName;
@@ -23,7 +20,8 @@ export default class HeaderBar extends Component {
             transparent
             onPress={() =>
               navigation.navigate(linkName, {
-                productId: navigation.getParam("productId", "0")
+                productId: navigation.getParam("productId", "0"),
+                tab: 1
               })
             }
           >
@@ -50,6 +48,6 @@ export default class HeaderBar extends Component {
 
 const styles = {
   head: {
-    marginTop: 35
+    marginTop: 25
   }
 };
