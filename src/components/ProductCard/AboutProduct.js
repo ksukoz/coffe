@@ -9,6 +9,7 @@ import {
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
+import Lightbox from "react-native-lightbox";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -18,7 +19,6 @@ export default class AboutProduct extends Component {
     super(props);
 
     this.state = {
-      modalVisible: false,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
@@ -115,17 +115,26 @@ export default class AboutProduct extends Component {
                   </Text>
                 </View>
               ) : null}
-              <Image
-                source={{
-                  uri: `http://kawa.gumione.pro${product.file}`
-                }}
-                style={{
-                  flex: 1,
-                  height: 150,
-                  width: null
-                }}
-                resizeMode="contain"
-              />
+
+              <Lightbox
+                style={{ flex: 1 }}
+                navigator={this.props.navigator}
+                onOpen={this.props.onImgPress}
+                willClose={this.props.onImgClose}
+                backgroundColor={"rgba(0,0,0,0.7)"}
+              >
+                <Image
+                  source={{
+                    uri: `http://kawa.gumione.pro${product.file}`
+                  }}
+                  style={{
+                    flex: 1,
+                    height: 150,
+                    width: null
+                  }}
+                  resizeMode="contain"
+                />
+              </Lightbox>
               <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
                 <KawaIcon color="#302c23" size={30} name="share" />
               </TouchableOpacity>

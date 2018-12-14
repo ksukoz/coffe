@@ -1,28 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
-  Image,
-  FlatList,
-  Alert,
-  AsyncStorage
-} from "react-native";
-import {
-  Container,
-  Content,
-  Text,
-  Input,
-  Item,
-  Icon,
-  Button
-} from "native-base";
-import findProduct from "../../actions/productActions";
+import { View } from "react-native";
+import { Input, Item, Icon, Button } from "native-base";
+import { findProduct } from "../../store/actions/catalogActions";
 import KawaIcon from "../KawaIcon";
 
 class SearchBar extends Component {
@@ -35,13 +15,20 @@ class SearchBar extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
+  componentDidMount() {
+    // console.error(this.props);
+  }
+
   handleSearchInput = text => {
     this.setState({ search: text });
   };
 
   handleSearch = e => {
-    console.log(e);
     this.props.findProduct(this.state.search, this.props.categoryId, 10);
+
+    this.props.navigation.navigate("CatalogScreen", {
+      categoryId: this.props.categoryId
+    });
   };
 
   render() {
@@ -98,6 +85,12 @@ const styles = {
     marginBottom: 5
   }
 };
+
+// const mapDispatchToProps = (dispatch) => ({
+//   increment: () => { dispatch({ type: 'INCREMENT' }) },
+//   decrement: () => { dispatch({ type: 'DECREMENT' }) },
+//   reset: () => { dispatch({ type: 'RESET' }) },
+// })
 
 export default connect(
   null,

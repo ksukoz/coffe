@@ -78,7 +78,7 @@ export default class ProductCardScreen extends Component {
   }
 
   setModalVisible(visible) {
-    this.setState({ ...this.state, modalVisible: visible });
+    this.setState({ ...this.state, modalVisible: visible, opacity: visible });
   }
 
   handleBackPress = () => {
@@ -93,7 +93,7 @@ export default class ProductCardScreen extends Component {
   };
 
   render() {
-    const { productItem, modalVisible } = this.state;
+    const { productItem, modalVisible, opacity } = this.state;
 
     return (
       <Container style={styles.default}>
@@ -101,12 +101,11 @@ export default class ProductCardScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={modalVisible ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
+          backgroundColor={opacity ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
         <Content>
           <SearchBar
-            catalogId={this.props.navigation.getParam("categoryId", "0")}
             placeholder={this.props.navigation.getParam(
               "searchPlaceholder",
               "Найти кофе"
@@ -163,48 +162,54 @@ export default class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <AboutProduct
-                    productItem={productItem}
-                    onPressDelivery={() =>
-                      this.props.navigation.navigate("DeliveryScreen", {
-                        linkName: "ProductCard",
-                        productId: productItem.id,
-                        tab: 0
-                      })
-                    }
-                    onPressOtherProducts={() =>
-                      this.props.navigation.navigate("CatalogScreen", {
-                        categoryId: 7
-                      })
-                    }
-                    categoryName={this.props.navigation.getParam(
-                      "categoryName",
-                      "0"
-                    )}
-                    navigation={this.props.navigation}
-                  />
-                  <TouchableOpacity
-                    style={styles.questionsBtn}
-                    onPress={() => this.setModalVisible(true)}
-                  >
-                    <KawaIcon
-                      style={{
-                        color: "#f8f8f8",
-                        position: "relative",
-                        paddingRight: 5
-                      }}
-                      name={"telephone"}
-                      size={20}
-                    />
-                    <Text
-                      style={{
-                        color: "#f8f8f8",
-                        fontSize: 13
-                      }}
-                    >
-                      Возникли вопросы?
-                    </Text>
-                  </TouchableOpacity>
+                  <Container style={{ backgroundColor: "transparent" }}>
+                    <Content>
+                      <AboutProduct
+                        onImgPress={() => this.setState({ opacity: true })}
+                        onImgClose={() => this.setState({ opacity: false })}
+                        productItem={productItem}
+                        onPressDelivery={() =>
+                          this.props.navigation.navigate("DeliveryScreen", {
+                            linkName: "ProductCard",
+                            productId: productItem.id,
+                            tab: 0
+                          })
+                        }
+                        onPressOtherProducts={() =>
+                          this.props.navigation.navigate("CatalogScreen", {
+                            categoryId: 7
+                          })
+                        }
+                        categoryName={this.props.navigation.getParam(
+                          "categoryName",
+                          "0"
+                        )}
+                        navigation={this.props.navigation}
+                      />
+                      <TouchableOpacity
+                        style={styles.questionsBtn}
+                        onPress={() => this.setModalVisible(true)}
+                      >
+                        <KawaIcon
+                          style={{
+                            color: "#f8f8f8",
+                            position: "relative",
+                            paddingRight: 5
+                          }}
+                          name={"telephone"}
+                          size={20}
+                        />
+                        <Text
+                          style={{
+                            color: "#f8f8f8",
+                            fontSize: 13
+                          }}
+                        >
+                          Возникли вопросы?
+                        </Text>
+                      </TouchableOpacity>
+                    </Content>
+                  </Container>
                 </Tab>
                 <Tab
                   heading={
@@ -237,20 +242,24 @@ export default class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <CoffeeCard
-                    navigation={this.props.navigation}
-                    caption={productItem ? productItem.caption : ""}
-                    preparation={productItem.preparation}
-                    id={productItem.id}
-                    position={[
-                      +productItem.cc_aftertaste.split(",").join(""),
-                      +productItem.cc_body.split(",").join(""),
-                      +productItem.cc_balance.split(",").join(""),
-                      +productItem.cc_acidity.split(",").join(""),
-                      +productItem.cc_saturation.split(",").join(""),
-                      +productItem.cc_aroma.split(",").join("")
-                    ]}
-                  />
+                  <Container style={{ backgroundColor: "transparent" }}>
+                    <Content>
+                      <CoffeeCard
+                        navigation={this.props.navigation}
+                        caption={productItem ? productItem.caption : ""}
+                        preparation={productItem.preparation}
+                        id={productItem.id}
+                        position={[
+                          +productItem.cc_aftertaste.split(",").join(""),
+                          +productItem.cc_body.split(",").join(""),
+                          +productItem.cc_balance.split(",").join(""),
+                          +productItem.cc_acidity.split(",").join(""),
+                          +productItem.cc_saturation.split(",").join(""),
+                          +productItem.cc_aroma.split(",").join("")
+                        ]}
+                      />
+                    </Content>
+                  </Container>
                 </Tab>
                 <Tab
                   heading={
