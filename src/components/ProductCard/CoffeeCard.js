@@ -899,16 +899,6 @@ const styles = {
     flex: 1,
     width: SCREEN_WIDTH
   },
-  iconMenu: {
-    color: "#58554e",
-    marginBottom: scaleSize(5)
-  },
-  iconTypeOrange: {
-    color: "#ea9308"
-  },
-  typeIcon: {
-    color: "#000"
-  },
   typeDescriptionVisible: {
     borderRadius: scaleSize(5),
     marginLeft: "5%",

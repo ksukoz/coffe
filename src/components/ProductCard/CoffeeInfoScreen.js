@@ -1,31 +1,16 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Content,
-  Input,
-  Item,
-  Text,
-  Button,
-  List,
-  ListItem
-} from "native-base";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
-  Image,
-  PanResponder
-} from "react-native";
+import { Content, Text, List, ListItem } from "native-base";
+import { View, StatusBar, Dimensions, Image } from "react-native";
 import KawaIcon from "../KawaIcon";
-import Svg, { G } from "react-native-svg";
 import HeaderBar from "../common/HeaderBar";
+import { scaleSize } from "../../helpers/scaleSize";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+
 const MAIN_BG = "../../static/img/background.png";
 
 export default class CoffeeInfoScreen extends Component {
@@ -49,11 +34,11 @@ export default class CoffeeInfoScreen extends Component {
             style={[
               styles.defaultFont,
               {
-                marginTop: 20,
+                marginTop: scaleSize(20),
                 width: "100%",
                 textAlign: "left",
-                marginBottom: 10,
-                marginLeft: 25
+                marginBottom: scaleSize(10),
+                marginLeft: scaleSize(25)
               }
             ]}
           >
@@ -61,14 +46,14 @@ export default class CoffeeInfoScreen extends Component {
           </Text>
           <View
             style={{
-              marginBottom: 5,
+              marginBottom: scaleSize(5),
               backgroundColor: "rgba(255,255,255, 0.7)",
-              borderTopLeftRadius: 5,
-              borderTopRightRadius: 5,
-              borderBottomLeftRadius: 5,
-              borderBottomRightRadius: 5,
-              paddingLeft: 5,
-              paddingRight: 5,
+              borderTopLeftRadius: scaleSize(5),
+              borderTopRightRadius: scaleSize(5),
+              borderBottomLeftRadius: scaleSize(5),
+              borderBottomRightRadius: scaleSize(5),
+              paddingLeft: scaleSize(5),
+              paddingRight: scaleSize(5),
               marginLeft: "2.2%",
               marginRight: "2.2%",
               width: "95.6%"
@@ -81,13 +66,13 @@ export default class CoffeeInfoScreen extends Component {
                 style={[
                   styles.listItem,
                   {
-                    marginRight: 25,
-                    paddingTop: 25,
+                    marginRight: scaleSize(25),
+                    paddingTop: scaleSize(25),
                     borderBottomWidth: 0
                   }
                 ]}
               >
-                <Text style={{ width: 50 }}>
+                <Text style={{ width: scaleSize(50) }}>
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"cup"}
@@ -95,91 +80,115 @@ export default class CoffeeInfoScreen extends Component {
                     color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
                   />
                 </Text>
-                <Text style={{ fontSize: 18 }}>Чашка</Text>
-              </ListItem>
-              <ListItem
-                style={[
-                  styles.listItem,
-                  { marginLeft: 8, marginLeft: 5, borderBottomWidth: 0 }
-                ]}
-              >
-                <Text style={{ width: 50 }}>
-                  <KawaIcon
-                    style={styles.typeIcon}
-                    name={"turk"}
-                    size={45}
-                    color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
-                  />
-                </Text>
-                <Text style={{ fontSize: 18 }}>Турка</Text>
-              </ListItem>
-              <ListItem
-                style={[
-                  styles.listItem,
-                  { marginLeft: 10, marginRight: 3, borderBottomWidth: 0 }
-                ]}
-              >
-                <Text style={{ width: 50 }}>
-                  <KawaIcon
-                    style={styles.typeIcon}
-                    name={"pour-over"}
-                    size={45}
-                    color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
-                  />
-                </Text>
-                <Text style={{ fontSize: 18 }}>Гейзерная кофеварка</Text>
-              </ListItem>
-              <ListItem
-                style={[
-                  styles.listItem,
-                  { marginLeft: 8, marginLeft: 5, borderBottomWidth: 0 }
-                ]}
-              >
-                <Text style={{ width: 50 }}>
-                  <KawaIcon
-                    style={styles.typeIcon}
-                    name={"coffee-maker"}
-                    size={45}
-                    color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
-                  />
-                </Text>
-                <Text style={{ fontSize: 18 }}>Фильтр-кофеварка</Text>
-              </ListItem>
-              <ListItem
-                style={[
-                  styles.listItem,
-                  { marginLeft: 10, marginRight: 3, borderBottomWidth: 0 }
-                ]}
-              >
-                <Text style={{ width: 50 }}>
-                  <KawaIcon
-                    style={styles.typeIcon}
-                    name={"french-press"}
-                    size={45}
-                    color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
-                  />
-                </Text>
-                <Text style={{ fontSize: 18 }}>Френч-пресс</Text>
+                <Text style={{ fontSize: scaleSize(18) }}>Чашка</Text>
               </ListItem>
               <ListItem
                 style={[
                   styles.listItem,
                   {
-                    marginRight: 25,
-                    borderBottomWidth: 0,
-                    marginBottom: 10
+                    marginLeft: scaleSize(8),
+                    marginLeft: scaleSize(5),
+                    borderBottomWidth: 0
                   }
                 ]}
               >
-                <Text style={{ width: 50, marginRight: 10 }}>
+                <Text style={{ width: scaleSize(50) }}>
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"turk"}
+                    size={scaleSize(45)}
+                    color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
+                  />
+                </Text>
+                <Text style={{ fontSize: scaleSize(18) }}>Турка</Text>
+              </ListItem>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  {
+                    marginLeft: scaleSize(10),
+                    marginRight: scaleSize(3),
+                    borderBottomWidth: 0
+                  }
+                ]}
+              >
+                <Text style={{ width: scaleSize(50) }}>
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"pour-over"}
+                    size={scaleSize(45)}
+                    color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
+                  />
+                </Text>
+                <Text style={{ fontSize: scaleSize(18) }}>
+                  Гейзерная кофеварка
+                </Text>
+              </ListItem>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  {
+                    marginLeft: scaleSize(8),
+                    marginLeft: scaleSize(5),
+                    borderBottomWidth: 0
+                  }
+                ]}
+              >
+                <Text style={{ width: scaleSize(50) }}>
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"coffee-maker"}
+                    size={scaleSize(45)}
+                    color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
+                  />
+                </Text>
+                <Text style={{ fontSize: scaleSize(18) }}>
+                  Фильтр-кофеварка
+                </Text>
+              </ListItem>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  {
+                    marginLeft: scaleSize(10),
+                    marginRight: scaleSize(3),
+                    borderBottomWidth: 0
+                  }
+                ]}
+              >
+                <Text style={{ width: scaleSize(50) }}>
+                  <KawaIcon
+                    style={styles.typeIcon}
+                    name={"french-press"}
+                    size={scaleSize(45)}
+                    color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
+                  />
+                </Text>
+                <Text style={{ fontSize: scaleSize(18) }}>Френч-пресс</Text>
+              </ListItem>
+              <ListItem
+                style={[
+                  styles.listItem,
+                  {
+                    marginRight: scaleSize(25),
+                    borderBottomWidth: 0,
+                    marginBottom: scaleSize(10)
+                  }
+                ]}
+              >
+                <Text
+                  style={{ width: scaleSize(50), marginRight: scaleSize(10) }}
+                >
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"coffee-maker-electric"}
-                    size={45}
+                    size={scaleSize(45)}
                     color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
                   />
                 </Text>
-                <Text style={{ fontSize: 18 }}>Эспрессо кофемашина</Text>
+                <Text style={{ fontSize: scaleSize(18) }}>
+                  Эспрессо кофемашина
+                </Text>
               </ListItem>
             </List>
           </View>
@@ -192,21 +201,23 @@ export default class CoffeeInfoScreen extends Component {
                 style={[
                   styles.listItem,
                   {
-                    paddingTop: 25,
-                    paddingLeft: 5,
+                    paddingTop: scaleSize(25),
+                    paddingLeft: scaleSize(5),
                     borderBottomWidth: 0
                   }
                 ]}
               >
-                <Text style={{ width: 50, marginRight: 10 }}>
+                <Text
+                  style={{ width: scaleSize(50), marginRight: scaleSize(10) }}
+                >
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"cup"}
-                    size={30}
+                    size={scaleSize(30)}
                     color="#ffea00"
                   />
                 </Text>
-                <Text style={[styles.defaultFont, { fontSize: 18 }]}>
+                <Text style={[styles.defaultFont, { fontSize: scaleSize(18) }]}>
                   Желтый - нерекомендуемый
                 </Text>
               </ListItem>
@@ -216,15 +227,17 @@ export default class CoffeeInfoScreen extends Component {
                   { paddingLeft: 5, borderBottomWidth: 0 }
                 ]}
               >
-                <Text style={{ width: 50, marginRight: 10 }}>
+                <Text
+                  style={{ width: scaleSize(50), marginRight: scaleSize(10) }}
+                >
                   <KawaIcon
                     style={styles.typeIcon}
                     name={"cup"}
-                    size={30}
+                    size={scaleSize(30)}
                     color="#ea9308"
                   />
                 </Text>
-                <Text style={[styles.defaultFont, { fontSize: 18 }]}>
+                <Text style={[styles.defaultFont, { fontSize: scaleSize(18) }]}>
                   Оранжевый - рекомендуемый
                 </Text>
               </ListItem>
@@ -239,11 +252,11 @@ export default class CoffeeInfoScreen extends Component {
 const styles = {
   container: {
     flex: 1,
-    width: Dimensions.get("window").width
+    width: SCREEN_WIDTH
   },
   background: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 1.5,
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
     position: "absolute",
     top: 0,
     bottom: 0,
@@ -251,19 +264,19 @@ const styles = {
     right: 0
   },
   listItem: {
-    paddingTop: 13,
-    paddingBottom: 13,
-    paddingRight: 13,
-    paddingLeft: 13,
+    paddingTop: scaleSize(13),
+    paddingBottom: scaleSize(13),
+    paddingRight: scaleSize(13),
+    paddingLeft: scaleSize(13),
     marginLeft: 0
   },
   descView: {
-    padding: 10,
-    marginRight: 10,
-    marginLeft: 10
+    padding: scaleSize(10),
+    marginRight: scaleSize(10),
+    marginLeft: scaleSize(10)
   },
   defaultFont: {
     color: "#fff",
-    fontSize: 15
+    fontSize: scaleSize(15)
   }
 };
