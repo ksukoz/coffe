@@ -19,7 +19,8 @@ import {
   Dimensions,
   BackHandler,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  Platform
 } from "react-native";
 Input.defaultProps.selectionColor = "#ea9308";
 TextInputMask.defaultProps.selectionColor = "#ea9308";
@@ -540,24 +541,45 @@ export default class ProfileEditScreen extends Component {
                     />
                   </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    width: "100%",
-                    marginBottom: 10
-                  }}
-                >
-                  <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
-                    Google Pay
-                  </Text>
-                  <View>
-                    <Image
-                      source={require("../../static/img/gpay.png")}
-                      style={{ width: 50, height: 20 }}
-                    />
+                {Platform.OS === "ios" ? (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                      marginBottom: 10
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                      Apple Pay
+                    </Text>
+                    <View>
+                      <Image
+                        source={require("../../static/img/apay.png")}
+                        style={{ width: 50, height: 20 }}
+                      />
+                    </View>
                   </View>
-                </View>
+                ) : (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                      marginBottom: 10
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                      Google Pay
+                    </Text>
+                    <View>
+                      <Image
+                        source={require("../../static/img/gpay.png")}
+                        style={{ width: 50, height: 20 }}
+                      />
+                    </View>
+                  </View>
+                )}
                 <View
                   style={{
                     flexDirection: "row",
