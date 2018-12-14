@@ -26,7 +26,6 @@ TextInputMask.defaultProps.selectionColor = "#ea9308";
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const MAIN_BG = "../../static/img/background.png";
 
@@ -100,7 +99,7 @@ export default class ProfileEditScreen extends Component {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            height: 80
+            height: scaleSize(80)
           }}
         />
       </View>
@@ -112,7 +111,7 @@ export default class ProfileEditScreen extends Component {
       return this.renderLoadingView();
     }
     return (
-      <Container style={styles.default}>
+      <Container>
         <StatusBar
           barStyle="light-content"
           backgroundColor={"transparent"}
@@ -141,24 +140,9 @@ export default class ProfileEditScreen extends Component {
                 >
                   <TouchableOpacity
                     // onPress={() => this.props.navigation.navigate('SelectRegion')}
-                    style={{ width: "100%", flexDirection: "row" }}
-                  >
-                    <Text
-                      style={{
-                        // paddingLeft: 5,
-                        // paddingRight: 5,
-                        width: "100%",
-                        paddingTop: 5
-                      }}
-                    >
-                      {this.state.city_name}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    // onPress={() => this.props.navigation.navigate('SelectRegion')}
                     style={{
-                      paddingLeft: 5,
-                      paddingRight: 5,
+                      paddingLeft: scaleSize(5),
+                      paddingRight: scaleSize(5),
                       width: "100%",
                       flexDirection: "row"
                     }}
@@ -166,16 +150,14 @@ export default class ProfileEditScreen extends Component {
                     <Text
                       // onFocus={() => this.props.navigation.navigate('SelectRegion')}
                       style={{
-                        // paddingTop: 5,
-                        // paddingBottom: 5,
                         paddingTop: 0,
                         paddingBottom: 0,
-                        height: 40,
-                        fontSize: 20,
+                        height: scaleSize(40),
+                        fontSize: scaleSize(20),
                         color: "rgba(255, 255, 255, .7)",
                         width: "100%",
                         paddingLeft: 0,
-                        marginBottom: 5,
+                        marginBottom: scaleSize(5),
 
                         borderBottomColor: "#fff",
                         borderBottomWidth: 1
@@ -187,24 +169,28 @@ export default class ProfileEditScreen extends Component {
                       style={{
                         color: "#fff",
                         position: "absolute",
-                        right: 10,
-                        top: 15
+                        right: scaleSize(10),
+                        top: scaleSize(15)
                       }}
                       name={"arrow-next"}
-                      size={14}
+                      size={scaleSize(14)}
                     />
                   </TouchableOpacity>
                 </View>
               </View>
               <View
                 style={{
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  marginBottom: 20
+                  paddingLeft: scaleSize(10),
+                  paddingRight: scaleSize(10),
+                  marginBottom: scaleSize(20)
                 }}
               >
                 <Text
-                  style={{ color: "#ffea00", fontSize: 20, marginBottom: 10 }}
+                  style={{
+                    color: "#ffea00",
+                    fontSize: scaleSize(20),
+                    marginBottom: scaleSize(10)
+                  }}
                 >
                   Доставка
                 </Text>
@@ -213,12 +199,16 @@ export default class ProfileEditScreen extends Component {
                     flexDirection: "row",
                     alignItems: "center",
                     width: "100%",
-                    marginBottom: 10
+                    marginBottom: scaleSize(10)
                   }}
                 >
                   <Image
                     source={require("../../static/img/new-post.png")}
-                    style={{ width: 35, height: 35, marginRight: 10 }}
+                    style={{
+                      width: scaleSize(35),
+                      height: scaleSize(35),
+                      marginRight: scaleSize(10)
+                    }}
                   />
                   <View
                     style={{
@@ -228,16 +218,13 @@ export default class ProfileEditScreen extends Component {
                     <View
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between",
-                        color: "#fff"
+                        justifyContent: "space-between"
                       }}
                     >
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
+                      <Text style={styles.defaultFont}>
                         Новая Почта, отделение
                       </Text>
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
-                        50 грн
-                      </Text>
+                      <Text style={styles.defaultFont}>50 грн</Text>
                     </View>
                     <View
                       style={{
@@ -245,12 +232,10 @@ export default class ProfileEditScreen extends Component {
                         justifyContent: "space-between"
                       }}
                     >
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
+                      <Text style={styles.defaultFont}>
                         Новая Почта, курьер
                       </Text>
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
-                        70 грн
-                      </Text>
+                      <Text style={styles.defaultFont}>70 грн</Text>
                     </View>
                   </View>
                 </View>
@@ -264,10 +249,10 @@ export default class ProfileEditScreen extends Component {
                   <Image
                     source={require("../../static/img/post.png")}
                     style={{
-                      width: 26,
-                      height: 37,
-                      marginRight: 17,
-                      marginLeft: 6
+                      width: scaleSize(26),
+                      height: scaleSize(37),
+                      marginRight: scaleSize(17),
+                      marginLeft: scaleSize(6)
                     }}
                   />
                   <View
@@ -281,12 +266,10 @@ export default class ProfileEditScreen extends Component {
                         justifyContent: "space-between"
                       }}
                     >
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
+                      <Text style={styles.defaultFont}>
                         Укрпочта, отделение
                       </Text>
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
-                        30 грн
-                      </Text>
+                      <Text style={styles.defaultFont}>30 грн</Text>
                     </View>
                     <View
                       style={{
@@ -294,24 +277,24 @@ export default class ProfileEditScreen extends Component {
                         justifyContent: "space-between"
                       }}
                     >
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
-                        Укрпочта, курьер
-                      </Text>
-                      <Text style={{ color: "#fff", fontSize: 18 }}>
-                        50 грн
-                      </Text>
+                      <Text style={styles.defaultFont}>Укрпочта, курьер</Text>
+                      <Text style={styles.defaultFont}>50 грн</Text>
                     </View>
                   </View>
                 </View>
               </View>
               <View
                 style={{
-                  paddingLeft: 10,
-                  paddingRight: 10
+                  paddingLeft: scaleSize(10),
+                  paddingRight: scaleSize(10)
                 }}
               >
                 <Text
-                  style={{ color: "#ffea00", fontSize: 20, marginBottom: 10 }}
+                  style={{
+                    color: "#ffea00",
+                    fontSize: scaleSize(20),
+                    marginBottom: scaleSize(10)
+                  }}
                 >
                   Оплата
                 </Text>
@@ -320,10 +303,10 @@ export default class ProfileEditScreen extends Component {
                     flexDirection: "row",
                     alignItems: "center",
                     width: "100%",
-                    marginBottom: 10
+                    marginBottom: scaleSize(10)
                   }}
                 >
-                  <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                  <Text style={[styles.defaultFont, { flex: 1 }]}>
                     VISA / MasterCard
                   </Text>
                   <View>
@@ -335,11 +318,15 @@ export default class ProfileEditScreen extends Component {
                     >
                       <Image
                         source={require("../../static/img/visa.png")}
-                        style={{ width: 58, height: 18, marginRight: 20 }}
+                        style={{
+                          width: scaleSize(58),
+                          height: scaleSize(18),
+                          marginRight: scaleSize(20)
+                        }}
                       />
                       <Image
                         source={require("../../static/img/mastercard.png")}
-                        style={{ width: 37, height: 22 }}
+                        style={{ width: scaleSize(37), height: scaleSize(22) }}
                       />
                     </View>
                   </View>
@@ -349,16 +336,16 @@ export default class ProfileEditScreen extends Component {
                     flexDirection: "row",
                     alignItems: "center",
                     width: "100%",
-                    marginBottom: 10
+                    marginBottom: scaleSize(10)
                   }}
                 >
-                  <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                  <Text style={[styles.defaultFont, { flex: 1 }]}>
                     Privat 24
                   </Text>
                   <View>
                     <Image
                       source={require("../../static/img/privat24.png")}
-                      style={{ width: 110, height: 21 }}
+                      style={{ width: scaleSize(110), height: scaleSize(21) }}
                     />
                   </View>
                 </View>
@@ -368,16 +355,16 @@ export default class ProfileEditScreen extends Component {
                       flexDirection: "row",
                       alignItems: "center",
                       width: "100%",
-                      marginBottom: 10
+                      marginBottom: scaleSize(10)
                     }}
                   >
-                    <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                    <Text style={[styles.defaultFont, { flex: 1 }]}>
                       Apple Pay
                     </Text>
                     <View>
                       <Image
                         source={require("../../static/img/apay.png")}
-                        style={{ width: 50, height: 20 }}
+                        style={{ width: scaleSize(50), height: scaleSize(23) }}
                       />
                     </View>
                   </View>
@@ -387,16 +374,16 @@ export default class ProfileEditScreen extends Component {
                       flexDirection: "row",
                       alignItems: "center",
                       width: "100%",
-                      marginBottom: 10
+                      marginBottom: scaleSize(10)
                     }}
                   >
-                    <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                    <Text style={[styles.defaultFont, { flex: 1 }]}>
                       Google Pay
                     </Text>
                     <View>
                       <Image
                         source={require("../../static/img/gpay.png")}
-                        style={{ width: 50, height: 20 }}
+                        style={{ width: scaleSize(50), height: scaleSize(20) }}
                       />
                     </View>
                   </View>
@@ -406,24 +393,23 @@ export default class ProfileEditScreen extends Component {
                     flexDirection: "row",
                     alignItems: "center",
                     width: "100%",
-                    marginBottom: 20
+                    marginBottom: scaleSize(20)
                   }}
                 >
-                  <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                  <Text style={[styles.defaultFont, { flex: 1 }]}>
                     Masterpass
                   </Text>
                   <View>
                     <Image
                       source={require("../../static/img/masterpass.png")}
-                      style={{ width: 32, height: 25 }}
+                      style={{ width: scaleSize(32), height: scaleSize(25) }}
                     />
                   </View>
                 </View>
-                <Text style={{ color: "#fff", fontSize: 18, flex: 1 }}>
+                <Text style={[styles.defaultFont, { flex: 1 }]}>
                   безналичная оплата для предприятий и организаций
                 </Text>
               </View>
-              {/* </Form> */}
             </Content>
           </View>
         </ScrollView>
@@ -432,7 +418,8 @@ export default class ProfileEditScreen extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
+  defaultFont: { color: "#fff", fontSize: scaleSize(18) },
   background: {
     width: "100%",
     height: Dimensions.get("window").height,
@@ -442,147 +429,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0
   },
-  cardDouble: {
-    flex: 1,
-    flexDirection: "row",
-    color: "#fff",
-    marginLeft: 10,
-    marginRight: 5,
-    marginTop: 2,
-    shadowColor: "#fff",
-    justifyContent: "center"
-  },
-  cardFull: {
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 5,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    color: "#000000",
-    textAlign: "center",
-    shadowColor: "#fff",
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    alignItems: "flex-start",
-    borderRadius: 5,
-    justifyContent: "space-around",
-    resizeMode: "contain"
-  },
-  cardFullCity: {
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 5,
-    paddingBottom: 10,
-    paddingLeft: 0,
-    paddingRight: 0,
-    color: "#fff",
-    textAlign: "center",
-    shadowColor: "#fff",
-    // backgroundColor: 'rgba(255,255,255, 0.7)',
-    alignItems: "flex-start",
-    borderRadius: 5,
-    justifyContent: "space-around",
-    resizeMode: "contain"
-  },
-  cardContent: {
-    color: "#000000"
-  },
   container: {
     flex: 1,
-    height: Dimensions.get("window").height
-  },
-  head: {
-    marginTop: 35,
-    marginLeft: 5,
-    display: "flex",
-    flex: 1,
-    color: "#ffffff"
-  },
-  default: {
-    color: "#fff"
-  },
-  alphabet: {
-    color: "#fff",
-    padding: 10,
-    fontSize: 13,
-    paddingRight: 25
-  },
-  search: {
-    backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
-  },
-  searchIcon: {
-    position: "absolute",
-    right: 10,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  searchInput: {
-    fontSize: 13
-  },
-  alphabetMenu: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 10,
-    marginTop: 10
-  },
-  iconMenu: {
-    color: "#ffffff",
-    fontSize: 22,
-    fontWeight: "bold"
-  },
-  profileInput: {
-    fontSize: 20,
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0
-  },
-  profileInputPhone: {
-    fontSize: 20,
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  profileInputPhoneFocused: {
-    fontSize: 20,
-    borderBottomColor: "#ea9308",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  profileInputFocused: {
-    fontSize: 20,
-    borderBottomColor: "#ea9308",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0
-  },
-  birthdayInput: {
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingRight: 0,
-    marginLeft: 0,
-    marginRight: 0
-  },
-  profileInputCalendar: {
-    fontSize: 20,
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0
+    height: SCREEN_HEIGHT
   }
-});
+};
