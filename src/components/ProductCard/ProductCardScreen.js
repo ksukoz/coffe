@@ -293,7 +293,7 @@ class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <ProductReviews />
+                  <ProductReviews id={productItem.id} />
                 </Tab>
                 <Tab
                   heading={
@@ -453,6 +453,7 @@ const styles = {
   },
   tabText: {
     fontSize: scaleSize(13),
+    fontWeight: "bold",
     padding: scaleSize(5),
     borderRadius: scaleSize(3)
   },

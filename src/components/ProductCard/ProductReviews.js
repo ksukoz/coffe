@@ -1,44 +1,103 @@
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-  WebView
-} from "react-native";
-import { Text, Input, Accordion, Card, CardItem } from "native-base";
+import { connect } from "react-redux";
+import { View, Dimensions, ActivityIndicator } from "react-native";
+import { Text, Input, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
+
+import { getProductReviews } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-export default class ProductReviews extends Component {
+class ProductReviews extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
+      reviews: null,
+      rate: 1
     };
     Input.defaultProps.selectionColor = "#000";
   }
 
+  componentWillMount() {
+    this.props.getProductReviews(this.props.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reviews) {
+      this.setState({ loading: false, reviews: nextProps.reviews });
+    }
+  }
+
   render() {
+    const { reviews, loading } = this.state;
+
     return (
       <View>
-        <View style={styles.container}>{/**/}</View>
-        <View style={[styles.container, { marginBottom: scaleSize(5) }]}>
-          <Card transparent style={{ backgroundColor: "transparent" }}>
-            <CardItem
-              style={{
-                backgroundColor: "transparent",
-                paddingTop: scaleSize(20),
-                position: "relative"
-              }}
-            />
-          </Card>
-        </View>
+        {loading ? (
+          <ActivityIndicator size="large" animating />
+        ) : (
+          <View>
+            <View style={styles.container}>{/**/}</View>
+            {reviews.map(review => {
+              let date = new Date(+`${review.date}000`);
+
+              return (
+                <View
+                  key={review.id}
+                  style={[styles.container, { marginBottom: scaleSize(5) }]}
+                >
+                  <Card transparent style={{ backgroundColor: "transparent" }}>
+                    <CardItem style={styles.cardItem}>
+                      <View style={styles.row}>
+                        <Text style={styles.heading}>{review.username}</Text>
+                        <Text style={styles.heading}>
+                          {date.getDate()}.{date.getMonth() + 1}.
+                          {date.getFullYear()}
+                        </Text>
+                      </View>
+                    </CardItem>
+                    <CardItem
+                      style={[styles.cardItem, { alignItems: "flex-start" }]}
+                    >
+                      <StarRating
+                        disabled={true}
+                        emptyStar={"ios-star-outline"}
+                        fullStar={"ios-star"}
+                        halfStar={"ios-star-half"}
+                        iconSet={"Ionicons"}
+                        maxStars={5}
+                        rating={review.rating}
+                        starSize={scaleSize(20)}
+                        starStyle={{ marginRight: scaleSize(2) }}
+                        emptyStarColor={"#ffea00"}
+                        fullStarColor={"#ffea00"}
+                      />
+                      <Text style={styles.text}>
+                        {+review.rating < 2
+                          ? "кошмар"
+                          : +review.rating < 3
+                          ? "плохо"
+                          : +review.rating < 4
+                          ? "неплохо"
+                          : +review.rating < 5
+                          ? "хорошо"
+                          : "отлично"}
+                      </Text>
+                    </CardItem>
+                    <CardItem style={styles.cardItem}>
+                      <Text style={styles.text}>{review.text}</Text>
+                    </CardItem>
+                  </Card>
+                </View>
+              );
+            })}
+          </View>
+        )}
       </View>
     );
   }
@@ -51,54 +110,20 @@ const styles = {
     backgroundColor: "rgba(255,255,255,.72)",
     borderRadius: scaleSize(5)
   },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
   cardItem: {
     backgroundColor: "transparent",
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    paddingLeft: 0,
+    paddingLeft: scaleSize(10),
     paddingRight: scaleSize(10),
-    paddingTop: 0,
+    paddingTop: scaleSize(3),
     paddingBottom: 0
   },
-  tabText: {
-    fontSize: scaleSize(13),
-    padding: scaleSize(5),
-    borderRadius: scaleSize(3)
-  },
-  accordionLinks: {
-    flexDirection: "row",
-    marginLeft: scaleSize(10),
-    marginRight: scaleSize(10),
-    paddingTop: scaleSize(10),
-    paddingBottom: scaleSize(10),
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    borderBottomWidth: 1,
-    borderBottomColor: "#89a6aa"
-  },
-  accordionText: {
-    padding: scaleSize(20),
-    backgroundColor: "transparent"
-  },
-  imgHit: {
-    position: "absolute",
-    top: scaleSize(10),
-    left: scaleSize(10),
-    backgroundColor: "#ef5350",
-    zIndex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    borderTopLeftRadius: scaleSize(10),
-    borderBottomRightRadius: scaleSize(10)
-  },
-  shareBtn: {
-    position: "absolute",
-    top: scaleSize(10),
-    right: scaleSize(10)
-  },
-  text: { color: "rgba(48, 44, 35, 0.9)" },
+  heading: { fontSize: scaleSize(15), fontWeight: "bold" },
+  text: { color: "rgba(48, 44, 35, 0.9)", fontSize: scaleSize(13) },
   background: {
     width: "100%",
     height: SCREEN_HEIGHT,
@@ -107,26 +132,18 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0
-  },
-  numberOfReviews: {
-    color: "#48433b",
-    fontSize: scaleSize(13),
-    marginTop: scaleSize(-2)
-  },
-  cartIcon: {
-    color: "#48433b"
-  },
-  btn: {
-    backgroundColor: "#ea9308",
-    borderRadius: scaleSize(3)
-  },
-  btnText: {
-    fontSize: scaleSize(12),
-    color: "#f8f8f8",
-    paddingTop: scaleSize(10),
-    paddingBottom: scaleSize(10),
-    paddingRight: scaleSize(7),
-    paddingLeft: scaleSize(7),
-    fontWeight: "300"
   }
 };
+
+const mapStateToProps = state => ({
+  reviews: state.catalog.reviews
+});
+
+const mapDispatchToProps = dispatch => ({
+  getProductReviews: id => dispatch(getProductReviews(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductReviews);
