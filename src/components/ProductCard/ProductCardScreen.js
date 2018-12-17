@@ -27,7 +27,10 @@ import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
 import CoffeeCard from "./CoffeeCard";
 
-import { getProduct } from "../../store/actions/catalogActions";
+import {
+  getProduct,
+  getProductReviews
+} from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductReviews from "./ProductReviews";
@@ -48,6 +51,7 @@ class ProductCardScreen extends Component {
       opacity: 0,
       currentTab: 0,
       productItem: null,
+      reviewsLength: 0,
       search: "",
       page: 0,
       english: true,
@@ -58,11 +62,17 @@ class ProductCardScreen extends Component {
 
   componentWillMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));
+    this.props.getProductReviews(
+      this.props.navigation.getParam("productId", "0")
+    );
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.product) {
       this.setState({ loading: false, productItem: nextProps.product });
+    }
+    if (nextProps.reviews) {
+      this.setState({ reviewsLength: nextProps.reviews.length });
     }
   }
 
@@ -78,6 +88,10 @@ class ProductCardScreen extends Component {
     this.setState({ ...this.state, modalVisible: visible, opacity: visible });
   }
 
+  onReviewsPress() {
+    this.setState({ ...this.state, currentTab: 2 });
+  }
+
   handleBackPress = () => {
     this.props.navigation.navigate("Catalog", {
       categoryId: this.props.navigation.getParam("categoryId", "0"),
@@ -90,7 +104,7 @@ class ProductCardScreen extends Component {
   };
 
   render() {
-    const { productItem, modalVisible, opacity } = this.state;
+    const { productItem, reviewsLength, opacity } = this.state;
 
     return (
       <Container style={styles.default}>
@@ -116,6 +130,7 @@ class ProductCardScreen extends Component {
             <View>
               <Tabs
                 transparent
+                page={this.state.currentTab}
                 tabBarUnderlineStyle={{
                   backgroundColor: "transparent"
                 }}
@@ -169,6 +184,7 @@ class ProductCardScreen extends Component {
                         onImgPress={() => this.setState({ opacity: true })}
                         onImgClose={() => this.setState({ opacity: false })}
                         productItem={productItem}
+                        reviewsLength={reviewsLength}
                         onPressDelivery={() =>
                           this.props.navigation.navigate("DeliveryScreen", {
                             linkName: "ProductCard",
@@ -186,6 +202,7 @@ class ProductCardScreen extends Component {
                           "0"
                         )}
                         navigation={this.props.navigation}
+                        onReviewsPress={() => this.onReviewsPress()}
                       />
                       <TouchableOpacity
                         style={styles.questionsBtn}
@@ -493,11 +510,13 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  product: state.catalog.product
+  product: state.catalog.product,
+  reviews: state.catalog.reviews
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: id => dispatch(getProduct(id))
+  getProduct: id => dispatch(getProduct(id)),
+  getProductReviews: id => dispatch(getProductReviews(id))
 });
 
 export default connect(

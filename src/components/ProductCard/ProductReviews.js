@@ -44,16 +44,10 @@ class ProductReviews extends Component {
       this.setState({
         loading: false,
         reviews: nextProps.reviews,
-        id: this.props.id
+        id: this.props.id,
+        rating: 0,
+        review: ""
       });
-    }
-    if (nextProps.message) {
-      this.setState(
-        {
-          review: ""
-        },
-        this.props.getProductReviews(this.props.id)
-      );
     }
   }
 
@@ -69,7 +63,7 @@ class ProductReviews extends Component {
     data.append("text", this.state.review);
     data.append("rating", this.state.rating);
 
-    this.props.addProductReviews(data);
+    this.props.addProductReviews(data, this.state.id);
   }
 
   render() {
@@ -161,6 +155,7 @@ class ProductReviews extends Component {
                       { marginRight: 10, marginLeft: 10 }
                     ]}
                     onChangeText={review => this.setState({ review })}
+                    onSubmitEditing={() => this.onAddProductReview()}
                   />
                 </View>
 
@@ -312,7 +307,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getProductReviews: id => dispatch(getProductReviews(id)),
-  addProductReviews: data => dispatch(addProductReviews(data))
+  addProductReviews: (data, id) => dispatch(addProductReviews(data, id))
 });
 
 export default connect(

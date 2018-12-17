@@ -25,7 +25,7 @@ export default function(state = initialState, action) {
     case GET_PRODUCT_REVIEWS:
       return {
         ...state,
-        reviews: action.payload.comments
+        reviews: action.payload.comments.reverse()
       };
     default:
       return state;

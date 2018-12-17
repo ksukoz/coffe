@@ -57,7 +57,7 @@ export const getProductReviews = id => dispatch => {
     });
 };
 
-export const addProductReviews = data => dispatch => {
+export const addProductReviews = (data, id) => dispatch => {
   let formData = new FormData();
   formData.append("username", "+380999999999");
   formData.append("password", "test");
@@ -77,6 +77,7 @@ export const addProductReviews = data => dispatch => {
       })
         .then(response => response.json())
         .then(responseJson => {
+          dispatch(getProductReviews(id));
           dispatch({
             type: GET_MESSAGE,
             payload: responseJson.message

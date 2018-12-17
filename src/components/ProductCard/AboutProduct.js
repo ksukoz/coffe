@@ -189,7 +189,7 @@ export default class AboutProduct extends Component {
                 }
               ]}
             >
-              <View>
+              <TouchableOpacity onPress={this.props.onReviewsPress}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -208,9 +208,9 @@ export default class AboutProduct extends Component {
                   />
                 </View>
                 <Text style={[styles.numberOfReviews, styles.text]}>
-                  27 отзывов
+                  {this.props.reviewsLength} отзывов
                 </Text>
-              </View>
+              </TouchableOpacity>
               <KawaIcon
                 style={styles.cartIcon}
                 size={scaleSize(26)}
