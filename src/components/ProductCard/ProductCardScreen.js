@@ -293,7 +293,15 @@ class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <ProductReviews id={productItem.id} />
+                  <Container style={{ backgroundColor: "transparent" }}>
+                    <Content>
+                      <ProductReviews
+                        id={productItem.id}
+                        productName={productItem.name}
+                        showReviewsForm={true}
+                      />
+                    </Content>
+                  </Container>
                 </Tab>
                 <Tab
                   heading={

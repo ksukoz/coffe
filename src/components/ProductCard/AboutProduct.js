@@ -199,10 +199,6 @@ export default class AboutProduct extends Component {
                 >
                   <StarRating
                     disabled={true}
-                    emptyStar={"ios-star-outline"}
-                    fullStar={"ios-star"}
-                    halfStar={"ios-star-half"}
-                    iconSet={"Ionicons"}
                     maxStars={5}
                     rating={3.5}
                     starSize={scaleSize(27)}

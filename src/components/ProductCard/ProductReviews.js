@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Dimensions, ActivityIndicator } from "react-native";
+import {
+  View,
+  Dimensions,
+  ActivityIndicator,
+  TextInput,
+  TouchableOpacity
+} from "react-native";
 import { Text, Input, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
@@ -18,7 +24,7 @@ class ProductReviews extends Component {
     this.state = {
       loading: true,
       reviews: null,
-      rate: 1
+      rating: 0
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -33,8 +39,15 @@ class ProductReviews extends Component {
     }
   }
 
+  onStarRatingPress(rating) {
+    this.setState({
+      rating
+    });
+  }
+
   render() {
-    const { reviews, loading } = this.state;
+    const { reviews, loading, rating } = this.state;
+    const { productName, showReviewsForm } = this.props;
 
     return (
       <View>
@@ -42,60 +55,152 @@ class ProductReviews extends Component {
           <ActivityIndicator size="large" animating />
         ) : (
           <View>
-            <View style={styles.container}>{/**/}</View>
-            {reviews.map(review => {
-              let date = new Date(+`${review.date}000`);
-
-              return (
-                <View
-                  key={review.id}
-                  style={[styles.container, { marginBottom: scaleSize(5) }]}
+            <View
+              style={[
+                styles.container,
+                { display: showReviewsForm ? "flex" : "none" }
+              ]}
+            >
+              <Card
+                transparent
+                style={{
+                  backgroundColor: "transparent",
+                  marginBottom: scaleSize(30)
+                }}
+              >
+                <CardItem
+                  style={[
+                    styles.cardItem,
+                    {
+                      paddingTop: scaleSize(7)
+                    }
+                  ]}
                 >
-                  <Card transparent style={{ backgroundColor: "transparent" }}>
-                    <CardItem style={styles.cardItem}>
-                      <View style={styles.row}>
-                        <Text style={styles.heading}>{review.username}</Text>
-                        <Text style={styles.heading}>
-                          {date.getDate()}.{date.getMonth() + 1}.
-                          {date.getFullYear()}
-                        </Text>
-                      </View>
-                    </CardItem>
-                    <CardItem
-                      style={[styles.cardItem, { alignItems: "flex-start" }]}
+                  <Text style={styles.headingBig}>{productName}</Text>
+                </CardItem>
+                <CardItem
+                  style={[
+                    styles.cardItem,
+                    {
+                      paddingBottom: scaleSize(10),
+                      justifyContent: "center"
+                    }
+                  ]}
+                >
+                  <Text style={[styles.text, { fontSize: scaleSize(15) }]}>
+                    Уже пробовали? Оцените
+                  </Text>
+                </CardItem>
+                <CardItem
+                  style={[
+                    styles.cardItem,
+                    {
+                      paddingBottom: scaleSize(10),
+                      justifyContent: "center"
+                    }
+                  ]}
+                >
+                  <StarRating
+                    disabled={false}
+                    maxStars={5}
+                    rating={rating}
+                    starSize={scaleSize(48)}
+                    starStyle={{
+                      marginRight: scaleSize(10),
+                      marginLeft: scaleSize(10)
+                    }}
+                    emptyStarColor={"#ffea00"}
+                    fullStarColor={"#ffea00"}
+                    selectedStar={rating => this.onStarRatingPress(rating)}
+                  />
+                </CardItem>
+              </Card>
+            </View>
+            <View>
+              <View>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={1}
+                  editable={true}
+                  placeholder={"Оставить отзыв"}
+                  placeholderTextColor={"rgba(255, 255, 255, .8)"}
+                  maxLength={300}
+                  style={[
+                    styles.textInput,
+                    { marginRight: 10, marginLeft: 10 }
+                  ]}
+                />
+              </View>
+
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("RecipeProductScreen")
+                }
+                style={styles.btn}
+              >
+                <Text style={styles.btnText}>{"Отправить".toUpperCase()}</Text>
+              </TouchableOpacity>
+            </View>
+            {reviews.length > 0 ? (
+              reviews.map(review => {
+                let date = new Date(+`${review.date}000`);
+
+                return (
+                  <View
+                    key={review.id}
+                    style={[styles.container, { marginBottom: scaleSize(5) }]}
+                  >
+                    <Card
+                      transparent
+                      style={{ backgroundColor: "transparent" }}
                     >
-                      <StarRating
-                        disabled={true}
-                        emptyStar={"ios-star-outline"}
-                        fullStar={"ios-star"}
-                        halfStar={"ios-star-half"}
-                        iconSet={"Ionicons"}
-                        maxStars={5}
-                        rating={review.rating}
-                        starSize={scaleSize(20)}
-                        starStyle={{ marginRight: scaleSize(2) }}
-                        emptyStarColor={"#ffea00"}
-                        fullStarColor={"#ffea00"}
-                      />
-                      <Text style={styles.text}>
-                        {+review.rating < 2
-                          ? "кошмар"
-                          : +review.rating < 3
-                          ? "плохо"
-                          : +review.rating < 4
-                          ? "неплохо"
-                          : +review.rating < 5
-                          ? "хорошо"
-                          : "отлично"}
-                      </Text>
-                    </CardItem>
-                    <CardItem style={styles.cardItem}>
-                      <Text style={styles.text}>{review.text}</Text>
-                    </CardItem>
-                  </Card>
-                </View>
-              );
-            })}
+                      <CardItem style={styles.cardItem}>
+                        <View style={styles.row}>
+                          <Text style={styles.heading}>{review.username}</Text>
+                          <Text style={styles.heading}>
+                            {date.getDate()}.{date.getMonth() + 1}.
+                            {date.getFullYear()}
+                          </Text>
+                        </View>
+                      </CardItem>
+                      <CardItem
+                        style={[styles.cardItem, { alignItems: "flex-start" }]}
+                      >
+                        <StarRating
+                          disabled={true}
+                          maxStars={5}
+                          rating={review.rating}
+                          starSize={scaleSize(20)}
+                          starStyle={{ marginRight: scaleSize(2) }}
+                          emptyStarColor={"#ffea00"}
+                          fullStarColor={"#ffea00"}
+                        />
+                        <Text style={styles.text}>
+                          {+review.rating < 2
+                            ? "кошмар"
+                            : +review.rating < 3
+                            ? "плохо"
+                            : +review.rating < 4
+                            ? "неплохо"
+                            : +review.rating < 5
+                            ? "хорошо"
+                            : "отлично"}
+                        </Text>
+                      </CardItem>
+                      <CardItem style={styles.cardItem}>
+                        <Text style={styles.text}>{review.text}</Text>
+                      </CardItem>
+                    </Card>
+                  </View>
+                );
+              })
+            ) : (
+              <Text
+                style={[styles.heading, { textAlign: "center", color: "#fff" }]}
+              >
+                Никто ещё не оставил комментариев
+              </Text>
+            )}
           </View>
         )}
       </View>
@@ -123,6 +228,10 @@ const styles = {
     paddingBottom: 0
   },
   heading: { fontSize: scaleSize(15), fontWeight: "bold" },
+  headingBig: {
+    fontSize: scaleSize(17),
+    paddingBottom: scaleSize(10)
+  },
   text: { color: "rgba(48, 44, 35, 0.9)", fontSize: scaleSize(13) },
   background: {
     width: "100%",
@@ -132,6 +241,31 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0
+  },
+  textInput: {
+    color: "#fff",
+    fontSize: scaleSize(17),
+    paddingTop: scaleSize(10),
+    paddingBottom: scaleSize(20),
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(255, 255, 255, 0.8)"
+  },
+
+  btn: {
+    marginRight: scaleSize(10),
+    marginLeft: scaleSize(10),
+    marginBottom: scaleSize(35),
+    marginTop: scaleSize(5),
+    backgroundColor: "#ea9308",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: scaleSize(2)
+  },
+  btnText: {
+    color: "#fff",
+    fontWeight: "bold",
+    paddingTop: scaleSize(7),
+    paddingBottom: scaleSize(9)
   }
 };
 

@@ -42,7 +42,8 @@ export const getProduct = id => dispatch => {
 };
 
 export const getProductReviews = id => dispatch => {
-  fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/416`)
+  // fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/416`)
+  fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/${id}`)
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
