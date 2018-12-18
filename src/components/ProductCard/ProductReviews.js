@@ -8,6 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Text, Input, Card, CardItem } from "native-base";
+import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 
 import {
@@ -23,8 +24,31 @@ class ProductReviews extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      loading: true,
+      reviews: null,
+      review: "",
+      id: this.props.id,
+      rating: 0,
+      message: ""
+    };
     Input.defaultProps.selectionColor = "#000";
+  }
+
+  componentWillMount() {
+    this.props.getProductReviews(this.props.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.reviews) {
+      this.setState({
+        loading: false,
+        reviews: nextProps.reviews,
+        id: this.props.id,
+        rating: 0,
+        review: ""
+      });
+    }
   }
 
   onStarRatingPress(rating) {
@@ -33,7 +57,17 @@ class ProductReviews extends Component {
     });
   }
 
+  onAddProductReview() {
+    let data = new FormData();
+    data.append("item_id", this.state.id);
+    data.append("text", this.state.review);
+    data.append("rating", this.state.rating);
+
+    this.props.addProductReviews(data, this.state.id);
+  }
+
   render() {
+    const { reviews, review, loading, rating } = this.state;
     const { productName, showReviewsForm } = this.props;
 
     return (
