@@ -3,6 +3,8 @@ package com.kawa;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airship.customwebview.CustomWebViewPackage;
+import com.airship.customwebview.CustomWebViewPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.smixx.reactnativeicons.ReactNativeIcons;
@@ -29,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new CustomWebViewPackage(),
             new OrientationPackage(),
             new ReactNativeYouTube(),
             new ReactNativeIcons(),
