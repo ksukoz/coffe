@@ -107,7 +107,7 @@ class ProductCardScreen extends Component {
           backgroundColor={opacity ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
-        <Content style={{ height: SCREEN_HEIGHT }}>
+        <Content style={{ flex: 1 }}>
           <SearchBar
             placeholder={this.props.navigation.getParam(
               "searchPlaceholder",
@@ -119,9 +119,10 @@ class ProductCardScreen extends Component {
           {this.state.loading ? (
             <ActivityIndicator size="large" animating />
           ) : (
-            <View>
+            <View style={{ height: SCREEN_HEIGHT }}>
               <Tabs
                 transparent
+                style={{ flex: 1 }}
                 page={this.state.currentTab}
                 tabBarUnderlineStyle={{
                   backgroundColor: "transparent"
@@ -138,7 +139,7 @@ class ProductCardScreen extends Component {
                 )}
                 initialPage={this.state.currentTab}
                 onChangeTab={({ i }) => this.setState({ currentTab: i })}
-                prerenderingSiblingsNumber={0}
+                prerenderingSiblingsNumber={Infinity}
               >
                 <Tab
                   heading={
@@ -457,7 +458,7 @@ class ProductCardScreen extends Component {
 const styles = {
   default: {
     backgroundColor: "transparent",
-    height: SCREEN_HEIGHT
+    flex: 1
   },
   container: {
     marginLeft: scaleSize(5),
@@ -467,8 +468,8 @@ const styles = {
   },
   productTab: {
     backgroundColor: "transparent",
-    flex: 1,
     height: SCREEN_HEIGHT * 0.8,
+    overflow: "scroll",
     width: SCREEN_WIDTH,
     alignSelf: "flex-end"
   },
@@ -504,7 +505,7 @@ const styles = {
   },
   background: {
     width: "100%",
-    height: SCREEN_HEIGHT,
+    height: SCREEN_HEIGHT * 1.5,
     position: "absolute",
     top: 0,
     bottom: 0,

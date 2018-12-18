@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   View,
+  ScrollView,
   TouchableOpacity,
   Dimensions,
   Image,
@@ -87,7 +88,7 @@ export default class AboutProduct extends Component {
     }
 
     return (
-      <View>
+      <ScrollView>
         <View style={[styles.container, { marginBottom: scaleSize(5) }]}>
           <Card transparent style={{ backgroundColor: "transparent" }}>
             <CardItem
@@ -261,7 +262,7 @@ export default class AboutProduct extends Component {
             renderContent={this._renderContent}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

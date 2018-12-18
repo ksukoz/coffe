@@ -422,7 +422,7 @@ const styles = {
   defaultFont: { color: "#fff", fontSize: scaleSize(18) },
   background: {
     width: "100%",
-    height: Dimensions.get("window").height,
+    height: SCREEN_HEIGHT * 1.5,
     position: "absolute",
     top: 0,
     bottom: 0,

@@ -256,7 +256,7 @@ const styles = {
   },
   background: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    height: SCREEN_HEIGHT * 1.5,
     position: "absolute",
     top: 0,
     bottom: 0,
