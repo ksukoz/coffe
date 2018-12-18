@@ -27,10 +27,7 @@ import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
 import CoffeeCard from "./CoffeeCard";
 
-import {
-  getProduct,
-  getProductReviews
-} from "../../store/actions/catalogActions";
+import { getProduct } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductReviews from "./ProductReviews";
@@ -63,17 +60,11 @@ class ProductCardScreen extends Component {
 
   componentWillMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));
-    this.props.getProductReviews(
-      this.props.navigation.getParam("productId", "0")
-    );
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.product) {
       this.setState({ loading: false, productItem: nextProps.product });
-    }
-    if (nextProps.reviews) {
-      this.setState({ reviewsLength: nextProps.reviews.length });
     }
   }
 
@@ -147,6 +138,7 @@ class ProductCardScreen extends Component {
                 )}
                 initialPage={this.state.currentTab}
                 onChangeTab={({ i }) => this.setState({ currentTab: i })}
+                prerenderingSiblingsNumber={0}
               >
                 <Tab
                   heading={
@@ -393,7 +385,7 @@ class ProductCardScreen extends Component {
               >
                 Выбрать номер
               </Text>
-              <View
+              <TouchableOpacity
                 style={styles.phoneNumber}
                 onPress={() => Linking.openURL(`tel:+380994556565`)}
               >
@@ -406,8 +398,8 @@ class ProductCardScreen extends Component {
                   }}
                 />
                 <Text>(099) 455 65 65</Text>
-              </View>
-              <View
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={styles.phoneNumber}
                 onPress={() => Linking.openURL(`tel:+380674556565`)}
               >
@@ -420,8 +412,8 @@ class ProductCardScreen extends Component {
                   }}
                 />
                 <Text>(067) 455 65 65</Text>
-              </View>
-              <View
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={styles.phoneNumber}
                 onPress={() => Linking.openURL(`tel:+380934556565`)}
               >
@@ -434,7 +426,7 @@ class ProductCardScreen extends Component {
                   }}
                 />
                 <Text>(093) 455 65 65</Text>
-              </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={{
                   backgroundColor: "transparent",
@@ -474,7 +466,10 @@ const styles = {
   },
   productTab: {
     backgroundColor: "transparent",
-    flex: 1
+    flex: 1,
+    height: SCREEN_HEIGHT * 0.8,
+    width: SCREEN_WIDTH,
+    alignSelf: "flex-end"
   },
   productTabHeading: {
     backgroundColor: "transparent",
@@ -518,13 +513,11 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  product: state.catalog.product,
-  reviews: state.catalog.reviews
+  product: state.catalog.product
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: id => dispatch(getProduct(id)),
-  getProductReviews: id => dispatch(getProductReviews(id))
+  getProduct: id => dispatch(getProduct(id))
 });
 
 export default connect(

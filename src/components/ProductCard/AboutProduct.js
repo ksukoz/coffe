@@ -200,7 +200,7 @@ export default class AboutProduct extends Component {
                   <StarRating
                     disabled={true}
                     maxStars={5}
-                    rating={3.5}
+                    rating={product.avg_rating}
                     starSize={scaleSize(27)}
                     starStyle={{ marginRight: scaleSize(2) }}
                     emptyStarColor={"#ffea00"}
@@ -208,7 +208,7 @@ export default class AboutProduct extends Component {
                   />
                 </View>
                 <Text style={[styles.numberOfReviews, styles.text]}>
-                  {this.props.reviewsLength} отзывов
+                  {product.comments} отзывов
                 </Text>
               </TouchableOpacity>
               <KawaIcon

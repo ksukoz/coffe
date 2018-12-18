@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions, Text } from "react-native";
+import { View, Platform } from "react-native";
 import YouTube from "react-native-youtube";
 import { scaleSize } from "../../helpers/scaleSize";
 
@@ -19,7 +19,10 @@ export default class YoutubePlayer extends Component {
         <YouTube
           apiKey={"AIzaSyBZ7at05fHFNILtzoWZuq3hSJJWS0REjZg"}
           videoId={video}
-          controls={0}
+          play={false}
+          fullscreen={false}
+          loop={false}
+          controls={Platform.OS === "ios" ? 1 : 2}
           showFullscreenButton={true}
           onReady={e => this.setState({ isReady: true })}
           onChangeState={e => this.setState({ status: e.state })}
