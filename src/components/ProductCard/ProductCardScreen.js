@@ -107,7 +107,7 @@ class ProductCardScreen extends Component {
           backgroundColor={opacity ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
-        <Content>
+        <Content style={{ height: SCREEN_HEIGHT }}>
           <SearchBar
             placeholder={this.props.navigation.getParam(
               "searchPlaceholder",
@@ -456,7 +456,8 @@ class ProductCardScreen extends Component {
 
 const styles = {
   default: {
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    height: SCREEN_HEIGHT
   },
   container: {
     marginLeft: scaleSize(5),

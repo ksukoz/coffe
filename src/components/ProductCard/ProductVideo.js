@@ -19,9 +19,11 @@ export default class ProductVideo extends Component {
               }
             ]}
           >
-            {videos.length > 0
-              ? videos.map(video => <YoutubePlayer video={video.code} />)
-              : ""}
+            {videos ? (
+              videos.map(video => <YoutubePlayer video={video.code} />)
+            ) : (
+              <Text />
+            )}
             <Text
               style={{
                 fontSize: scaleSize(18),

@@ -46,7 +46,8 @@ class ProductReviews extends Component {
         reviews: nextProps.reviews,
         id: this.props.id,
         rating: 0,
-        review: ""
+        review: "",
+        message: ""
       });
     }
   }
@@ -58,16 +59,20 @@ class ProductReviews extends Component {
   }
 
   onAddProductReview() {
-    let data = new FormData();
-    data.append("item_id", this.state.id);
-    data.append("text", this.state.review);
-    data.append("rating", this.state.rating);
+    if (this.state.review.length > 10) {
+      let data = new FormData();
+      data.append("item_id", this.state.id);
+      data.append("text", this.state.review);
+      data.append("rating", this.state.rating);
 
-    this.props.addProductReviews(data, this.state.id);
+      this.props.addProductReviews(data, this.state.id);
+    } else {
+      this.setState({ message: "Комментарий должен быть больше 10 символов" });
+    }
   }
 
   render() {
-    const { reviews, review, loading, rating } = this.state;
+    const { reviews, review, loading, rating, message } = this.state;
     const { productName, showReviewsForm } = this.props;
 
     return (
@@ -158,6 +163,13 @@ class ProductReviews extends Component {
                     onChangeText={review => this.setState({ review })}
                     onSubmitEditing={() => this.onAddProductReview()}
                   />
+                  {message ? (
+                    <Text style={{ color: "#fff", textAlign: "center" }}>
+                      {message}
+                    </Text>
+                  ) : (
+                    <Text />
+                  )}
                 </View>
 
                 <TouchableOpacity

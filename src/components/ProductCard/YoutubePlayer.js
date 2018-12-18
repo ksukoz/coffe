@@ -4,6 +4,18 @@ import YouTube from "react-native-youtube";
 import { scaleSize } from "../../helpers/scaleSize";
 
 export default class YoutubePlayer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      height: scaleSize(185)
+    };
+  }
+
+  handleReady = () => {
+    setTimeout(() => this.setState({ height: scaleSize(186) }), 500);
+  };
+
   render() {
     const { video } = this.props;
     return (
@@ -22,15 +34,15 @@ export default class YoutubePlayer extends Component {
           play={false}
           fullscreen={false}
           loop={false}
-          controls={Platform.OS === "ios" ? 1 : 2}
+          controls={1}
           showFullscreenButton={true}
-          onReady={e => this.setState({ isReady: true })}
+          onReady={this.handleReady}
           onChangeState={e => this.setState({ status: e.state })}
           onChangeQuality={e => this.setState({ quality: e.quality })}
           onError={e => this.setState({ error: e.error })}
           style={{
             alignSelf: "stretch",
-            height: scaleSize(185)
+            height: this.state.height
           }}
         />
       </View>
