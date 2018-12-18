@@ -97,7 +97,7 @@ export default class AboutProduct extends Component {
                 position: "relative"
               }}
             >
-              {product.new == 1 && +new Date() <= +product.new_date ? (
+              {product.new == 1 && Date.now() <= +`${product.new_date}000` ? (
                 <View style={styles.imgHit}>
                   <Text
                     style={{

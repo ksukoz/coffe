@@ -150,6 +150,7 @@ class ProductReviews extends Component {
                     placeholderTextColor={"rgba(255, 255, 255, .8)"}
                     maxLength={300}
                     value={review}
+                    underlineColorAndroid={"transparent"}
                     style={[
                       styles.textInput,
                       { marginRight: 10, marginLeft: 10 }

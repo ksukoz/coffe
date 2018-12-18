@@ -1,12 +1,16 @@
 import React, { Component } from "react";
-
+import { View, Dimensions, Text } from "react-native";
 import YouTube from "react-native-youtube";
+import { scaleSize } from "../../helpers/scaleSize";
+import YoutubePlayer from "./YoutubePlayer";
 
 export default class ProductVideo extends Component {
   render() {
+    const { videos, product, categoryName } = this.props;
+
     return (
-      <View>
-        <View style={{ display: showReviewsForm ? "flex" : "none" }}>
+      <View style={{ backgroundColor: "transparent", flexGrow: 1, flex: 1 }}>
+        <View>
           <View
             style={[
               styles.container,
@@ -14,7 +18,23 @@ export default class ProductVideo extends Component {
                 marginBottom: scaleSize(30)
               }
             ]}
-          />
+          >
+            {videos.length > 0
+              ? videos.map(video => <YoutubePlayer video={video.code} />)
+              : ""}
+            <Text
+              style={{
+                fontSize: scaleSize(18),
+                fontWeight: "bold",
+                color: "#000"
+              }}
+            >
+              {product.name} {product.weight} g
+            </Text>
+            <Text style={styles.text}>
+              {categoryName}, Арабика {product.arabic_percent}%
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -25,60 +45,10 @@ const styles = {
   container: {
     marginLeft: scaleSize(5),
     marginRight: scaleSize(5),
+    padding: scaleSize(10),
     backgroundColor: "rgba(255,255,255,.72)",
     borderRadius: scaleSize(5)
   },
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  cardItem: {
-    backgroundColor: "transparent",
-    paddingLeft: scaleSize(10),
-    paddingRight: scaleSize(10),
-    paddingTop: scaleSize(3),
-    paddingBottom: 0
-  },
-  heading: { fontSize: scaleSize(15), fontWeight: "bold" },
-  headingBig: {
-    fontSize: scaleSize(17),
-    paddingBottom: scaleSize(10)
-  },
-  text: { color: "rgba(48, 44, 35, 0.9)", fontSize: scaleSize(13) },
-  background: {
-    width: "100%",
-    height: SCREEN_HEIGHT,
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  textInput: {
-    color: "#fff",
-    fontSize: scaleSize(17),
-    paddingTop: scaleSize(10),
-    paddingBottom: scaleSize(10),
-    marginBottom: scaleSize(25),
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.8)"
-  },
 
-  btn: {
-    marginRight: scaleSize(10),
-    marginLeft: scaleSize(10),
-    marginBottom: scaleSize(35),
-    marginTop: scaleSize(5),
-    backgroundColor: "#ea9308",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: scaleSize(2)
-  },
-  btnText: {
-    color: "#fff",
-    fontWeight: "bold",
-    paddingTop: scaleSize(7),
-    paddingBottom: scaleSize(9)
-  }
+  text: { color: "rgba(48, 44, 35, 0.9)", fontSize: scaleSize(13) }
 };

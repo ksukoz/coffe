@@ -34,6 +34,7 @@ import {
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductReviews from "./ProductReviews";
+import ProductVideo from "./ProductVideo";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -178,56 +179,54 @@ class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <Container style={{ backgroundColor: "transparent" }}>
-                    <Content>
-                      <AboutProduct
-                        onImgPress={() => this.setState({ opacity: true })}
-                        onImgClose={() => this.setState({ opacity: false })}
-                        productItem={productItem}
-                        reviewsLength={reviewsLength}
-                        onPressDelivery={() =>
-                          this.props.navigation.navigate("DeliveryScreen", {
-                            linkName: "ProductCard",
-                            productId: productItem.id,
-                            tab: 0
-                          })
-                        }
-                        onPressOtherProducts={() =>
-                          this.props.navigation.navigate("CatalogScreen", {
-                            categoryId: 7
-                          })
-                        }
-                        categoryName={this.props.navigation.getParam(
-                          "categoryName",
-                          "0"
-                        )}
-                        navigation={this.props.navigation}
-                        onReviewsPress={() => this.onReviewsPress()}
+                  <Content>
+                    <AboutProduct
+                      onImgPress={() => this.setState({ opacity: true })}
+                      onImgClose={() => this.setState({ opacity: false })}
+                      productItem={productItem}
+                      reviewsLength={reviewsLength}
+                      onPressDelivery={() =>
+                        this.props.navigation.navigate("DeliveryScreen", {
+                          linkName: "ProductCard",
+                          productId: productItem.id,
+                          tab: 0
+                        })
+                      }
+                      onPressOtherProducts={() =>
+                        this.props.navigation.navigate("CatalogScreen", {
+                          categoryId: 7
+                        })
+                      }
+                      categoryName={this.props.navigation.getParam(
+                        "categoryName",
+                        "0"
+                      )}
+                      navigation={this.props.navigation}
+                      onReviewsPress={() => this.onReviewsPress()}
+                    />
+                    <TouchableOpacity
+                      style={styles.questionsBtn}
+                      onPress={() => this.setModalVisible(true)}
+                    >
+                      <KawaIcon
+                        style={{
+                          color: "#f8f8f8",
+                          position: "relative",
+                          paddingRight: scaleSize(5)
+                        }}
+                        name={"telephone"}
+                        size={20}
                       />
-                      <TouchableOpacity
-                        style={styles.questionsBtn}
-                        onPress={() => this.setModalVisible(true)}
+                      <Text
+                        style={{
+                          color: "#f8f8f8",
+                          fontSize: scaleSize(13)
+                        }}
                       >
-                        <KawaIcon
-                          style={{
-                            color: "#f8f8f8",
-                            position: "relative",
-                            paddingRight: scaleSize(5)
-                          }}
-                          name={"telephone"}
-                          size={20}
-                        />
-                        <Text
-                          style={{
-                            color: "#f8f8f8",
-                            fontSize: scaleSize(13)
-                          }}
-                        >
-                          Возникли вопросы?
-                        </Text>
-                      </TouchableOpacity>
-                    </Content>
-                  </Container>
+                        Возникли вопросы?
+                      </Text>
+                    </TouchableOpacity>
+                  </Content>
                 </Tab>
                 <Tab
                   heading={
@@ -260,24 +259,22 @@ class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <Container style={{ backgroundColor: "transparent" }}>
-                    <Content>
-                      <CoffeeCard
-                        navigation={this.props.navigation}
-                        caption={productItem ? productItem.caption : ""}
-                        preparation={productItem.preparation}
-                        id={productItem.id}
-                        position={[
-                          +productItem.cc_aftertaste.split(",").join(""),
-                          +productItem.cc_body.split(",").join(""),
-                          +productItem.cc_balance.split(",").join(""),
-                          +productItem.cc_acidity.split(",").join(""),
-                          +productItem.cc_saturation.split(",").join(""),
-                          +productItem.cc_aroma.split(",").join("")
-                        ]}
-                      />
-                    </Content>
-                  </Container>
+                  <Content>
+                    <CoffeeCard
+                      navigation={this.props.navigation}
+                      caption={productItem ? productItem.caption : ""}
+                      preparation={productItem.preparation}
+                      id={productItem.id}
+                      position={[
+                        +productItem.cc_aftertaste.split(",").join(""),
+                        +productItem.cc_body.split(",").join(""),
+                        +productItem.cc_balance.split(",").join(""),
+                        +productItem.cc_acidity.split(",").join(""),
+                        +productItem.cc_saturation.split(",").join(""),
+                        +productItem.cc_aroma.split(",").join("")
+                      ]}
+                    />
+                  </Content>
                 </Tab>
                 <Tab
                   heading={
@@ -310,15 +307,13 @@ class ProductCardScreen extends Component {
                   }
                   style={styles.productTab}
                 >
-                  <Container style={{ backgroundColor: "transparent" }}>
-                    <Content>
-                      <ProductReviews
-                        id={productItem.id}
-                        productName={productItem.name}
-                        showReviewsForm={true}
-                      />
-                    </Content>
-                  </Container>
+                  <Content>
+                    <ProductReviews
+                      id={productItem.id}
+                      productName={productItem.name}
+                      showReviewsForm={true}
+                    />
+                  </Content>
                 </Tab>
                 <Tab
                   heading={
@@ -349,8 +344,18 @@ class ProductCardScreen extends Component {
                       </Text>
                     </TabHeading>
                   }
+                  style={styles.productTab}
                 >
-                  {/* <Tab3 /> */}
+                  <Content>
+                    <ProductVideo
+                      videos={productItem.videos}
+                      product={productItem}
+                      categoryName={this.props.navigation.getParam(
+                        "categoryName",
+                        "0"
+                      )}
+                    />
+                  </Content>
                 </Tab>
               </Tabs>
             </View>
@@ -458,6 +463,9 @@ class ProductCardScreen extends Component {
 }
 
 const styles = {
+  default: {
+    backgroundColor: "transparent"
+  },
   container: {
     marginLeft: scaleSize(5),
     marginRight: scaleSize(5),
