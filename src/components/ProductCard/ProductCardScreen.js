@@ -107,7 +107,7 @@ class ProductCardScreen extends Component {
           backgroundColor={opacity ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
-        <Content style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <SearchBar
             placeholder={this.props.navigation.getParam(
               "searchPlaceholder",
@@ -119,7 +119,7 @@ class ProductCardScreen extends Component {
           {this.state.loading ? (
             <ActivityIndicator size="large" animating />
           ) : (
-            <View style={{ height: SCREEN_HEIGHT }}>
+            <View style={{ flexGrow: 1 }}>
               <Tabs
                 transparent
                 style={{ flex: 1 }}
@@ -449,7 +449,7 @@ class ProductCardScreen extends Component {
               </TouchableOpacity>
             </View>
           </Modal>
-        </Content>
+        </View>
       </Container>
     );
   }
@@ -468,7 +468,7 @@ const styles = {
   },
   productTab: {
     backgroundColor: "transparent",
-    height: SCREEN_HEIGHT * 0.8,
+    // height: SCREEN_HEIGHT * 0.8,
     overflow: "scroll",
     width: SCREEN_WIDTH,
     alignSelf: "flex-end"
