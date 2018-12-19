@@ -19,7 +19,8 @@ import {
   Image,
   FlatList,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  BackHandler
 } from "react-native";
 import KawaIcon from "../KawaIcon";
 
@@ -185,6 +186,11 @@ export default class HomeScreen extends Component {
       });
 
     this.fetchData();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   fetchData() {
@@ -271,6 +277,21 @@ export default class HomeScreen extends Component {
         });
     }
   }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate(
+      this.props.navigation.getParam("linkName", "CatalogScreen"),
+      {
+        productId: this.props.navigation.getParam("productId", "0"),
+        categoryId: this.props.navigation.getParam("categoryId", "0"),
+        categoryName: this.props.navigation.getParam(
+          "categoryName",
+          "Кофе в зернах"
+        )
+      }
+    );
+    return true;
+  };
 
   render() {
     return (
