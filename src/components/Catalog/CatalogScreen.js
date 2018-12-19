@@ -280,7 +280,7 @@ export default class HomeScreen extends Component {
 
   handleBackPress = () => {
     this.props.navigation.navigate(
-      this.props.navigation.getParam("linkName", "CatalogScreen"),
+      this.props.navigation.getParam("linkName", "Home"),
       {
         productId: this.props.navigation.getParam("productId", "0"),
         categoryId: this.props.navigation.getParam("categoryId", "0"),
