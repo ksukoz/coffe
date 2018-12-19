@@ -190,6 +190,12 @@ class ProductCardScreen extends Component {
                           categoryId: 7
                         })
                       }
+                      onPressBuyButton={() =>
+                        this.props.navigation.navigate("OrderScreen", {
+                          linkName: "ProductCard",
+                          productId: productItem.id
+                        })
+                      }
                       categoryName={this.props.navigation.getParam(
                         "categoryName",
                         "0"

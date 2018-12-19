@@ -217,9 +217,12 @@ export default class AboutProduct extends Component {
                 size={scaleSize(26)}
                 name="big-cart-in-catalog"
               />
-              <View style={styles.btn}>
+              <TouchableOpacity
+                onPress={this.props.onPressBuyButton}
+                style={styles.btn}
+              >
                 <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
-              </View>
+              </TouchableOpacity>
             </CardItem>
           </Card>
         </View>

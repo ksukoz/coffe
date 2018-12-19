@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { Content, Text, List, ListItem } from "native-base";
-import { View, StatusBar, Dimensions, Image } from "react-native";
+import {
+  View,
+  StatusBar,
+  Dimensions,
+  Image,
+  BackHandler,
+  ActivityIndicator
+} from "react-native";
 import KawaIcon from "../KawaIcon";
 import HeaderBar from "../common/HeaderBar";
 import { scaleSize } from "../../helpers/scaleSize";
@@ -14,10 +21,65 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 const MAIN_BG = "../../static/img/background.png";
 
 export default class OrderScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
+  }
+  componentWillMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
+    this.setState({
+      loading: false
+    });
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate("ProductCard", {
+      categoryId: this.props.navigation.getParam("categoryId", "0"),
+      categoryName: this.props.navigation.getParam(
+        "categoryName",
+        "Кофе в зернах"
+      )
+    });
+    return true;
+  };
+
+  renderLoadingView() {
+    return (
+      <View
+        style={{
+          width: "100%",
+          flex: 1
+        }}
+      >
+        <ActivityIndicator
+          color="#1c1c1c"
+          size="small"
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            height: scaleSize(80)
+          }}
+        />
+      </View>
+    );
+  }
+
   render() {
     const { navigation } = this.props;
     let preparation = [];
     preparation = navigation.getParam("preparation", []);
+
+    if (this.state.loading) {
+      return this.renderLoadingView();
+    }
 
     return (
       <View style={styles.container}>

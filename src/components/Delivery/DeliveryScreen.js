@@ -35,8 +35,7 @@ export default class ProfileEditScreen extends Component {
     this.state = {
       loading: false,
       currentCity: null,
-      region_name: "Выберите город",
-      city_name: ""
+      city_name: "Выберите город"
     };
   }
 
@@ -64,6 +63,7 @@ export default class ProfileEditScreen extends Component {
     });
     return true;
   };
+
   retrieveData = async name => {
     try {
       const value = await AsyncStorage.getItem(name);
@@ -139,7 +139,11 @@ export default class ProfileEditScreen extends Component {
                   }}
                 >
                   <TouchableOpacity
-                    // onPress={() => this.props.navigation.navigate('SelectRegion')}
+                    onPress={() =>
+                      this.props.navigation.navigate("SelectRegionScreen", {
+                        linkName: "DeliveryScreen"
+                      })
+                    }
                     style={{
                       paddingLeft: scaleSize(5),
                       paddingRight: scaleSize(5),
@@ -148,7 +152,11 @@ export default class ProfileEditScreen extends Component {
                     }}
                   >
                     <Text
-                      // onFocus={() => this.props.navigation.navigate('SelectRegion')}
+                      onFocus={() =>
+                        this.props.navigation.navigate("SelectRegionScreen", {
+                          linkName: "DeliveryScreen"
+                        })
+                      }
                       style={{
                         paddingTop: 0,
                         paddingBottom: 0,
@@ -163,7 +171,7 @@ export default class ProfileEditScreen extends Component {
                         borderBottomWidth: 1
                       }}
                     >
-                      {this.state.region_name}
+                      {this.state.city_name}
                     </Text>
                     <KawaIcon
                       style={{
