@@ -127,7 +127,7 @@ export default class AboutProduct extends Component {
               ) : null}
 
               <Lightbox
-                style={{ flex: 1 }}
+                style={{ flex: 1, flexGrow: 1 }}
                 navigator={this.props.navigator}
                 onOpen={this.props.onImgPress}
                 willClose={this.props.onImgClose}

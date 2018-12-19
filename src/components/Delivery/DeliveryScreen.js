@@ -118,7 +118,7 @@ export default class ProfileEditScreen extends Component {
           hidden={false}
           translucent={true}
         />
-        <ScrollView>
+        <View style={{ flex: 1 }}>
           <Image
             source={require(MAIN_BG)}
             style={styles.background}
@@ -420,7 +420,7 @@ export default class ProfileEditScreen extends Component {
               </View>
             </Content>
           </View>
-        </ScrollView>
+        </View>
       </Container>
     );
   }

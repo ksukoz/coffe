@@ -80,8 +80,8 @@ const styles = {
   },
   iconMenu: {
     color: "#58554e",
-    marginBottom: scaleSize(5),
-    marginTop: scaleSize(5)
+    marginBottom: scaleSize(5)
+    // marginTop: scaleSize(3)
   }
 };
 
