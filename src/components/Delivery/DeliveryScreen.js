@@ -114,9 +114,9 @@ export default class ProfileEditScreen extends Component {
       <Container>
         <StatusBar
           barStyle="light-content"
-          backgroundColor={"transparent"}
           hidden={false}
           translucent={true}
+          backgroundColor={"rgba(0,0,0,0)"}
         />
         <View style={{ flex: 1 }}>
           <Image
@@ -126,7 +126,10 @@ export default class ProfileEditScreen extends Component {
           />
           <View style={styles.container}>
             <Content>
-              <HeaderBar navigation={this.props.navigation} title="Доставка" />
+              <HeaderBar
+                navigation={this.props.navigation}
+                title="Доставка и оплата"
+              />
 
               <View style={styles.cardFullCity}>
                 <View
@@ -145,8 +148,8 @@ export default class ProfileEditScreen extends Component {
                       })
                     }
                     style={{
-                      paddingLeft: scaleSize(5),
-                      paddingRight: scaleSize(5),
+                      paddingLeft: scaleSize(15),
+                      paddingRight: scaleSize(15),
                       width: "100%",
                       flexDirection: "row"
                     }}
@@ -165,7 +168,7 @@ export default class ProfileEditScreen extends Component {
                         color: "rgba(255, 255, 255, .7)",
                         width: "100%",
                         paddingLeft: 0,
-                        marginBottom: scaleSize(5),
+                        marginBottom: scaleSize(25),
 
                         borderBottomColor: "#fff",
                         borderBottomWidth: 1
@@ -177,8 +180,8 @@ export default class ProfileEditScreen extends Component {
                       style={{
                         color: "#fff",
                         position: "absolute",
-                        right: scaleSize(10),
-                        top: scaleSize(15)
+                        right: scaleSize(15),
+                        top: scaleSize(10)
                       }}
                       name={"arrow-next"}
                       size={scaleSize(14)}
@@ -188,16 +191,16 @@ export default class ProfileEditScreen extends Component {
               </View>
               <View
                 style={{
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10),
-                  marginBottom: scaleSize(20)
+                  paddingLeft: scaleSize(15),
+                  paddingRight: scaleSize(15),
+                  marginBottom: scaleSize(35)
                 }}
               >
                 <Text
                   style={{
                     color: "#ffea00",
-                    fontSize: scaleSize(20),
-                    marginBottom: scaleSize(10)
+                    fontSize: scaleSize(16),
+                    marginBottom: scaleSize(16)
                   }}
                 >
                   Доставка
@@ -213,8 +216,8 @@ export default class ProfileEditScreen extends Component {
                   <Image
                     source={require("../../static/img/new-post.png")}
                     style={{
-                      width: scaleSize(35),
-                      height: scaleSize(35),
+                      width: scaleSize(36),
+                      height: scaleSize(36),
                       marginRight: scaleSize(10)
                     }}
                   />
@@ -257,8 +260,8 @@ export default class ProfileEditScreen extends Component {
                   <Image
                     source={require("../../static/img/post.png")}
                     style={{
-                      width: scaleSize(26),
-                      height: scaleSize(37),
+                      width: scaleSize(25),
+                      height: scaleSize(36),
                       marginRight: scaleSize(17),
                       marginLeft: scaleSize(6)
                     }}
@@ -293,15 +296,15 @@ export default class ProfileEditScreen extends Component {
               </View>
               <View
                 style={{
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10)
+                  paddingLeft: scaleSize(15),
+                  paddingRight: scaleSize(15)
                 }}
               >
                 <Text
                   style={{
                     color: "#ffea00",
-                    fontSize: scaleSize(20),
-                    marginBottom: scaleSize(10)
+                    fontSize: scaleSize(16),
+                    marginBottom: scaleSize(16)
                   }}
                 >
                   Оплата
@@ -311,7 +314,7 @@ export default class ProfileEditScreen extends Component {
                     flexDirection: "row",
                     alignItems: "center",
                     width: "100%",
-                    marginBottom: scaleSize(10)
+                    marginBottom: scaleSize(12)
                   }}
                 >
                   <Text style={[styles.defaultFont, { flex: 1 }]}>
@@ -327,14 +330,14 @@ export default class ProfileEditScreen extends Component {
                       <Image
                         source={require("../../static/img/visa.png")}
                         style={{
-                          width: scaleSize(58),
-                          height: scaleSize(18),
-                          marginRight: scaleSize(20)
+                          width: scaleSize(47),
+                          height: scaleSize(15),
+                          marginRight: scaleSize(24)
                         }}
                       />
                       <Image
                         source={require("../../static/img/mastercard.png")}
-                        style={{ width: scaleSize(37), height: scaleSize(22) }}
+                        style={{ width: scaleSize(31), height: scaleSize(18) }}
                       />
                     </View>
                   </View>
@@ -353,7 +356,7 @@ export default class ProfileEditScreen extends Component {
                   <View>
                     <Image
                       source={require("../../static/img/privat24.png")}
-                      style={{ width: scaleSize(110), height: scaleSize(21) }}
+                      style={{ width: scaleSize(102), height: scaleSize(20) }}
                     />
                   </View>
                 </View>
@@ -391,7 +394,7 @@ export default class ProfileEditScreen extends Component {
                     <View>
                       <Image
                         source={require("../../static/img/gpay.png")}
-                        style={{ width: scaleSize(50), height: scaleSize(20) }}
+                        style={{ width: scaleSize(58), height: scaleSize(23) }}
                       />
                     </View>
                   </View>
@@ -401,7 +404,7 @@ export default class ProfileEditScreen extends Component {
                     flexDirection: "row",
                     alignItems: "center",
                     width: "100%",
-                    marginBottom: scaleSize(20)
+                    marginBottom: scaleSize(16)
                   }}
                 >
                   <Text style={[styles.defaultFont, { flex: 1 }]}>
@@ -410,7 +413,7 @@ export default class ProfileEditScreen extends Component {
                   <View>
                     <Image
                       source={require("../../static/img/masterpass.png")}
-                      style={{ width: scaleSize(32), height: scaleSize(25) }}
+                      style={{ width: scaleSize(30), height: scaleSize(24) }}
                     />
                   </View>
                 </View>
@@ -427,7 +430,7 @@ export default class ProfileEditScreen extends Component {
 }
 
 const styles = {
-  defaultFont: { color: "#fff", fontSize: scaleSize(18) },
+  defaultFont: { color: "#fff", fontSize: scaleSize(16) },
   background: {
     width: "100%",
     height: SCREEN_HEIGHT * 1.5,

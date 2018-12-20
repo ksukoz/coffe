@@ -115,7 +115,7 @@ class ProductReviews extends Component {
                       }
                     ]}
                   >
-                    <Text style={[styles.text, { fontSize: scaleSize(15) }]}>
+                    <Text style={[styles.text, { fontSize: scaleSize(16) }]}>
                       Уже пробовали? Оцените
                     </Text>
                   </CardItem>
@@ -189,7 +189,7 @@ class ProductReviews extends Component {
                 return (
                   <View
                     key={review.id}
-                    style={[styles.container, { marginBottom: scaleSize(10) }]}
+                    style={[styles.container, { marginBottom: scaleSize(8) }]}
                   >
                     <Card
                       transparent
@@ -200,7 +200,7 @@ class ProductReviews extends Component {
                           <Text style={styles.heading}>{review.username}</Text>
                           <Text style={styles.heading}>
                             {date.getDate()}.{date.getMonth() + 1}.
-                            {date.getFullYear()}
+                            {`${date.getFullYear()}`.slice(-2)}
                           </Text>
                         </View>
                       </CardItem>
@@ -270,10 +270,10 @@ const styles = {
     paddingTop: scaleSize(3),
     paddingBottom: 0
   },
-  heading: { fontSize: scaleSize(15), fontWeight: "bold" },
+  heading: { fontSize: scaleSize(15) },
   headingBig: {
-    fontSize: scaleSize(17),
-    paddingBottom: scaleSize(10)
+    fontSize: scaleSize(18),
+    paddingBottom: scaleSize(15)
   },
   text: { color: "rgba(48, 44, 35, 0.9)", fontSize: scaleSize(13) },
   background: {

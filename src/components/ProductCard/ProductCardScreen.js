@@ -52,6 +52,7 @@ class ProductCardScreen extends Component {
       reviewsLength: 0,
       search: "",
       page: 0,
+      reviewsFormShow: false,
       english: true,
       loading: true
     };
@@ -81,7 +82,11 @@ class ProductCardScreen extends Component {
   }
 
   onReviewsPress() {
-    this.setState({ ...this.state, currentTab: 2 });
+    this.setState({
+      ...this.state,
+      currentTab: 2,
+      reviewsFormShow: !this.state.reviewsFormShow
+    });
   }
 
   handleBackPress = () => {
@@ -139,19 +144,22 @@ class ProductCardScreen extends Component {
                 )}
                 initialPage={this.state.currentTab}
                 onChangeTab={({ i }) => this.setState({ currentTab: i })}
-                prerenderingSiblingsNumber={Infinity}
+                prerenderingSiblingsNumber={0}
               >
                 <Tab
                   heading={
                     <TabHeading
-                      style={
+                      style={[
                         this.state.currentTab === 0
                           ? [
                               styles.productTabHeading,
                               styles.productActiveTabHeading
                             ]
-                          : styles.productTabHeading
-                      }
+                          : styles.productTabHeading,
+                        {
+                          marginLeft: 0
+                        }
+                      ]}
                     >
                       <Text
                         style={[
@@ -221,7 +229,7 @@ class ProductCardScreen extends Component {
                       <Text
                         style={{
                           color: "#f8f8f8",
-                          fontSize: scaleSize(13)
+                          fontSize: scaleSize(14)
                         }}
                       >
                         Возникли вопросы?
@@ -280,14 +288,18 @@ class ProductCardScreen extends Component {
                 <Tab
                   heading={
                     <TabHeading
-                      style={
+                      style={[
                         this.state.currentTab === 2
                           ? [
                               styles.productTabHeading,
                               styles.productActiveTabHeading
                             ]
-                          : styles.productTabHeading
-                      }
+                          : styles.productTabHeading,
+                        {
+                          marginRight:
+                            productItem.videos.length > 0 ? scaleSize(11) : 0
+                        }
+                      ]}
                     >
                       <Text
                         style={[
@@ -312,52 +324,67 @@ class ProductCardScreen extends Component {
                     <ProductReviews
                       id={productItem.id}
                       productName={productItem.name}
-                      showReviewsForm={true}
+                      showReviewsForm={this.state.reviewsFormShow}
+                      hideReviewsForm={this.state.reviewsFormShow}
                     />
                   </Content>
                 </Tab>
-                <Tab
-                  heading={
-                    <TabHeading
-                      style={
-                        this.state.currentTab === 3
-                          ? [
-                              styles.productTabHeading,
-                              styles.productActiveTabHeading
-                            ]
-                          : styles.productTabHeading
-                      }
-                    >
-                      <Text
+                {productItem.videos.length > 0 ? (
+                  <Tab
+                    heading={
+                      <TabHeading
                         style={[
+                          this.state.currentTab === 3
+                            ? [
+                                styles.productTabHeading,
+                                styles.productActiveTabHeading
+                              ]
+                            : styles.productTabHeading,
                           {
-                            color:
-                              this.state.currentTab === 3 ? "#fff" : "#c9c0b6",
-                            backgroundColor:
-                              this.state.currentTab === 3
-                                ? "rgba(255,255,255,.4)"
-                                : "transparent"
-                          },
-                          styles.tabText
+                            marginRight: 0,
+                            display:
+                              productItem.videos.length > 0 ? "flex" : "none"
+                          }
                         ]}
                       >
-                        {"Видео".toUpperCase()}
-                      </Text>
-                    </TabHeading>
-                  }
-                  style={styles.productTab}
-                >
-                  <Content>
-                    <ProductVideo
-                      videos={productItem.videos}
-                      product={productItem}
-                      categoryName={this.props.navigation.getParam(
-                        "categoryName",
-                        "0"
-                      )}
-                    />
-                  </Content>
-                </Tab>
+                        <Text
+                          style={[
+                            {
+                              color:
+                                this.state.currentTab === 3
+                                  ? "#fff"
+                                  : "#c9c0b6",
+                              backgroundColor:
+                                this.state.currentTab === 3
+                                  ? "rgba(255,255,255,.4)"
+                                  : "transparent"
+                            },
+                            styles.tabText
+                          ]}
+                        >
+                          {"Видео".toUpperCase()}
+                        </Text>
+                      </TabHeading>
+                    }
+                    style={[
+                      styles.productTab,
+                      {
+                        display: productItem.videos.length > 0 ? "flex" : "none"
+                      }
+                    ]}
+                  >
+                    <Content>
+                      <ProductVideo
+                        videos={productItem.videos}
+                        product={productItem}
+                        categoryName={this.props.navigation.getParam(
+                          "categoryName",
+                          "0"
+                        )}
+                      />
+                    </Content>
+                  </Tab>
+                ) : null}
               </Tabs>
             </View>
           )}
@@ -483,15 +510,19 @@ const styles = {
   },
   productTabHeading: {
     backgroundColor: "transparent",
-    paddingLeft: scaleSize(5),
-    paddingRight: scaleSize(5)
+    marginLeft: scaleSize(11),
+    marginRight: scaleSize(11),
+    paddingLeft: scaleSize(8),
+    paddingRight: scaleSize(8),
+    paddingTop: scaleSize(6),
+    paddingBottom: scaleSize(6)
   },
   productActiveTabHeading: {
     borderBottomWidth: 0
   },
   tabText: {
-    fontSize: scaleSize(13),
-    fontWeight: "bold",
+    fontSize: scaleSize(14),
+    fontWeight: "500",
     padding: scaleSize(5),
     borderRadius: scaleSize(3)
   },
@@ -500,8 +531,9 @@ const styles = {
     alignSelf: "center",
     justifyContent: "center",
     flexDirection: "row",
-    padding: scaleSize(5),
-    paddingRight: scaleSize(10),
+    padding: scaleSize(10),
+    paddingLeft: scaleSize(7),
+    paddingRight: scaleSize(7),
     borderRadius: scaleSize(3),
     marginBottom: scaleSize(5),
     marginTop: scaleSize(5)

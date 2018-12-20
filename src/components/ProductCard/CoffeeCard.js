@@ -346,6 +346,29 @@ export default class CoffeeCard extends Component {
         });
       }
     });
+
+    this.windowsRelease = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, getstureState) => true,
+      onPanResponderGrant: (e, gestureState) => {
+        let types = selfObject.state.typeDescriptions;
+        for (i = 0; i < 6; i++) {
+          types[i] = styles.typeDescriptionInvisible;
+        }
+        selfObject.setState({
+          typeDescriptions: types
+        });
+      }
+    });
+  }
+
+  hideDesc() {
+    let types = selfObject.state.typeDescriptions;
+    for (i = 0; i < 6; i++) {
+      types[i] = styles.typeDescriptionInvisible;
+    }
+    selfObject.setState({
+      typeDescriptions: types
+    });
   }
 
   viewDescription(index) {
@@ -382,7 +405,7 @@ export default class CoffeeCard extends Component {
   componentWillMount() {}
 
   render() {
-    const { caption, preparation, id, navigation } = this.props;
+    const { caption, preparation, id, navigation, position } = this.props;
 
     var data = {
       fieldNames: [
@@ -393,7 +416,17 @@ export default class CoffeeCard extends Component {
         "Полнота",
         "Аромат"
       ],
-      values: [this.state.position, [17, 17, 17, 17, 17, 17]]
+      values: [
+        this.state.position,
+        [
+          scaleSize(9),
+          scaleSize(9),
+          scaleSize(9),
+          scaleSize(9),
+          scaleSize(9),
+          scaleSize(9)
+        ]
+      ]
     };
 
     var result = {
@@ -486,209 +519,203 @@ export default class CoffeeCard extends Component {
 
     return (
       <ScrollView ref="info" pagingEnabled={true} horizontal={true}>
-        <View style={styles.container}>
-          <Content>
-            <Text
-              style={{
-                paddingLeft: scaleSize(15),
-                color: "#fff",
-                marginBottom: scaleSize(10)
-              }}
-            >
-              Способы приготовления
-            </Text>
-            <View style={styles.iconsRow}>
-              <TouchableOpacity
-                style={{ paddingTop: scaleSize(15), borderBottomWidth: 0 }}
-              >
-                <KawaIcon
-                  color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
-                  name={"cup"}
-                  size={scaleSize(30)}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
-                <KawaIcon
-                  color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
-                  name={"turk"}
-                  size={scaleSize(45)}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
-                <KawaIcon
-                  color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
-                  name={"pour-over"}
-                  size={scaleSize(45)}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
-                <KawaIcon
-                  color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
-                  name={"coffee-maker"}
-                  size={scaleSize(45)}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ borderBottomWidth: 0 }}>
-                <KawaIcon
-                  color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
-                  name={"french-press"}
-                  size={scaleSize(45)}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
+        <View
+          style={styles.container}
+          onStartShouldSetResponder={this.hideDesc}
+        >
+          <Content {...this.windowsRelease.panHandlers}>
+            <View style={{ position: "relative" }}>
+              <Text
                 style={{
-                  borderBottomWidth: 0
+                  paddingLeft: scaleSize(15),
+                  color: "#fff",
+                  marginBottom: scaleSize(10)
                 }}
               >
+                Способы приготовления:
+              </Text>
+              <TouchableOpacity
+                style={{
+                  position: "absolute",
+                  right: scaleSize(10)
+                }}
+                onPress={() =>
+                  navigation.navigate("CoffeeInfo", {
+                    linkName: "ProductCardScreen",
+                    productId: id,
+                    preparation: preparation
+                  })
+                }
+              >
                 <KawaIcon
-                  color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
-                  name={"coffee-maker-electric"}
-                  size={scaleSize(45)}
+                  color={"#f8f8f8"}
+                  name={"question"}
+                  size={scaleSize(25)}
                 />
               </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              style={{
-                position: "absolute",
-                top: scaleSize(110),
-                right: scaleSize(10)
-              }}
-              onPress={() =>
-                navigation.navigate("CoffeeInfo", {
-                  linkName: "ProductCardScreen",
-                  productId: id,
-                  preparation: preparation
-                })
-              }
-            >
+            <View style={styles.iconsRow}>
               <KawaIcon
-                color={"#f8f8f8"}
-                name={"question"}
-                size={scaleSize(25)}
+                color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
+                name={"cup"}
+                size={scaleSize(30)}
+                style={{ marginTop: 15 }}
               />
-            </TouchableOpacity>
+              <KawaIcon
+                color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
+                name={"turk"}
+                size={scaleSize(45)}
+              />
+              <KawaIcon
+                color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
+                name={"pour-over"}
+                size={scaleSize(45)}
+              />
+              <KawaIcon
+                color={preparation.includes("4") ? "#ea9308" : "#ffea00"}
+                name={"coffee-maker"}
+                size={scaleSize(45)}
+              />
+              <KawaIcon
+                color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
+                name={"french-press"}
+                size={scaleSize(45)}
+              />
+              <KawaIcon
+                color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
+                name={"coffee-maker-electric"}
+                size={scaleSize(45)}
+              />
+            </View>
 
             <View>
-              <Svg height={`${scaleSize(325)}`} width={`${scaleSize(325)}`}>
-                <G x={width / 2} y={radius + yPadding}>
-                  <G>
-                    {result.webs.map((points, index) => {
-                      return (
+              {position.every(item => item == 0) ? null : (
+                <Svg height={`${scaleSize(325)}`} width={`${scaleSize(325)}`}>
+                  <G x={width / 2} y={radius + yPadding}>
+                    <G>
+                      {result.webs.map((points, index) => {
+                        return (
+                          <Polygon
+                            key={index}
+                            points={points}
+                            fill={"white"}
+                            fillOpacity={0}
+                            stroke={"white"}
+                            strokeDasharray={this.state.strokeDashArray[index]}
+                          />
+                        );
+                      })}
+                      {result.webPoints[level - 1].map((item, index) => (
+                        <G key={"G" + index}>
+                          <Line
+                            key={index}
+                            stroke="white"
+                            strokeWidth="0.5"
+                            strokeDasharray={[0, 0]}
+                            x1={0}
+                            y1={0}
+                            x2={item.x}
+                            y2={item.y}
+                          />
+                        </G>
+                      ))}
+                    </G>
+                    {result.areas.map((items, index) => (
+                      <G key={"area" + index}>
                         <Polygon
-                          key={index}
-                          points={points}
-                          fill={"white"}
-                          fillOpacity={0}
-                          stroke={"white"}
-                          strokeDasharray={this.state.strokeDashArray[index]}
+                          points={items.area}
+                          fill={this.state.colors[index]}
+                          fillOpacity={index == 0 ? "0.5" : "1"}
+                          stroke={this.state.colors[index]}
                         />
-                      );
-                    })}
-                    {result.webPoints[level - 1].map((item, index) => (
-                      <G key={"G" + index}>
-                        <Line
-                          key={index}
-                          stroke="white"
-                          strokeWidth="0.5"
-                          strokeDasharray={[0, 0]}
-                          x1={0}
-                          y1={0}
-                          x2={item.x}
-                          y2={item.y}
+                        <Circle
+                          key={"circle" + index}
+                          cx={items.circles[0].x}
+                          cy={items.circles[0].y}
+                          r={index == 0 ? 3 : 0}
+                          stroke={this.state.colors[index]}
+                          fill={"#ea9308"}
+                          strokeWidth={index == 0 ? 6 : 0}
+                          {...this.firstCircle.panHandlers}
+                        />
+                        <Circle
+                          key={"circle" + index}
+                          cx={items.circles[1].x}
+                          cy={items.circles[1].y}
+                          r={index == 0 ? 3 : 0}
+                          stroke={this.state.colors[index]}
+                          fill={"#ea9308"}
+                          strokeWidth={index == 0 ? 6 : 0}
+                          {...this.secondCircle.panHandlers}
+                        />
+                        <Circle
+                          key={"circle" + index}
+                          cx={items.circles[2].x}
+                          cy={items.circles[2].y}
+                          r={index == 0 ? 3 : 0}
+                          stroke={this.state.colors[index]}
+                          fill={"#ea9308"}
+                          strokeWidth={index == 0 ? 6 : 0}
+                          {...this.thirdCircle.panHandlers}
+                        />
+                        <Circle
+                          key={"circle" + index}
+                          cx={items.circles[3].x}
+                          cy={items.circles[3].y}
+                          r={index == 0 ? 3 : 0}
+                          stroke={this.state.colors[index]}
+                          fill={"#ea9308"}
+                          strokeWidth={index == 0 ? 6 : 0}
+                          {...this.fourthCircle.panHandlers}
+                        />
+                        <Circle
+                          key={"circle" + index}
+                          cx={items.circles[4].x}
+                          cy={items.circles[4].y}
+                          r={index == 0 ? 3 : 0}
+                          stroke={this.state.colors[index]}
+                          fill={"#ea9308"}
+                          strokeWidth={index == 0 ? 6 : 0}
+                          {...this.fifthCircle.panHandlers}
+                        />
+                        <Circle
+                          key={"circle" + index}
+                          cx={items.circles[5].x}
+                          cy={items.circles[5].y}
+                          r={index == 0 ? 3 : 0}
+                          stroke={this.state.colors[index]}
+                          fill={"#ea9308"}
+                          strokeWidth={index == 0 ? 6 : 0}
+                          {...this.sixthCircle.panHandlers}
                         />
                       </G>
                     ))}
                   </G>
-                  {result.areas.map((items, index) => (
-                    <G key={"area" + index}>
-                      <Polygon
-                        points={items.area}
-                        fill={this.state.colors[index]}
-                        fillOpacity={index == 0 ? "0.5" : "1"}
-                        stroke={this.state.colors[index]}
-                      />
-                      <Circle
-                        key={"circle" + index}
-                        cx={items.circles[0].x}
-                        cy={items.circles[0].y}
-                        r={index == 0 ? 3 : 0}
-                        stroke={this.state.colors[index]}
-                        fill={"#ea9308"}
-                        strokeWidth={index == 0 ? 6 : 0}
-                        {...this.firstCircle.panHandlers}
-                      />
-                      <Circle
-                        key={"circle" + index}
-                        cx={items.circles[1].x}
-                        cy={items.circles[1].y}
-                        r={index == 0 ? 3 : 0}
-                        stroke={this.state.colors[index]}
-                        fill={"#ea9308"}
-                        strokeWidth={index == 0 ? 6 : 0}
-                        {...this.secondCircle.panHandlers}
-                      />
-                      <Circle
-                        key={"circle" + index}
-                        cx={items.circles[2].x}
-                        cy={items.circles[2].y}
-                        r={index == 0 ? 3 : 0}
-                        stroke={this.state.colors[index]}
-                        fill={"#ea9308"}
-                        strokeWidth={index == 0 ? 6 : 0}
-                        {...this.thirdCircle.panHandlers}
-                      />
-                      <Circle
-                        key={"circle" + index}
-                        cx={items.circles[3].x}
-                        cy={items.circles[3].y}
-                        r={index == 0 ? 3 : 0}
-                        stroke={this.state.colors[index]}
-                        fill={"#ea9308"}
-                        strokeWidth={index == 0 ? 6 : 0}
-                        {...this.fourthCircle.panHandlers}
-                      />
-                      <Circle
-                        key={"circle" + index}
-                        cx={items.circles[4].x}
-                        cy={items.circles[4].y}
-                        r={index == 0 ? 3 : 0}
-                        stroke={this.state.colors[index]}
-                        fill={"#ea9308"}
-                        strokeWidth={index == 0 ? 6 : 0}
-                        {...this.fifthCircle.panHandlers}
-                      />
-                      <Circle
-                        key={"circle" + index}
-                        cx={items.circles[5].x}
-                        cy={items.circles[5].y}
-                        r={index == 0 ? 3 : 0}
-                        stroke={this.state.colors[index]}
-                        fill={"#ea9308"}
-                        strokeWidth={index == 0 ? 6 : 0}
-                        {...this.sixthCircle.panHandlers}
-                      />
-                    </G>
-                  ))}
-                </G>
-              </Svg>
+                </Svg>
+              )}
               <View style={[styles.cardContainer, { marginBottom: 5 }]}>
                 <Card transparent style={{ backgroundColor: "transparent" }}>
                   <CardItem
                     style={[
                       styles.cardItem,
                       {
-                        position: "relative"
+                        position: "relative",
+                        textAlign: "justify"
                       }
                     ]}
                   >
-                    <Text>{caption}</Text>
+                    <Text>&#9;&#9;&#9;{caption}</Text>
                   </CardItem>
                 </Card>
               </View>
               <Item
-                onPress={() => this.viewDescription(0)}
+                onPress={() =>
+                  position.every(item => item == 0)
+                    ? ""
+                    : this.viewDescription(0)
+                }
                 style={{
+                  display: position.every(item => item == 0) ? "none" : "flex",
                   padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
@@ -696,13 +723,25 @@ export default class CoffeeCard extends Component {
                   left: SCREEN_WIDTH / 2 - scaleSize(55)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                <Text
+                  style={{
+                    color: position.every(item => item == 0)
+                      ? "transparent"
+                      : "#fff",
+                    fontSize: scaleSize(16)
+                  }}
+                >
                   Послевкусие
                 </Text>
               </Item>
               <Item
-                onPress={() => this.viewDescription(1)}
+                onPress={() =>
+                  position.every(item => item == 0)
+                    ? ""
+                    : this.viewDescription(1)
+                }
                 style={{
+                  display: position.every(item => item == 0) ? "none" : "flex",
                   padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
@@ -710,11 +749,25 @@ export default class CoffeeCard extends Component {
                   left: SCREEN_WIDTH - scaleSize(80)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: 16 }}>Тело</Text>
+                <Text
+                  style={{
+                    color: position.every(item => item == 0)
+                      ? "transparent"
+                      : "#fff",
+                    fontSize: 16
+                  }}
+                >
+                  Тело
+                </Text>
               </Item>
               <Item
-                onPress={() => this.viewDescription(2)}
+                onPress={() =>
+                  position.every(item => item == 0)
+                    ? ""
+                    : this.viewDescription(2)
+                }
                 style={{
+                  display: position.every(item => item == 0) ? "none" : "flex",
                   padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
@@ -722,13 +775,25 @@ export default class CoffeeCard extends Component {
                   left: SCREEN_WIDTH - scaleSize(80)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                <Text
+                  style={{
+                    color: position.every(item => item == 0)
+                      ? "transparent"
+                      : "#fff",
+                    fontSize: scaleSize(16)
+                  }}
+                >
                   Баланс
                 </Text>
               </Item>
               <Item
-                onPress={() => this.viewDescription(3)}
+                onPress={() =>
+                  position.every(item => item == 0)
+                    ? ""
+                    : this.viewDescription(3)
+                }
                 style={{
+                  display: position.every(item => item == 0) ? "none" : "flex",
                   padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
@@ -736,13 +801,25 @@ export default class CoffeeCard extends Component {
                   left: SCREEN_WIDTH / 2 - scaleSize(55)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                <Text
+                  style={{
+                    color: position.every(item => item == 0)
+                      ? "transparent"
+                      : "#fff",
+                    fontSize: scaleSize(16)
+                  }}
+                >
                   Кислотность
                 </Text>
               </Item>
               <Item
-                onPress={() => this.viewDescription(4)}
+                onPress={() =>
+                  position.every(item => item == 0)
+                    ? ""
+                    : this.viewDescription(4)
+                }
                 style={{
+                  display: position.every(item => item == 0) ? "none" : "flex",
                   padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
@@ -750,13 +827,25 @@ export default class CoffeeCard extends Component {
                   left: scaleSize(15)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                <Text
+                  style={{
+                    color: position.every(item => item == 0)
+                      ? "transparent"
+                      : "#fff",
+                    fontSize: scaleSize(16)
+                  }}
+                >
                   Полнота
                 </Text>
               </Item>
               <Item
-                onPress={() => this.viewDescription(5)}
+                onPress={() =>
+                  position.every(item => item == 0)
+                    ? ""
+                    : this.viewDescription(5)
+                }
                 style={{
+                  display: position.every(item => item == 0) ? "none" : "flex",
                   padding: scaleSize(5),
                   borderBottomWidth: 0,
                   position: "absolute",
@@ -764,7 +853,14 @@ export default class CoffeeCard extends Component {
                   left: scaleSize(15)
                 }}
               >
-                <Text style={{ color: "#fff", fontSize: scaleSize(16) }}>
+                <Text
+                  style={{
+                    color: position.every(item => item == 0)
+                      ? "transparent"
+                      : "#fff",
+                    fontSize: scaleSize(16)
+                  }}
+                >
                   Аромат
                 </Text>
               </Item>

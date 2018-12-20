@@ -21,7 +21,8 @@ export default class AboutProduct extends Component {
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
+      cart: false
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -29,7 +30,7 @@ export default class AboutProduct extends Component {
   _renderHeader(item, expanded) {
     return (
       <View style={[styles.accordionLinks, { borderBottomWidth: 0 }]}>
-        <Text style={styles.text}> {item.title}</Text>
+        <Text style={[styles.text, { marginLeft: -3 }]}> {item.title}</Text>
         {expanded ? (
           <KawaIcon
             style={{
@@ -56,7 +57,13 @@ export default class AboutProduct extends Component {
   }
   _renderContent(item) {
     return (
-      <View style={{ height: scaleSize(250) }}>
+      <View
+        style={{
+          height: scaleSize(250),
+          paddingLeft: scaleSize(15)
+          // paddingRight: scaleSize(5)
+        }}
+      >
         <WebView
           style={styles.accordionText}
           scrollEnabled={false}
@@ -65,7 +72,7 @@ export default class AboutProduct extends Component {
             baseUrl: "",
             html: `<style>p {color: #302c23;}</style>${
               item.content
-            }<p>Страна производитель ${item.country}</p>`
+            }<br/>Страна производитель: ${item.country}`
           }}
         />
       </View>
@@ -89,7 +96,7 @@ export default class AboutProduct extends Component {
 
     return (
       <ScrollView>
-        <View style={[styles.container, { marginBottom: scaleSize(5) }]}>
+        <View style={[styles.container, { marginBottom: scaleSize(8) }]}>
           <Card transparent style={{ backgroundColor: "transparent" }}>
             <CardItem
               style={{
@@ -102,10 +109,13 @@ export default class AboutProduct extends Component {
                 <View style={styles.imgHit}>
                   <Text
                     style={{
-                      fontSize: scaleSize(8),
-                      padding: scaleSize(5),
-                      color: "#fff",
-                      fontWeight: "bold"
+                      fontSize: scaleSize(10),
+
+                      paddingLeft: scaleSize(10),
+                      paddingRight: scaleSize(10),
+                      paddingTop: scaleSize(5),
+                      paddingBottom: scaleSize(5),
+                      color: "#fff"
                     }}
                   >
                     {"Новинка".toUpperCase()}
@@ -115,10 +125,13 @@ export default class AboutProduct extends Component {
                 <View style={styles.imgHit}>
                   <Text
                     style={{
-                      fontSize: scaleSize(8),
-                      padding: scaleSize(5),
-                      color: "#fff",
-                      fontWeight: "bold"
+                      fontSize: scaleSize(10),
+
+                      paddingLeft: scaleSize(10),
+                      paddingRight: scaleSize(10),
+                      paddingTop: scaleSize(5),
+                      paddingBottom: scaleSize(5),
+                      color: "#fff"
                     }}
                   >
                     {"Хит".toUpperCase()}
@@ -132,6 +145,7 @@ export default class AboutProduct extends Component {
                 onOpen={this.props.onImgPress}
                 willClose={this.props.onImgClose}
                 backgroundColor={"rgba(0,0,0,0.7)"}
+                underlayColor={"transparent"}
               >
                 <Image
                   source={{
@@ -139,15 +153,40 @@ export default class AboutProduct extends Component {
                   }}
                   style={{
                     flex: 1,
-                    height: scaleSize(150),
+                    height: scaleSize(154),
                     width: null
                   }}
                   resizeMode="contain"
                 />
               </Lightbox>
               <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
-                <KawaIcon color="#302c23" size={30} name="share" />
+                <KawaIcon color="#302c23" size={25} name="share" />
               </TouchableOpacity>
+            </CardItem>
+            <CardItem style={styles.cardItem}>
+              <View
+                style={{
+                  flexDirection: "column",
+                  padding: scaleSize(10),
+                  paddingBottom: 0
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: scaleSize(18),
+                    lineHeight: scaleSize(20),
+                    color: "#000"
+                  }}
+                >
+                  {product.name} {product.weight} g
+                </Text>
+                <Text style={[styles.text, { color: "#3F3B32" }]}>
+                  {this.props.categoryName}, Арабика {product.arabic_percent}%
+                </Text>
+                <Text style={[styles.text, { color: "#3F3B32" }]}>
+                  Обжарка {product.roast_human}
+                </Text>
+              </View>
             </CardItem>
             <CardItem style={styles.cardItem}>
               <View
@@ -159,20 +198,15 @@ export default class AboutProduct extends Component {
                   padding: scaleSize(10)
                 }}
               >
-                <Text style={{ fontSize: scaleSize(18), fontWeight: "bold" }}>
-                  {product.name} {product.weight} g
+                <Text style={[styles.text, { color: "#3F3B32" }]}>
+                  Код товара: {product.code}
                 </Text>
-                <Text style={styles.text}>
-                  {this.props.categoryName}, Арабика {product.arabic_percent}%
-                </Text>
-                <Text style={styles.text}>Обжарка {product.roast_human}</Text>
-                <Text style={styles.text}>Код товара: {product.code}</Text>
               </View>
               <View>
                 <Text
                   style={{
-                    fontSize: scaleSize(25),
-                    fontWeight: "bold"
+                    fontSize: scaleSize(26),
+                    color: "#010101"
                   }}
                 >
                   {product.price ? product.price.split(".")[0] : product.price}{" "}
@@ -202,7 +236,7 @@ export default class AboutProduct extends Component {
                     disabled={true}
                     maxStars={5}
                     rating={product.avg_rating}
-                    starSize={scaleSize(27)}
+                    starSize={scaleSize(23)}
                     starStyle={{ marginRight: scaleSize(2) }}
                     emptyStarColor={"#ffea00"}
                     fullStarColor={"#ffea00"}
@@ -212,11 +246,47 @@ export default class AboutProduct extends Component {
                   {product.comments} отзывов
                 </Text>
               </TouchableOpacity>
-              <KawaIcon
-                style={styles.cartIcon}
-                size={scaleSize(26)}
-                name="big-cart-in-catalog"
-              />
+              <TouchableOpacity
+                style={{ position: "relative" }}
+                onPress={() => this.setState({ cart: !this.state.cart })}
+              >
+                <KawaIcon
+                  style={styles.cartIcon}
+                  size={scaleSize(26)}
+                  name={
+                    this.state.cart
+                      ? "small-cart-in-catalog-with-buy"
+                      : "small-cart-in-catalog"
+                  }
+                />
+                <View
+                  style={{
+                    opacity: this.state.cart ? 1 : 0,
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    borderRadius: scaleSize(6.5),
+                    backgroundColor: "#ef5350",
+
+                    alignContent: "center",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: scaleSize(13),
+                    height: scaleSize(13)
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 7,
+                      textAlign: "center",
+                      textAlignVertical: "center",
+                      color: "#fff"
+                    }}
+                  >
+                    1
+                  </Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={this.props.onPressBuyButton}
                 style={styles.btn}
@@ -272,10 +342,11 @@ export default class AboutProduct extends Component {
 
 const styles = {
   container: {
-    marginLeft: scaleSize(5),
-    marginRight: scaleSize(5),
+    marginLeft: scaleSize(8),
+    marginRight: scaleSize(8),
     backgroundColor: "rgba(255,255,255,.72)",
-    borderRadius: scaleSize(5)
+    borderRadius: scaleSize(5),
+    overflow: "hidden"
   },
   cardItem: {
     backgroundColor: "transparent",
@@ -296,6 +367,7 @@ const styles = {
     flexDirection: "row",
     marginLeft: scaleSize(10),
     marginRight: scaleSize(10),
+    paddingLeft: scaleSize(5),
     paddingTop: scaleSize(10),
     paddingBottom: scaleSize(10),
     justifyContent: "space-between",
@@ -324,7 +396,7 @@ const styles = {
     top: scaleSize(10),
     right: scaleSize(10)
   },
-  text: { color: "rgba(48, 44, 35, 0.9)" },
+  text: { color: "#302c23", fontSize: 16 },
   background: {
     width: "100%",
     height: SCREEN_HEIGHT,

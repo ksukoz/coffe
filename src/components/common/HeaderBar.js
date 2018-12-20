@@ -40,7 +40,7 @@ export default class HeaderBar extends Component {
             style={{
               color: "#ffffff",
               fontSize: scaleSize(20),
-              fontWeight: "bold"
+              fontWeight: "500"
             }}
           >
             {title}
