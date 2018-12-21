@@ -199,7 +199,9 @@ export default class CoffeeInfoScreen extends Component {
                         name={"coffee-maker-electric"}
                         size={scaleSize(45)}
                         color={
-                          preparation.includes("5") ? "#ea9308" : "#ffea00"
+                          preparation.includes("5") || preparation.includes("8")
+                            ? "#ea9308"
+                            : "#ffea00"
                         }
                       />
                     </Text>

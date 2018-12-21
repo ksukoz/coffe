@@ -74,13 +74,13 @@ export default class AboutProduct extends Component {
           source={{
             baseUrl: "",
             html: `<style>p {color: #302c23;}</style>${item.content}<br/>
-            Вес: ${item.weight} г.<br/>
+            <p>Вес: ${item.weight} г.</p>
 ${
               item.pid == "3" || item.pid == "4"
-                ? `Количество: ${item.quantity} шт.<br/>`
+                ? `<p>Количество: ${item.quantity} шт.</p>`
                 : ""
             }
-Упаковка: ${item.package}<br/>
+            <p>Упаковка: ${item.package}</p>
             Страна производитель: ${item.country}`
           }}
         />

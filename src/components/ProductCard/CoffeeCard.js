@@ -585,7 +585,11 @@ export default class CoffeeCard extends Component {
                 size={scaleSize(45)}
               />
               <KawaIcon
-                color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
+                color={
+                  preparation.includes("5") || preparation.includes("8")
+                    ? "#ea9308"
+                    : "#ffea00"
+                }
                 name={"coffee-maker-electric"}
                 size={scaleSize(45)}
               />
