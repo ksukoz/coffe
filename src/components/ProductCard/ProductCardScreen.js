@@ -144,6 +144,7 @@ class ProductCardScreen extends Component {
                 )}
                 initialPage={this.state.currentTab}
                 onChangeTab={({ i }) => this.setState({ currentTab: i })}
+                // onScroll={e => console.error(e)}
                 prerenderingSiblingsNumber={0}
               >
                 <Tab

@@ -12,6 +12,8 @@ import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 import Lightbox from "react-native-lightbox";
 
+import MyWebView from "react-native-webview-autoheight";
+
 import { scaleSize } from "../../helpers/scaleSize";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -59,15 +61,16 @@ export default class AboutProduct extends Component {
     return (
       <View
         style={{
-          height: scaleSize(250),
+          // height: scaleSize(250),
           paddingLeft: scaleSize(15)
           // paddingRight: scaleSize(5)
         }}
       >
-        <WebView
+        <MyWebView
           style={styles.accordionText}
           scrollEnabled={false}
           automaticallyAdjustContentInsets={false}
+          width={"100%"}
           source={{
             baseUrl: "",
             html: `<style>p {color: #302c23;}</style>${
@@ -102,7 +105,9 @@ export default class AboutProduct extends Component {
               style={{
                 backgroundColor: "transparent",
                 paddingTop: scaleSize(20),
-                position: "relative"
+                position: "relative",
+                textAlign: "center",
+                alignItems: "center"
               }}
             >
               {product.new == 1 && Date.now() <= +`${product.new_date}000` ? (
@@ -140,12 +145,13 @@ export default class AboutProduct extends Component {
               ) : null}
 
               <Lightbox
-                style={{ flex: 1, flexGrow: 1 }}
+                style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
                 navigator={this.props.navigator}
                 onOpen={this.props.onImgPress}
                 willClose={this.props.onImgClose}
                 backgroundColor={"rgba(0,0,0,0.7)"}
                 underlayColor={"transparent"}
+                springConfig={{ tension: 100, friction: 100 }}
               >
                 <Image
                   source={{
@@ -153,12 +159,33 @@ export default class AboutProduct extends Component {
                   }}
                   style={{
                     flex: 1,
-                    height: scaleSize(154),
-                    width: null
+                    height: scaleSize(154)
                   }}
+                  resizeMethod="scale"
                   resizeMode="contain"
                 />
               </Lightbox>
+              <View
+                style={{
+                  position: "absolute",
+                  flex: 1,
+                  left: 0,
+                  right: 0,
+                  bottom: scaleSize(-20),
+                  top: scaleSize(20)
+                }}
+              >
+                <Image
+                  source={{
+                    uri: `http://kawa.gumione.pro${product.file}`
+                  }}
+                  style={{
+                    height: scaleSize(154)
+                  }}
+                  resizeMethod="scale"
+                  resizeMode="contain"
+                />
+              </View>
               <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
                 <KawaIcon color="#302c23" size={25} name="share" />
               </TouchableOpacity>
@@ -220,79 +247,99 @@ export default class AboutProduct extends Component {
                 {
                   paddingLeft: scaleSize(10),
                   paddingTop: scaleSize(5),
-                  alignItems: "center"
+                  alignItems: "center",
+                  flexDirection: "row",
+                  flex: 1
                 }
               ]}
             >
-              <TouchableOpacity onPress={this.props.onReviewsPress}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginBottom: scaleSize(5)
-                  }}
-                >
-                  <StarRating
-                    disabled={true}
-                    maxStars={5}
-                    rating={product.avg_rating}
-                    starSize={scaleSize(23)}
-                    starStyle={{ marginRight: scaleSize(2) }}
-                    emptyStarColor={"#ffea00"}
-                    fullStarColor={"#ffea00"}
-                  />
-                </View>
-                <Text style={[styles.numberOfReviews, styles.text]}>
-                  {product.comments} отзывов
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ position: "relative" }}
-                onPress={() => this.setState({ cart: !this.state.cart })}
+              <View
+                style={{
+                  alignSelf: "flex-start"
+                }}
               >
-                <KawaIcon
-                  style={styles.cartIcon}
-                  size={scaleSize(26)}
-                  name={
-                    this.state.cart
-                      ? "small-cart-in-catalog-with-buy"
-                      : "small-cart-in-catalog"
-                  }
-                />
-                <View
-                  style={{
-                    opacity: this.state.cart ? 1 : 0,
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    borderRadius: scaleSize(6.5),
-                    backgroundColor: "#ef5350",
-
-                    alignContent: "center",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: scaleSize(13),
-                    height: scaleSize(13)
-                  }}
-                >
-                  <Text
+                <TouchableOpacity onPress={this.props.onReviewsPress}>
+                  <View
                     style={{
-                      fontSize: 7,
-                      textAlign: "center",
-                      textAlignVertical: "center",
-                      color: "#fff"
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginBottom: scaleSize(5)
                     }}
                   >
-                    1
+                    <StarRating
+                      disabled={true}
+                      maxStars={5}
+                      rating={product.avg_rating}
+                      starSize={scaleSize(23)}
+                      starStyle={{ marginRight: scaleSize(2) }}
+                      emptyStarColor={"#ffea00"}
+                      fullStarColor={"#ffea00"}
+                    />
+                  </View>
+                  <Text style={[styles.numberOfReviews, styles.text]}>
+                    {product.comments} отзывов
                   </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this.props.onPressBuyButton}
-                style={styles.btn}
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  alignSelf: "center"
+                }}
               >
-                <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ position: "relative" }}
+                  onPress={() => this.setState({ cart: !this.state.cart })}
+                >
+                  <KawaIcon
+                    style={styles.cartIcon}
+                    size={scaleSize(26)}
+                    name={
+                      this.state.cart
+                        ? "small-cart-in-catalog-with-buy"
+                        : "small-cart-in-catalog"
+                    }
+                  />
+                  <View
+                    style={{
+                      opacity: this.state.cart ? 1 : 0,
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                      borderRadius: scaleSize(6.5),
+                      backgroundColor: "#ef5350",
+
+                      alignContent: "center",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: scaleSize(13),
+                      height: scaleSize(13)
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 7,
+                        textAlign: "center",
+                        textAlignVertical: "center",
+                        color: "#fff"
+                      }}
+                    >
+                      1
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  alignSelf: "flex-end"
+                }}
+              >
+                <TouchableOpacity
+                  onPress={this.props.onPressBuyButton}
+                  style={[styles.btn]}
+                >
+                  <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
+                </TouchableOpacity>
+              </View>
             </CardItem>
           </Card>
         </View>
@@ -412,7 +459,8 @@ const styles = {
     marginTop: scaleSize(-2)
   },
   cartIcon: {
-    color: "#48433b"
+    color: "#48433b",
+    textAling: "center"
   },
   btn: {
     backgroundColor: "#ea9308",
@@ -420,6 +468,7 @@ const styles = {
   },
   btnText: {
     fontSize: scaleSize(12),
+    textAlign: "center",
     color: "#f8f8f8",
     paddingTop: scaleSize(10),
     paddingBottom: scaleSize(10),

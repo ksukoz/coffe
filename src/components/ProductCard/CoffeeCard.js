@@ -15,6 +15,8 @@ import Polygon from "react-native-svg/elements/Polygon";
 import Line from "react-native-svg/elements/Line";
 import Circle from "react-native-svg/elements/Circle";
 
+import MyWebView from "react-native-webview-autoheight";
+
 import { scaleSize } from "../../helpers/scaleSize";
 
 StatusBar.setBarStyle("light-content", true);
@@ -704,7 +706,17 @@ export default class CoffeeCard extends Component {
                       }
                     ]}
                   >
-                    <Text>&#9;&#9;&#9;{caption}</Text>
+                    <MyWebView
+                      style={{ backgroundColor: "transparent" }}
+                      scrollEnabled={false}
+                      automaticallyAdjustContentInsets={false}
+                      width={"100%"}
+                      source={{
+                        baseUrl: "",
+                        html: `<style>p {color: #302c23;  text-align: justify}</style><p>&nbsp;${caption}</p>`
+                      }}
+                    />
+                    {/* <Text>&#9;&#9;&#9;{caption}</Text> */}
                   </CardItem>
                 </Card>
               </View>

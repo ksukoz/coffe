@@ -33,7 +33,7 @@ export default class YoutubePlayer extends Component {
             borderRadius: scaleSize(5)
           }}
           source={{
-            uri: `https://www.youtube.com/embed/${video}?rel=0&autoplay=0&showinfo=0&controls=1&allowfullscreen`
+            uri: `https://www.youtube.com/embed/${video}?rel=0&autoplay=0&showinfo=1&controls=1&allowfullscreen&listType=user_uploads`
           }}
         />
       </View>
