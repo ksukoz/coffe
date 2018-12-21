@@ -545,7 +545,8 @@ export default class CoffeeCard extends Component {
                   navigation.navigate("CoffeeInfo", {
                     linkName: "ProductCardScreen",
                     productId: id,
-                    preparation: preparation
+                    preparation: preparation,
+                    pid: this.props.pid
                   })
                 }
               >
@@ -564,12 +565,12 @@ export default class CoffeeCard extends Component {
                 style={{ marginTop: 15 }}
               />
               <KawaIcon
-                color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
+                color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
                 name={"turk"}
                 size={scaleSize(45)}
               />
               <KawaIcon
-                color={preparation.includes("3") ? "#ea9308" : "#ffea00"}
+                color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
                 name={"pour-over"}
                 size={scaleSize(45)}
               />
@@ -579,12 +580,12 @@ export default class CoffeeCard extends Component {
                 size={scaleSize(45)}
               />
               <KawaIcon
-                color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
+                color={preparation.includes("2") ? "#ea9308" : "#ffea00"}
                 name={"french-press"}
                 size={scaleSize(45)}
               />
               <KawaIcon
-                color={preparation.includes("6") ? "#ea9308" : "#ffea00"}
+                color={preparation.includes("5") ? "#ea9308" : "#ffea00"}
                 name={"coffee-maker-electric"}
                 size={scaleSize(45)}
               />
@@ -713,7 +714,7 @@ export default class CoffeeCard extends Component {
                       width={"100%"}
                       source={{
                         baseUrl: "",
-                        html: `<style>p {color: #302c23;  text-align: justify}</style><p>&nbsp;${caption}</p>`
+                        html: `<style>p {color: #302c23;  text-align: justify}</style>${caption}`
                       }}
                     />
                     {/* <Text>&#9;&#9;&#9;{caption}</Text> */}

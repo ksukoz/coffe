@@ -73,9 +73,15 @@ export default class AboutProduct extends Component {
           width={"100%"}
           source={{
             baseUrl: "",
-            html: `<style>p {color: #302c23;}</style>${
-              item.content
-            }<br/>Страна производитель: ${item.country}`
+            html: `<style>p {color: #302c23;}</style>${item.content}<br/>
+            Вес: ${item.weight} г.<br/>
+${
+              item.pid == "3" || item.pid == "4"
+                ? `Количество: ${item.quantity} шт.<br/>`
+                : ""
+            }
+Упаковка: ${item.package}<br/>
+            Страна производитель: ${item.country}`
           }}
         />
       </View>
@@ -91,6 +97,9 @@ export default class AboutProduct extends Component {
       dataArray.push({
         title: "Описание",
         content: productItem.text,
+        weight: productItem.weight,
+        pid: productItem.pid,
+        package: productItem.package,
         country: productItem.country
       });
 
@@ -205,7 +214,7 @@ export default class AboutProduct extends Component {
                     color: "#000"
                   }}
                 >
-                  {product.name} {product.weight} g
+                  {product.name}
                 </Text>
                 <Text style={[styles.text, { color: "#3F3B32" }]}>
                   {this.props.categoryName}, Арабика {product.arabic_percent}%
@@ -222,7 +231,8 @@ export default class AboutProduct extends Component {
                   width: "70%",
                   borderBottomWidth: scaleSize(1),
                   borderBottomColor: "#89a6aa",
-                  padding: scaleSize(10)
+                  padding: scaleSize(10),
+                  paddingTop: scaleSize(0)
                 }}
               >
                 <Text style={[styles.text, { color: "#3F3B32" }]}>
@@ -248,16 +258,14 @@ export default class AboutProduct extends Component {
                   paddingLeft: scaleSize(10),
                   paddingTop: scaleSize(5),
                   alignItems: "center",
+                  alignContent: "center",
+                  justifyContent: "space-between",
                   flexDirection: "row",
                   flex: 1
                 }
               ]}
             >
-              <View
-                style={{
-                  alignSelf: "flex-start"
-                }}
-              >
+              <View>
                 <TouchableOpacity onPress={this.props.onReviewsPress}>
                   <View
                     style={{
@@ -283,7 +291,8 @@ export default class AboutProduct extends Component {
               </View>
               <View
                 style={{
-                  alignSelf: "center"
+                  alignSelf: "center",
+                  marginLeft: scaleSize(-4)
                 }}
               >
                 <TouchableOpacity
@@ -328,11 +337,7 @@ export default class AboutProduct extends Component {
                   </View>
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  alignSelf: "flex-end"
-                }}
-              >
+              <View>
                 <TouchableOpacity
                   onPress={this.props.onPressBuyButton}
                   style={[styles.btn]}

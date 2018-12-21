@@ -102,7 +102,7 @@ export default class CoffeeInfoScreen extends Component {
                         name={"turk"}
                         size={scaleSize(45)}
                         color={
-                          preparation.includes("2") ? "#ea9308" : "#ffea00"
+                          preparation.includes("3") ? "#ea9308" : "#ffea00"
                         }
                       />
                     </Text>
@@ -124,7 +124,7 @@ export default class CoffeeInfoScreen extends Component {
                         name={"pour-over"}
                         size={scaleSize(45)}
                         color={
-                          preparation.includes("3") ? "#ea9308" : "#ffea00"
+                          preparation.includes("6") ? "#ea9308" : "#ffea00"
                         }
                       />
                     </Text>
@@ -172,7 +172,7 @@ export default class CoffeeInfoScreen extends Component {
                         name={"french-press"}
                         size={scaleSize(45)}
                         color={
-                          preparation.includes("5") ? "#ea9308" : "#ffea00"
+                          preparation.includes("2") ? "#ea9308" : "#ffea00"
                         }
                       />
                     </Text>
@@ -199,12 +199,15 @@ export default class CoffeeInfoScreen extends Component {
                         name={"coffee-maker-electric"}
                         size={scaleSize(45)}
                         color={
-                          preparation.includes("6") ? "#ea9308" : "#ffea00"
+                          preparation.includes("5") ? "#ea9308" : "#ffea00"
                         }
                       />
                     </Text>
                     <Text style={{ fontSize: scaleSize(18) }}>
-                      Эспрессо кофемашина
+                      {navigation.getParam("pid", 0) === "5"
+                        ? "Капсульная"
+                        : "Эспрессо"}{" "}
+                      кофемашина
                     </Text>
                   </ListItem>
                 </List>

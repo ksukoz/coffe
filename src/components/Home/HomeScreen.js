@@ -25,8 +25,8 @@ import KawaIcon from "../KawaIcon";
 
 const styles = StyleSheet.create({
   background: {
-    width: "100%",
-    height: Dimensions.get("window").height * 1.5,
+    // width: "100%",
+    height: "100%",
     position: "absolute",
     top: 0,
     bottom: 0,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   cardDouble: {
     flex: 1,
     flexDirection: "row",
-    flexWrap: "nowrap",
+    flexWrap: "wrap",
     color: "#fff",
     marginLeft: 5,
     marginRight: 5,
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").width * 0.3,
     borderRadius: 5,
     justifyContent: "space-around",
+    flexWrap: "wrap",
     resizeMode: "contain"
   },
   cardItemHalf: {
@@ -85,19 +86,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     resizeMode: "contain"
   },
-  cardItemHalfLast: {
-    width: "49%",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    marginRight: "1%",
-    marginLeft: "1%",
-    marginTop: 3,
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.5 - 10,
-    borderRadius: 5,
-    justifyContent: "flex-end",
-    resizeMode: "contain",
-    paddingBottom: "20%"
-  },
+  // cardItemHalfLast: {
+  //   width: "49%",
+  //   backgroundColor: "rgba(255,255,255, 0.2)",
+  //   marginRight: "1%",
+  //   marginLeft: "1%",
+  //   marginTop: 3,
+  //   alignItems: "center",
+  //   height: Dimensions.get("window").width * 0.5 - 10,
+  //   borderRadius: 5,
+  //   justifyContent: "flex-end",
+  //   resizeMode: "contain",
+  //   paddingBottom: "20%"
+  // },
   cardContent: {
     color: "#fff",
     flexWrap: "wrap",
@@ -265,7 +266,11 @@ export default class HomeScreen extends Component {
       <Container style={styles.default}>
         <StatusBar barStyle="light-content" hidden={false} translucent={true} />
         <ScrollView>
-          <Image source={require(MAIN_BG)} style={styles.background} />
+          <Image
+            source={require(MAIN_BG)}
+            style={styles.background}
+            resizeMode="cover"
+          />
           <View style={styles.container}>
             <Content>
               <View style={styles.head}>
@@ -305,57 +310,62 @@ export default class HomeScreen extends Component {
               {/*<Text style={styles.cardContent}>История покупок</Text>*/}
               {/*</TouchableOpacity>*/}
 
-              {/* <View style={styles.cardDouble}> 
-								{this.state.categories.map((category) => (
-									<TouchableOpacity
-										onPress={() =>
-											this.props.navigation.navigate('CatalogScreen', {
-												categoryId: category.id
-											})}
-										style={styles.cardItemHalf}
-									>
-										<View style={{ alignItems: 'center' }}>
-											{category.id === '1' ? (
-												<Image
-													style={{ height: 58, width: 72, marginBottom: 15 }}
-													source={require('../../static/img/icon-molot.png')}
-												/>
-											) : category.id === '2' ? (
-												<Image
-													style={{ height: 53, width: 72, marginBottom: 15 }}
-													source={require('../../static/img/icon-zerno.png')}
-												/>
-											) : category.id === '4' ? (
-												<Image
-													style={{ height: 79, width: 49, marginBottom: 15 }}
-													source={require('../../static/img/icon-box.png')}
-												/>
-											) : category.id === '5' ? (
-												<Image
-													style={{ height: 79, width: 49, marginBottom: 15 }}
-													source={require('../../static/img/icon-capsula.png')}
-												/>
-											) : category.id === '7' ? (
-												<Image
-													style={{ height: 79, width: 49, marginBottom: 15 }}
-													source={require('../../static/img/icon-coffee.png')}
-												/>
-											) : (
-												<Image
-													style={{ height: 79, width: 49, marginBottom: 15 }}
-													source={require('../../static/img/icon-heart.png')}
-												/>
-											)}
-											{/* <Image style={{height: 74, width: 74, marginBottom: 15}}
-                                               source={require("../../static/img/icon-fry.png")}/> */}
-              {/* <Text style={styles.cardContent} adjustsFontSizeToFit={true}> 
-												{category.name}
-											</Text>
-										</View>
-									</TouchableOpacity>
-								))}
-							</View>*/}
               <View style={styles.cardDouble}>
+                {this.state.categories.map(category => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate("CatalogScreen", {
+                        categoryId: category.id,
+                        categoryName: category.name
+                      })
+                    }
+                    style={styles.cardItemHalf}
+                  >
+                    <View style={{ alignItems: "center" }}>
+                      {category.id === "1" ? (
+                        <Image
+                          style={{ height: 58, width: 72, marginBottom: 15 }}
+                          source={require("../../static/img/icon-molot.png")}
+                        />
+                      ) : category.id === "2" ? (
+                        <Image
+                          style={{ height: 53, width: 72, marginBottom: 15 }}
+                          source={require("../../static/img/icon-zerno.png")}
+                        />
+                      ) : category.id === "4" ? (
+                        <Image
+                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          source={require("../../static/img/icon-box.png")}
+                        />
+                      ) : category.id === "5" ? (
+                        <Image
+                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          source={require("../../static/img/icon-capsula.png")}
+                        />
+                      ) : category.id === "7" ? (
+                        <Image
+                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          source={require("../../static/img/icon-coffee.png")}
+                        />
+                      ) : (
+                        <Image
+                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          source={require("../../static/img/icon-heart.png")}
+                        />
+                      )}
+                      {/* <Image style={{height: 74, width: 74, marginBottom: 15}}
+                                               source={require("../../static/img/icon-fry.png")}/> */}
+                      <Text
+                        style={styles.cardContent}
+                        adjustsFontSizeToFit={true}
+                      >
+                        {category.name}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              {/* <View style={styles.cardDouble}>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate("CatalogScreen", {
@@ -473,7 +483,7 @@ export default class HomeScreen extends Component {
                   />
                   <Text style={styles.cardContent}>Другие товары</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </Content>
           </View>
         </ScrollView>

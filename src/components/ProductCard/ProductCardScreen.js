@@ -275,6 +275,7 @@ class ProductCardScreen extends Component {
                       caption={productItem ? productItem.caption : ""}
                       preparation={productItem.preparation}
                       id={productItem.id}
+                      pid={productItem.pid}
                       position={[
                         +productItem.cc_aftertaste.split(",").join(""),
                         +productItem.cc_body.split(",").join(""),
