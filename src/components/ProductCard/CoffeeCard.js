@@ -718,7 +718,7 @@ export default class CoffeeCard extends Component {
                       width={"100%"}
                       source={{
                         baseUrl: "",
-                        html: `<style>body {color: #302c23;  text-align: justify!important}</style>${caption}`
+                        html: `<style>body {color: #302c23;  text-align: justify}</style>${caption}`
                       }}
                     />
                     {/* <Text>&#9;&#9;&#9;{caption}</Text> */}

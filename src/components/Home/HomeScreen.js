@@ -22,6 +22,7 @@ import {
   Alert
 } from "react-native";
 import KawaIcon from "../KawaIcon";
+import { scaleSize } from "../../helpers/scaleSize";
 
 const styles = StyleSheet.create({
   background: {
@@ -315,7 +316,11 @@ export default class HomeScreen extends Component {
                       >
                         <View style={{ alignItems: "center" }}>
                           <Image
-                            style={{ height: 65, marginBottom: 15 }}
+                            style={{
+                              height: scaleSize(79),
+                              width: scaleSize(49),
+                              marginBottom: 15
+                            }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-box.png")}
                           />
@@ -335,7 +340,12 @@ export default class HomeScreen extends Component {
                         style={styles.cardItemHalf}
                       >
                         <Image
-                          style={{ height: 69, width: 52, marginBottom: 15 }}
+                          style={{
+                            height: scaleSize(69),
+                            width: scaleSize(52),
+                            marginBottom: 15
+                          }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-menu.png")}
                         />
                         <Text style={styles.cardContent}>Рецепты</Text>
@@ -353,7 +363,12 @@ export default class HomeScreen extends Component {
                         style={styles.cardItemHalf}
                       >
                         <Image
-                          style={{ height: 72, width: 72, marginBottom: 15 }}
+                          style={{
+                            height: scaleSize(72),
+                            width: scaleSize(72),
+                            marginBottom: 15
+                          }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-heart.png")}
                         />
                         <Text style={styles.cardContent}>Гадание</Text>
@@ -369,7 +384,11 @@ export default class HomeScreen extends Component {
                       >
                         <View style={{ alignItems: "center" }}>
                           <Image
-                            style={{ height: 70, marginBottom: 15 }}
+                            style={{
+                              height: scaleSize(73),
+                              width: scaleSize(44),
+                              marginBottom: 15
+                            }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-coffee.png")}
                           />
@@ -397,31 +416,41 @@ export default class HomeScreen extends Component {
                       <View style={{ alignItems: "center" }}>
                         {category.id === "1" ? (
                           <Image
-                            style={{ height: 50, marginBottom: 15 }}
+                            style={{
+                              height: scaleSize(58),
+                              width: scaleSize(72),
+                              marginBottom: 15
+                            }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-molot.png")}
                           />
                         ) : category.id === "2" ? (
                           <Image
-                            style={{ height: 53, marginBottom: 15 }}
+                            style={{
+                              height: scaleSize(53),
+                              width: scaleSize(72),
+                              marginBottom: 15
+                            }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-zerno.png")}
                           />
-                        ) : category.id === "4" ? (
-                          <Image
-                            style={{ height: 79, marginBottom: 15 }}
-                            resizeMode="contain"
-                            source={require("../../static/img/icon-box.png")}
-                          />
                         ) : category.id === "5" ? (
                           <Image
-                            style={{ height: 55, marginBottom: 15 }}
+                            style={{
+                              height: scaleSize(50),
+                              width: scaleSize(75),
+                              marginBottom: 15
+                            }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-capsula.png")}
                           />
                         ) : category.id === "6" ? (
                           <Image
-                            style={{ height: 55, marginBottom: 15 }}
+                            style={{
+                              height: scaleSize(74),
+                              width: scaleSize(74),
+                              marginBottom: 15
+                            }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-fry.png")}
                           />
