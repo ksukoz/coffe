@@ -86,19 +86,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     resizeMode: "contain"
   },
-  // cardItemHalfLast: {
-  //   width: "49%",
-  //   backgroundColor: "rgba(255,255,255, 0.2)",
-  //   marginRight: "1%",
-  //   marginLeft: "1%",
-  //   marginTop: 3,
-  //   alignItems: "center",
-  //   height: Dimensions.get("window").width * 0.5 - 10,
-  //   borderRadius: 5,
-  //   justifyContent: "flex-end",
-  //   resizeMode: "contain",
-  //   paddingBottom: "20%"
-  // },
   cardContent: {
     color: "#fff",
     flexWrap: "wrap",
@@ -311,261 +298,151 @@ export default class HomeScreen extends Component {
               {/*</TouchableOpacity>*/}
 
               <View style={styles.cardDouble}>
-                {this.state.categories.map(category => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate("CatalogScreen", {
-                        categoryId: category.id,
-                        categoryName: category.name
-                      })
-                    }
-                    style={styles.cardItemHalf}
-                  >
-                    <View style={{ alignItems: "center" }}>
-                      {category.id === "1" ? (
+                {this.state.categories.map(category =>
+                  category.id == "4" ? (
+                    <View
+                      style={{ width: "100%", flexDirection: "row" }}
+                      key={category.id}
+                    >
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate("CatalogScreen", {
+                            categoryId: category.id,
+                            categoryName: category.name
+                          })
+                        }
+                        style={styles.cardItemHalf}
+                      >
+                        <View style={{ alignItems: "center" }}>
+                          <Image
+                            style={{ height: 65, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-box.png")}
+                          />
+
+                          <Text
+                            style={styles.cardContent}
+                            adjustsFontSizeToFit={true}
+                          >
+                            {category.name}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate("RecipesMainScreen")
+                        }
+                        style={styles.cardItemHalf}
+                      >
                         <Image
-                          style={{ height: 58, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/icon-molot.png")}
+                          style={{ height: 69, width: 52, marginBottom: 15 }}
+                          source={require("../../static/img/icon-menu.png")}
                         />
-                      ) : category.id === "2" ? (
+                        <Text style={styles.cardContent}>Рецепты</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ) : category.id == "7" ? (
+                    <View
+                      style={{ width: "100%", flexDirection: "row" }}
+                      key={category.id}
+                    >
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate("Catalog")
+                        }
+                        style={styles.cardItemHalf}
+                      >
                         <Image
-                          style={{ height: 53, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/icon-zerno.png")}
-                        />
-                      ) : category.id === "4" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/icon-box.png")}
-                        />
-                      ) : category.id === "5" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/icon-capsula.png")}
-                        />
-                      ) : category.id === "7" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/icon-coffee.png")}
-                        />
-                      ) : category.id === "8" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/dishes.png")}
-                        />
-                      ) : category.id === "9" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/spices.png")}
-                        />
-                      ) : category.id === "10" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/juices.png")}
-                        />
-                      ) : category.id === "11" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/milk_products.png")}
-                        />
-                      ) : category.id === "12" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/syrups.png")}
-                        />
-                      ) : category.id === "13" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/coffeeware.png")}
-                        />
-                      ) : category.id === "14" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/cups_saucers_plates.png")}
-                        />
-                      ) : category.id === "15" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/cutlery.png")}
-                        />
-                      ) : category.id === "16" ? (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
-                          source={require("../../static/img/kitchenware.png")}
-                        />
-                      ) : (
-                        <Image
-                          style={{ height: 79, marginBottom: 15 }}
-                          resizeMode="contain"
+                          style={{ height: 72, width: 72, marginBottom: 15 }}
                           source={require("../../static/img/icon-heart.png")}
                         />
-                      )}
-                      {/* <Image style={{height: 74, width: 74, marginBottom: 15}}
-                                               source={require("../../static/img/icon-fry.png")}/> */}
-                      <Text
-                        style={styles.cardContent}
-                        adjustsFontSizeToFit={true}
+                        <Text style={styles.cardContent}>Гадание</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate("CatalogScreen", {
+                            categoryId: category.id,
+                            categoryName: category.name
+                          })
+                        }
+                        style={styles.cardItemHalf}
                       >
-                        {category.name}
-                      </Text>
+                        <View style={{ alignItems: "center" }}>
+                          <Image
+                            style={{ height: 70, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-coffee.png")}
+                          />
+
+                          <Text
+                            style={styles.cardContent}
+                            adjustsFontSizeToFit={true}
+                          >
+                            {category.name}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
-                ))}
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("RecipesMainScreen")
-                  }
-                  style={styles.cardItemHalf}
-                >
-                  <Image
-                    style={{ height: 69, width: 52, marginBottom: 15 }}
-                    source={require("../../static/img/icon-menu.png")}
-                  />
-                  <Text style={styles.cardContent}>Рецепты</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("Catalog")}
-                  style={styles.cardItemHalf}
-                >
-                  <Image
-                    style={{ height: 72, width: 72, marginBottom: 15 }}
-                    source={require("../../static/img/icon-heart.png")}
-                  />
-                  <Text style={styles.cardContent}>Гадание</Text>
-                </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      key={category.id}
+                      onPress={() =>
+                        this.props.navigation.navigate("CatalogScreen", {
+                          categoryId: category.id,
+                          categoryName: category.name
+                        })
+                      }
+                      style={styles.cardItemHalf}
+                    >
+                      <View style={{ alignItems: "center" }}>
+                        {category.id === "1" ? (
+                          <Image
+                            style={{ height: 50, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-molot.png")}
+                          />
+                        ) : category.id === "2" ? (
+                          <Image
+                            style={{ height: 53, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-zerno.png")}
+                          />
+                        ) : category.id === "4" ? (
+                          <Image
+                            style={{ height: 79, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-box.png")}
+                          />
+                        ) : category.id === "5" ? (
+                          <Image
+                            style={{ height: 55, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-capsula.png")}
+                          />
+                        ) : category.id === "6" ? (
+                          <Image
+                            style={{ height: 55, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-fry.png")}
+                          />
+                        ) : (
+                          <Image
+                            style={{ height: 79, marginBottom: 15 }}
+                            resizeMode="contain"
+                            source={require("../../static/img/icon-heart.png")}
+                          />
+                        )}
+                        <Text
+                          style={styles.cardContent}
+                          adjustsFontSizeToFit={true}
+                        >
+                          {category.name}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
+                )}
               </View>
-              {/* <View style={styles.cardDouble}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("CatalogScreen", {
-                      categoryId: 1,
-                      categoryName: "Свежеобжаренный"
-                    })
-                  }
-                  style={styles.cardItemHalf}
-                >
-                  <View style={{ alignItems: "center" }}>
-                    <Image
-                      style={{ height: 74, width: 74, marginBottom: 15 }}
-                      source={require("../../static/img/icon-fry.png")}
-                    />
-                    <Text style={styles.cardContent}>Свежеобжаренный</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("CatalogScreen", {
-                      categoryId: 2,
-                      categoryName: "Кофе в зёрнах"
-                    })
-                  }
-                  style={styles.cardItemHalfLast}
-                >
-                  <View style={{ alignItems: "center" }}>
-                    <Image
-                      style={{ height: 53, width: 72, marginBottom: 15 }}
-                      source={require("../../static/img/icon-zerno.png")}
-                    />
-                    <Text style={styles.cardContent}>Кофе в зёрнах</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.cardDouble}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("Catalog")}
-                  style={styles.cardItemHalf}
-                >
-                  <Image
-                    style={{ height: 58, width: 72, marginBottom: 15 }}
-                    source={require("../../static/img/icon-molot.png")}
-                  />
-                  <Text style={styles.cardContent}>Молотый</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("CatalogScreen", {
-                      categoryId: 5,
-                      categoryName: "Кофе в капсулах"
-                    })
-                  }
-                  style={styles.cardItemHalfLast}
-                >
-                  <Image
-                    style={{ height: 50, width: 75, marginBottom: 15 }}
-                    source={require("../../static/img/icon-capsula.png")}
-                  />
-                  <Text style={styles.cardContent}>Кофе в капсулах</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.cardDouble}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("CatalogScreen", {
-                      categoryId: 4,
-                      categoryName: "Растворимый"
-                    })
-                  }
-                  style={styles.cardItemHalf}
-                >
-                  <Image
-                    style={{ height: 79, width: 49, marginBottom: 15 }}
-                    source={require("../../static/img/icon-box.png")}
-                  />
-                  <Text style={styles.cardContent}>Растворимый</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("RecipesMainScreen")
-                  }
-                  style={styles.cardItemHalfLast}
-                >
-                  <Image
-                    style={{ height: 69, width: 52, marginBottom: 15 }}
-                    source={require("../../static/img/icon-menu.png")}
-                  />
-                  <Text style={styles.cardContent}>Рецепты</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.cardDoubleLast}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("Catalog")}
-                  style={styles.cardItemHalf}
-                >
-                  <Image
-                    style={{ height: 72, width: 72, marginBottom: 15 }}
-                    source={require("../../static/img/icon-heart.png")}
-                  />
-                  <Text style={styles.cardContent}>Гадание</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("CatalogScreen", {
-                      categoryId: 7,
-                      categoryName: "Другие товары"
-                    })
-                  }
-                  style={styles.cardItemHalfLast}
-                >
-                  <Image
-                    style={{ height: 73, width: 44, marginBottom: 15 }}
-                    source={require("../../static/img/icon-coffee.png")}
-                  />
-                  <Text style={styles.cardContent}>Другие товары</Text>
-                </TouchableOpacity>
-              </View> */}
             </Content>
           </View>
         </View>
