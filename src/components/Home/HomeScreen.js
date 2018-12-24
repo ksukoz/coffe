@@ -25,8 +25,8 @@ import KawaIcon from "../KawaIcon";
 
 const styles = StyleSheet.create({
   background: {
-    // width: "100%",
-    height: "100%",
+    width: "100%",
+    height: Dimensions.get("window").height * 1.5,
     position: "absolute",
     top: 0,
     bottom: 0,
@@ -265,7 +265,7 @@ export default class HomeScreen extends Component {
     return (
       <Container style={styles.default}>
         <StatusBar barStyle="light-content" hidden={false} translucent={true} />
-        <ScrollView>
+        <View style={{ flex: 1 }}>
           <Image
             source={require(MAIN_BG)}
             style={styles.background}
@@ -324,32 +324,92 @@ export default class HomeScreen extends Component {
                     <View style={{ alignItems: "center" }}>
                       {category.id === "1" ? (
                         <Image
-                          style={{ height: 58, width: 72, marginBottom: 15 }}
+                          style={{ height: 58, marginBottom: 15 }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-molot.png")}
                         />
                       ) : category.id === "2" ? (
                         <Image
-                          style={{ height: 53, width: 72, marginBottom: 15 }}
+                          style={{ height: 53, marginBottom: 15 }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-zerno.png")}
                         />
                       ) : category.id === "4" ? (
                         <Image
-                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-box.png")}
                         />
                       ) : category.id === "5" ? (
                         <Image
-                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-capsula.png")}
                         />
                       ) : category.id === "7" ? (
                         <Image
-                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-coffee.png")}
+                        />
+                      ) : category.id === "8" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/dishes.png")}
+                        />
+                      ) : category.id === "9" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/spices.png")}
+                        />
+                      ) : category.id === "10" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/juices.png")}
+                        />
+                      ) : category.id === "11" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/milk_products.png")}
+                        />
+                      ) : category.id === "12" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/syrups.png")}
+                        />
+                      ) : category.id === "13" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/coffeeware.png")}
+                        />
+                      ) : category.id === "14" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/cups_saucers_plates.png")}
+                        />
+                      ) : category.id === "15" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/cutlery.png")}
+                        />
+                      ) : category.id === "16" ? (
+                        <Image
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
+                          source={require("../../static/img/kitchenware.png")}
                         />
                       ) : (
                         <Image
-                          style={{ height: 79, width: 49, marginBottom: 15 }}
+                          style={{ height: 79, marginBottom: 15 }}
+                          resizeMode="contain"
                           source={require("../../static/img/icon-heart.png")}
                         />
                       )}
@@ -364,6 +424,28 @@ export default class HomeScreen extends Component {
                     </View>
                   </TouchableOpacity>
                 ))}
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("RecipesMainScreen")
+                  }
+                  style={styles.cardItemHalf}
+                >
+                  <Image
+                    style={{ height: 69, width: 52, marginBottom: 15 }}
+                    source={require("../../static/img/icon-menu.png")}
+                  />
+                  <Text style={styles.cardContent}>Рецепты</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("Catalog")}
+                  style={styles.cardItemHalf}
+                >
+                  <Image
+                    style={{ height: 72, width: 72, marginBottom: 15 }}
+                    source={require("../../static/img/icon-heart.png")}
+                  />
+                  <Text style={styles.cardContent}>Гадание</Text>
+                </TouchableOpacity>
               </View>
               {/* <View style={styles.cardDouble}>
                 <TouchableOpacity
@@ -486,7 +568,7 @@ export default class HomeScreen extends Component {
               </View> */}
             </Content>
           </View>
-        </ScrollView>
+        </View>
       </Container>
     );
   }

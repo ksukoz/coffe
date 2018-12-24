@@ -273,7 +273,9 @@ class ProductCardScreen extends Component {
                     <CoffeeCard
                       navigation={this.props.navigation}
                       caption={productItem ? productItem.caption : ""}
-                      preparation={productItem.preparation}
+                      preparation={
+                        productItem.preparation ? productItem.preparation : []
+                      }
                       id={productItem.id}
                       pid={productItem.pid}
                       position={[
