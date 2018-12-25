@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Content, Text, List, ListItem } from "native-base";
-import { View, StatusBar, Dimensions, Image } from "react-native";
+import { View, StatusBar, Dimensions, Image, BackHandler } from "react-native";
 import KawaIcon from "../KawaIcon";
 import HeaderBar from "../common/HeaderBar";
 import { scaleSize } from "../../helpers/scaleSize";
@@ -14,6 +14,21 @@ const SCREEN_HEIGHT = Dimensions.get("window").height;
 const MAIN_BG = "../../static/img/background.png";
 
 export default class CoffeeInfoScreen extends Component {
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    this.props.navigation.navigate("ProductCardScreen", {
+      productId: this.props.navigation.getParam("productId")
+    });
+    return true;
+  };
+
   render() {
     const { navigation } = this.props;
     let preparation = [];
