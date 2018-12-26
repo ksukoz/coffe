@@ -1,5 +1,6 @@
 import {
   GET_PRODUCTS,
+  GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS
 } from "../actions/types";
@@ -13,6 +14,11 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload
+      };
+    case GET_MORE_PRODUCTS:
       return {
         ...state,
         products: [...state.products, ...action.payload]

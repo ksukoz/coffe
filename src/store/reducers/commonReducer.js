@@ -1,7 +1,8 @@
-import { GET_MESSAGE } from "../actions/types";
+import { GET_MESSAGE, GET_LETTERS } from "../actions/types";
 
 const initialState = {
-  message: ""
+  message: "",
+  letters: null
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         message: action.payload
+      };
+    case GET_LETTERS:
+      return {
+        ...state,
+        letters: action.payload
       };
     default:
       return state;

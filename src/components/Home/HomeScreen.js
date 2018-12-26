@@ -1,142 +1,17 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Content,
-  Text,
-  Input,
-  Item,
-  Icon,
-  Button
-} from "native-base";
+import { Container, Content, Text, Input } from "native-base";
 import {
   StyleSheet,
   View,
-  ImageBackground,
-  ScrollView,
   StatusBar,
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
-  Image,
-  AsyncStorage,
-  Alert
+  Image
 } from "react-native";
-import KawaIcon from "../KawaIcon";
 import { scaleSize } from "../../helpers/scaleSize";
-
-const styles = StyleSheet.create({
-  background: {
-    width: "100%",
-    height: Dimensions.get("window").height * 1.5,
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  cardDouble: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    color: "#fff",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 2,
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    justifyContent: "center"
-  },
-  cardDoubleLast: {
-    flex: 1,
-    flexDirection: "row",
-    color: "#fff",
-    marginLeft: 5,
-    marginRight: 5,
-    marginTop: 2,
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    justifyContent: "center",
-    marginBottom: 20
-  },
-  cardFull: {
-    marginLeft: "2%",
-    marginRight: "1.5%",
-    width: "96.5%",
-    marginTop: 5,
-    color: "#fff",
-    textAlign: "center",
-    borderColor: "#fff",
-    shadowColor: "#fff",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.3,
-    borderRadius: 5,
-    justifyContent: "space-around",
-    flexWrap: "wrap",
-    resizeMode: "contain"
-  },
-  cardItemHalf: {
-    width: "49%",
-    backgroundColor: "rgba(255,255,255, 0.2)",
-    marginLeft: "1%",
-    marginTop: 3,
-    alignItems: "center",
-    height: Dimensions.get("window").width * 0.5 - 10,
-    borderRadius: 5,
-    justifyContent: "center",
-    textAlign: "center",
-    resizeMode: "contain"
-  },
-  cardContent: {
-    color: "#fff",
-    flexWrap: "wrap",
-    textAlign: "center"
-  },
-  container: {
-    flex: 1
-  },
-  head: {
-    marginTop: 35
-  },
-  default: {
-    color: "#fff"
-  },
-  alphabet: {
-    color: "#fff",
-    padding: 10,
-    fontSize: 13,
-    paddingRight: 25
-  },
-  search: {
-    backgroundColor: "#fff",
-    marginRight: 15,
-    marginLeft: 15,
-    height: 40,
-    paddingLeft: 5,
-    paddingRight: 10
-  },
-  searchIcon: {
-    paddingTop: 3,
-    color: "#58554e"
-  },
-  codeIcon: {
-    marginRight: 10,
-    color: "#58554e"
-  },
-  searchInput: {
-    fontSize: 13
-  },
-  alphabetMenu: {
-    flex: 1,
-    flexDirection: "row",
-    marginLeft: 10,
-    marginTop: 10
-  },
-  iconMenu: {
-    color: "#58554e",
-    marginBottom: 5
-  }
-});
+import LetterBar from "../common/LetterBar";
+import SearchBar from "../common/SearchBar";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -251,7 +126,7 @@ export default class HomeScreen extends Component {
       return this.renderLoadingView();
     }
     return (
-      <Container style={styles.default}>
+      <Container>
         <StatusBar barStyle="light-content" hidden={false} translucent={true} />
         <View style={{ flex: 1 }}>
           <Image
@@ -261,36 +136,15 @@ export default class HomeScreen extends Component {
           />
           <View style={styles.container}>
             <Content>
-              <View style={styles.head}>
-                <Item style={styles.search} rounded>
-                  <Button
-                    transparent
-                    onPress={() => this.props.navigation.openDrawer()}
-                  >
-                    <Icon style={styles.iconMenu} name="ios-menu" />
-                  </Button>
-                  <Icon style={{ color: "#58554e" }} name="ios-search" />
-                  <Input
-                    style={styles.searchInput}
-                    placeholderTextColor="#becdcf"
-                    placeholder="Найти кофе"
-                  />
-                  <KawaIcon style={styles.codeIcon} size={20} name="code" />
-                </Item>
-              </View>
-              <ScrollView horizontal={true} style={styles.alphabetMenu}>
-                {this.state.alphabet.map(item => {
-                  return (
-                    <Text
-                      onLongPress={() => this.changeAlphabet()}
-                      key={item.letter}
-                      style={styles.alphabet}
-                    >
-                      {item.letter}
-                    </Text>
-                  );
-                })}
-              </ScrollView>
+              <SearchBar
+                placeholder={this.props.navigation.getParam(
+                  "categoryName",
+                  "Найти кофе"
+                )}
+                style={{ marginBottom: scaleSize(20) }}
+                navigation={this.props.navigation}
+              />
+              <LetterBar />
               {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("Catalog")}*/}
               {/*style={styles.cardFull}>*/}
               {/*<Image style={{height: 53, width: 53}}*/}
@@ -479,3 +333,59 @@ export default class HomeScreen extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  background: {
+    width: "100%",
+    height: Dimensions.get("window").height * 1.5,
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  cardDouble: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 2,
+    borderColor: "#fff",
+    shadowColor: "#fff",
+    justifyContent: "center"
+  },
+  cardFull: {
+    marginLeft: "2%",
+    marginRight: "1.5%",
+    width: "96.5%",
+    marginTop: 5,
+    borderColor: "#fff",
+    shadowColor: "#fff",
+    backgroundColor: "rgba(255,255,255, 0.2)",
+    alignItems: "center",
+    height: Dimensions.get("window").width * 0.3,
+    borderRadius: 5,
+    justifyContent: "space-around",
+    flexWrap: "wrap",
+    resizeMode: "contain"
+  },
+  cardItemHalf: {
+    width: "49%",
+    backgroundColor: "rgba(255,255,255, 0.2)",
+    marginLeft: "1%",
+    marginTop: 3,
+    alignItems: "center",
+    height: Dimensions.get("window").width * 0.5 - 10,
+    borderRadius: 5,
+    justifyContent: "center"
+  },
+  cardContent: {
+    color: "#fff",
+    flexWrap: "wrap",
+    textAlign: "center"
+  },
+  container: {
+    flex: 1
+  }
+});

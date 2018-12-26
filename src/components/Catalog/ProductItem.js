@@ -1,18 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
-  Image,
-  FlatList,
-  Alert,
-  AsyncStorage,
-  BackHandler
-} from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import { Text } from "native-base";
 import KawaIcon from "../KawaIcon";
 
@@ -80,7 +67,7 @@ export default class ProductItem extends Component {
               {item.name + " " + item.weight + "g"}
             </Text>
             <Text style={styles.productSort}>{item.sort_human}</Text>
-            <Text style={styles.productRoast}>{item.roast_human}</Text>
+            <Text style={styles.productRoast}>Обжарка {item.roast_human}</Text>
           </View>
 
           <View style={{ flexDirection: "row", marginTop: scaleSize(-8) }}>
@@ -129,7 +116,11 @@ export default class ProductItem extends Component {
                   size={scaleSize(16)}
                   name="small-star-in-catalog"
                 />
-                <Text style={styles.productRating}>{item.avg_rating}</Text>
+                <Text style={styles.productRating}>
+                  {item.avg_rating > 0
+                    ? (+item.avg_rating).toFixed(1)
+                    : item.avg_rating}
+                </Text>
               </View>
               <Text style={styles.numberOfReviews}>
                 {item.comments} отзывов

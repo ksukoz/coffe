@@ -1,5 +1,6 @@
 import {
   GET_PRODUCTS,
+  GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
   GET_MESSAGE
@@ -10,7 +11,7 @@ export const getProducts = (category, page) => dispatch => {
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: GET_PRODUCTS,
+        type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
         payload: responseJson.items
       });
     })
