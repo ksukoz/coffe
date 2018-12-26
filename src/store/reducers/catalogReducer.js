@@ -1,21 +1,21 @@
 import {
-  GET_SEARCHED_PRODUCTS,
+  GET_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS
 } from "../actions/types";
 
 const initialState = {
-  searchedProducts: null,
+  products: [],
   product: null,
   reviews: null
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_SEARCHED_PRODUCTS:
+    case GET_PRODUCTS:
       return {
         ...state,
-        searchedProducts: action.payload
+        products: [...state.products, ...action.payload]
       };
     case GET_PRODUCT:
       return {

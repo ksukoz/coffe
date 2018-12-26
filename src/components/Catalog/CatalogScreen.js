@@ -25,6 +25,7 @@ import {
 } from "react-native";
 import KawaIcon from "../KawaIcon";
 import { getCart } from "../../store/actions/cartActions";
+import { getProducts } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "./ProductItem";
@@ -97,6 +98,7 @@ class CatalogScreen extends Component {
       alphabet: [],
       products: [],
       search: "",
+      page: 0,
       cart: {},
       english: true,
       loading: true
@@ -106,6 +108,10 @@ class CatalogScreen extends Component {
 
   componentDidMount() {
     this.props.getCart();
+    this.props.getProducts(
+      this.props.navigation.getParam("categoryId", "0"),
+      this.state.page
+    );
     fetch("http://kawaapi.gumione.pro/api/catalog/letters/1")
       .then(response => response.json())
       .then(responseJson => {
@@ -120,40 +126,19 @@ class CatalogScreen extends Component {
         console.error(error);
       });
 
-    this.fetchData();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.cart) {
       this.setState({ loading: false, cart: nextProps.cart });
+    } else if (nextProps.products) {
+      this.setState({ loading: false, products: nextProps.products });
     }
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-  }
-
-  fetchData() {
-    fetch(
-      "http://kawaapi.gumione.pro/api/catalog/items/" +
-        `${this.props.navigation.getParam("categoryId", "0")}` +
-        "/10/" +
-        `${this.state.page}`
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          state => ({
-            products: [...state.products, ...responseJson.items],
-            loading: false
-          }),
-          function() {}
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   handleSearch = text => {
@@ -182,7 +167,14 @@ class CatalogScreen extends Component {
   };
 
   handleEnd = () => {
-    this.setState(state => ({ page: state.page + 10 }), () => this.fetchData());
+    this.setState(
+      state => ({ page: state.page + 10 }),
+      () =>
+        this.props.getProducts(
+          this.props.navigation.getParam("categoryId", "0"),
+          this.state.page
+        )
+    );
   };
 
   changeAlphabet() {
@@ -304,11 +296,13 @@ class CatalogScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  cart: state.cart.items
+  cart: state.cart.items,
+  products: state.catalog.products
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCart: () => dispatch(getCart())
+  getCart: () => dispatch(getCart()),
+  getProducts: (category, page) => dispatch(getProducts(category, page))
 });
 
 export default connect(

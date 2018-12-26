@@ -1,9 +1,23 @@
 import {
-  GET_SEARCHED_PRODUCTS,
+  GET_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
   GET_MESSAGE
 } from "./types";
+
+export const getProducts = (category, page) => dispatch => {
+  fetch(`http://kawaapi.gumione.pro/api/catalog/items/${category}/10/${page}`)
+    .then(response => response.json())
+    .then(responseJson => {
+      dispatch({
+        type: GET_PRODUCTS,
+        payload: responseJson.items
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
 
 export const findProduct = (value, category, page) => dispatch => {
   fetch(
@@ -13,14 +27,9 @@ export const findProduct = (value, category, page) => dispatch => {
   )
     .then(response => response.json())
     .then(responseJson => {
-      console.log(
-        `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
-          value
-        )}/${category}/10/${page}`
-      );
       dispatch({
-        type: GET_SEARCHED_PRODUCTS,
-        payload: responseJson
+        type: GET_PRODUCTS,
+        payload: responseJson.items
       });
     })
     .catch(error => {
@@ -43,7 +52,6 @@ export const getProduct = id => dispatch => {
 };
 
 export const getProductReviews = id => dispatch => {
-  // fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/416`)
   fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/${id}`)
     .then(response => response.json())
     .then(responseJson => {
