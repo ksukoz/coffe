@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Container,
   Content,
@@ -23,6 +24,8 @@ import {
   BackHandler
 } from "react-native";
 import KawaIcon from "../KawaIcon";
+import { getCart } from "../../store/actions/cartActions";
+
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "./ProductItem";
 
@@ -80,76 +83,6 @@ const styles = StyleSheet.create({
   iconMenu: {
     color: "#58554e",
     marginBottom: 5
-  },
-  product: {
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    marginRight: 12,
-    marginLeft: 12,
-    marginBottom: 7,
-    flexDirection: "row",
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingRight: 10,
-    borderRadius: 8
-  },
-  productImg: {
-    width: 70,
-    height: 120,
-    marginRight: 12,
-    marginLeft: 12,
-    marginTop: 4
-  },
-  imgHit: {
-    position: "absolute",
-    top: -2,
-    left: 5,
-    backgroundColor: "#ef5350",
-    zIndex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    height: 17,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10
-  },
-  productSort: {
-    color: "#48433b",
-    marginBottom: 1
-  },
-  productRoast: {
-    color: "#48433b"
-  },
-  productName: {
-    marginBottom: 3,
-    color: "#010101"
-  },
-  starIcon: {
-    color: "#ffea00",
-    marginRight: 5
-  },
-  productRating: {
-    color: "#48433b",
-    fontSize: 13
-  },
-  numberOfReviews: {
-    color: "#48433b",
-    fontSize: 13,
-    marginTop: -2
-  },
-  cartIcon: {
-    color: "#48433b"
-  },
-  btn: {
-    backgroundColor: "#ea9308",
-    borderRadius: 3
-  },
-  btnText: {
-    fontSize: 12,
-    color: "#f8f8f8",
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 7,
-    paddingLeft: 7,
-    fontWeight: "300"
   }
 });
 
@@ -157,14 +90,14 @@ StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
 
-export default class HomeScreen extends Component {
+class CatalogScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       alphabet: [],
       products: [],
       search: "",
-      page: 0,
+      cart: {},
       english: true,
       loading: true
     };
@@ -172,6 +105,7 @@ export default class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    this.props.getCart();
     fetch("http://kawaapi.gumione.pro/api/catalog/letters/1")
       .then(response => response.json())
       .then(responseJson => {
@@ -188,6 +122,12 @@ export default class HomeScreen extends Component {
 
     this.fetchData();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.cart) {
+      this.setState({ loading: false, cart: nextProps.cart });
+    }
   }
 
   componentWillUnmount() {
@@ -302,6 +242,7 @@ export default class HomeScreen extends Component {
         <View style={styles.container}>
           <Content>
             <View style={styles.head}>
+              {/* <Text>{Object.keys(this.state.cart).length - 1}</Text> */}
               <Item style={styles.search} rounded>
                 <Button
                   transparent
@@ -350,10 +291,27 @@ export default class HomeScreen extends Component {
           onEndReachedThreshold={0.1}
           data={this.state.products}
           renderItem={({ item }) => (
-            <ProductItem navigation={this.props.navigation} item={item} />
+            <ProductItem
+              navigation={this.props.navigation}
+              categoryId={this.props.navigation.getParam("categoryId", "0")}
+              item={item}
+            />
           )}
         />
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  cart: state.cart.items
+});
+
+const mapDispatchToProps = dispatch => ({
+  getCart: () => dispatch(getCart())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CatalogScreen);

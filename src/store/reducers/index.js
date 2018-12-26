@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import catalogReducer from "./catalogReducer";
 import commonReducer from "./commonReducer";
+import cartReducer from "./cartReducer";
 
 export default combineReducers({
   catalog: catalogReducer,
-  common: commonReducer
+  common: commonReducer,
+  cart: cartReducer
 });

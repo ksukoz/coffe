@@ -20,7 +20,7 @@ import { scaleSize } from "../../helpers/scaleSize";
 
 export default class ProductItem extends Component {
   render() {
-    const { item } = this.props;
+    const { item, categoryId } = this.props;
 
     return (
       <TouchableOpacity
@@ -83,20 +83,20 @@ export default class ProductItem extends Component {
             <Text style={styles.productRoast}>{item.roast_human}</Text>
           </View>
 
-          <View style={{ flexDirection: "row", marginTop: -8 }}>
+          <View style={{ flexDirection: "row", marginTop: scaleSize(-8) }}>
             <View
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#89a6aa",
                 flex: 1,
-                marginBottom: 5.5,
-                marginRight: 7
+                marginBottom: scaleSize(5.5),
+                marginRight: scaleSize(7)
               }}
             />
             <Text
               style={{
                 color: "#010101",
-                fontSize: 20,
+                fontSize: scaleSize(20),
                 fontWeight: "300"
               }}
             >
@@ -126,7 +126,7 @@ export default class ProductItem extends Component {
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <KawaIcon
                   style={styles.starIcon}
-                  size={16}
+                  size={scaleSize(16)}
                   name="small-star-in-catalog"
                 />
                 <Text style={styles.productRating}>{item.avg_rating}</Text>
@@ -137,12 +137,20 @@ export default class ProductItem extends Component {
             </TouchableOpacity>
             <KawaIcon
               style={styles.cartIcon}
-              size={26}
+              size={scaleSize(26)}
               name="big-cart-in-catalog"
             />
-            <View style={styles.btn}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("OrderScreen", {
+                  linkName: "CatalogScreen",
+                  categoryId
+                })
+              }
+              style={styles.btn}
+            >
               <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableOpacity>
@@ -156,33 +164,33 @@ const styles = {
   },
   product: {
     backgroundColor: "rgba(255,255,255, 0.7)",
-    marginRight: 12,
-    marginLeft: 12,
-    marginBottom: 7,
+    marginRight: scaleSize(12),
+    marginLeft: scaleSize(12),
+    marginBottom: scaleSize(7),
     flexDirection: "row",
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingRight: 10,
-    borderRadius: 8
+    paddingTop: scaleSize(6),
+    paddingBottom: scaleSize(6),
+    paddingRight: scaleSize(10),
+    borderRadius: scaleSize(8)
   },
   productImg: {
-    width: 70,
-    height: 120,
-    marginRight: 12,
-    marginLeft: 12,
-    marginTop: 4
+    width: scaleSize(70),
+    height: scaleSize(120),
+    marginRight: scaleSize(12),
+    marginLeft: scaleSize(12),
+    marginTop: scaleSize(4)
   },
   imgHit: {
     position: "absolute",
-    top: -2,
-    left: 5,
+    top: scaleSize(-2),
+    left: scaleSize(5),
     backgroundColor: "#ef5350",
     zIndex: 2,
     alignItems: "center",
     justifyContent: "center",
-    height: 17,
-    borderTopLeftRadius: 10,
-    borderBottomRightRadius: 10
+    height: scaleSize(17),
+    borderTopLeftRadius: scaleSize(10),
+    borderBottomRightRadius: scaleSize(10)
   },
   productSort: {
     color: "#48433b",
@@ -192,36 +200,36 @@ const styles = {
     color: "#48433b"
   },
   productName: {
-    marginBottom: 3,
+    marginBottom: scaleSize(3),
     color: "#010101"
   },
   starIcon: {
     color: "#ffea00",
-    marginRight: 5
+    marginRight: scaleSize(5)
   },
   productRating: {
     color: "#48433b",
-    fontSize: 13
+    fontSize: scaleSize(13)
   },
   numberOfReviews: {
     color: "#48433b",
-    fontSize: 13,
-    marginTop: -2
+    fontSize: scaleSize(13),
+    marginTop: scaleSize(-2)
   },
   cartIcon: {
     color: "#48433b"
   },
   btn: {
     backgroundColor: "#ea9308",
-    borderRadius: 3
+    borderRadius: scaleSize(3)
   },
   btnText: {
-    fontSize: 12,
+    fontSize: scaleSize(12),
     color: "#f8f8f8",
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 7,
-    paddingLeft: 7,
+    paddingTop: scaleSize(5),
+    paddingBottom: scaleSize(5),
+    paddingRight: scaleSize(7),
+    paddingLeft: scaleSize(7),
     fontWeight: "300"
   }
 };
