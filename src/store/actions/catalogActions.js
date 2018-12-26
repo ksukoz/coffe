@@ -29,7 +29,7 @@ export const findProducts = (value, category, page, type) => dispatch => {
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: GET_PRODUCTS,
+        type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
         payload: responseJson.items
       });
     })

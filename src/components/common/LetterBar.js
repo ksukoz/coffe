@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Text, Input } from "native-base";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { getAlphabet } from "../../store/actions/commonActions";
+import { findProducts } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
@@ -11,40 +12,50 @@ class LetterBar extends Component {
     super(props);
     this.state = {
       alphabet: [],
-      categiryId: this.props.navigation
-        ? this.props.navigation.getParam("categoryId", 0)
-        : 0,
-      english: 1
+      categoryId: this.props.categoryId,
+      english: 1,
+      letter: this.props.navigation.getParam("letter", "")
     };
     Input.defaultProps.selectionColor = "#000";
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.alphabet) {
-      this.setState({ loading: false, alphabet: nextProps.alphabet });
+      this.setState({ alphabet: nextProps.alphabet });
+    }
+    if (nextProps.categoryId) {
+      this.setState({ categoryId: nextProps.categoryId });
     }
   }
 
-  componentDidMount() {
-    this.state.categiryId !== 0
-      ? this.props.getAlphabet(this.state.english, this.state.categiryId)
+  componentWillMount() {
+    this.state.categoryId !== 0
+      ? this.props.getAlphabet(this.state.english, this.state.categoryId)
       : this.props.getAlphabet(this.state.english);
   }
 
   changeAlphabet() {
     this.setState(
       { english: this.state.english === 1 ? 2 : 1 },
-      this.state.categiryId !== 0
-        ? this.props.getAlphabet(this.state.english, this.state.categiryId)
+      this.state.categoryId !== 0
+        ? this.props.getAlphabet(this.state.english, this.state.categoryId)
         : this.props.getAlphabet(this.state.english)
     );
   }
 
   onLetterPress(letter) {
-    this.props.navigation.navigate("CatalogScreen", {
-      categoryId: this.props.categoryId,
-      categoryName: this.props.categoryName,
-      letter
+    this.setState({ letter }, () => {
+      this.props.navigation.navigate("CatalogScreen", {
+        categoryId: this.props.categoryId,
+        categoryName: this.props.categoryName,
+        letter
+      });
+      this.props.findProducts(
+        letter,
+        this.props.navigation.getParam("categoryId", "0"),
+        0,
+        "after"
+      );
     });
   }
 
@@ -61,7 +72,15 @@ class LetterBar extends Component {
               key={item.letter}
               activeOpacity={0.9}
             >
-              <Text style={styles.alphabet}>{item.letter}</Text>
+              <Text
+                style={
+                  this.state.letter === item.letter
+                    ? [styles.alphabet, styles.alphabetActive]
+                    : styles.alphabet
+                }
+              >
+                {item.letter}
+              </Text>
             </TouchableOpacity>
           );
         })}
@@ -75,7 +94,16 @@ const styles = {
     color: "#fff",
     padding: scaleSize(10),
     fontSize: scaleSize(13),
-    paddingRight: scaleSize(25)
+    marginRight: scaleSize(25)
+  },
+  alphabetActive: {
+    padding: scaleSize(5),
+    paddingTop: scaleSize(3),
+    paddingBottom: scaleSize(3),
+    margin: scaleSize(5),
+    backgroundColor: "rgba(255,255,255, 0.7)",
+    textAlign: "center",
+    borderRadius: scaleSize(2)
   },
 
   alphabetMenu: {
@@ -95,7 +123,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id))
+  getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
+  findProducts: (value, category, page, type) =>
+    dispatch(findProducts(value, category, page, type))
 });
 
 export default connect(

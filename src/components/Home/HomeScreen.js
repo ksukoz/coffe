@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Container, Content, Text, Input } from "native-base";
 import {
   StyleSheet,
@@ -13,17 +14,17 @@ import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
+import { getAlphabet } from "../../store/actions/commonActions";
+
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alphabet: [],
       categories: [],
-      english: true,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
@@ -70,6 +71,7 @@ export default class HomeScreen extends Component {
 
   render() {
     if (this.state.loading) {
+      this.props.getAlphabet(1);
       return this.renderLoadingView();
     }
     return (
@@ -84,21 +86,11 @@ export default class HomeScreen extends Component {
           <View style={styles.container}>
             <Content>
               <SearchBar
-                placeholder={this.props.navigation.getParam(
-                  "categoryName",
-                  "Найти кофе"
-                )}
+                placeholder={"Найти кофе"}
                 style={{ marginBottom: scaleSize(20) }}
                 navigation={this.props.navigation}
               />
-              <LetterBar
-                navigation={this.props.navigation}
-                categoryId={this.props.navigation.getParam("categoryId", 0)}
-                categoryName={this.props.navigation.getParam(
-                  "categoryName",
-                  "Найти кофе"
-                )}
-              />
+              <LetterBar navigation={this.props.navigation} categoryId={0} />
               {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("Catalog")}*/}
               {/*style={styles.cardFull}>*/}
               {/*<Image style={{height: 53, width: 53}}*/}
@@ -343,3 +335,12 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
+
+const mapDispatchToProps = dispatch => ({
+  getAlphabet: lang => dispatch(getAlphabet(lang))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(HomeScreen);

@@ -71,18 +71,13 @@ class CatalogScreen extends Component {
       .catch(error => {
         console.error(error);
       });
-  }
 
-  componentDidMount() {
     let search;
     if (this.props.navigation.getParam("letter")) {
       search = this.props.navigation.getParam("letter");
     } else if (this.props.navigation.getParam("search")) {
       search = this.props.navigation.getParam("search");
     }
-
-    this.props.getCart();
-
     search
       ? this.props.findProducts(
           search,
@@ -94,6 +89,15 @@ class CatalogScreen extends Component {
           this.props.navigation.getParam("categoryId", "0"),
           this.state.page
         );
+  }
+
+  componentDidMount() {
+    this.props.getCart();
+
+    // this.props.getProducts(
+    //   this.props.navigation.getParam("categoryId", "0"),
+    //   this.state.page
+    // );
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -103,8 +107,6 @@ class CatalogScreen extends Component {
       this.setState({ cart: nextProps.cart });
     } else if (nextProps.products) {
       this.setState({ loading: false, products: nextProps.products });
-    } else if (nextProps.navigation.getParam("letter")) {
-      console.error(nextProps.navigation.getParam("letter"));
     }
   }
 
@@ -140,11 +142,30 @@ class CatalogScreen extends Component {
   handleEnd = () => {
     this.setState(
       state => ({ page: state.page + 10 }),
-      () =>
-        this.props.getProducts(
-          this.props.navigation.getParam("categoryId", "0"),
-          this.state.page
-        )
+      () => {
+        let search;
+        if (this.props.navigation.getParam("letter")) {
+          search = this.props.navigation.getParam("letter");
+        } else if (this.props.navigation.getParam("search")) {
+          search = this.props.navigation.getParam("search");
+        }
+        search
+          ? this.props.findProducts(
+              search,
+              this.props.navigation.getParam("categoryId", "0"),
+              this.state.page,
+              this.props.navigation.getParam("letter") ? "after" : "both"
+            )
+          : this.props.getProducts(
+              this.props.navigation.getParam("categoryId", "0"),
+              this.state.page
+            );
+        // this.props.getProducts(
+        //   this.props.navigation.getParam("categoryId", "0"),
+        //   this.state.page
+        // )
+        // );
+      }
     );
   };
 
@@ -206,7 +227,7 @@ class CatalogScreen extends Component {
           renderItem={({ item }) => (
             <ProductItem
               navigation={this.props.navigation}
-              categoryId={this.props.navigation.getParam("categoryId", "0")}
+              categoryId={item.pid}
               item={item}
               categories={this.state.categories}
             />
