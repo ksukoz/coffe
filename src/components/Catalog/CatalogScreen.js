@@ -23,6 +23,8 @@ import {
   BackHandler
 } from "react-native";
 import KawaIcon from "../KawaIcon";
+import { scaleSize } from "../../helpers/scaleSize";
+import ProductItem from "./ProductItem";
 
 const styles = StyleSheet.create({
   background: {
@@ -105,7 +107,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
     alignItems: "center",
     justifyContent: "center",
-    width: 43,
     height: 17,
     borderTopLeftRadius: 10,
     borderBottomRightRadius: 10
@@ -349,100 +350,7 @@ export default class HomeScreen extends Component {
           onEndReachedThreshold={0.1}
           data={this.state.products}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                // AsyncStorage.setItem("idOfProduct", JSON.stringify(item));
-                this.props.navigation.navigate("ProductCardScreen", {
-                  productId: item.id,
-                  categoryName: this.props.navigation.getParam(
-                    "categoryName",
-                    "0"
-                  )
-                });
-              }}
-              style={styles.product}
-            >
-              <View style={{ position: "relative" }}>
-                {item.new == 1 && (
-                  <View style={styles.imgHit}>
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        color: "#fff",
-                        fontWeight: "bold"
-                      }}
-                    >
-                      ХИТ
-                    </Text>
-                  </View>
-                )}
-                <Image
-                  source={{ uri: "http://kawa.gumione.pro" + item.file }}
-                  style={styles.productImg}
-                />
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <View style={styles.productTitle}>
-                  <Text style={styles.productName}>
-                    {item.name + " " + item.weight + "g"}
-                  </Text>
-                  <Text style={styles.productSort}>{item.sort_human}</Text>
-                  <Text style={styles.productRoast}>{item.roast_human}</Text>
-                </View>
-
-                <View style={{ flexDirection: "row", marginTop: -8 }}>
-                  <View
-                    style={{
-                      borderBottomWidth: 1,
-                      borderColor: "#89a6aa",
-                      flex: 1,
-                      marginBottom: 5.5,
-                      marginRight: 7
-                    }}
-                  />
-                  <Text
-                    style={{
-                      color: "#010101",
-                      fontSize: 20,
-                      fontWeight: "300"
-                    }}
-                  >
-                    {item.price} грн
-                  </Text>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center"
-                  }}
-                >
-                  <View>
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <KawaIcon
-                        style={styles.starIcon}
-                        size={16}
-                        name="small-star-in-catalog"
-                      />
-                      <Text style={styles.productRating}>4.8</Text>
-                    </View>
-                    <Text style={styles.numberOfReviews}>27 отзывов</Text>
-                  </View>
-                  <KawaIcon
-                    style={styles.cartIcon}
-                    size={26}
-                    name="big-cart-in-catalog"
-                  />
-                  <View style={styles.btn}>
-                    <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <ProductItem navigation={this.props.navigation} item={item} />
           )}
         />
       </Container>

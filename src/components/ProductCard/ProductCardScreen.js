@@ -71,6 +71,10 @@ class ProductCardScreen extends Component {
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
+    setTimeout(() => {
+      this.setState({ currentTab: this.props.navigation.getParam("tab", 0) });
+    }, 500);
   }
 
   componentWillUnmount() {
@@ -142,10 +146,10 @@ class ProductCardScreen extends Component {
                     }}
                   />
                 )}
-                initialPage={this.state.currentTab}
+                // initialPage={this.state.currentTab}
                 onChangeTab={({ i }) => this.setState({ currentTab: i })}
                 // onScroll={e => console.error(e)}
-                prerenderingSiblingsNumber={0}
+                prerenderingSiblingsNumber={Infinity}
               >
                 <Tab
                   heading={
