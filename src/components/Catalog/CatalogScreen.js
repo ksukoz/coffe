@@ -25,7 +25,7 @@ import {
 } from "react-native";
 import KawaIcon from "../KawaIcon";
 import { getCart } from "../../store/actions/cartActions";
-import { getProducts } from "../../store/actions/catalogActions";
+import { getProducts, findProducts } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "./ProductItem";
@@ -40,32 +40,47 @@ class CatalogScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alphabet: [],
       products: [],
       search: "",
       page: 0,
       cart: {},
-      english: true,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
   }
 
   componentDidMount() {
+    let search;
+    if (this.props.navigation.getParam("letter")) {
+      search = this.props.navigation.getParam("letter");
+    } else if (this.props.navigation.getParam("search")) {
+      search = this.props.navigation.getParam("search");
+    }
+
     this.props.getCart();
-    this.props.getProducts(
-      this.props.navigation.getParam("categoryId", "0"),
-      this.state.page
-    );
+
+    search
+      ? this.props.findProducts(
+          search,
+          this.props.navigation.getParam("categoryId", "0"),
+          this.state.page,
+          this.props.navigation.getParam("letter") ? "after" : "both"
+        )
+      : this.props.getProducts(
+          this.props.navigation.getParam("categoryId", "0"),
+          this.state.page
+        );
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.cart) {
-      this.setState({ loading: false, cart: nextProps.cart });
+      this.setState({ cart: nextProps.cart });
     } else if (nextProps.products) {
       this.setState({ loading: false, products: nextProps.products });
+    } else if (nextProps.navigation.getParam("letter")) {
+      console.error(nextProps.navigation.getParam("letter"));
     }
   }
 
@@ -142,7 +157,11 @@ class CatalogScreen extends Component {
                 navigation={this.props.navigation}
               />
             </View>
-            <LetterBar />
+            <LetterBar
+              navigation={this.props.navigation}
+              categoryId={this.props.navigation.getParam("categoryId", 0)}
+              categoryName={this.props.navigation.getParam("categoryName", 0)}
+            />
           </Content>
         </View>
         <FlatList
@@ -206,7 +225,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
-  getProducts: (category, page) => dispatch(getProducts(category, page))
+  getProducts: (category, page) => dispatch(getProducts(category, page)),
+  findProducts: (value, category, page, type) =>
+    dispatch(findProducts(value, category, page, type))
 });
 
 export default connect(

@@ -1,7 +1,11 @@
 import { GET_LETTERS } from "./types";
 
-export const getAlphabet = lang => dispatch => {
-  fetch(`http://kawaapi.gumione.pro/api/catalog/letters/${lang}`)
+export const getAlphabet = (lang, id) => dispatch => {
+  fetch(
+    `http://kawaapi.gumione.pro/api/catalog/letters/${lang}${
+      id ? `/${id}` : ""
+    }`
+  )
     .then(response => response.json())
     .then(responseJson => {
       dispatch({

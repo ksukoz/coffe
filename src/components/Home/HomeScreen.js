@@ -30,21 +30,6 @@ export default class HomeScreen extends Component {
   }
 
   componentWillMount() {
-    fetch("http://kawaapi.gumione.pro/api/catalog/letters/1")
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            alphabet: responseJson.letters,
-            loading: false
-          },
-          function() {}
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
     fetch("http://kawaapi.gumione.pro/api/catalog/categories")
       .then(response => response.json())
       .then(responseJson => {
@@ -83,44 +68,6 @@ export default class HomeScreen extends Component {
     );
   }
 
-  changeAlphabet() {
-    if (this.state.english) {
-      return fetch("http://kawaapi.gumione.pro/api/catalog/letters/2")
-        .then(response => response.json())
-        .then(responseJson => {
-          this.setState(
-            {
-              alphabet: responseJson.letters,
-              english: false
-            },
-            function() {}
-          );
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    } else {
-      return fetch("http://kawaapi.gumione.pro/api/catalog/letters/1")
-        .then(response => response.json())
-        .then(responseJson => {
-          this.setState(
-            {
-              alphabet: responseJson.letters,
-              english: true
-            },
-            function() {}
-          );
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
-  }
-
-  focus() {
-    this.refs._randomName.focus();
-  }
-
   render() {
     if (this.state.loading) {
       return this.renderLoadingView();
@@ -144,7 +91,14 @@ export default class HomeScreen extends Component {
                 style={{ marginBottom: scaleSize(20) }}
                 navigation={this.props.navigation}
               />
-              <LetterBar />
+              <LetterBar
+                navigation={this.props.navigation}
+                categoryId={this.props.navigation.getParam("categoryId", 0)}
+                categoryName={this.props.navigation.getParam(
+                  "categoryName",
+                  "Найти кофе"
+                )}
+              />
               {/*<TouchableOpacity onPress={() => this.props.navigation.navigate("Catalog")}*/}
               {/*style={styles.cardFull}>*/}
               {/*<Image style={{height: 53, width: 53}}*/}

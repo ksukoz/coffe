@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, Input } from "native-base";
-import { ScrollView } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import { getAlphabet } from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
@@ -11,6 +11,9 @@ class LetterBar extends Component {
     super(props);
     this.state = {
       alphabet: [],
+      categiryId: this.props.navigation
+        ? this.props.navigation.getParam("categoryId", 0)
+        : 0,
       english: 1
     };
     Input.defaultProps.selectionColor = "#000";
@@ -23,28 +26,43 @@ class LetterBar extends Component {
   }
 
   componentDidMount() {
-    this.props.getAlphabet(this.state.english);
+    this.state.categiryId !== 0
+      ? this.props.getAlphabet(this.state.english, this.state.categiryId)
+      : this.props.getAlphabet(this.state.english);
   }
 
   changeAlphabet() {
     this.setState(
       { english: this.state.english === 1 ? 2 : 1 },
-      this.props.getAlphabet(this.state.english)
+      this.state.categiryId !== 0
+        ? this.props.getAlphabet(this.state.english, this.state.categiryId)
+        : this.props.getAlphabet(this.state.english)
     );
   }
 
+  onLetterPress(letter) {
+    this.props.navigation.navigate("CatalogScreen", {
+      categoryId: this.props.categoryId,
+      categoryName: this.props.categoryName,
+      letter
+    });
+  }
+
   render() {
+    // const { categoryId, categoryName, navigation } = this.props;
+
     return (
       <ScrollView horizontal={true} style={styles.alphabetMenu}>
         {this.state.alphabet.map(item => {
           return (
-            <Text
+            <TouchableOpacity
               onLongPress={() => this.changeAlphabet()}
+              onPress={() => this.onLetterPress(item.letter)}
               key={item.letter}
-              style={styles.alphabet}
+              activeOpacity={0.9}
             >
-              {item.letter}
-            </Text>
+              <Text style={styles.alphabet}>{item.letter}</Text>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
@@ -77,7 +95,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlphabet: lang => dispatch(getAlphabet(lang))
+  getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id))
 });
 
 export default connect(

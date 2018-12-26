@@ -20,11 +20,11 @@ export const getProducts = (category, page) => dispatch => {
     });
 };
 
-export const findProduct = (value, category, page) => dispatch => {
+export const findProducts = (value, category, page, type) => dispatch => {
   fetch(
     `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
       value
-    )}/${category}/10/${page}`
+    )}/${category}/${type}/10/${page}`
   )
     .then(response => response.json())
     .then(responseJson => {
