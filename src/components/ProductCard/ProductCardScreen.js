@@ -45,6 +45,7 @@ class ProductCardScreen extends Component {
     super(props);
 
     this.state = {
+      categories: [],
       modalVisible: false,
       opacity: 0,
       currentTab: 0,
@@ -61,6 +62,30 @@ class ProductCardScreen extends Component {
 
   componentWillMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));
+    fetch("http://kawaapi.gumione.pro/api/catalog/categories")
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            categories: responseJson.categories,
+            loading: false
+          },
+          function() {}
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    fetch("http://kawaapi.gumione.pro/api/catalog/categories/7")
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({
+          categories: [...this.state.categories, ...responseJson.categories]
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -211,10 +236,7 @@ class ProductCardScreen extends Component {
                           productId: productItem.id
                         })
                       }
-                      categoryName={this.props.navigation.getParam(
-                        "categoryName",
-                        "0"
-                      )}
+                      categories={this.state.categories}
                       navigation={this.props.navigation}
                       onReviewsPress={() => this.onReviewsPress()}
                     />

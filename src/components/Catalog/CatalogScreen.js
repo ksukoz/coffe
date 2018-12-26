@@ -41,12 +41,36 @@ class CatalogScreen extends Component {
     super(props);
     this.state = {
       products: [],
+      categories: [],
       search: "",
       page: 0,
       cart: {},
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
+  }
+
+  componentWillMount() {
+    fetch("http://kawaapi.gumione.pro/api/catalog/categories")
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({
+          categories: responseJson.categories
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    fetch("http://kawaapi.gumione.pro/api/catalog/categories/7")
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({
+          categories: [...this.state.categories, ...responseJson.categories]
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   componentDidMount() {
@@ -184,6 +208,7 @@ class CatalogScreen extends Component {
               navigation={this.props.navigation}
               categoryId={this.props.navigation.getParam("categoryId", "0")}
               item={item}
+              categories={this.state.categories}
             />
           )}
         />

@@ -217,7 +217,14 @@ ${
                   {product.name}
                 </Text>
                 <Text style={[styles.text, { color: "#3F3B32" }]}>
-                  {this.props.categoryName}, Арабика {product.arabic_percent}%
+                  {this.props.categories.filter(
+                    category => category.id === product.pid
+                  ).length > 0
+                    ? this.props.categories.filter(
+                        category => category.id === product.pid
+                      )[0].name
+                    : ""}
+                  , {product.sort_human} {product.arabic_percent}%
                 </Text>
                 <Text style={[styles.text, { color: "#3F3B32" }]}>
                   Обжарка {product.roast_human}

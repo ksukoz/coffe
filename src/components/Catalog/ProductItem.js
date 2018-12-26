@@ -66,7 +66,14 @@ export default class ProductItem extends Component {
             <Text style={styles.productName}>
               {item.name + " " + item.weight + "g"}
             </Text>
-            <Text style={styles.productSort}>{item.sort_human}</Text>
+            <Text style={styles.productSort}>
+              {
+                this.props.categories.filter(
+                  category => category.id === item.pid
+                )[0].name
+              }
+              , {item.sort_human} {item.arabic_percent}%
+            </Text>
             <Text style={styles.productRoast}>Обжарка {item.roast_human}</Text>
           </View>
 
