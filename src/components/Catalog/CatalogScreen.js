@@ -45,6 +45,7 @@ class CatalogScreen extends Component {
       categories: [],
       page: 0,
       cart: {},
+      search: this.props.navigation.getParam("search", ""),
       stylesIndex: 0,
       loading: true
     };
@@ -95,19 +96,19 @@ class CatalogScreen extends Component {
   componentDidMount() {
     this.props.getCart();
 
-    let search;
-    if (this.props.navigation.getParam("search")) {
-      search = this.props.navigation.getParam("search");
-    }
+    // let search;
+    // if (this.props.navigation.getParam("search")) {
+    //   search = this.props.navigation.getParam("search");
+    // }
 
-    search
-      ? this.props.findProducts(
-          search,
-          this.props.navigation.getParam("categoryId", "0"),
-          0,
-          "after"
-        )
-      : "";
+    // search
+    //   ? this.props.findProducts(
+    //       search,
+    //       this.props.navigation.getParam("categoryId", "0"),
+    //       0,
+    //       "after"
+    //     )
+    //   : "";
     // this.props.getProducts(
     //   this.props.navigation.getParam("categoryId", "0"),
     //   this.state.page
@@ -117,10 +118,10 @@ class CatalogScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.cart) {
-      this.setState({ cart: nextProps.cart });
-    } else if (nextProps.products) {
+    if (nextProps.products) {
       this.setState({ loading: false, products: nextProps.products });
+    } else if (nextProps.cart) {
+      this.setState({ cart: nextProps.cart });
     }
   }
 
@@ -135,9 +136,11 @@ class CatalogScreen extends Component {
         let search;
         if (this.props.navigation.getParam("letter")) {
           search = this.props.navigation.getParam("letter");
-        } else if (this.props.navigation.getParam("search")) {
+        }
+        if (this.props.navigation.getParam("search")) {
           search = this.props.navigation.getParam("search");
         }
+
         search
           ? this.props.findProducts(
               search,
@@ -163,7 +166,8 @@ class CatalogScreen extends Component {
           "categoryName",
           "Кофе в зернах"
         ),
-        letter: ""
+        letter: "",
+        search: ""
       }
     );
     return true;
@@ -226,7 +230,7 @@ class CatalogScreen extends Component {
           }
           onEndReachedThreshold={0.1}
           data={this.state.products}
-          extraData={this.state.stylesIndex}
+          extraData={this.state}
           renderItem={({ item }) => (
             <ProductItem
               navigation={this.props.navigation}

@@ -76,9 +76,7 @@ export default class ProductItem extends Component {
           }
         >
           <View style={styles.productTitle}>
-            <Text style={styles.productName}>
-              {item.name + " " + item.weight + "g"}
-            </Text>
+            <Text style={styles.productName}>{item.name}</Text>
             <Text style={styles.productSort}>
               {this.props.categories.filter(
                 category => category.id === item.pid
@@ -92,35 +90,45 @@ export default class ProductItem extends Component {
             <Text style={styles.productRoast}>Обжарка {item.roast_human}</Text>
           </View>
 
-          <View style={{ flexDirection: "row", marginTop: scaleSize(-8) }}>
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: styleIndex === 1 ? scaleSize(10) : scaleSize(-8)
+            }}
+          >
             <View
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#89a6aa",
                 flex: 1,
                 marginBottom: scaleSize(5.5),
-                marginRight: scaleSize(7)
+                marginRight: styleIndex === 1 ? scaleSize(0) : scaleSize(7),
+                marginLeft: styleIndex === 1 ? scaleSize(0) : scaleSize(7)
               }}
             />
-            <Text
-              style={{
-                color: "#010101",
-                fontSize: scaleSize(20),
-                fontWeight: "300"
-              }}
-            >
-              {item.price} грн
-            </Text>
+            {styleIndex !== 1 ? (
+              <Text
+                style={{
+                  color: "#010101",
+                  fontSize: scaleSize(20),
+                  fontWeight: "300"
+                }}
+              >
+                {(+item.price).toFixed()} грн
+              </Text>
+            ) : null}
           </View>
 
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "center"
+              alignItems: "center",
+              flexWrap: styleIndex === 1 ? "wrap" : "nowrap"
             }}
           >
             <TouchableOpacity
+              style={{ marginBottom: styleIndex === 1 ? scaleSize(7) : 0 }}
               onPress={() =>
                 this.props.navigation.navigate("ProductCardScreen", {
                   productId: item.id,
@@ -132,7 +140,12 @@ export default class ProductItem extends Component {
                 })
               }
             >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center"
+                }}
+              >
                 <KawaIcon
                   style={styles.starIcon}
                   size={scaleSize(16)}
@@ -150,9 +163,20 @@ export default class ProductItem extends Component {
             </TouchableOpacity>
             <KawaIcon
               style={styles.cartIcon}
-              size={scaleSize(26)}
+              size={scaleSize(20)}
               name="big-cart-in-catalog"
             />
+            {styleIndex === 1 ? (
+              <Text
+                style={{
+                  color: "#010101",
+                  fontSize: scaleSize(16),
+                  fontWeight: "300"
+                }}
+              >
+                {(+item.price).toFixed()} грн
+              </Text>
+            ) : null}
             <TouchableOpacity
               onPress={() =>
                 this.props.navigation.navigate("OrderScreen", {
@@ -166,7 +190,15 @@ export default class ProductItem extends Component {
                   : [styles.btn]
               }
             >
-              <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
+              <Text
+                style={
+                  styleIndex === 1
+                    ? [styles.btnText, { textAlign: "center" }]
+                    : [styles.btnText]
+                }
+              >
+                КУПИТЬ СЕЙЧАС
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -181,8 +213,6 @@ const styles = {
   },
   product: {
     backgroundColor: "rgba(255,255,255, 0.7)",
-    // marginRight: scaleSize(12),
-    // marginLeft: scaleSize(12),
     marginBottom: scaleSize(7),
     flexDirection: "row",
     paddingTop: scaleSize(6),
@@ -199,7 +229,6 @@ const styles = {
     marginBottom: scaleSize(7),
     paddingTop: scaleSize(6),
     paddingBottom: scaleSize(6),
-    paddingRight: scaleSize(10),
     borderRadius: scaleSize(8)
   },
 
