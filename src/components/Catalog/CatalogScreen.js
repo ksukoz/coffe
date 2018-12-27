@@ -77,7 +77,8 @@ class CatalogScreen extends Component {
     let search;
     if (this.props.navigation.getParam("letter")) {
       search = this.props.navigation.getParam("letter");
-    } else if (this.props.navigation.getParam("search")) {
+    }
+    if (this.props.navigation.getParam("search")) {
       search = this.props.navigation.getParam("search");
     }
     search
@@ -109,10 +110,12 @@ class CatalogScreen extends Component {
     //       "after"
     //     )
     //   : "";
-    // this.props.getProducts(
-    //   this.props.navigation.getParam("categoryId", "0"),
-    //   this.state.page
-    // );
+    if (this.props.products.length === 0) {
+      this.props.getProducts(
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page
+      );
+    }
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }

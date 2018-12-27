@@ -55,7 +55,8 @@ class LetterBar extends Component {
       this.props.navigation.navigate("CatalogScreen", {
         categoryId: this.props.categoryId,
         categoryName: this.props.categoryName,
-        letter
+        letter,
+        search: ""
       });
       this.props.findProducts(
         letter,
