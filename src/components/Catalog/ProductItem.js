@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, TouchableOpacity, Image } from "react-native";
 import { Text } from "native-base";
 import KawaIcon from "../KawaIcon";
+import StarRating from "react-native-star-rating";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
@@ -10,7 +11,8 @@ export default class ProductItem extends Component {
     super(props);
     this.state = {
       index: 0,
-      styles: [styles.product, styles.productCard, styles.productItem]
+      styles: [styles.product, styles.productCard, styles.productItem],
+      cart: false
     };
   }
 
@@ -66,7 +68,13 @@ export default class ProductItem extends Component {
 
           <Image
             source={{ uri: "http://kawa.gumione.pro" + item.file }}
-            style={styles.productImg}
+            style={
+              styleIndex === 1
+                ? [styles.productImg, { height: scaleSize(113) }]
+                : styleIndex === 2
+                ? [styles.productImg, { height: scaleSize(180) }]
+                : [styles.productImg, { height: scaleSize(100) }]
+            }
           />
         </View>
 
@@ -75,9 +83,27 @@ export default class ProductItem extends Component {
             styleIndex === 1 ? { flex: 1, padding: scaleSize(6) } : { flex: 1 }
           }
         >
-          <View style={styles.productTitle}>
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productSort}>
+          <View>
+            <Text
+              style={
+                styleIndex === 1
+                  ? [styles.productName, { fontSize: scaleSize(11) }]
+                  : styleIndex === 2
+                  ? [styles.productName, { fontSize: scaleSize(19) }]
+                  : [styles.productName, { fontSize: scaleSize(15) }]
+              }
+            >
+              {item.name}
+            </Text>
+            <Text
+              style={
+                styleIndex === 1
+                  ? [styles.productSort, { fontSize: scaleSize(11) }]
+                  : styleIndex === 2
+                  ? [styles.productSort, { fontSize: scaleSize(16) }]
+                  : [styles.productSort, { fontSize: scaleSize(13) }]
+              }
+            >
               {this.props.categories.filter(
                 category => category.id === item.pid
               ).length > 0
@@ -87,7 +113,17 @@ export default class ProductItem extends Component {
                 : ""}
               , {item.sort_human} {item.arabic_percent}%
             </Text>
-            <Text style={styles.productRoast}>Обжарка {item.roast_human}</Text>
+            <Text
+              style={
+                styleIndex === 1
+                  ? [styles.productRoast, { fontSize: scaleSize(11) }]
+                  : styleIndex === 2
+                  ? [styles.productRoast, { fontSize: scaleSize(16) }]
+                  : [styles.productRoast, { fontSize: scaleSize(13) }]
+              }
+            >
+              Обжарка {item.roast_human}
+            </Text>
           </View>
 
           <View
@@ -103,14 +139,19 @@ export default class ProductItem extends Component {
                 flex: 1,
                 marginBottom: scaleSize(5.5),
                 marginRight: styleIndex === 1 ? scaleSize(0) : scaleSize(7),
-                marginLeft: styleIndex === 1 ? scaleSize(0) : scaleSize(7)
+                marginLeft:
+                  styleIndex === 1
+                    ? scaleSize(0)
+                    : styleIndex === 2
+                    ? scaleSize(-10)
+                    : scaleSize(7)
               }}
             />
             {styleIndex !== 1 ? (
               <Text
                 style={{
                   color: "#010101",
-                  fontSize: scaleSize(20),
+                  fontSize: styleIndex === 2 ? scaleSize(27) : scaleSize(20),
                   fontWeight: "300"
                 }}
               >
@@ -146,26 +187,105 @@ export default class ProductItem extends Component {
                   alignItems: "center"
                 }}
               >
-                <KawaIcon
-                  style={styles.starIcon}
-                  size={scaleSize(16)}
-                  name="small-star-in-catalog"
-                />
-                <Text style={styles.productRating}>
+                {styleIndex === 2 ? (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginBottom: scaleSize(5)
+                    }}
+                  >
+                    <StarRating
+                      disabled={true}
+                      maxStars={5}
+                      rating={item.avg_rating}
+                      starSize={scaleSize(23)}
+                      starStyle={{ marginRight: scaleSize(2) }}
+                      emptyStarColor={"#ffea00"}
+                      fullStarColor={"#ffea00"}
+                    />
+                  </View>
+                ) : (
+                  <KawaIcon
+                    style={styles.starIcon}
+                    size={scaleSize(16)}
+                    name="small-star-in-catalog"
+                  />
+                )}
+                <Text
+                  style={
+                    styleIndex === 1
+                      ? [styles.productRating, { fontSize: scaleSize(9) }]
+                      : styles.productRating
+                  }
+                >
                   {item.avg_rating > 0
                     ? (+item.avg_rating).toFixed(1)
                     : item.avg_rating}
                 </Text>
               </View>
-              <Text style={styles.numberOfReviews}>
+              <Text
+                style={
+                  styleIndex === 1
+                    ? [styles.numberOfReviews, { fontSize: scaleSize(9) }]
+                    : styles.numberOfReviews
+                }
+              >
                 {item.comments} отзывов
               </Text>
             </TouchableOpacity>
-            <KawaIcon
-              style={styles.cartIcon}
-              size={scaleSize(20)}
-              name="big-cart-in-catalog"
-            />
+            <View
+              style={{
+                alignSelf: "center",
+                marginLeft: scaleSize(-4)
+              }}
+            >
+              <TouchableOpacity
+                style={{ position: "relative" }}
+                onPress={() => this.setState({ cart: !this.state.cart })}
+              >
+                <KawaIcon
+                  style={
+                    styleIndex === 1
+                      ? [styles.cartIcon, { marginLeft: scaleSize(10) }]
+                      : styles.cartIcon
+                  }
+                  size={styleIndex === 2 ? scaleSize(25) : scaleSize(20)}
+                  name={
+                    this.state.cart
+                      ? "small-cart-in-catalog-with-buy"
+                      : "small-cart-in-catalog"
+                  }
+                />
+                <View
+                  style={{
+                    opacity: this.state.cart ? 1 : 0,
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    borderRadius: scaleSize(styleIndex === 2 ? 6.5 : 5),
+                    backgroundColor: "#ef5350",
+
+                    alignContent: "center",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: scaleSize(styleIndex === 2 ? 13 : 10),
+                    height: scaleSize(styleIndex === 2 ? 13 : 10)
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 7,
+                      textAlign: "center",
+                      textAlignVertical: "center",
+                      color: "#fff"
+                    }}
+                  >
+                    1
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             {styleIndex === 1 ? (
               <Text
                 style={{
@@ -218,6 +338,16 @@ const styles = {
     paddingTop: scaleSize(6),
     paddingBottom: scaleSize(6),
     paddingRight: scaleSize(10),
+    borderRadius: scaleSize(8)
+  },
+  productItem: {
+    backgroundColor: "rgba(255,255,255, 0.7)",
+    marginBottom: scaleSize(7),
+    flexDirection: "column",
+    paddingTop: scaleSize(6),
+    paddingBottom: scaleSize(6),
+    paddingRight: scaleSize(10),
+    paddingLeft: scaleSize(10),
     borderRadius: scaleSize(8)
   },
 

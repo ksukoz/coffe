@@ -109,7 +109,9 @@ class HomeScreen extends Component {
                         onPress={() =>
                           this.props.navigation.navigate("CatalogScreen", {
                             categoryId: category.id,
-                            categoryName: category.name
+                            categoryName: category.name,
+                            letter: "",
+                            search: ""
                           })
                         }
                         style={styles.cardItemHalf}
