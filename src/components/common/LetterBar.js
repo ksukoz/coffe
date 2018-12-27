@@ -21,7 +21,14 @@ class LetterBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.alphabet) {
-      this.setState({ alphabet: nextProps.alphabet });
+      if (
+        nextProps.alphabet.length !== this.state.alphabet.length &&
+        this.props.categoryId != 0
+      ) {
+        this.setState({ alphabet: nextProps.alphabet, letter: "" });
+      } else {
+        this.setState({ alphabet: nextProps.alphabet });
+      }
     }
     if (nextProps.categoryId) {
       this.setState({ categoryId: nextProps.categoryId });

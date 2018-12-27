@@ -160,11 +160,6 @@ class CatalogScreen extends Component {
               this.props.navigation.getParam("categoryId", "0"),
               this.state.page
             );
-        // this.props.getProducts(
-        //   this.props.navigation.getParam("categoryId", "0"),
-        //   this.state.page
-        // )
-        // );
       }
     );
   };
@@ -178,7 +173,8 @@ class CatalogScreen extends Component {
         categoryName: this.props.navigation.getParam(
           "categoryName",
           "Кофе в зернах"
-        )
+        ),
+        letter: ""
       }
     );
     return true;
