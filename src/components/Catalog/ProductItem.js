@@ -70,7 +70,11 @@ export default class ProductItem extends Component {
           />
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View
+          style={
+            styleIndex === 1 ? { flex: 1, padding: scaleSize(6) } : { flex: 1 }
+          }
+        >
           <View style={styles.productTitle}>
             <Text style={styles.productName}>
               {item.name + " " + item.weight + "g"}
@@ -156,7 +160,11 @@ export default class ProductItem extends Component {
                   categoryId
                 })
               }
-              style={styles.btn}
+              style={
+                styleIndex === 1
+                  ? [styles.btn, { width: "100%" }]
+                  : [styles.btn]
+              }
             >
               <Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
             </TouchableOpacity>
@@ -173,8 +181,8 @@ const styles = {
   },
   product: {
     backgroundColor: "rgba(255,255,255, 0.7)",
-    marginRight: scaleSize(12),
-    marginLeft: scaleSize(12),
+    // marginRight: scaleSize(12),
+    // marginLeft: scaleSize(12),
     marginBottom: scaleSize(7),
     flexDirection: "row",
     paddingTop: scaleSize(6),
@@ -184,10 +192,10 @@ const styles = {
   },
 
   productCard: {
-    width: "40.6%",
+    width: "48%",
     backgroundColor: "rgba(255,255,255, 0.7)",
-    marginRight: scaleSize(12),
-    marginLeft: scaleSize(12),
+    marginRight: scaleSize(4),
+    marginLeft: scaleSize(4),
     marginBottom: scaleSize(7),
     paddingTop: scaleSize(6),
     paddingBottom: scaleSize(6),
@@ -196,6 +204,7 @@ const styles = {
   },
 
   productImg: {
+    alignSelf: "center",
     width: scaleSize(70),
     height: scaleSize(120),
     marginRight: scaleSize(12),

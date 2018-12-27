@@ -207,6 +207,11 @@ class CatalogScreen extends Component {
           </View>
         )}
         <FlatList
+          style={{
+            marginLeft: scaleSize(10),
+            marginRight:
+              this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12)
+          }}
           keyExtractor={item => item.id}
           onEndReached={() => {
             this.setState({
@@ -231,6 +236,8 @@ class CatalogScreen extends Component {
               styleIndex={this.state.stylesIndex}
             />
           )}
+          key={this.state.stylesIndex === 1 ? "h" : "v"}
+          numColumns={this.state.stylesIndex === 1 ? 2 : 1}
         />
       </Container>
     );
