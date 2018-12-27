@@ -43,9 +43,9 @@ class CatalogScreen extends Component {
     this.state = {
       products: [],
       categories: [],
-      // search: this.props.navigation.getParam("search", ""),
       page: 0,
       cart: {},
+      stylesIndex: 0,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
@@ -169,6 +169,10 @@ class CatalogScreen extends Component {
     return true;
   };
 
+  getStyles = index => {
+    this.setState({ stylesIndex: index });
+  };
+
   render() {
     return (
       <Container style={styles.default}>
@@ -179,6 +183,7 @@ class CatalogScreen extends Component {
             menu={true}
             catalog={true}
             title={this.props.navigation.getParam("search")}
+            getStyles={this.getStyles}
           />
         ) : (
           <View style={styles.container}>
@@ -202,7 +207,7 @@ class CatalogScreen extends Component {
           </View>
         )}
         <FlatList
-          keyExtractor={(item, index) => item.id}
+          keyExtractor={item => item.id}
           onEndReached={() => {
             this.setState({
               loading: true
@@ -216,12 +221,14 @@ class CatalogScreen extends Component {
           }
           onEndReachedThreshold={0.1}
           data={this.state.products}
+          extraData={this.state.stylesIndex}
           renderItem={({ item }) => (
             <ProductItem
               navigation={this.props.navigation}
               categoryId={item.pid}
               item={item}
               categories={this.state.categories}
+              styleIndex={this.state.stylesIndex}
             />
           )}
         />

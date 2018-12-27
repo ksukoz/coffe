@@ -74,22 +74,29 @@ export default class HeaderBar extends Component {
               }}
             >
               <TouchableOpacity
+                activeOpacity={0.8}
                 style={{ position: "relative" }}
-                onPress={() =>
-                  this.setState({
-                    index:
+                onPress={() => {
+                  this.setState(
+                    {
+                      index:
+                        this.state.index < this.state.images.length - 1
+                          ? this.state.index + 1
+                          : 0
+                    },
+                    this.props.getStyles(
                       this.state.index < this.state.images.length - 1
                         ? this.state.index + 1
                         : 0
-                  })
-                }
+                    )
+                  );
+                }}
               >
                 <KawaIcon
                   style={[styles.icons, { marginRight: scaleSize(24) }]}
                   size={scaleSize(20)}
                   name={this.state.images[this.state.index]}
                 />
-                <Text>{this.state.images[this.state.index]}</Text>
               </TouchableOpacity>
               <KawaIcon
                 style={styles.icons}

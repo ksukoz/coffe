@@ -6,8 +6,17 @@ import KawaIcon from "../KawaIcon";
 import { scaleSize } from "../../helpers/scaleSize";
 
 export default class ProductItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      styles: [styles.product, styles.productCard, styles.productItem]
+    };
+  }
+
   render() {
-    const { item, categoryId } = this.props;
+    const { item, categoryId, styleIndex } = this.props;
+    // console.error(styleIndex);
 
     return (
       <TouchableOpacity
@@ -18,7 +27,7 @@ export default class ProductItem extends Component {
             categoryName: this.props.navigation.getParam("categoryName", "0")
           });
         }}
-        style={styles.product}
+        style={this.state.styles[styleIndex]}
       >
         <View style={{ position: "relative" }}>
           {item.new == 1 && Date.now() <= +`${item.new_date}000` ? (
@@ -173,6 +182,19 @@ const styles = {
     paddingRight: scaleSize(10),
     borderRadius: scaleSize(8)
   },
+
+  productCard: {
+    width: "40.6%",
+    backgroundColor: "rgba(255,255,255, 0.7)",
+    marginRight: scaleSize(12),
+    marginLeft: scaleSize(12),
+    marginBottom: scaleSize(7),
+    paddingTop: scaleSize(6),
+    paddingBottom: scaleSize(6),
+    paddingRight: scaleSize(10),
+    borderRadius: scaleSize(8)
+  },
+
   productImg: {
     width: scaleSize(70),
     height: scaleSize(120),
