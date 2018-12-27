@@ -31,6 +31,7 @@ import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "./ProductItem";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
+import HeaderBar from "../common/HeaderBar";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -42,7 +43,7 @@ class CatalogScreen extends Component {
     this.state = {
       products: [],
       categories: [],
-      search: "",
+      // search: this.props.navigation.getParam("search", ""),
       page: 0,
       cart: {},
       loading: true
@@ -83,7 +84,7 @@ class CatalogScreen extends Component {
           search,
           this.props.navigation.getParam("categoryId", "0"),
           this.state.page,
-          this.props.navigation.getParam("letter") ? "after" : "both"
+          "after"
         )
       : this.props.getProducts(
           this.props.navigation.getParam("categoryId", "0"),
@@ -94,6 +95,19 @@ class CatalogScreen extends Component {
   componentDidMount() {
     this.props.getCart();
 
+    let search;
+    if (this.props.navigation.getParam("search")) {
+      search = this.props.navigation.getParam("search");
+    }
+
+    search
+      ? this.props.findProducts(
+          search,
+          this.props.navigation.getParam("categoryId", "0"),
+          0,
+          "after"
+        )
+      : "";
     // this.props.getProducts(
     //   this.props.navigation.getParam("categoryId", "0"),
     //   this.state.page
@@ -114,31 +128,6 @@ class CatalogScreen extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  handleSearch = text => {
-    this.setState(
-      state => ({ page: 0, search: text }),
-      () => {
-        fetch(
-          "http://kawaapi.gumione.pro/api/catalog/search/" +
-            `${this.state.search}` +
-            "/0/both/10/" +
-            `${this.state.page}`
-        )
-          .then(response => response.json())
-          .then(responseJson => {
-            this.setState({
-              products: responseJson.items,
-              loading: false
-            }),
-              function() {};
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
-    );
-  };
-
   handleEnd = () => {
     this.setState(
       state => ({ page: state.page + 10 }),
@@ -154,7 +143,7 @@ class CatalogScreen extends Component {
               search,
               this.props.navigation.getParam("categoryId", "0"),
               this.state.page,
-              this.props.navigation.getParam("letter") ? "after" : "both"
+              "after"
             )
           : this.props.getProducts(
               this.props.navigation.getParam("categoryId", "0"),
@@ -185,26 +174,33 @@ class CatalogScreen extends Component {
       <Container style={styles.default}>
         <StatusBar barStyle="light-content" hidden={false} translucent={true} />
         <Image source={require(MAIN_BG)} style={styles.background} />
-        <View style={styles.container}>
-          <Content>
-            <View style={styles.head}>
-              {/* <Text>{Object.keys(this.state.cart).length - 1}</Text> */}
-              <SearchBar
-                placeholder={this.props.navigation.getParam(
-                  "categoryName",
-                  "Найти кофе"
-                )}
-                style={{ marginBottom: scaleSize(20) }}
+        {this.props.navigation.getParam("search") ? (
+          <HeaderBar
+            menu={true}
+            catalog={true}
+            title={this.props.navigation.getParam("search")}
+          />
+        ) : (
+          <View style={styles.container}>
+            <Content>
+              <View style={styles.head}>
+                <SearchBar
+                  placeholder={this.props.navigation.getParam(
+                    "categoryName",
+                    "Найти кофе"
+                  )}
+                  style={{ marginBottom: scaleSize(20) }}
+                  navigation={this.props.navigation}
+                />
+              </View>
+              <LetterBar
                 navigation={this.props.navigation}
+                categoryId={this.props.navigation.getParam("categoryId", 0)}
+                categoryName={this.props.navigation.getParam("categoryName", 0)}
               />
-            </View>
-            <LetterBar
-              navigation={this.props.navigation}
-              categoryId={this.props.navigation.getParam("categoryId", 0)}
-              categoryName={this.props.navigation.getParam("categoryName", 0)}
-            />
-          </Content>
-        </View>
+            </Content>
+          </View>
+        )}
         <FlatList
           keyExtractor={(item, index) => item.id}
           onEndReached={() => {

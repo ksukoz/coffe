@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
-import { findProduct } from "../../store/actions/catalogActions";
+import { findProducts } from "../../store/actions/catalogActions";
 import KawaIcon from "../KawaIcon";
 
 import { scaleSize } from "../../helpers/scaleSize";
@@ -11,8 +11,7 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: "",
-      page: 0
+      search: ""
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -22,11 +21,15 @@ class SearchBar extends Component {
   };
 
   handleSearch = e => {
-    this.props.findProduct(this.state.search, this.props.categoryId, 10);
-
     this.props.navigation.navigate("CatalogScreen", {
-      categoryId: this.props.categoryId
+      search: this.state.search
     });
+    // this.props.findProducts(
+    //   this.state.search,
+    //   this.props.navigation.getParam("categoryId", "0"),
+    //   0,
+    //   "after"
+    // );
   };
 
   render() {
@@ -85,7 +88,12 @@ const styles = {
   }
 };
 
+const mapDispatchToProps = dispatch => ({
+  findProducts: (value, category, page, type) =>
+    dispatch(findProducts(value, category, page, type))
+});
+
 export default connect(
   null,
-  { findProduct }
+  mapDispatchToProps
 )(SearchBar);

@@ -2,7 +2,7 @@ import { GET_CART, GET_MESSAGE } from "./types";
 
 export const getCart = () => dispatch => {
   let formData = new FormData();
-  formData.append("username", "+380999999999");
+  formData.append("username", "+380675635155");
   formData.append("password", "test");
 
   fetch("http://kawaapi.gumione.pro/api/auth/login", {
@@ -34,7 +34,7 @@ export const getCart = () => dispatch => {
 
 export const addToCart = data => dispatch => {
   let formData = new FormData();
-  formData.append("username", "+380999999999");
+  formData.append("username", "+380675635155");
   formData.append("password", "test");
 
   fetch("http://kawaapi.gumione.pro/api/auth/login", {
@@ -65,7 +65,7 @@ export const addToCart = data => dispatch => {
 
 export const updateCart = data => dispatch => {
   let formData = new FormData();
-  formData.append("username", "+380999999999");
+  formData.append("username", "+380675635155");
   formData.append("password", "test");
 
   fetch("http://kawaapi.gumione.pro/api/auth/login", {
