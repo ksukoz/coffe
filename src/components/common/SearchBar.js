@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 import { Input, Item, Icon, Button } from 'native-base';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { findProducts } from '../../store/actions/catalogActions';
@@ -22,9 +22,13 @@ class SearchBar extends Component {
 	};
 
 	handleSearch = (e) => {
-		this.props.navigation.navigate('CatalogScreen', {
-			search: this.state.search
-		});
+		AsyncStorage.setItem('search', this.state.search);
+		this.props.navigation.navigate(
+			'CatalogScreen'
+			// , {
+			// 	search: this.state.search
+			// }
+		);
 		// this.props.findProducts(
 		//   this.state.search,
 		//   this.props.navigation.getParam("categoryId", "0"),
