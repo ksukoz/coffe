@@ -22,19 +22,9 @@ class SearchBar extends Component {
 	};
 
 	handleSearch = (e) => {
-		AsyncStorage.setItem('search', this.state.search);
-		this.props.navigation.navigate(
-			'CatalogScreen'
-			// , {
-			// 	search: this.state.search
-			// }
-		);
-		// this.props.findProducts(
-		//   this.state.search,
-		//   this.props.navigation.getParam("categoryId", "0"),
-		//   0,
-		//   "after"
-		// );
+		AsyncStorage.setItem('search', this.state.search).then(() => {
+			this.props.navigation.navigate('CatalogScreen', { categoryId: 0 });
+		});
 	};
 
 	render() {

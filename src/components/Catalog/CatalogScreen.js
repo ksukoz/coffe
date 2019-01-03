@@ -49,9 +49,9 @@ class CatalogScreen extends Component {
 		this.setState(
 			{ search: data ? data : '' },
 			() =>
-				data
+				this.props.navigation.getParam('letter') || data
 					? this.props.findProducts(
-							data,
+							data ? data : this.props.navigation.getParam('letter'),
 							this.props.navigation.getParam('categoryId', '0'),
 							this.state.page,
 							'after'
@@ -83,19 +83,34 @@ class CatalogScreen extends Component {
 	async componentDidMount() {
 		let data = await AsyncStorage.getItem('search');
 		this.props.getCart();
-		if (!data) {
+		if (!data && !this.props.navigation.getParam('letter', '')) {
 			this.props.getProducts(this.props.navigation.getParam('categoryId', '0'), this.state.page);
 		}
 
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	async componentWillReceiveProps(nextProps) {
 		if (nextProps.products) {
 			this.setState({ loading: false, products: nextProps.products });
 		}
 		if (nextProps.cart) {
 			this.setState({ cart: nextProps.cart });
+		}
+		if (nextProps.navigation) {
+			let data = await AsyncStorage.getItem('search');
+			this.setState(
+				{ search: data ? data : '' },
+				() =>
+					this.props.navigation.getParam('letter') || data
+						? this.props.findProducts(
+								data ? data : this.props.navigation.getParam('letter'),
+								this.props.navigation.getParam('categoryId', '0'),
+								this.state.page,
+								'after'
+							)
+						: this.props.getProducts(this.props.navigation.getParam('categoryId', '0'), this.state.page)
+			);
 		}
 	}
 
@@ -107,9 +122,9 @@ class CatalogScreen extends Component {
 		this.setState(
 			(state) => ({ page: state.page + 10 }),
 			() => {
-				this.state.search
+				this.state.search || this.props.navigation.getParam('letter')
 					? this.props.findProducts(
-							this.state.search,
+							this.state.search ? this.state.search : this.props.navigation.getParam('letter'),
 							this.props.navigation.getParam('categoryId', '0'),
 							this.state.page,
 							'after'

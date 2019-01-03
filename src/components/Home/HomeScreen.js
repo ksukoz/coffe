@@ -106,8 +106,7 @@ class HomeScreen extends Component {
 														this.props.navigation.navigate('CatalogScreen', {
 															categoryId: category.id,
 															categoryName: category.name,
-															letter: '',
-															search: ''
+															letter: ''
 														})}
 													style={styles.cardItemHalf}
 												>

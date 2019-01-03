@@ -51,9 +51,9 @@ class LetterBar extends Component {
 		this.setState({ letter }, () => {
 			this.props.navigation.navigate('CatalogScreen', {
 				categoryId: this.props.categoryId,
-				categoryName: this.props.categoryName
+				categoryName: this.props.categoryName,
+				letter
 			});
-			AsyncStorage.setItem('search', letter);
 			this.props.findProducts(letter, this.props.navigation.getParam('categoryId', '0'), 0, 'after');
 		});
 	}
