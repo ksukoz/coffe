@@ -1,4 +1,5 @@
 import {
+  GET_FULL_CATEGORIES,
   GET_CATEGORIES,
   GET_SUBCATEGORIES,
   GET_DISHES,
@@ -9,12 +10,20 @@ import {
   GET_MESSAGE
 } from "./types";
 
-export const getCategories = () => dispatch => {
+export const getFullCategories = () => dispatch => {
+  dispatch(getCategories(true)),
+    dispatch(getSubCategories(true)),
+    dispatch(getDishes(true));
+
+  return Promise.resolve();
+};
+
+export const getCategories = (type = false) => dispatch => {
   fetch("http://kawaapi.gumione.pro/api/catalog/categories")
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: GET_CATEGORIES,
+        type: type !== false ? GET_FULL_CATEGORIES : GET_CATEGORIES,
         payload: responseJson.categories
       });
     })
@@ -22,12 +31,13 @@ export const getCategories = () => dispatch => {
       console.error(error);
     });
 };
-export const getSubCategories = () => dispatch => {
+
+export const getSubCategories = (type = false) => dispatch => {
   fetch("http://kawaapi.gumione.pro/api/catalog/categories/7")
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: GET_SUBCATEGORIES,
+        type: type !== false ? GET_FULL_CATEGORIES : GET_SUBCATEGORIES,
         payload: responseJson.categories
       });
     })
@@ -35,12 +45,12 @@ export const getSubCategories = () => dispatch => {
       console.error(error);
     });
 };
-export const getDishes = () => dispatch => {
+export const getDishes = (type = false) => dispatch => {
   fetch("http://kawaapi.gumione.pro/api/catalog/categories/8")
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: GET_DISHES,
+        type: type !== false ? GET_FULL_CATEGORIES : GET_DISHES,
         payload: responseJson.categories
       });
     })

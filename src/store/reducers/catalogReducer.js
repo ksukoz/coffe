@@ -1,4 +1,5 @@
 import {
+  GET_FULL_CATEGORIES,
   GET_CATEGORIES,
   GET_SUBCATEGORIES,
   GET_DISHES,
@@ -10,6 +11,7 @@ import {
 
 const initialState = {
   categories: [],
+  categoriesFull: [],
   products: [],
   product: null,
   reviews: null
@@ -17,6 +19,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_FULL_CATEGORIES:
+      return {
+        ...state,
+        categoriesFull: [...state.categoriesFull, ...action.payload]
+      };
     case GET_CATEGORIES:
       return {
         ...state,

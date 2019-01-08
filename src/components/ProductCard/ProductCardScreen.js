@@ -27,7 +27,10 @@ import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
 import CoffeeCard from "./CoffeeCard";
 
-import { getProduct } from "../../store/actions/catalogActions";
+import {
+  getProduct,
+  getFullCategories
+} from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductReviews from "./ProductReviews";
@@ -62,40 +65,21 @@ class ProductCardScreen extends Component {
 
   componentWillMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));
-    fetch("http://kawaapi.gumione.pro/api/catalog/categories")
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState(
-          {
-            categories: responseJson.categories,
-            loading: false
-          },
-          function() {}
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    fetch("http://kawaapi.gumione.pro/api/catalog/categories/7")
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          categories: [...this.state.categories, ...responseJson.categories]
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.product) {
       this.setState({ loading: false, productItem: nextProps.product });
     }
+    if (nextProps.categories) {
+      this.setState({ categories: nextProps.categories });
+    }
   }
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
+    this.props.getFullCategories();
 
     setTimeout(() => {
       this.setState({ currentTab: this.props.navigation.getParam("tab", 0) });
@@ -131,6 +115,7 @@ class ProductCardScreen extends Component {
 
   render() {
     const { productItem, reviewsLength, opacity } = this.state;
+    console.error(this.state.categories);
 
     return (
       <Container style={styles.default}>
@@ -587,11 +572,13 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  product: state.catalog.product
+  product: state.catalog.product,
+  categories: state.catalog.categoriesFull
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: id => dispatch(getProduct(id))
+  getProduct: id => dispatch(getProduct(id)),
+  getFullCategories: () => dispatch(getFullCategories())
 });
 
 export default connect(
