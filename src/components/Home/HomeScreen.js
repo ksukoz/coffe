@@ -238,7 +238,8 @@ class HomeScreen extends Component {
                           ? this.props.getDishes()
                           : this.props.navigation.navigate("CatalogScreen", {
                               categoryId: category.id,
-                              categoryName: category.name
+                              categoryName: category.name,
+                              letter: ""
                             })
                       }
                       style={styles.cardItemHalf}

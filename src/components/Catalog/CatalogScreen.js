@@ -42,6 +42,10 @@ class CatalogScreen extends Component {
       stylesIndex: 0,
       loading: true
     };
+    this.viewabilityConfig = {
+      waitForInteraction: true,
+      viewAreaCoveragePercentThreshold: 100
+    };
     Input.defaultProps.selectionColor = "#000";
   }
 
@@ -88,18 +92,17 @@ class CatalogScreen extends Component {
     }
     if (nextProps.navigation) {
       let data = await AsyncStorage.getItem("search");
-      this.setState({ search: data ? data : "" }, () =>
-        this.props.navigation.getParam("letter") || data
-          ? this.props.findProducts(
-              data ? data : this.props.navigation.getParam("letter"),
-              this.props.navigation.getParam("categoryId", "0"),
-              this.state.page,
-              "after"
-            )
-          : this.props.getProducts(
-              this.props.navigation.getParam("categoryId", "0"),
-              this.state.page
-            )
+      this.setState(
+        { search: data ? data : "", page: data ? 0 : this.state.page },
+        () =>
+          this.props.navigation.getParam("letter") || data
+            ? this.props.findProducts(
+                data ? data : this.props.navigation.getParam("letter"),
+                this.props.navigation.getParam("categoryId", "0"),
+                this.state.page,
+                "after"
+              )
+            : null
       );
     }
   }
@@ -108,26 +111,25 @@ class CatalogScreen extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  handleEnd = () => {
+  handleEnd = () =>
     this.setState(
-      state => ({ page: state.page + 10 }),
-      () => {
-        this.state.search || this.props.navigation.getParam("letter")
-          ? this.props.findProducts(
-              this.state.search
-                ? this.state.search
-                : this.props.navigation.getParam("letter"),
-              this.props.navigation.getParam("categoryId", "0"),
-              this.state.page,
-              "after"
-            )
-          : this.props.getProducts(
-              this.props.navigation.getParam("categoryId", "0"),
-              this.state.page
-            );
-      }
+      { page: this.state.page + 10 },
+      // console.error(this.state.page + 10)
+      this.state.search || this.props.navigation.getParam("letter")
+        ? this.props.findProducts(
+            this.state.search
+              ? this.state.search
+              : this.props.navigation.getParam("letter"),
+            this.props.navigation.getParam("categoryId", "0"),
+            this.state.page + 10,
+            "after"
+          )
+        : this.props.getProducts(
+            this.props.navigation.getParam("categoryId", "0"),
+            this.state.page + 10
+          )
     );
-  };
+  // };
 
   handleBackPress = () => {
     this.props.navigation.dispatch(NavigationActions.back());
@@ -195,8 +197,8 @@ class CatalogScreen extends Component {
             ) : null
           }
           onEndReachedThreshold={0.1}
-          data={this.state.products}
-          extraData={this.state}
+          data={this.props.products}
+          extraData={this.state.page}
           renderItem={({ item }) => (
             <ProductItem
               navigation={this.props.navigation}
@@ -208,6 +210,7 @@ class CatalogScreen extends Component {
           )}
           key={this.state.stylesIndex === 1 ? "h" : "v"}
           numColumns={this.state.stylesIndex === 1 ? 2 : 1}
+          viewabilityConfig={this.viewabilityConfig}
         />
       </Container>
     );

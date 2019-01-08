@@ -87,7 +87,9 @@ export default class ProductItem extends Component {
                     category => category.id === item.pid
                   )[0].name
                 : ""}
-              {item.pid > 7 ? "" : `, {item.sort_human} {item.arabic_percent}%`}
+              {item.pid > 7
+                ? ""
+                : `, ${item.sort_human} ${item.arabic_percent}%`}
             </Text>
             <Text
               style={
@@ -304,9 +306,6 @@ export default class ProductItem extends Component {
 }
 
 const styles = {
-  default: {
-    color: "#fff"
-  },
   product: {
     backgroundColor: "rgba(255,255,255, 0.7)",
     marginBottom: scaleSize(7),
@@ -360,7 +359,6 @@ const styles = {
   },
   imgLabel: {
     fontSize: scaleSize(10),
-
     paddingLeft: scaleSize(10),
     paddingRight: scaleSize(10),
     paddingTop: scaleSize(5),
