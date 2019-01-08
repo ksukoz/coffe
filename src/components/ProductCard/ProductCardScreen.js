@@ -115,7 +115,6 @@ class ProductCardScreen extends Component {
 
   render() {
     const { productItem, reviewsLength, opacity } = this.state;
-    console.error(this.state.categories);
 
     return (
       <Container style={styles.default}>
@@ -274,7 +273,9 @@ class ProductCardScreen extends Component {
                           styles.tabText
                         ]}
                       >
-                        {"Карта кофе".toUpperCase()}
+                        {productItem.pid > 7
+                          ? "Описание".toUpperCase()
+                          : "Карта кофе".toUpperCase()}
                       </Text>
                     </TabHeading>
                   }

@@ -121,35 +121,11 @@ ${
             >
               {product.new == 1 && Date.now() <= +`${product.new_date}000` ? (
                 <View style={styles.imgHit}>
-                  <Text
-                    style={{
-                      fontSize: scaleSize(10),
-
-                      paddingLeft: scaleSize(10),
-                      paddingRight: scaleSize(10),
-                      paddingTop: scaleSize(5),
-                      paddingBottom: scaleSize(5),
-                      color: "#fff"
-                    }}
-                  >
-                    {"Новинка".toUpperCase()}
-                  </Text>
+                  <Text style={styles.imgLabel}>{"Новинка".toUpperCase()}</Text>
                 </View>
               ) : product.popular == 1 ? (
                 <View style={styles.imgHit}>
-                  <Text
-                    style={{
-                      fontSize: scaleSize(10),
-
-                      paddingLeft: scaleSize(10),
-                      paddingRight: scaleSize(10),
-                      paddingTop: scaleSize(5),
-                      paddingBottom: scaleSize(5),
-                      color: "#fff"
-                    }}
-                  >
-                    {"Хит".toUpperCase()}
-                  </Text>
+                  <Text style={styles.imgLabel}>{"Хит".toUpperCase()}</Text>
                 </View>
               ) : null}
 
@@ -224,10 +200,12 @@ ${
                         category => category.id === product.pid
                       )[0].name
                     : ""}
-                  , {product.sort_human} {product.arabic_percent}%
+                  {product.pid > 7
+                    ? ""
+                    : `, ${product.sort_human} ${product.arabic_percent}%`}
                 </Text>
                 <Text style={[styles.text, { color: "#3F3B32" }]}>
-                  Обжарка {product.roast_human}
+                  {product.pid > 7 ? "" : `Обжарка ${product.roast_human}`}
                 </Text>
               </View>
             </CardItem>
@@ -444,11 +422,20 @@ const styles = {
     top: scaleSize(10),
     left: scaleSize(10),
     backgroundColor: "#ef5350",
-    zIndex: 2,
     alignItems: "center",
     justifyContent: "center",
     borderTopLeftRadius: scaleSize(10),
-    borderBottomRightRadius: scaleSize(10)
+    borderBottomRightRadius: scaleSize(10),
+    zIndex: 10
+  },
+  imgLabel: {
+    fontSize: scaleSize(10),
+
+    paddingLeft: scaleSize(10),
+    paddingRight: scaleSize(10),
+    paddingTop: scaleSize(5),
+    paddingBottom: scaleSize(5),
+    color: "#fff"
   },
   shareBtn: {
     position: "absolute",

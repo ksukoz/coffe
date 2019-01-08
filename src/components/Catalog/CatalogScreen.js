@@ -1,32 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Container,
-  Content,
-  Text,
-  Input,
-  Item,
-  Icon,
-  Button
-} from "native-base";
+import { Container, Content, Input } from "native-base";
 import {
   StyleSheet,
   View,
-  ScrollView,
   StatusBar,
-  TouchableOpacity,
   Dimensions,
   ActivityIndicator,
   Image,
   FlatList,
-  Alert,
   AsyncStorage,
   BackHandler
 } from "react-native";
 import { NavigationActions } from "react-navigation";
-import KawaIcon from "../KawaIcon";
 import { getCart } from "../../store/actions/cartActions";
-import { getProducts, findProducts } from "../../store/actions/catalogActions";
+import {
+  getProducts,
+  findProducts,
+  getFullCategories
+} from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "./ProductItem";
@@ -54,6 +46,7 @@ class CatalogScreen extends Component {
   }
 
   async componentWillMount() {
+    this.props.getFullCategories();
     let data = await AsyncStorage.getItem("search");
     this.setState({ search: data ? data : "" }, () =>
       this.props.navigation.getParam("letter") || data
@@ -68,26 +61,6 @@ class CatalogScreen extends Component {
             this.state.page
           )
     );
-    fetch("http://kawaapi.gumione.pro/api/catalog/categories")
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          categories: responseJson.categories
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    fetch("http://kawaapi.gumione.pro/api/catalog/categories/7")
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          categories: [...this.state.categories, ...responseJson.categories]
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   async componentDidMount() {
@@ -109,6 +82,9 @@ class CatalogScreen extends Component {
     }
     if (nextProps.cart) {
       this.setState({ cart: nextProps.cart });
+    }
+    if (nextProps.categories) {
+      this.setState({ categories: nextProps.categories });
     }
     if (nextProps.navigation) {
       let data = await AsyncStorage.getItem("search");
@@ -154,13 +130,6 @@ class CatalogScreen extends Component {
   };
 
   handleBackPress = () => {
-    // this.props.navigation.navigate(this.props.navigation.getParam('linkName', 'Home'), {
-    // 	productId: this.props.navigation.getParam('productId', '0'),
-    // 	categoryId: this.props.navigation.getParam('categoryId', '0'),
-    // 	categoryName: this.props.navigation.getParam('categoryName', 'Кофе в зернах'),
-    // 	letter: ''
-    // });
-    // console.error(this.props.navigation.state.key);
     this.props.navigation.dispatch(NavigationActions.back());
     return true;
   };
@@ -172,7 +141,12 @@ class CatalogScreen extends Component {
   render() {
     return (
       <Container style={styles.default}>
-        <StatusBar barStyle="light-content" hidden={false} translucent={true} />
+        <StatusBar
+          barStyle="light-content"
+          hidden={false}
+          translucent={true}
+          backgroundColor={"rgba(255,255,255,0)"}
+        />
         <Image source={require(MAIN_BG)} style={styles.background} />
         {this.state.search ? (
           <HeaderBar
@@ -268,14 +242,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   cart: state.cart.items,
-  products: state.catalog.products
+  products: state.catalog.products,
+  categories: state.catalog.categoriesFull
 });
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
   getProducts: (category, page) => dispatch(getProducts(category, page)),
   findProducts: (value, category, page, type) =>
-    dispatch(findProducts(value, category, page, type))
+    dispatch(findProducts(value, category, page, type)),
+  getFullCategories: () => dispatch(getFullCategories())
 });
 
 export default connect(

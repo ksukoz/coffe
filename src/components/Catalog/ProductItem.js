@@ -34,35 +34,11 @@ export default class ProductItem extends Component {
         <View style={{ position: "relative" }}>
           {item.new == 1 && Date.now() <= +`${item.new_date}000` ? (
             <View style={styles.imgHit}>
-              <Text
-                style={{
-                  fontSize: scaleSize(10),
-
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10),
-                  paddingTop: scaleSize(5),
-                  paddingBottom: scaleSize(5),
-                  color: "#fff"
-                }}
-              >
-                {"Новинка".toUpperCase()}
-              </Text>
+              <Text style={styles.imgLabel}>{"Новинка".toUpperCase()}</Text>
             </View>
           ) : item.popular == 1 ? (
             <View style={styles.imgHit}>
-              <Text
-                style={{
-                  fontSize: scaleSize(10),
-
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10),
-                  paddingTop: scaleSize(5),
-                  paddingBottom: scaleSize(5),
-                  color: "#fff"
-                }}
-              >
-                {"Хит".toUpperCase()}
-              </Text>
+              <Text style={styles.imgLabel}>{"Хит".toUpperCase()}</Text>
             </View>
           ) : null}
 
@@ -111,7 +87,7 @@ export default class ProductItem extends Component {
                     category => category.id === item.pid
                   )[0].name
                 : ""}
-              , {item.sort_human} {item.arabic_percent}%
+              {item.pid > 7 ? "" : `, {item.sort_human} {item.arabic_percent}%`}
             </Text>
             <Text
               style={
@@ -122,7 +98,7 @@ export default class ProductItem extends Component {
                   : [styles.productRoast, { fontSize: scaleSize(13) }]
               }
             >
-              Обжарка {item.roast_human}
+              {item.pid > 7 ? "" : `Обжарка ${item.roast_human}`}
             </Text>
           </View>
 
@@ -381,6 +357,15 @@ const styles = {
     height: scaleSize(17),
     borderTopLeftRadius: scaleSize(10),
     borderBottomRightRadius: scaleSize(10)
+  },
+  imgLabel: {
+    fontSize: scaleSize(10),
+
+    paddingLeft: scaleSize(10),
+    paddingRight: scaleSize(10),
+    paddingTop: scaleSize(5),
+    paddingBottom: scaleSize(5),
+    color: "#fff"
   },
   productSort: {
     color: "#48433b",
