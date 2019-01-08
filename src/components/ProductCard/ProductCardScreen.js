@@ -300,7 +300,9 @@ class ProductCardScreen extends Component {
                       navigation={this.props.navigation}
                       caption={productItem ? productItem.caption : ""}
                       preparation={
-                        productItem.preparation ? productItem.preparation : []
+                        productItem.preparation !== null
+                          ? productItem.preparation
+                          : []
                       }
                       id={productItem.id}
                       pid={productItem.pid}
