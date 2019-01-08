@@ -1,4 +1,7 @@
 import {
+  GET_CATEGORIES,
+  GET_SUBCATEGORIES,
+  GET_DISHES,
   GET_PRODUCTS,
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
@@ -6,6 +9,45 @@ import {
   GET_MESSAGE
 } from "./types";
 
+export const getCategories = () => dispatch => {
+  fetch("http://kawaapi.gumione.pro/api/catalog/categories")
+    .then(response => response.json())
+    .then(responseJson => {
+      dispatch({
+        type: GET_CATEGORIES,
+        payload: responseJson.categories
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+export const getSubCategories = () => dispatch => {
+  fetch("http://kawaapi.gumione.pro/api/catalog/categories/7")
+    .then(response => response.json())
+    .then(responseJson => {
+      dispatch({
+        type: GET_SUBCATEGORIES,
+        payload: responseJson.categories
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+export const getDishes = () => dispatch => {
+  fetch("http://kawaapi.gumione.pro/api/catalog/categories/8")
+    .then(response => response.json())
+    .then(responseJson => {
+      dispatch({
+        type: GET_DISHES,
+        payload: responseJson.categories
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
 export const getProducts = (category, page) => dispatch => {
   fetch(`http://kawaapi.gumione.pro/api/catalog/items/${category}/10/${page}`)
     .then(response => response.json())

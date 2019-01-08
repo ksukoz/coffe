@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Dimensions, Text, WebView } from "react-native";
-import YouTube from "react-native-youtube";
 import { scaleSize } from "../../helpers/scaleSize";
 import YoutubePlayer from "./YoutubePlayer";
 

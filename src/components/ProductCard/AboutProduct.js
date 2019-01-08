@@ -80,7 +80,7 @@ ${
                 ? `<p>Количество: ${item.quantity} шт.</p>`
                 : ""
             }
-            <p>Упаковка: ${item.package}</p>
+            <p>Упаковка: ${item.package}.</p>
             Страна производитель: ${item.country}`
           }}
         />

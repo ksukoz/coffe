@@ -1,3 +1,7 @@
+export const GET_CATEGORIES = "GET_CATEGORIES";
+export const GET_SUBCATEGORIES = "GET_SUBCATEGORIES";
+export const GET_DISHES = "GET_DISHES";
+
 export const GET_PRODUCTS = "GET_PRODUCTS";
 export const GET_MORE_PRODUCTS = "GET_MORE_PRODUCTS";
 export const GET_PRODUCT = "GET_PRODUCT";
