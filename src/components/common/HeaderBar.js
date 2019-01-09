@@ -144,16 +144,6 @@ export default class HeaderBar extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-              {/* <KawaIcon
-                    style={styles.cartIcon}
-                    size={scaleSize(26)}
-                    name={
-                      this.props.cart
-                        ? "small-cart-in-catalog-with-buy"
-                        : "small-cart-in-catalog"
-                    }
-                  />
-							<KawaIcon style={styles.icons} size={scaleSize(20)} name="big-cart-in-catalog" /> */}
             </View>
           ) : null}
         </Item>
