@@ -244,7 +244,7 @@ export default class SelectRegionScreen extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 
     let formData = new FormData();
-    formData.append("username", "+380999999999");
+    formData.append("username", "+380675635155");
     formData.append("password", "test");
 
     fetch("http://kawaapi.gumione.pro/api/auth/login", {
@@ -391,6 +391,7 @@ export default class SelectRegionScreen extends Component {
         >
           <FlatList
             data={this.state.regions}
+            extraData={this.state}
             ItemSeparatorComponent={this.renderSeparator}
             renderItem={({ item, separators }) => (
               <TouchableOpacity

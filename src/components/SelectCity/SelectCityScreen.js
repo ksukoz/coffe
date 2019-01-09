@@ -246,7 +246,7 @@ export default class SelectCityScreen extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 
     let formData = new FormData();
-    formData.append("username", "+380999999999");
+    formData.append("username", "+380675635155");
     formData.append("password", "test");
 
     this.retrieveData("region_id");

@@ -79,11 +79,12 @@ class DeliveryScreen extends Component {
       const value = await AsyncStorage.getItem(name);
 
       if (value) {
-        if (name == "user_region_name") {
-          this.setState({
-            region_name: value
-          });
-        } else if (name == "user_city_name") {
+        // if (name == "user_region_name") {
+        //   this.setState({
+        //     region_name: value
+        //   });
+        // } else
+        if (name == "user_city_name") {
           this.setState(
             {
               city_name: value
