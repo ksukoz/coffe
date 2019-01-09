@@ -30,7 +30,7 @@ export default class ProductVideo extends Component {
                 color: "#000"
               }}
             >
-              {product.name} {product.weight} g
+              {product.name}
             </Text>
             <Text style={styles.text}>
               {categoryName}, Арабика {product.arabic_percent}%
