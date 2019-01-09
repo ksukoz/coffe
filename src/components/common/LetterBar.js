@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, Input } from "native-base";
-import { ScrollView, TouchableOpacity, AsyncStorage } from "react-native";
+import { ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { getAlphabet } from "../../store/actions/commonActions";
 import { findProducts } from "../../store/actions/catalogActions";
 
@@ -96,7 +96,7 @@ class LetterBar extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet({
   alphabet: {
     color: "#fff",
     padding: scaleSize(10),
@@ -123,7 +123,7 @@ const styles = {
     color: "#58554e",
     marginBottom: scaleSize(5)
   }
-};
+});
 
 const mapStateToProps = state => ({
   alphabet: state.common.letters

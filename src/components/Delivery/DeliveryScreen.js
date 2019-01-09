@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Image,
-  ScrollView,
   StatusBar,
   TouchableOpacity,
   Dimensions,
@@ -54,7 +53,6 @@ class DeliveryScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.delivery) {
-      // console.log(nextProps.delivery);
       this.setState({ delivery: nextProps.delivery });
     }
   }
@@ -79,11 +77,6 @@ class DeliveryScreen extends Component {
       const value = await AsyncStorage.getItem(name);
 
       if (value) {
-        // if (name == "user_region_name") {
-        //   this.setState({
-        //     region_name: value
-        //   });
-        // } else
         if (name == "user_city_name") {
           this.setState(
             {
@@ -93,9 +86,7 @@ class DeliveryScreen extends Component {
           );
         }
       }
-    } catch (error) {
-      // Error retrieving data
-    }
+    } catch (error) {}
   };
 
   renderLoadingView() {
@@ -121,7 +112,6 @@ class DeliveryScreen extends Component {
   }
 
   render() {
-    // console.error(this.state.delivery);
     if (this.state.loading) {
       return this.renderLoadingView();
     }
@@ -134,11 +124,7 @@ class DeliveryScreen extends Component {
           backgroundColor={"rgba(0,0,0,0)"}
         />
         <View style={{ flex: 1 }}>
-          <Image
-            source={require(MAIN_BG)}
-            style={styles.background}
-            // blurRadius={3}
-          />
+          <Image source={require(MAIN_BG)} style={styles.background} />
           <View style={styles.container}>
             <Content>
               <HeaderBar
@@ -488,7 +474,7 @@ class DeliveryScreen extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   defaultFont: { color: "#fff", fontSize: scaleSize(16) },
   background: {
     width: "100%",
@@ -503,7 +489,7 @@ const styles = {
     flex: 1,
     height: SCREEN_HEIGHT
   }
-};
+});
 
 const mapStateToProps = state => ({
   delivery: state.common.delivery

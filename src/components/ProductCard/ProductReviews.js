@@ -5,10 +5,10 @@ import {
   Dimensions,
   ActivityIndicator,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  StyleSheet
 } from "react-native";
 import { Text, Input, Card, CardItem } from "native-base";
-import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 
 import {
@@ -251,7 +251,7 @@ class ProductReviews extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     marginLeft: scaleSize(5),
     marginRight: scaleSize(5),
@@ -311,7 +311,7 @@ const styles = {
     paddingTop: scaleSize(7),
     paddingBottom: scaleSize(9)
   }
-};
+});
 
 const mapStateToProps = state => ({
   reviews: state.catalog.reviews,

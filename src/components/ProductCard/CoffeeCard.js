@@ -6,7 +6,8 @@ import {
   StatusBar,
   TouchableOpacity,
   Dimensions,
-  PanResponder
+  PanResponder,
+  StyleSheet
 } from "react-native";
 import KawaIcon from "../KawaIcon";
 import Svg, { G } from "react-native-svg";
@@ -983,7 +984,7 @@ export default class CoffeeCard extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   cardContainer: {
     marginLeft: scaleSize(5),
     marginRight: scaleSize(5),
@@ -1032,4 +1033,4 @@ const styles = {
     width: "90%",
     opacity: 0
   }
-};
+});

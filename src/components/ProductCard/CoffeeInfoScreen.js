@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { Content, Text, List, ListItem } from "native-base";
-import { View, StatusBar, Dimensions, Image, BackHandler } from "react-native";
+import {
+  View,
+  StatusBar,
+  Dimensions,
+  Image,
+  BackHandler,
+  StyleSheet
+} from "react-native";
 import KawaIcon from "../KawaIcon";
 import HeaderBar from "../common/HeaderBar";
 import { scaleSize } from "../../helpers/scaleSize";
@@ -298,7 +305,7 @@ export default class CoffeeInfoScreen extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: SCREEN_WIDTH
@@ -328,4 +335,4 @@ const styles = {
     color: "#fff",
     fontSize: scaleSize(15)
   }
-};
+});

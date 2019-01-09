@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  WebView
+  StyleSheet
 } from "react-native";
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -61,9 +61,7 @@ export default class AboutProduct extends Component {
     return (
       <View
         style={{
-          // height: scaleSize(250),
           paddingLeft: scaleSize(15)
-          // paddingRight: scaleSize(5)
         }}
       >
         <MyWebView
@@ -377,7 +375,7 @@ ${
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     marginLeft: scaleSize(8),
     marginRight: scaleSize(8),
@@ -475,4 +473,4 @@ const styles = {
     paddingLeft: scaleSize(7),
     fontWeight: "300"
   }
-};
+});

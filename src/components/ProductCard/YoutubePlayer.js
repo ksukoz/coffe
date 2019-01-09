@@ -4,8 +4,6 @@ import { scaleSize } from "../../helpers/scaleSize";
 
 import WebView from "react-native-android-fullscreen-webview-video";
 
-import Orientation from "react-native-orientation";
-
 export default class YoutubePlayer extends Component {
   constructor(props) {
     super(props);
@@ -64,7 +62,6 @@ export default class YoutubePlayer extends Component {
         <View
           style={{
             borderRadius: scaleSize(5),
-            // overflow: 'hidden',
             marginBottom: scaleSize(15)
           }}
         >

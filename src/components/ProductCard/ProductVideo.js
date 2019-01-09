@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { View, Dimensions, Text, WebView } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { scaleSize } from "../../helpers/scaleSize";
 import YoutubePlayer from "./YoutubePlayer";
 
 export default class ProductVideo extends Component {
   render() {
-    const { videos, product, categoryName } = this.props;
+    const { videos } = this.props;
 
     return (
       <View style={{ backgroundColor: "transparent", flexGrow: 1, flex: 1 }}>
@@ -30,7 +30,7 @@ export default class ProductVideo extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
     marginLeft: scaleSize(5),
     marginRight: scaleSize(5),
@@ -40,4 +40,4 @@ const styles = {
   },
 
   text: { color: "rgba(48, 44, 35, 0.9)", fontSize: scaleSize(13) }
-};
+});

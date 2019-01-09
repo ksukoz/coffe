@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 
 import { Item, Text, Button, Icon } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -152,11 +152,11 @@ export default class HeaderBar extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   head: {
     marginTop: scaleSize(25)
   },
   icons: {
     color: "#fff"
   }
-};
+});

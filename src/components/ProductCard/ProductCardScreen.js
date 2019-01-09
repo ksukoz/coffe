@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Linking,
   ActivityIndicator,
-  BackHandler
+  BackHandler,
+  StyleSheet
 } from "react-native";
 import {
   Container,
@@ -392,14 +393,7 @@ class ProductCardScreen extends Component {
                     ]}
                   >
                     <Content>
-                      <ProductVideo
-                        videos={productItem.videos}
-                        product={productItem}
-                        categoryName={this.props.navigation.getParam(
-                          "categoryName",
-                          "0"
-                        )}
-                      />
+                      <ProductVideo videos={productItem.videos} />
                     </Content>
                   </Tab>
                 ) : null}
@@ -508,7 +502,7 @@ class ProductCardScreen extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   default: {
     backgroundColor: "transparent",
     flex: 1
@@ -570,7 +564,7 @@ const styles = {
     left: 0,
     right: 0
   }
-};
+});
 
 const mapStateToProps = state => ({
   product: state.catalog.product,

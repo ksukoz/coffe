@@ -460,8 +460,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.catalog.categories
-  // subCategories: state.catalog.subCategories,
-  // dishes: state.catalog.dishes
 });
 
 const mapDispatchToProps = dispatch => ({

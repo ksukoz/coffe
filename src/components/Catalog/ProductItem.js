@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Text } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
-import {
-  updateCart,
-  addToCart,
-  getCart
-} from "../../store/actions/cartActions";
+import { updateCart, addToCart } from "../../store/actions/cartActions";
 
 class ProductItem extends Component {
   constructor(props) {
@@ -317,7 +313,7 @@ class ProductItem extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   product: {
     backgroundColor: "rgba(255,255,255, 0.7)",
     marginBottom: scaleSize(7),
@@ -417,7 +413,7 @@ const styles = {
     paddingLeft: scaleSize(7),
     fontWeight: "300"
   }
-};
+});
 
 const mapDispatchToProps = dispatch => ({
   updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
