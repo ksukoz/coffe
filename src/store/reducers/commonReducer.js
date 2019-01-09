@@ -1,8 +1,9 @@
-import { GET_MESSAGE, GET_LETTERS } from "../actions/types";
+import { GET_MESSAGE, GET_LETTERS, GET_DELIVERY_COST } from "../actions/types";
 
 const initialState = {
   message: "",
-  letters: null
+  letters: null,
+  delivery: []
 };
 
 export default function(state = initialState, action) {
@@ -16,6 +17,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         letters: action.payload
+      };
+    case GET_DELIVERY_COST:
+      return {
+        ...state,
+        delivery: [...state.delivery, ...action.payload]
       };
     default:
       return state;

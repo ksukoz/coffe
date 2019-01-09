@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -18,6 +19,8 @@ import TextInputMask from "react-native-text-input-mask";
 import KawaIcon from "./../KawaIcon";
 import HeaderBar from "../common/HeaderBar";
 
+import { getDeliveryCost } from "../../store/actions/commonActions";
+
 import { scaleSize } from "../../helpers/scaleSize";
 
 Input.defaultProps.selectionColor = "#ea9308";
@@ -28,14 +31,14 @@ StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const MAIN_BG = "../../static/img/background.png";
-
-export default class ProfileEditScreen extends Component {
+class DeliveryScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       currentCity: null,
-      city_name: "Выберите город"
+      city_name: "Выберите город",
+      delivery: []
     };
   }
 
@@ -47,6 +50,13 @@ export default class ProfileEditScreen extends Component {
     this.setState({
       loading: false
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.delivery) {
+      // console.log(nextProps.delivery);
+      this.setState({ delivery: nextProps.delivery });
+    }
   }
 
   componentWillUnmount() {
@@ -74,9 +84,12 @@ export default class ProfileEditScreen extends Component {
             region_name: value
           });
         } else if (name == "user_city_name") {
-          this.setState({
-            city_name: value
-          });
+          this.setState(
+            {
+              city_name: value
+            },
+            () => this.props.getDeliveryCost(value)
+          );
         }
       }
     } catch (error) {
@@ -107,6 +120,7 @@ export default class ProfileEditScreen extends Component {
   }
 
   render() {
+    // console.error(this.state.delivery);
     if (this.state.loading) {
       return this.renderLoadingView();
     }
@@ -130,7 +144,6 @@ export default class ProfileEditScreen extends Component {
                 navigation={this.props.navigation}
                 title="Доставка и оплата"
               />
-
               <View style={styles.cardFullCity}>
                 <View
                   style={{
@@ -235,7 +248,19 @@ export default class ProfileEditScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Новая Почта, отделение
                       </Text>
-                      <Text style={styles.defaultFont}>50 грн</Text>
+                      <Text style={styles.defaultFont}>
+                        {this.state.delivery.length > 3
+                          ? this.state.delivery.filter(item => {
+                              if (
+                                item.delivery === "np" &&
+                                item.courier === 0
+                              ) {
+                                return item;
+                              }
+                            })[0].cost
+                          : ""}{" "}
+                        грн
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -246,7 +271,16 @@ export default class ProfileEditScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Новая Почта, курьер
                       </Text>
-                      <Text style={styles.defaultFont}>70 грн</Text>
+                      <Text style={styles.defaultFont}>
+                        {this.state.delivery.length > 3
+                          ? this.state.delivery.filter(item => {
+                              if (item.delivery === "np" && item.courier == 1) {
+                                return item;
+                              }
+                            })[0].cost
+                          : ""}{" "}
+                        грн
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -280,7 +314,19 @@ export default class ProfileEditScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Укрпочта, отделение
                       </Text>
-                      <Text style={styles.defaultFont}>30 грн</Text>
+                      <Text style={styles.defaultFont}>
+                        {this.state.delivery.length > 3
+                          ? this.state.delivery.filter(item => {
+                              if (
+                                item.delivery === "up" &&
+                                item.courier === 0
+                              ) {
+                                return item;
+                              }
+                            })[0].cost
+                          : ""}{" "}
+                        грн
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -289,7 +335,19 @@ export default class ProfileEditScreen extends Component {
                       }}
                     >
                       <Text style={styles.defaultFont}>Укрпочта, курьер</Text>
-                      <Text style={styles.defaultFont}>50 грн</Text>
+                      <Text style={styles.defaultFont}>
+                        {this.state.delivery.length > 3
+                          ? this.state.delivery.filter(item => {
+                              if (
+                                item.delivery === "up" &&
+                                item.courier === 1
+                              ) {
+                                return item;
+                              }
+                            })[0].cost
+                          : ""}{" "}
+                        грн
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -445,3 +503,16 @@ const styles = {
     height: SCREEN_HEIGHT
   }
 };
+
+const mapStateToProps = state => ({
+  delivery: state.common.delivery
+});
+
+const mapDispatchToProps = dispatch => ({
+  getDeliveryCost: city => dispatch(getDeliveryCost(city))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DeliveryScreen);
