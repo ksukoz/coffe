@@ -23,18 +23,6 @@ export default class ProductVideo extends Component {
             ) : (
               <Text />
             )}
-            <Text
-              style={{
-                fontSize: scaleSize(18),
-                fontWeight: "bold",
-                color: "#000"
-              }}
-            >
-              {product.name}
-            </Text>
-            <Text style={styles.text}>
-              {categoryName}, Арабика {product.arabic_percent}%
-            </Text>
           </View>
         </View>
       </View>
