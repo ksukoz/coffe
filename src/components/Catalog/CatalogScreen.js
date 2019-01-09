@@ -37,7 +37,7 @@ class CatalogScreen extends Component {
       products: [],
       categories: [],
       page: 0,
-      cart: {},
+      cart: [],
       search: "",
       stylesIndex: 0,
       loading: true
@@ -68,8 +68,8 @@ class CatalogScreen extends Component {
   }
 
   async componentDidMount() {
-    let data = await AsyncStorage.getItem("search");
     this.props.getCart();
+    let data = await AsyncStorage.getItem("search");
     if (!data && !this.props.navigation.getParam("letter", "")) {
       this.props.getProducts(
         this.props.navigation.getParam("categoryId", "0"),
@@ -111,24 +111,21 @@ class CatalogScreen extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  handleEnd = () =>
-    this.setState(
-      { page: this.state.page + 10 },
-      // console.error(this.state.page + 10)
-      this.state.search || this.props.navigation.getParam("letter")
-        ? this.props.findProducts(
-            this.state.search
-              ? this.state.search
-              : this.props.navigation.getParam("letter"),
-            this.props.navigation.getParam("categoryId", "0"),
-            this.state.page + 10,
-            "after"
-          )
-        : this.props.getProducts(
-            this.props.navigation.getParam("categoryId", "0"),
-            this.state.page + 10
-          )
-    );
+  handleEnd = () => {
+    this.state.search || this.props.navigation.getParam("letter")
+      ? this.props.findProducts(
+          this.state.search
+            ? this.state.search
+            : this.props.navigation.getParam("letter"),
+          this.props.navigation.getParam("categoryId", "0"),
+          this.state.page,
+          "after"
+        )
+      : this.props.getProducts(
+          this.props.navigation.getParam("categoryId", "0"),
+          this.state.page
+        );
+  };
   // };
 
   handleBackPress = () => {
@@ -154,6 +151,7 @@ class CatalogScreen extends Component {
           <HeaderBar
             menu={true}
             catalog={true}
+            cart={this.state.cart}
             title={this.state.search}
             getStyles={this.getStyles}
           />
@@ -178,40 +176,46 @@ class CatalogScreen extends Component {
             </Content>
           </View>
         )}
-        <FlatList
-          style={{
-            marginLeft: scaleSize(10),
-            marginRight:
-              this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12)
-          }}
-          keyExtractor={item => item.id}
-          onEndReached={() => {
-            this.setState({
-              loading: true
-            });
-            this.handleEnd();
-          }}
-          ListFooterComponent={() =>
-            this.state.loading ? (
-              <ActivityIndicator size="large" animating />
-            ) : null
-          }
-          onEndReachedThreshold={0.1}
-          data={this.props.products}
-          extraData={this.state.page}
-          renderItem={({ item }) => (
-            <ProductItem
-              navigation={this.props.navigation}
-              categoryId={item.pid}
-              item={item}
-              categories={this.state.categories}
-              styleIndex={this.state.stylesIndex}
-            />
-          )}
-          key={this.state.stylesIndex === 1 ? "h" : "v"}
-          numColumns={this.state.stylesIndex === 1 ? 2 : 1}
-          viewabilityConfig={this.viewabilityConfig}
-        />
+        <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+          <FlatList
+            style={{
+              marginLeft: scaleSize(10),
+              marginRight:
+                this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12)
+            }}
+            keyExtractor={item => item.id}
+            onEndReached={() =>
+              this.setState(
+                {
+                  loading: true,
+                  page: this.state.page + 10
+                },
+                () => this.handleEnd()
+              )
+            }
+            ListFooterComponent={() =>
+              this.state.loading ? (
+                <ActivityIndicator size="large" animating />
+              ) : null
+            }
+            onEndReachedThreshold={0.1}
+            data={this.props.products}
+            extraData={this.state}
+            renderItem={({ item }) => (
+              <ProductItem
+                cart={this.state.cart}
+                navigation={this.props.navigation}
+                categoryId={item.pid}
+                item={item}
+                categories={this.state.categories}
+                styleIndex={this.state.stylesIndex}
+              />
+            )}
+            key={this.state.stylesIndex === 1 ? "h" : "v"}
+            numColumns={this.state.stylesIndex === 1 ? 2 : 1}
+            viewabilityConfig={this.viewabilityConfig}
+          />
+        </View>
       </Container>
     );
   }

@@ -32,10 +32,14 @@ export const getCart = () => dispatch => {
     });
 };
 
-export const addToCart = data => dispatch => {
+export const addToCart = id => dispatch => {
   let formData = new FormData();
+  let data = new FormData();
   formData.append("username", "+380675635155");
   formData.append("password", "test");
+
+  data.append("item_id", id);
+  data.append("qty", 1);
 
   fetch("http://kawaapi.gumione.pro/api/auth/login", {
     method: "POST",
@@ -63,10 +67,14 @@ export const addToCart = data => dispatch => {
     });
 };
 
-export const updateCart = data => dispatch => {
+export const updateCart = (id, quantity) => dispatch => {
   let formData = new FormData();
+  let data = new FormData();
   formData.append("username", "+380675635155");
   formData.append("password", "test");
+
+  data.append("item_id", id);
+  data.append("qty", quantity);
 
   fetch("http://kawaapi.gumione.pro/api/auth/login", {
     method: "POST",

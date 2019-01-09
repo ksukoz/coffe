@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { View, TouchableOpacity, Image } from "react-native";
 import { Text } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -6,7 +7,13 @@ import StarRating from "react-native-star-rating";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
-export default class ProductItem extends Component {
+import {
+  updateCart,
+  addToCart,
+  getCart
+} from "../../store/actions/cartActions";
+
+class ProductItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,8 +24,9 @@ export default class ProductItem extends Component {
   }
 
   render() {
-    const { item, categoryId, styleIndex } = this.props;
-    // console.error(styleIndex);
+    const { item, categoryId, styleIndex, cart } = this.props;
+
+    const filteredCart = cart.filter(cartItem => cartItem.id === item.id);
 
     return (
       <TouchableOpacity
@@ -220,7 +228,11 @@ export default class ProductItem extends Component {
             >
               <TouchableOpacity
                 style={{ position: "relative" }}
-                onPress={() => this.setState({ cart: !this.state.cart })}
+                onPress={() =>
+                  filteredCart.length > 0
+                    ? this.props.updateCart(item.id, 0)
+                    : this.props.addToCart(item.id)
+                }
               >
                 <KawaIcon
                   style={
@@ -230,14 +242,14 @@ export default class ProductItem extends Component {
                   }
                   size={styleIndex === 2 ? scaleSize(25) : scaleSize(20)}
                   name={
-                    this.state.cart
+                    filteredCart.length > 0
                       ? "small-cart-in-catalog-with-buy"
                       : "small-cart-in-catalog"
                   }
                 />
                 <View
                   style={{
-                    opacity: this.state.cart ? 1 : 0,
+                    opacity: filteredCart.length > 0 ? 1 : 0,
                     position: "absolute",
                     bottom: 0,
                     right: 0,
@@ -259,7 +271,7 @@ export default class ProductItem extends Component {
                       color: "#fff"
                     }}
                   >
-                    1
+                    {filteredCart.length > 0 ? filteredCart[0].qty : ""}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -406,3 +418,13 @@ const styles = {
     fontWeight: "300"
   }
 };
+
+const mapDispatchToProps = dispatch => ({
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
+  addToCart: id => dispatch(addToCart(id))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ProductItem);
