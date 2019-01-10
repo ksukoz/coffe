@@ -50,6 +50,7 @@ class ProductCardScreen extends Component {
 
     this.state = {
       categories: [],
+      cart: [],
       modalVisible: false,
       opacity: 0,
       currentTab: 0,
@@ -74,6 +75,9 @@ class ProductCardScreen extends Component {
     }
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories });
+    }
+    if (nextProps.cart) {
+      this.setState({ cart: nextProps.cart });
     }
   }
 
@@ -201,6 +205,7 @@ class ProductCardScreen extends Component {
                       onImgClose={() => this.setState({ opacity: false })}
                       productItem={productItem}
                       reviewsLength={reviewsLength}
+                      cart={this.state.cart}
                       onPressDelivery={() =>
                         this.props.navigation.navigate("DeliveryScreen", {
                           linkName: "ProductCard",
@@ -568,7 +573,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   product: state.catalog.product,
-  categories: state.catalog.categoriesFull
+  categories: state.catalog.categoriesFull,
+  cart: state.cart.items
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   View,
   ScrollView,
@@ -16,15 +17,16 @@ import MyWebView from "react-native-webview-autoheight";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
+import { updateCart, addToCart } from "../../store/actions/cartActions";
+
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-export default class AboutProduct extends Component {
+class AboutProduct extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: true,
-      cart: false
+      loading: true
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -87,9 +89,13 @@ ${
   }
 
   render() {
-    const { productItem } = this.props;
+    const { productItem, cart } = this.props;
     const dataArray = [];
     let product = {};
+
+    const filteredCart = cart.filter(
+      cartItem => cartItem.id === productItem.id
+    );
 
     if (productItem) {
       dataArray.push({
@@ -280,20 +286,24 @@ ${
               >
                 <TouchableOpacity
                   style={{ position: "relative" }}
-                  onPress={() => this.setState({ cart: !this.state.cart })}
+                  onPress={() =>
+                    filteredCart.length > 0
+                      ? this.props.updateCart(productItem.id, 0)
+                      : this.props.addToCart(productItem.id)
+                  }
                 >
                   <KawaIcon
                     style={styles.cartIcon}
                     size={scaleSize(26)}
                     name={
-                      this.state.cart
+                      filteredCart.length > 0
                         ? "small-cart-in-catalog-with-buy"
                         : "small-cart-in-catalog"
                     }
                   />
                   <View
                     style={{
-                      opacity: this.state.cart ? 1 : 0,
+                      opacity: filteredCart.length > 0 ? 1 : 0,
                       position: "absolute",
                       bottom: 0,
                       right: 0,
@@ -315,7 +325,7 @@ ${
                         color: "#fff"
                       }}
                     >
-                      1
+                      {filteredCart.length > 0 ? filteredCart[0].qty : ""}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -474,3 +484,13 @@ const styles = StyleSheet.create({
     fontWeight: "300"
   }
 });
+
+const mapDispatchToProps = dispatch => ({
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
+  addToCart: id => dispatch(addToCart(id))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AboutProduct);
