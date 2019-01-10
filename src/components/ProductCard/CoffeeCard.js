@@ -543,7 +543,7 @@ export default class CoffeeCard extends Component {
                   right: scaleSize(10)
                 }}
                 onPress={() =>
-                  navigation.navigate("CoffeeInfo", {
+                  navigation.push("CoffeeInfo", {
                     linkName: "ProductCardScreen",
                     productId: id,
                     preparation: preparation,

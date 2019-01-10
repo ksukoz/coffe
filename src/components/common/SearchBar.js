@@ -18,9 +18,17 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       search: "",
+      placeholder: this.props.placeholder,
       focus: false
     };
     Input.defaultProps.selectionColor = "#000";
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { placeholder } = this.props;
+    if (placeholder !== prevProps.placeholder) {
+      this.setState({ placeholder });
+    }
   }
 
   handleSearchInput = text => {
@@ -69,7 +77,7 @@ class SearchBar extends Component {
           <Input
             style={styles.searchInput}
             placeholderTextColor="#becdcf"
-            placeholder={this.props.placeholder}
+            placeholder={this.state.placeholder}
             onChangeText={this.handleSearchInput}
             onSubmitEditing={this.handleSearch}
             onFocus={() => this.setState({ focus: true })}

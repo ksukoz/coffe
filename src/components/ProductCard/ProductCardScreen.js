@@ -108,13 +108,7 @@ class ProductCardScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("Catalog", {
-      categoryId: this.props.navigation.getParam("categoryId", "0"),
-      categoryName: this.props.navigation.getParam(
-        "categoryName",
-        "Кофе в зернах"
-      )
-    });
+    this.props.navigation.navigate("Catalog");
     return true;
   };
 
@@ -160,9 +154,7 @@ class ProductCardScreen extends Component {
                     }}
                   />
                 )}
-                // initialPage={this.state.currentTab}
                 onChangeTab={({ i }) => this.setState({ currentTab: i })}
-                // onScroll={e => console.error(e)}
                 prerenderingSiblingsNumber={Infinity}
               >
                 <Tab
@@ -214,7 +206,7 @@ class ProductCardScreen extends Component {
                         })
                       }
                       onPressOtherProducts={() =>
-                        this.props.navigation.navigate("CatalogScreen", {
+                        this.props.navigation.navigate("Home", {
                           categoryId: 7,
                           linkName: "ProductCard",
                           productId: productItem.id

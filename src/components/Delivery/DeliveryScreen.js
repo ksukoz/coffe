@@ -62,13 +62,7 @@ class DeliveryScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("ProductCard", {
-      categoryId: this.props.navigation.getParam("categoryId", "0"),
-      categoryName: this.props.navigation.getParam(
-        "categoryName",
-        "Кофе в зернах"
-      )
-    });
+    this.props.navigation.pop();
     return true;
   };
 

@@ -27,10 +27,15 @@ class ProductItem extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          // AsyncStorage.setItem("idOfProduct", JSON.stringify(item));
           this.props.navigation.navigate("ProductCardScreen", {
             productId: item.id,
-            categoryName: this.props.navigation.getParam("categoryName", "0")
+            searchPlaceholder:
+              this.props.categories.filter(category => category.id === item.pid)
+                .length > 0
+                ? this.props.categories.filter(
+                    category => category.id === item.pid
+                  )[0].name
+                : ""
           });
         }}
         style={this.state.styles[styleIndex]}

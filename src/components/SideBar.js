@@ -64,7 +64,7 @@ export default class SideBar extends React.Component {
     self = this;
   }
   routeMove(route: string) {
-    this.props.navigation.navigate(route);
+    this.props.navigation.push(route);
     this.props.navigation.closeDrawer();
   }
   render() {

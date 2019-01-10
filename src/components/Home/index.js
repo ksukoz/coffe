@@ -9,7 +9,7 @@ import MyCoffee from "../MyCoffee/index.js";
 import Info from "../Info/index.js";
 import Delivery from "../Delivery/index.js";
 import SideBar from "../SideBar.js";
-import { DrawerNavigator } from "react-navigation";
+import { DrawerNavigator, StackNavigator } from "react-navigation";
 import { Dimensions } from "react-native";
 import RecipesMain from "../Recipes/Main/index.js";
 import RecipeSearch from "../Recipes/Search/index.js";
@@ -20,10 +20,9 @@ import RecipeFeedback from "../Recipes/Feedback/index.js";
 import ProductCard from "../ProductCard/index.js";
 import Order from "../Order/index.js";
 
-const HomeScreenRouter = DrawerNavigator(
+const Home = DrawerNavigator(
   {
     Home: { screen: HomeScreen },
-    Catalog: { screen: Catalog },
     Profile: { screen: Profile },
     ProfileEdit: { screen: ProfileEdit },
     SelectCity: { screen: SelectCity },
@@ -36,8 +35,6 @@ const HomeScreenRouter = DrawerNavigator(
     RecipeProductScreen: { screen: RecipeProduct },
     RecipeFavoriteScreen: { screen: RecipeFavorite },
     RecipeFeedbackScreen: { screen: RecipeFeedback },
-    Delivery: { screen: Delivery },
-    ProductCard: { screen: ProductCard },
     Order: { screen: Order }
   },
   {
@@ -46,4 +43,17 @@ const HomeScreenRouter = DrawerNavigator(
     drawerWidth: Dimensions.get("window").width * 0.85
   }
 );
+
+const HomeScreenRouter = StackNavigator(
+  {
+    Home: { screen: Home },
+    Catalog: { screen: Catalog },
+    Delivery: { screen: Delivery },
+    ProductCard: { screen: ProductCard }
+  },
+  {
+    headerMode: "none"
+  }
+);
+
 export default HomeScreenRouter;

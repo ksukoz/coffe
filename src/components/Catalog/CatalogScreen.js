@@ -12,7 +12,8 @@ import {
   BackHandler,
   StyleSheet
 } from "react-native";
-import { NavigationActions } from "react-navigation";
+
+import { getAlphabet } from "../../store/actions/commonActions";
 import { getCart } from "../../store/actions/cartActions";
 import {
   getProducts,
@@ -108,7 +109,11 @@ class CatalogScreen extends Component {
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    this.props.getAlphabet(1);
+    this.props.BackHandler.removeEventListener(
+      "hardwareBackPress",
+      this.handleBackPress
+    );
   }
 
   handleEnd = () => {
@@ -129,7 +134,7 @@ class CatalogScreen extends Component {
   // };
 
   handleBackPress = () => {
-    this.props.navigation.dispatch(NavigationActions.back());
+    this.props.navigation.pop();
     return true;
   };
 
@@ -161,7 +166,7 @@ class CatalogScreen extends Component {
               <View style={styles.head}>
                 <SearchBar
                   placeholder={this.props.navigation.getParam(
-                    "categoryName",
+                    "searchPlaceholder",
                     "Найти кофе"
                   )}
                   style={{ marginBottom: scaleSize(20) }}
@@ -258,7 +263,8 @@ const mapDispatchToProps = dispatch => ({
   getProducts: (category, page) => dispatch(getProducts(category, page)),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
-  getFullCategories: () => dispatch(getFullCategories())
+  getFullCategories: () => dispatch(getFullCategories()),
+  getAlphabet: lang => dispatch(getAlphabet(lang))
 });
 
 export default connect(

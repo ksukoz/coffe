@@ -81,11 +81,11 @@ class HomeScreen extends Component {
   }
 
   handleBackPress = () => {
-    if (this.state.subcategories) {
-      this.setState({ subcategories: false }, this.props.getCategories());
-      return true;
-    } else if (this.state.dishes) {
+    if (this.state.dishes) {
       this.setState({ dishes: false }, this.props.getSubCategories());
+      return true;
+    } else if (this.state.subcategories) {
+      this.setState({ subcategories: false }, this.props.getCategories());
       return true;
     } else {
       return false;
@@ -132,7 +132,7 @@ class HomeScreen extends Component {
                         onPress={() =>
                           this.props.navigation.navigate("CatalogScreen", {
                             categoryId: category.id,
-                            categoryName: category.name,
+                            searchPlaceholder: category.name,
                             letter: ""
                           })
                         }
@@ -238,7 +238,7 @@ class HomeScreen extends Component {
                           ? this.props.getDishes()
                           : this.props.navigation.navigate("CatalogScreen", {
                               categoryId: category.id,
-                              categoryName: category.name,
+                              searchPlaceholder: category.name,
                               letter: ""
                             })
                       }

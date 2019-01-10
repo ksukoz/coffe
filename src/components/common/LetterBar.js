@@ -54,7 +54,6 @@ class LetterBar extends Component {
     this.setState({ letter }, () => {
       this.props.navigation.navigate("CatalogScreen", {
         categoryId: this.props.categoryId,
-        categoryName: this.props.categoryName,
         letter
       });
       this.props.findProducts(
@@ -67,8 +66,6 @@ class LetterBar extends Component {
   }
 
   render() {
-    // const { categoryId, categoryName, navigation } = this.props;
-
     return (
       <ScrollView horizontal={true} style={styles.alphabetMenu}>
         {this.state.alphabet.map(item => {
@@ -81,7 +78,8 @@ class LetterBar extends Component {
             >
               <Text
                 style={
-                  this.state.letter === item.letter
+                  this.state.letter === item.letter &&
+                  this.props.navigation.state.routeName !== "Home"
                     ? [styles.alphabet, styles.alphabetActive]
                     : styles.alphabet
                 }

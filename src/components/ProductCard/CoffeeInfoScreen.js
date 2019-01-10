@@ -30,9 +30,7 @@ export default class CoffeeInfoScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("ProductCardScreen", {
-      productId: this.props.navigation.getParam("productId")
-    });
+    this.props.navigation.pop();
     return true;
   };
 
