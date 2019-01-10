@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, AsyncStorage, StyleSheet } from "react-native";
+import {
+  View,
+  AsyncStorage,
+  StyleSheet,
+  ScrollView,
+  Keyboard
+} from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
 import { findProducts } from "../../store/actions/catalogActions";
 import KawaIcon from "../KawaIcon";
@@ -11,7 +17,8 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: ""
+      search: "",
+      focus: false
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -26,23 +33,46 @@ class SearchBar extends Component {
     });
   };
 
+  unFocus = () => {
+    Keyboard.dismiss();
+    this.setState({ focus: false });
+  };
+
   render() {
     return (
       <View style={styles.head}>
-        <Item style={styles.search} rounded>
-          <Button
-            transparent
-            onPress={() => this.props.navigation.openDrawer()}
-          >
-            <Icon style={styles.iconMenu} name="ios-menu" />
-          </Button>
-          <Icon style={{ color: "#58554e" }} name="ios-search" />
+        <ScrollView
+          contentContainerStyle={styles.search}
+          keyboardShouldPersistTaps={"handled"}
+        >
+          {this.state.focus ? (
+            <Icon
+              style={{
+                color: "#58554e",
+                paddingLeft: scaleSize(16),
+                paddingRight: scaleSize(20)
+              }}
+              name="md-arrow-back"
+              onPress={() => this.unFocus()}
+            />
+          ) : (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Button
+                transparent
+                onPress={() => this.props.navigation.openDrawer()}
+              >
+                <Icon style={styles.iconMenu} name="ios-menu" />
+              </Button>
+              <Icon style={{ color: "#58554e" }} name="ios-search" />
+            </View>
+          )}
           <Input
             style={styles.searchInput}
             placeholderTextColor="#becdcf"
             placeholder={this.props.placeholder}
             onChangeText={this.handleSearchInput}
             onSubmitEditing={this.handleSearch}
+            onFocus={() => this.setState({ focus: true })}
             value={this.state.search}
           />
           {this.state.search.length > 0 ? (
@@ -72,7 +102,7 @@ class SearchBar extends Component {
               name="code"
             />
           )}
-        </Item>
+        </ScrollView>
       </View>
     );
   }
@@ -83,12 +113,15 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(35)
   },
   search: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#fff",
     marginRight: scaleSize(10),
     marginLeft: scaleSize(10),
     height: scaleSize(40),
     paddingLeft: scaleSize(5),
-    paddingRight: scaleSize(10)
+    paddingRight: scaleSize(10),
+    borderRadius: scaleSize(20)
   },
   searchIcon: {
     paddingTop: scaleSize(3),
