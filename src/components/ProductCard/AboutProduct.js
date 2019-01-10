@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
   },
   cartIcon: {
     color: "#48433b",
-    textAling: "center"
+    textAlign: "center"
   },
   btn: {
     backgroundColor: "#ea9308",

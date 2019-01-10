@@ -78,7 +78,7 @@ class SearchBar extends Component {
   }
 }
 
-const styles = StyleSheet({
+const styles = StyleSheet.create({
   head: {
     marginTop: scaleSize(35)
   },

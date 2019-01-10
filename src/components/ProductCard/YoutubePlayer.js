@@ -40,7 +40,6 @@ export default class YoutubePlayer extends Component {
         )
           .then(response => response.json())
           .then(responseJson => {
-            // console.error(responseJson);
             this.setState({
               videoChannel: responseJson.items[0].snippet.title,
               videoImg: responseJson.items[0].snippet.thumbnails.default.url

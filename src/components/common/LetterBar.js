@@ -96,7 +96,7 @@ class LetterBar extends Component {
   }
 }
 
-const styles = StyleSheet({
+const styles = StyleSheet.create({
   alphabet: {
     color: "#fff",
     padding: scaleSize(10),

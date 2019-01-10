@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Container, Content, Input } from "native-base";
 import {
-  StyleSheet,
   View,
   StatusBar,
   Dimensions,
@@ -10,7 +9,8 @@ import {
   Image,
   FlatList,
   AsyncStorage,
-  BackHandler
+  BackHandler,
+  StyleSheet
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 import { getCart } from "../../store/actions/cartActions";
