@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   AsyncStorage,
   Image,
+  Keyboard,
   BackHandler
 } from "react-native";
 import { scaleSize } from "../../helpers/scaleSize";
@@ -34,7 +35,8 @@ class HomeScreen extends Component {
       categories: [],
       subcategories: false,
       dishes: false,
-      loading: true
+      loading: true,
+      focus: false
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -52,10 +54,14 @@ class HomeScreen extends Component {
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories, loading: false });
     }
+    if (nextProps.focus !== this.state.focus) {
+      this.setState({ focus: nextProps.focus });
+    }
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
   }
 
   renderLoadingView() {
@@ -103,21 +109,31 @@ class HomeScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={"rgba(255,255,255,0)"}
+          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
         />
         <View style={{ flex: 1 }}>
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              width: "100%",
+              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`,
+              zIndex: this.state.focus ? 10 : 0
+            }}
+          />
           <Image
             source={require(MAIN_BG)}
             style={styles.background}
             resizeMode="cover"
           />
           <View style={styles.container}>
-            <View>
-              <SearchBar
-                placeholder={"Найти кофе"}
-                style={{ marginBottom: scaleSize(20) }}
-                navigation={this.props.navigation}
-              />
+            <SearchBar
+              placeholder={"Найти кофе"}
+              style={{ marginBottom: scaleSize(20) }}
+              navigation={this.props.navigation}
+            />
+            <View style={{ marginTop: scaleSize(75) }}>
               <LetterBar navigation={this.props.navigation} categoryId={0} />
             </View>
             <Content style={{ flex: 2 }}>
@@ -459,7 +475,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  categories: state.catalog.categories
+  categories: state.catalog.categories,
+  focus: state.common.focus
 });
 
 const mapDispatchToProps = dispatch => ({

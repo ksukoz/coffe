@@ -1,4 +1,4 @@
-import { GET_LETTERS, GET_DELIVERY_COST } from "./types";
+import { GET_LETTERS, GET_DELIVERY_COST, GET_SEARCH_FOCUS } from "./types";
 
 export const getAlphabet = (lang, id) => dispatch => {
   fetch(
@@ -44,7 +44,6 @@ export const getDelivery = (city, delivery, courier) => dispatch => {
       })
         .then(response => response.json())
         .then(responseJson => {
-          // console.error(responseJson);
           dispatch({
             type: GET_DELIVERY_COST,
             payload: [
@@ -70,4 +69,11 @@ export const getDeliveryCost = city => dispatch => {
   dispatch(getDelivery(city, 1, 0));
   dispatch(getDelivery(city, 2, 1));
   dispatch(getDelivery(city, 2, 0));
+};
+
+export const searchFocused = () => dispatch => {
+  dispatch({
+    type: GET_SEARCH_FOCUS,
+    payload: true
+  });
 };

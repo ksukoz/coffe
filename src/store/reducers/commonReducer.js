@@ -1,8 +1,14 @@
-import { GET_MESSAGE, GET_LETTERS, GET_DELIVERY_COST } from "../actions/types";
+import {
+  GET_MESSAGE,
+  GET_LETTERS,
+  GET_DELIVERY_COST,
+  GET_SEARCH_FOCUS
+} from "../actions/types";
 
 const initialState = {
   message: "",
   letters: null,
+  focus: false,
   delivery: []
 };
 
@@ -22,6 +28,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         delivery: [...state.delivery, ...action.payload]
+      };
+    case GET_SEARCH_FOCUS:
+      return {
+        ...state,
+        focus: state.focus ? false : true
       };
     default:
       return state;

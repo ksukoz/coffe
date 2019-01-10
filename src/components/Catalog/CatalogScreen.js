@@ -41,6 +41,7 @@ class CatalogScreen extends Component {
       cart: [],
       search: "",
       stylesIndex: 0,
+      focus: false,
       loading: true
     };
     this.viewabilityConfig = {
@@ -90,6 +91,10 @@ class CatalogScreen extends Component {
     }
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories });
+    }
+
+    if (nextProps.focus !== this.state.focus) {
+      this.setState({ focus: nextProps.focus });
     }
     if (nextProps.navigation) {
       let data = await AsyncStorage.getItem("search");
@@ -149,7 +154,7 @@ class CatalogScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={"rgba(255,255,255,0)"}
+          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
         />
         <Image source={require(MAIN_BG)} style={styles.background} />
         {this.state.search ? (
@@ -162,7 +167,11 @@ class CatalogScreen extends Component {
           />
         ) : (
           <View style={styles.container}>
-            <Content>
+            <Content
+              style={{
+                backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`
+              }}
+            >
               <View style={styles.head}>
                 <SearchBar
                   placeholder={this.props.navigation.getParam(
@@ -182,11 +191,22 @@ class CatalogScreen extends Component {
           </View>
         )}
         <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              width: "100%",
+              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`,
+              zIndex: this.state.focus ? 10 : 0
+            }}
+          />
           <FlatList
             style={{
               marginLeft: scaleSize(10),
               marginRight:
-                this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12)
+                this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12),
+              zIndex: 2
             }}
             keyExtractor={item => item.id}
             onEndReached={() =>
@@ -245,15 +265,12 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     fontSize: scaleSize(13)
-  },
-  iconMenu: {
-    color: "#58554e",
-    marginBottom: scaleSize(5)
   }
 });
 
 const mapStateToProps = state => ({
   cart: state.cart.items,
+  focus: state.common.focus,
   products: state.catalog.products,
   categories: state.catalog.categoriesFull
 });

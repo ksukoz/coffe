@@ -2,13 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   View,
+  Text,
   AsyncStorage,
   StyleSheet,
   ScrollView,
-  Keyboard
+  Keyboard,
+  FlatList,
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
 import { findProducts } from "../../store/actions/catalogActions";
+import { searchFocused } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
 
 import { scaleSize } from "../../helpers/scaleSize";
@@ -18,10 +23,20 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       search: "",
+      products: [],
       placeholder: this.props.placeholder,
-      focus: false
+      focus: false,
+      height: 0
     };
     Input.defaultProps.selectionColor = "#000";
+  }
+
+  componentDidMount() {
+    Keyboard.addListener("keyboardDidShow", this.keyboardDidShow);
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -31,7 +46,26 @@ class SearchBar extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.products && this.state.search.length > 1) {
+      this.setState({
+        products: nextProps.products.map(item => item.name.split(",")[0])
+      });
+    }
+    // if (nextProps.focus !== this.state.focus) {
+    //   this.setState({ focus: nextProps.focus, products: [] });
+    // }
+  }
+
   handleSearchInput = text => {
+    if (text.length > 1) {
+      this.props.findProducts(
+        text,
+        this.props.navigation.getParam("categoryId", "0"),
+        0,
+        "after"
+      );
+    }
     this.setState({ search: text });
   };
 
@@ -43,13 +77,24 @@ class SearchBar extends Component {
 
   unFocus = () => {
     Keyboard.dismiss();
-    this.setState({ focus: false });
+    this.setState({ focus: false }, () => this.props.searchFocused());
+  };
+
+  keyboardDidShow = e => {
+    this.setState({
+      height: Dimensions.get("window").height - e.endCoordinates.height
+    });
   };
 
   render() {
     return (
       <View style={styles.head}>
         <ScrollView
+          style={{
+            height: scaleSize(40),
+            flexGrow: 0,
+            flexShrink: 0
+          }}
           contentContainerStyle={styles.search}
           keyboardShouldPersistTaps={"handled"}
         >
@@ -80,7 +125,9 @@ class SearchBar extends Component {
             placeholder={this.state.placeholder}
             onChangeText={this.handleSearchInput}
             onSubmitEditing={this.handleSearch}
-            onFocus={() => this.setState({ focus: true })}
+            onFocus={() => {
+              this.setState({ focus: true }, () => this.props.searchFocused());
+            }}
             value={this.state.search}
           />
           {this.state.search.length > 0 ? (
@@ -111,6 +158,33 @@ class SearchBar extends Component {
             />
           )}
         </ScrollView>
+        <FlatList
+          keyExtractor={item => item + 1}
+          onEndReachedThreshold={0.1}
+          data={this.state.products}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={{
+                height: scaleSize(56),
+                alignItems: "center",
+                flexDirection: "row"
+              }}
+            >
+              <Icon
+                style={{
+                  color: "#fff",
+                  fontSize: scaleSize(11),
+                  marginLeft: scaleSize(24),
+                  marginRight: scaleSize(24)
+                }}
+                name="ios-search"
+              />
+              <Text style={{ color: "#fff", fontSize: scaleSize(11) }}>
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
       </View>
     );
   }
@@ -118,7 +192,12 @@ class SearchBar extends Component {
 
 const styles = StyleSheet.create({
   head: {
-    marginTop: scaleSize(35)
+    position: "absolute",
+    top: scaleSize(35),
+    bottom: 0,
+    width: "100%",
+    height: Dimensions.get("window").height,
+    zIndex: 1000
   },
   search: {
     flexDirection: "row",
@@ -150,12 +229,17 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapStateToProps = state => ({
+  products: state.catalog.products
+});
+
 const mapDispatchToProps = dispatch => ({
   findProducts: (value, category, page, type) =>
-    dispatch(findProducts(value, category, page, type))
+    dispatch(findProducts(value, category, page, type)),
+  searchFocused: () => dispatch(searchFocused())
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchBar);

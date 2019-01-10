@@ -13,3 +13,4 @@ export const GET_CART = "GET_CART";
 export const GET_MESSAGE = "GET_MESSAGE";
 export const GET_LETTERS = "GET_LETTERS";
 export const GET_DELIVERY_COST = "GET_DELIVERY_COST";
+export const GET_SEARCH_FOCUS = "GET_SEARCH_FOCUS";
