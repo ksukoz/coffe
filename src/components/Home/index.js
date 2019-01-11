@@ -1,5 +1,7 @@
 import React from "react";
 import HomeScreen from "./HomeScreen.js";
+import HomeOther from "../HomeOther/index.js";
+import HomeDishes from "../HomeDishes/index.js";
 import Catalog from "../Catalog/index.js";
 import Profile from "../Profile/index.js";
 import ProfileEdit from "../ProfileEdit/index.js";
@@ -23,9 +25,13 @@ import Order from "../Order/index.js";
 const Home = StackNavigator(
   {
     Home: { screen: HomeScreen },
+    HomeOther: { screen: HomeOther },
+    HomeDishes: { screen: HomeDishes },
     Catalog: { screen: Catalog },
     ProductCard: { screen: ProductCard },
-    Delivery: { screen: Delivery }
+    Delivery: { screen: Delivery },
+
+    Order: { screen: Order }
   },
   {
     headerMode: "none"
@@ -36,7 +42,6 @@ const HomeScreenRouter = DrawerNavigator(
   {
     Stack: { screen: Home },
     Home: { screen: HomeScreen },
-    // Catalog: { screen: Catalog },
     ProductCard: { screen: ProductCard },
     Profile: { screen: Profile },
     ProfileEdit: { screen: ProfileEdit },

@@ -12,6 +12,7 @@ class LetterBar extends Component {
     super(props);
     this.state = {
       alphabet: [],
+      categoryId: 0,
       english: 1,
       letter: this.props.navigation.getParam("letter", "")
     };
@@ -20,29 +21,25 @@ class LetterBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.alphabet) {
+      ()
       this.setState({ alphabet: nextProps.alphabet });
     }
   }
 
-  componentDidMount() {
-    this.props.getAlphabet(
-      this.state.english,
-      this.props.navigation.getParam("categoryId")
-    );
-  }
+  componentDidMount() {}
 
   changeAlphabet() {
     this.setState({ english: this.state.english === 1 ? 2 : 1 }, () =>
       this.props.getAlphabet(
         this.state.english,
-        this.props.navigation.getParam("categoryId")
+        this.props.navigation.getParam("categoryId", "0")
       )
     );
   }
 
   onLetterPress(letter) {
     this.setState({ letter }, () => {
-      this.props.navigation.navigate("CatalogScreen", {
+      this.props.navigation.navigate("Catalog", {
         categoryId: this.props.categoryId,
         letter
       });

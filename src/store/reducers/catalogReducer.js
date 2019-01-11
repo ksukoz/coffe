@@ -7,12 +7,13 @@ import {
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
-  GET_AUTOCOMPLITE,
-  RESET_PRODUCTS
+  GET_AUTOCOMPLITE
 } from "../actions/types";
 
 const initialState = {
   categories: [],
+  subcategories: [],
+  dishes: [],
   categoriesFull: [],
   products: [],
   autocomplite: [],
@@ -36,12 +37,12 @@ export default function(state = initialState, action) {
     case GET_SUBCATEGORIES:
       return {
         ...state,
-        categories: action.payload
+        subcategories: action.payload
       };
     case GET_DISHES:
       return {
         ...state,
-        categories: action.payload
+        dishes: action.payload
       };
     case GET_PRODUCTS:
       return {

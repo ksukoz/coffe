@@ -8,6 +8,7 @@ import {
   Keyboard,
   FlatList,
   TouchableOpacity,
+  BackHandler,
   Dimensions
 } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
@@ -35,10 +36,12 @@ class SearchBar extends Component {
 
   componentDidMount() {
     Keyboard.addListener("keyboardDidShow", this.keyboardDidShow);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillUnmount() {
     Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -89,9 +92,20 @@ class SearchBar extends Component {
     });
   };
 
+  handleBackPress = () => {
+    if (this.state.focus) {
+      this.unFocus();
+      this.props.clearAutocomplite();
+      return true;
+    }
+  };
+
   render() {
     return (
-      <View style={[styles.head, { zIndex: this.state.focus ? 1000 : 0 }]}>
+      <ScrollView
+        style={[styles.head, { zIndex: this.state.focus ? 1000 : 0 }]}
+        keyboardShouldPersistTaps={"handled"}
+      >
         <ScrollView
           style={{
             height: scaleSize(40),
@@ -109,7 +123,10 @@ class SearchBar extends Component {
                 paddingRight: scaleSize(20)
               }}
               name="md-arrow-back"
-              onPress={() => this.unFocus()}
+              onPress={() => {
+                this.unFocus();
+                this.props.clearAutocomplite();
+              }}
             />
           ) : (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -145,7 +162,10 @@ class SearchBar extends Component {
                 paddingTop: scaleSize(5),
                 height: scaleSize(35)
               }}
-              onPress={() => this.setState({ search: "" })}
+              onPress={() => {
+                this.props.clearAutocomplite();
+                this.setState({ search: "" });
+              }}
             >
               <Icon
                 style={{
@@ -198,7 +218,7 @@ class SearchBar extends Component {
             </TouchableOpacity>
           )}
         />
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -237,7 +257,6 @@ const styles = StyleSheet.create({
   iconMenu: {
     color: "#58554e",
     marginBottom: scaleSize(5)
-    // marginTop: scaleSize(3)
   }
 });
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 
 import { Item, Text, Button, Icon } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -34,10 +34,16 @@ export default class HeaderBar extends Component {
           style={{
             borderBottomWidth: 0,
             color: "#fff",
-            justifyContent: "space-between"
+            width: "100%"
+            // justifyContent: "space-between"
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center"
+            }}
+          >
             <Button
               transparent
               onPress={() =>
@@ -62,7 +68,8 @@ export default class HeaderBar extends Component {
               style={{
                 color: "#ffffff",
                 fontSize: scaleSize(20),
-                fontWeight: "500"
+                fontWeight: "500",
+                width: Dimensions.get("window").width * 0.6
               }}
             >
               {title}
@@ -72,7 +79,9 @@ export default class HeaderBar extends Component {
             <View
               style={{
                 flexDirection: "row",
+                flex: 1,
                 alignItems: "center",
+                justifySelf: "flex-end",
                 marginRight: scaleSize(20)
               }}
             >

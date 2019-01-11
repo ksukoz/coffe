@@ -8,13 +8,14 @@ import {
   ActivityIndicator,
   Image,
   FlatList,
-  AsyncStorage,
+  ScrollView,
   BackHandler,
   StyleSheet
 } from "react-native";
 
-import { getAlphabet } from "../../store/actions/commonActions";
 import { getCart } from "../../store/actions/cartActions";
+
+import { getAlphabet } from "../../store/actions/commonActions";
 import {
   getProducts,
   findProducts,
@@ -76,7 +77,7 @@ class CatalogScreen extends Component {
   componentDidMount() {
     this.props.getCart();
     this.props.getFullCategories();
-
+    this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
     if (
       !this.props.navigation.getParam("search") &&
       !this.props.navigation.getParam("letter")
@@ -127,7 +128,6 @@ class CatalogScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.props.getAlphabet(1);
     this.props.BackHandler.removeEventListener(
       "hardwareBackPress",
       this.handleBackPress
@@ -152,6 +152,7 @@ class CatalogScreen extends Component {
   // };
 
   handleBackPress = () => {
+    this.props.getAlphabet(1);
     this.props.navigation.pop();
     return true;
   };
@@ -170,7 +171,8 @@ class CatalogScreen extends Component {
           backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.9 : 0})`}
         />
         <View style={{ flex: 1 }}>
-          <View
+          <ScrollView
+            keyboardShouldPersistTaps={"handled"}
             style={{
               position: "absolute",
               top: 0,
@@ -210,9 +212,9 @@ class CatalogScreen extends Component {
               ]}
             >
               <LetterBar
+                style={{ opacity: this.state.focus ? 0.9 : 1 }}
                 navigation={this.props.navigation}
-                categoryId={this.props.navigation.getParam("categoryId", 0)}
-                categoryName={this.props.navigation.getParam("categoryName", 0)}
+                categoryId={this.props.navigation.getParam("categoryId", "0")}
               />
             </View>
           )}
@@ -296,11 +298,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
+  getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
   getProducts: (category, page) => dispatch(getProducts(category, page)),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
-  getFullCategories: () => dispatch(getFullCategories()),
-  getAlphabet: lang => dispatch(getAlphabet(lang))
+  getFullCategories: () => dispatch(getFullCategories())
 });
 
 export default connect(

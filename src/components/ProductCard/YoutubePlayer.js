@@ -76,7 +76,9 @@ export default class YoutubePlayer extends Component {
             }}
           />
         </View>
-        <View style={{ flexDirection: "row", marginBottom: scaleSize(15) }}>
+        <View
+          style={{ flexDirection: "row", marginBottom: scaleSize(15), flex: 1 }}
+        >
           <Image
             source={{ uri: this.state.videoImg }}
             style={{
@@ -87,7 +89,7 @@ export default class YoutubePlayer extends Component {
               marginRight: scaleSize(10)
             }}
           />
-          <View style={{ justifyContent: "space-between" }}>
+          <View style={{ justifyContent: "space-between", flex: 1 }}>
             <Text style={{ fontSize: scaleSize(18), color: "#000" }}>
               {this.state.videoTitle}
             </Text>

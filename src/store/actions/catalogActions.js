@@ -46,6 +46,7 @@ export const getSubCategories = (type = false) => dispatch => {
       console.error(error);
     });
 };
+
 export const getDishes = (type = false) => dispatch => {
   fetch("http://kawaapi.gumione.pro/api/catalog/categories/8")
     .then(response => response.json())
@@ -59,6 +60,7 @@ export const getDishes = (type = false) => dispatch => {
       console.error(error);
     });
 };
+
 export const getProducts = (category, page) => dispatch => {
   fetch(`http://kawaapi.gumione.pro/api/catalog/items/${category}/10/${page}`)
     .then(response => response.json())

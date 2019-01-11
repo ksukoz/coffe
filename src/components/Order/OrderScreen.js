@@ -40,13 +40,7 @@ export default class OrderScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("ProductCard", {
-      categoryId: this.props.navigation.getParam("categoryId", "0"),
-      categoryName: this.props.navigation.getParam(
-        "categoryName",
-        "Кофе в зернах"
-      )
-    });
+    this.props.navigation.pop();
     return true;
   };
 
@@ -92,7 +86,7 @@ export default class OrderScreen extends Component {
         <Image source={require(MAIN_BG)} style={styles.background} />
         <Content>
           <HeaderBar
-            navigation={this.props.navigation}
+            navigation={this.props.navigation.dangerouslyGetParent()}
             title="Оформление заказа"
           />
         </Content>

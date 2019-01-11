@@ -149,7 +149,11 @@ class ProductCardScreen extends Component {
             navigation={this.props.navigation}
           />
           {this.state.loading ? (
-            <ActivityIndicator size="large" animating />
+            <ActivityIndicator
+              style={{ marginTop: scaleSize(75) }}
+              size="large"
+              animating
+            />
           ) : (
             <View style={{ marginTop: scaleSize(75), flexGrow: 1 }}>
               <Tabs
@@ -221,9 +225,7 @@ class ProductCardScreen extends Component {
                         })
                       }
                       onPressOtherProducts={() =>
-                        this.props.navigation.navigate("Home", {
-                          categoryId: 7
-                        })
+                        this.props.navigation.navigate("HomeOther")
                       }
                       onPressBuyButton={() =>
                         this.props.navigation.navigate("OrderScreen", {

@@ -17,13 +17,11 @@ import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
-import { getAlphabet } from "../../store/actions/commonActions";
 import {
   getCategories,
-  getSubCategories,
-  getDishes,
   resetProducts
 } from "../../store/actions/catalogActions";
+import { getAlphabet } from "../../store/actions/commonActions";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -43,12 +41,14 @@ class HomeScreen extends Component {
   }
 
   componentWillMount() {
-    AsyncStorage.removeItem("search");
+    // AsyncStorage.removeItem("search");
+    // this.props.getAlphabet(1, 0);
   }
 
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.props.getCategories();
+    this.props.getAlphabet(1, 0);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,20 +88,13 @@ class HomeScreen extends Component {
   }
 
   handleBackPress = () => {
-    if (this.state.dishes) {
-      this.setState({ dishes: false }, this.props.getSubCategories());
-      return true;
-    } else if (this.state.subcategories) {
-      this.setState({ subcategories: false }, this.props.getCategories());
-      return true;
-    } else {
-      return false;
-    }
+    this.props.navigation.pop();
+    return true;
   };
 
   render() {
     if (this.state.loading) {
-      this.props.getAlphabet(1);
+      this.props.getAlphabet(1, 0);
       return this.renderLoadingView();
     }
     return (
@@ -135,7 +128,11 @@ class HomeScreen extends Component {
               navigation={this.props.navigation}
             />
             <View style={{ marginTop: scaleSize(75) }}>
-              <LetterBar navigation={this.props.navigation} categoryId={0} />
+              <LetterBar
+                navigation={this.props.navigation}
+                categoryId={"0"}
+                style={{ opacity: this.state.focus ? 0.9 : 1 }}
+              />
             </View>
             <Content style={{ flex: 2 }}>
               <View style={styles.cardDouble}>
@@ -219,12 +216,11 @@ class HomeScreen extends Component {
                         <Text style={styles.cardContent}>Гадание</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                        onPress={() =>
-                          this.setState(
-                            { subcategories: true },
-                            this.props.getSubCategories()
-                          )
-                        }
+                        onPress={() => {
+                          this.props.navigation.navigate("HomeOther", {
+                            categoryId: "0"
+                          });
+                        }}
                         style={styles.cardItemHalf}
                         activeOpacity={0.9}
                       >
@@ -485,11 +481,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlphabet: lang => dispatch(getAlphabet(lang)),
   getCategories: () => dispatch(getCategories()),
-  getSubCategories: () => dispatch(getSubCategories()),
-  getDishes: () => dispatch(getDishes()),
-  resetProducts: () => dispatch(resetProducts())
+  resetProducts: () => dispatch(resetProducts()),
+  getAlphabet: lang => dispatch(getAlphabet(lang))
 });
 
 export default connect(
