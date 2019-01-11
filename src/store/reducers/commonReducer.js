@@ -27,7 +27,10 @@ export default function(state = initialState, action) {
     case GET_DELIVERY_COST:
       return {
         ...state,
-        delivery: [...state.delivery, ...action.payload]
+        delivery:
+          state.delivery.length === 4
+            ? [...action.payload]
+            : [...state.delivery, ...action.payload]
       };
     case GET_SEARCH_FOCUS:
       return {

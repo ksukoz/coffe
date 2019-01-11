@@ -12,7 +12,6 @@ class LetterBar extends Component {
     super(props);
     this.state = {
       alphabet: [],
-      categoryId: this.props.categoryId,
       english: 1,
       letter: this.props.navigation.getParam("letter", "")
     };
@@ -21,32 +20,23 @@ class LetterBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.alphabet) {
-      if (
-        nextProps.alphabet.length !== this.state.alphabet.length &&
-        this.props.categoryId != 0
-      ) {
-        this.setState({ alphabet: nextProps.alphabet, letter: "" });
-      } else {
-        this.setState({ alphabet: nextProps.alphabet });
-      }
-    }
-    if (nextProps.categoryId) {
-      this.setState({ categoryId: nextProps.categoryId });
+      this.setState({ alphabet: nextProps.alphabet });
     }
   }
 
-  componentWillMount() {
-    this.state.categoryId !== 0
-      ? this.props.getAlphabet(this.state.english, this.state.categoryId)
-      : this.props.getAlphabet(this.state.english);
+  componentDidMount() {
+    this.props.getAlphabet(
+      this.state.english,
+      this.props.navigation.getParam("categoryId")
+    );
   }
 
   changeAlphabet() {
-    this.setState(
-      { english: this.state.english === 1 ? 2 : 1 },
-      this.state.categoryId !== 0
-        ? this.props.getAlphabet(this.state.english, this.state.categoryId)
-        : this.props.getAlphabet(this.state.english)
+    this.setState({ english: this.state.english === 1 ? 2 : 1 }, () =>
+      this.props.getAlphabet(
+        this.state.english,
+        this.props.navigation.getParam("categoryId")
+      )
     );
   }
 

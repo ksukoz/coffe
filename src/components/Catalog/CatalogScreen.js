@@ -152,7 +152,6 @@ class CatalogScreen extends Component {
   // };
 
   handleBackPress = () => {
-    // console.error(this.props.navigation);
     this.props.navigation.pop();
     return true;
   };
@@ -170,46 +169,7 @@ class CatalogScreen extends Component {
           translucent={true}
           backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
         />
-        <Image source={require(MAIN_BG)} style={styles.background} />
-        {this.state.search ? (
-          <HeaderBar
-            menu={true}
-            catalog={true}
-            cart={this.state.cart}
-            title={this.state.search}
-            getStyles={this.getStyles}
-          />
-        ) : (
-          <View style={styles.container}>
-            <Content
-              style={{
-                backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`
-              }}
-            >
-              <View style={styles.head}>
-                <SearchBar
-                  placeholder={this.props.navigation.getParam(
-                    "searchPlaceholder",
-                    "Найти кофе"
-                  )}
-                  style={{ marginBottom: scaleSize(20) }}
-                  navigation={this.props.navigation.dangerouslyGetParent()}
-                />
-              </View>
-              <View style={{ marginTop: scaleSize(75) }}>
-                <LetterBar
-                  navigation={this.props.navigation}
-                  categoryId={this.props.navigation.getParam("categoryId", 0)}
-                  categoryName={this.props.navigation.getParam(
-                    "categoryName",
-                    0
-                  )}
-                />
-              </View>
-            </Content>
-          </View>
-        )}
-        <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               position: "absolute",
@@ -220,45 +180,96 @@ class CatalogScreen extends Component {
               zIndex: this.state.focus ? 10 : 0
             }}
           />
-          <FlatList
-            style={{
-              marginLeft: scaleSize(10),
-              marginRight:
-                this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12),
-              zIndex: 2
-            }}
-            keyExtractor={item => item.id}
-            onEndReached={() =>
-              this.setState(
+          <Image source={require(MAIN_BG)} style={styles.background} />
+          {this.state.search ? null : (
+            <SearchBar
+              placeholder={this.props.navigation.getParam(
+                "searchPlaceholder",
+                "Найти кофе"
+              )}
+              style={{ marginBottom: scaleSize(20) }}
+              navigation={this.props.navigation.dangerouslyGetParent()}
+            />
+          )}
+          {this.state.search ? (
+            <HeaderBar
+              menu={true}
+              catalog={true}
+              cart={this.state.cart}
+              title={this.state.search}
+              getStyles={this.getStyles}
+              navigation={this.props.navigation.dangerouslyGetParent()}
+            />
+          ) : (
+            <View
+              style={[
+                styles.container,
                 {
-                  loading: true,
-                  page: this.state.page + 10
-                },
-                () => this.handleEnd()
-              )
-            }
-            ListFooterComponent={() =>
-              this.state.loading ? (
-                <ActivityIndicator size="large" animating />
-              ) : null
-            }
-            onEndReachedThreshold={0.1}
-            data={this.props.products}
-            extraData={this.state}
-            renderItem={({ item }) => (
-              <ProductItem
-                cart={this.state.cart}
+                  marginTop: scaleSize(75)
+                }
+              ]}
+            >
+              <LetterBar
+                style={{ opacity: this.state.focus ? 0.25 : 1 }}
                 navigation={this.props.navigation}
-                categoryId={item.pid}
-                item={item}
-                categories={this.state.categories}
-                styleIndex={this.state.stylesIndex}
+                categoryId={this.props.navigation.getParam("categoryId", 0)}
+                categoryName={this.props.navigation.getParam("categoryName", 0)}
               />
-            )}
-            key={this.state.stylesIndex === 1 ? "h" : "v"}
-            numColumns={this.state.stylesIndex === 1 ? 2 : 1}
-            viewabilityConfig={this.viewabilityConfig}
-          />
+            </View>
+          )}
+          <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+            <View
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                width: "100%",
+                backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`,
+                zIndex: this.state.focus ? 10 : 0
+              }}
+            />
+            <FlatList
+              style={{
+                marginLeft: scaleSize(10),
+                marginRight:
+                  this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12),
+                zIndex: 2
+              }}
+              keyExtractor={item => item.id}
+              onEndReached={() => {
+                if (this.state.products.length > 9) {
+                  this.setState(
+                    {
+                      loading: true,
+                      page: this.state.page + 10
+                    },
+                    () => this.handleEnd()
+                  );
+                }
+              }}
+              ListFooterComponent={() =>
+                this.state.loading ? (
+                  <ActivityIndicator size="large" animating />
+                ) : null
+              }
+              onEndReachedThreshold={0.1}
+              data={this.props.products}
+              extraData={this.state}
+              renderItem={({ item }) => (
+                <ProductItem
+                  cart={this.state.cart}
+                  navigation={this.props.navigation}
+                  categoryId={item.pid}
+                  item={item}
+                  categories={this.state.categories}
+                  styleIndex={this.state.stylesIndex}
+                />
+              )}
+              key={this.state.stylesIndex === 1 ? "h" : "v"}
+              numColumns={this.state.stylesIndex === 1 ? 2 : 1}
+              viewabilityConfig={this.viewabilityConfig}
+            />
+          </View>
         </View>
       </Container>
     );
@@ -277,7 +288,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    height: scaleSize(130)
+    height: scaleSize(130 - 75)
   },
   default: {
     color: "#fff"

@@ -59,7 +59,7 @@ class ProductCardScreen extends Component {
       search: "",
       page: 0,
       reviewsFormShow: false,
-      english: true,
+      focus: false,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
@@ -78,6 +78,9 @@ class ProductCardScreen extends Component {
     }
     if (nextProps.cart) {
       this.setState({ cart: nextProps.cart });
+    }
+    if (nextProps.focus !== this.state.focus) {
+      this.setState({ focus: nextProps.focus });
     }
   }
 
@@ -136,7 +139,7 @@ class ProductCardScreen extends Component {
           {this.state.loading ? (
             <ActivityIndicator size="large" animating />
           ) : (
-            <View style={{ flexGrow: 1 }}>
+            <View style={{ marginTop: scaleSize(75), flexGrow: 1 }}>
               <Tabs
                 transparent
                 style={{ flex: 1 }}
@@ -207,9 +210,7 @@ class ProductCardScreen extends Component {
                       }
                       onPressOtherProducts={() =>
                         this.props.navigation.navigate("Home", {
-                          categoryId: 7,
-                          linkName: "ProductCard",
-                          productId: productItem.id
+                          categoryId: 7
                         })
                       }
                       onPressBuyButton={() =>

@@ -239,7 +239,7 @@ class DeliveryScreen extends Component {
                                 return item;
                               }
                             })[0].cost
-                          : ""}{" "}
+                          : 50}{" "}
                         грн
                       </Text>
                     </View>
@@ -259,7 +259,7 @@ class DeliveryScreen extends Component {
                                 return item;
                               }
                             })[0].cost
-                          : ""}{" "}
+                          : 70}{" "}
                         грн
                       </Text>
                     </View>
@@ -305,7 +305,7 @@ class DeliveryScreen extends Component {
                                 return item;
                               }
                             })[0].cost
-                          : ""}{" "}
+                          : 30}{" "}
                         грн
                       </Text>
                     </View>
@@ -326,7 +326,7 @@ class DeliveryScreen extends Component {
                                 return item;
                               }
                             })[0].cost
-                          : ""}{" "}
+                          : 50}{" "}
                         грн
                       </Text>
                     </View>

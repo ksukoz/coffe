@@ -24,8 +24,8 @@ const Home = StackNavigator(
   {
     Home: { screen: HomeScreen },
     Catalog: { screen: Catalog },
-    Delivery: { screen: Delivery },
-    ProductCard: { screen: ProductCard }
+    ProductCard: { screen: ProductCard },
+    Delivery: { screen: Delivery }
   },
   {
     headerMode: "none"

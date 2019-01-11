@@ -109,6 +109,13 @@ export const getAutocomplite = (value, category, page, type) => dispatch => {
     });
 };
 
+export const clearAutocomplite = () => dispatch => {
+  dispatch({
+    type: GET_AUTOCOMPLITE,
+    payload: []
+  });
+};
+
 export const getProduct = id => dispatch => {
   fetch(`http://kawaapi.gumione.pro/api/catalog/item/${id}`)
     .then(response => response.json())
@@ -121,6 +128,13 @@ export const getProduct = id => dispatch => {
     .catch(error => {
       console.error(error);
     });
+};
+
+export const resetProducts = () => dispatch => {
+  dispatch({
+    type: GET_PRODUCTS,
+    payload: []
+  });
 };
 
 export const getProductReviews = id => dispatch => {

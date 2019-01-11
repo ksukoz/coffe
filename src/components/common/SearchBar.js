@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import {
   View,
   Text,
-  AsyncStorage,
   StyleSheet,
   ScrollView,
   Keyboard,
@@ -12,7 +11,10 @@ import {
   Dimensions
 } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
-import { getAutocomplite } from "../../store/actions/catalogActions";
+import {
+  getAutocomplite,
+  clearAutocomplite
+} from "../../store/actions/catalogActions";
 import { searchFocused } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
 
@@ -48,30 +50,26 @@ class SearchBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.autocomplite && this.state.search.length > 1) {
-      // console.error(nextProps.autocomplite);
       this.setState({
         products: nextProps.autocomplite.map(item => item.name.split(",")[0])
       });
     }
     if (nextProps.focus !== this.state.focus) {
-      this.setState({ focus: nextProps.focus, products: [] });
+      this.setState({ focus: nextProps.focus }, () =>
+        this.props.clearAutocomplite()
+      );
     }
   }
 
   handleSearchInput = text => {
     if (text.length > 1) {
-      this.props.getAutocomplite(
-        text,
-        this.props.navigation.getParam("categoryId", "0"),
-        0,
-        "after",
-        0
-      );
+      this.props.getAutocomplite(text, 0, 0, "after", 0);
     }
     this.setState({ search: text });
   };
 
   handleSearch = e => {
+    Keyboard.dismiss();
     this.props.navigation.navigate("Catalog", {
       categoryId: 0,
       search: typeof e === "string" ? e : this.state.search
@@ -163,7 +161,9 @@ class SearchBar extends Component {
             />
           )}
         </ScrollView>
+
         <FlatList
+          keyboardShouldPersistTaps={"handled"}
           keyExtractor={item => item + 1}
           onEndReachedThreshold={0.1}
           data={this.state.products}
@@ -174,7 +174,10 @@ class SearchBar extends Component {
                 alignItems: "center",
                 flexDirection: "row"
               }}
-              onPress={() => this.handleSearch(item)}
+              onPress={() => {
+                Keyboard.dismiss();
+                this.handleSearch(item);
+              }}
             >
               <Icon
                 style={{
@@ -242,7 +245,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getAutocomplite: (value, category, page, type) =>
     dispatch(getAutocomplite(value, category, page, type)),
-  searchFocused: () => dispatch(searchFocused())
+  searchFocused: () => dispatch(searchFocused()),
+  clearAutocomplite: () => dispatch(clearAutocomplite())
 });
 
 export default connect(

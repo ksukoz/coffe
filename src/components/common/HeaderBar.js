@@ -41,9 +41,7 @@ export default class HeaderBar extends Component {
             <Button
               transparent
               onPress={() =>
-                navigation.navigate(linkName, {
-                  productId: navigation.getParam("productId", "0")
-                })
+                this.props.menu ? navigation.openDrawer() : navigation.pop()
               }
             >
               {this.props.menu ? (

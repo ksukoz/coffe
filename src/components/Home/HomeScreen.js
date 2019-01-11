@@ -21,7 +21,8 @@ import { getAlphabet } from "../../store/actions/commonActions";
 import {
   getCategories,
   getSubCategories,
-  getDishes
+  getDishes,
+  resetProducts
 } from "../../store/actions/catalogActions";
 
 StatusBar.setBarStyle("light-content", true);
@@ -145,13 +146,14 @@ class HomeScreen extends Component {
                       key={category.id}
                     >
                       <TouchableOpacity
-                        onPress={() =>
+                        onPress={() => {
                           this.props.navigation.navigate("Catalog", {
                             categoryId: category.id,
                             searchPlaceholder: category.name,
                             letter: ""
-                          })
-                        }
+                          });
+                          this.props.resetProducts();
+                        }}
                         style={styles.cardItemHalf}
                         activeOpacity={0.9}
                       >
@@ -249,15 +251,18 @@ class HomeScreen extends Component {
                   ) : (
                     <TouchableOpacity
                       key={category.id}
-                      onPress={() =>
-                        category.id === "8"
-                          ? this.props.getDishes()
-                          : this.props.navigation.navigate("Catalog", {
-                              categoryId: category.id,
-                              searchPlaceholder: category.name,
-                              letter: ""
-                            })
-                      }
+                      onPress={() => {
+                        if (category.id === "8") {
+                          this.props.getDishes();
+                        } else {
+                          this.props.navigation.navigate("Catalog", {
+                            categoryId: category.id,
+                            searchPlaceholder: category.name,
+                            letter: ""
+                          });
+                          this.props.resetProducts();
+                        }
+                      }}
                       style={styles.cardItemHalf}
                       activeOpacity={0.9}
                     >
@@ -483,7 +488,8 @@ const mapDispatchToProps = dispatch => ({
   getAlphabet: lang => dispatch(getAlphabet(lang)),
   getCategories: () => dispatch(getCategories()),
   getSubCategories: () => dispatch(getSubCategories()),
-  getDishes: () => dispatch(getDishes())
+  getDishes: () => dispatch(getDishes()),
+  resetProducts: () => dispatch(resetProducts())
 });
 
 export default connect(

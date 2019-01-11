@@ -7,7 +7,8 @@ import {
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
-  GET_AUTOCOMPLITE
+  GET_AUTOCOMPLITE,
+  RESET_PRODUCTS
 } from "../actions/types";
 
 const initialState = {
