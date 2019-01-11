@@ -139,6 +139,7 @@ class CatalogScreen extends Component {
   // };
 
   handleBackPress = () => {
+    // console.error(this.props.navigation);
     this.props.navigation.pop();
     return true;
   };
@@ -179,14 +180,19 @@ class CatalogScreen extends Component {
                     "Найти кофе"
                   )}
                   style={{ marginBottom: scaleSize(20) }}
-                  navigation={this.props.navigation}
+                  navigation={this.props.navigation.dangerouslyGetParent()}
                 />
               </View>
-              <LetterBar
-                navigation={this.props.navigation}
-                categoryId={this.props.navigation.getParam("categoryId", 0)}
-                categoryName={this.props.navigation.getParam("categoryName", 0)}
-              />
+              <View style={{ marginTop: scaleSize(75) }}>
+                <LetterBar
+                  navigation={this.props.navigation}
+                  categoryId={this.props.navigation.getParam("categoryId", 0)}
+                  categoryName={this.props.navigation.getParam(
+                    "categoryName",
+                    0
+                  )}
+                />
+              </View>
             </Content>
           </View>
         )}

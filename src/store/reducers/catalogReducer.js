@@ -6,13 +6,15 @@ import {
   GET_PRODUCTS,
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
-  GET_PRODUCT_REVIEWS
+  GET_PRODUCT_REVIEWS,
+  GET_AUTOCOMPLITE
 } from "../actions/types";
 
 const initialState = {
   categories: [],
   categoriesFull: [],
   products: [],
+  autocomplite: [],
   product: null,
   reviews: null
 };
@@ -42,7 +44,13 @@ export default function(state = initialState, action) {
     case GET_PRODUCTS:
       return {
         ...state,
-        products: action.payload
+        products: action.payload,
+        autocomplite: []
+      };
+    case GET_AUTOCOMPLITE:
+      return {
+        ...state,
+        autocomplite: action.payload
       };
     case GET_MORE_PRODUCTS:
       return {

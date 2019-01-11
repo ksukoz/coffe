@@ -20,9 +20,24 @@ import RecipeFeedback from "../Recipes/Feedback/index.js";
 import ProductCard from "../ProductCard/index.js";
 import Order from "../Order/index.js";
 
-const Home = DrawerNavigator(
+const Home = StackNavigator(
   {
     Home: { screen: HomeScreen },
+    Catalog: { screen: Catalog },
+    Delivery: { screen: Delivery },
+    ProductCard: { screen: ProductCard }
+  },
+  {
+    headerMode: "none"
+  }
+);
+
+const HomeScreenRouter = DrawerNavigator(
+  {
+    Stack: { screen: Home },
+    Home: { screen: HomeScreen },
+    // Catalog: { screen: Catalog },
+    ProductCard: { screen: ProductCard },
     Profile: { screen: Profile },
     ProfileEdit: { screen: ProfileEdit },
     SelectCity: { screen: SelectCity },
@@ -41,18 +56,6 @@ const Home = DrawerNavigator(
     contentComponent: props => <SideBar {...props} />,
     initialRouteName: "Home",
     drawerWidth: Dimensions.get("window").width * 0.85
-  }
-);
-
-const HomeScreenRouter = StackNavigator(
-  {
-    Home: { screen: Home },
-    Catalog: { screen: Catalog },
-    Delivery: { screen: Delivery },
-    ProductCard: { screen: ProductCard }
-  },
-  {
-    headerMode: "none"
   }
 );
 

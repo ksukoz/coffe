@@ -146,7 +146,7 @@ class HomeScreen extends Component {
                     >
                       <TouchableOpacity
                         onPress={() =>
-                          this.props.navigation.navigate("CatalogScreen", {
+                          this.props.navigation.navigate("Catalog", {
                             categoryId: category.id,
                             searchPlaceholder: category.name,
                             letter: ""
@@ -252,7 +252,7 @@ class HomeScreen extends Component {
                       onPress={() =>
                         category.id === "8"
                           ? this.props.getDishes()
-                          : this.props.navigation.navigate("CatalogScreen", {
+                          : this.props.navigation.navigate("Catalog", {
                               categoryId: category.id,
                               searchPlaceholder: category.name,
                               letter: ""

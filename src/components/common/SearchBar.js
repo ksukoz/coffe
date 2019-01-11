@@ -47,14 +47,14 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.products && this.state.search.length > 1) {
+    if (nextProps.autocomplite && this.state.search.length > 1) {
       this.setState({
-        products: nextProps.products.map(item => item.name.split(",")[0])
+        products: nextProps.autocomplite.map(item => item.name.split(",")[0])
       });
     }
-    // if (nextProps.focus !== this.state.focus) {
-    //   this.setState({ focus: nextProps.focus, products: [] });
-    // }
+    if (nextProps.focus !== this.state.focus) {
+      this.setState({ focus: nextProps.focus, products: [] });
+    }
   }
 
   handleSearchInput = text => {
@@ -63,7 +63,8 @@ class SearchBar extends Component {
         text,
         this.props.navigation.getParam("categoryId", "0"),
         0,
-        "after"
+        "after",
+        "search"
       );
     }
     this.setState({ search: text });
@@ -88,7 +89,7 @@ class SearchBar extends Component {
 
   render() {
     return (
-      <View style={styles.head}>
+      <View style={[styles.head, { zIndex: this.state.focus ? 1000 : 0 }]}>
         <ScrollView
           style={{
             height: scaleSize(40),
@@ -112,7 +113,14 @@ class SearchBar extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Button
                 transparent
-                onPress={() => this.props.navigation.openDrawer()}
+                onPress={
+                  () =>
+                    this.props.navigation
+                      // .dangerouslyGetParent()
+                      // .dangerouslyGetParent()
+                      .openDrawer()
+                  // console.error(this.props.navigation.dangerouslyGetParent())
+                }
               >
                 <Icon style={styles.iconMenu} name="ios-menu" />
               </Button>
@@ -196,8 +204,7 @@ const styles = StyleSheet.create({
     top: scaleSize(35),
     bottom: 0,
     width: "100%",
-    height: Dimensions.get("window").height,
-    zIndex: 1000
+    height: Dimensions.get("window").height
   },
   search: {
     flexDirection: "row",
@@ -230,7 +237,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  products: state.catalog.products
+  autocomplite: state.catalog.autocomplite
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -5,7 +5,7 @@ import HomeScreen from "../Home/HomeScreen";
 import { StackNavigator } from "react-navigation";
 export default (DrawNav = StackNavigator(
   {
-    CatalogScreen: { screen: CatalogScreen }
+    Catalog: { screen: CatalogScreen }
   },
   {
     headerMode: "none"

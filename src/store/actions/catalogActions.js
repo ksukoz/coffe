@@ -7,7 +7,8 @@ import {
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
-  GET_MESSAGE
+  GET_MESSAGE,
+  GET_AUTOCOMPLITE
 } from "./types";
 
 export const getFullCategories = () => dispatch => {
@@ -72,7 +73,13 @@ export const getProducts = (category, page) => dispatch => {
     });
 };
 
-export const findProducts = (value, category, page, type) => dispatch => {
+export const findProducts = (
+  value,
+  category,
+  page,
+  type,
+  search = ""
+) => dispatch => {
   fetch(
     `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
       value
@@ -81,7 +88,11 @@ export const findProducts = (value, category, page, type) => dispatch => {
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
+        type: search
+          ? GET_AUTOCOMPLITE
+          : page == 0
+          ? GET_PRODUCTS
+          : GET_MORE_PRODUCTS,
         payload: responseJson.items
       });
     })
