@@ -167,7 +167,7 @@ class CatalogScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
+          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.9 : 0})`}
         />
         <View style={{ flex: 1 }}>
           <View
@@ -176,7 +176,7 @@ class CatalogScreen extends Component {
               top: 0,
               bottom: 0,
               width: "100%",
-              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`,
+              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.9 : 0})`,
               zIndex: this.state.focus ? 10 : 0
             }}
           />
@@ -210,7 +210,6 @@ class CatalogScreen extends Component {
               ]}
             >
               <LetterBar
-                style={{ opacity: this.state.focus ? 0.25 : 1 }}
                 navigation={this.props.navigation}
                 categoryId={this.props.navigation.getParam("categoryId", 0)}
                 categoryName={this.props.navigation.getParam("categoryName", 0)}
@@ -218,16 +217,6 @@ class CatalogScreen extends Component {
             </View>
           )}
           <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
-            <View
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 0,
-                width: "100%",
-                backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.75 : 0})`,
-                zIndex: this.state.focus ? 10 : 0
-              }}
-            />
             <FlatList
               style={{
                 marginLeft: scaleSize(10),

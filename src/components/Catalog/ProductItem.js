@@ -26,6 +26,7 @@ class ProductItem extends Component {
 
     return (
       <TouchableOpacity
+        activeOpacity={0.9}
         onPress={() => {
           this.props.navigation.navigate("ProductCardScreen", {
             productId: item.id,

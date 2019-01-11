@@ -124,10 +124,22 @@ class ProductCardScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={opacity ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)"}
+          backgroundColor={`rgba(0,0,0, ${
+            opacity ? 0.7 : this.state.focus ? 0.9 : 0
+          })`}
         />
-        <Image source={require(MAIN_BG)} style={styles.background} />
         <View style={{ flex: 1 }}>
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              width: "100%",
+              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.9 : 0})`,
+              zIndex: this.state.focus ? 10 : 0
+            }}
+          />
+          <Image source={require(MAIN_BG)} style={styles.background} />
           <SearchBar
             placeholder={this.props.navigation.getParam(
               "searchPlaceholder",
@@ -566,6 +578,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   product: state.catalog.product,
+  focus: state.common.focus,
   categories: state.catalog.categoriesFull,
   cart: state.cart.items
 });

@@ -129,7 +129,11 @@ class SearchBar extends Component {
             onChangeText={this.handleSearchInput}
             onSubmitEditing={this.handleSearch}
             onFocus={() => {
-              this.setState({ focus: true }, () => this.props.searchFocused());
+              this.state.focus
+                ? ""
+                : this.setState({ focus: true }, () =>
+                    this.props.searchFocused()
+                  );
             }}
             value={this.state.search}
           />
