@@ -21,7 +21,7 @@ class LetterBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.alphabet) {
-      ()
+      // ()
       this.setState({ alphabet: nextProps.alphabet });
     }
   }
