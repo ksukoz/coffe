@@ -51,28 +51,36 @@ class CatalogScreen extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
-  async componentWillMount() {
+  componentWillMount() {
     this.props.getFullCategories();
-    let data = await AsyncStorage.getItem("search");
-    this.setState({ search: data ? data : "" }, () =>
-      this.props.navigation.getParam("letter") || data
-        ? this.props.findProducts(
-            data ? data : this.props.navigation.getParam("letter"),
-            this.props.navigation.getParam("categoryId", "0"),
-            this.state.page,
-            "after"
-          )
-        : this.props.getProducts(
-            this.props.navigation.getParam("categoryId", "0"),
-            this.state.page
-          )
+    this.setState(
+      { search: this.props.navigation.getParam("search", "") },
+      () =>
+        this.props.navigation.getParam("letter") ||
+        this.props.navigation.getParam("search")
+          ? this.props.findProducts(
+              this.props.navigation.getParam("search")
+                ? this.props.navigation.getParam("search")
+                : this.props.navigation.getParam("letter"),
+              this.props.navigation.getParam("categoryId", "0"),
+              this.state.page,
+              "after"
+            )
+          : this.props.getProducts(
+              this.props.navigation.getParam("categoryId", "0"),
+              this.state.page
+            )
     );
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.props.getCart();
-    let data = await AsyncStorage.getItem("search");
-    if (!data && !this.props.navigation.getParam("letter", "")) {
+    this.props.getFullCategories();
+
+    if (
+      !this.props.navigation.getParam("search") &&
+      !this.props.navigation.getParam("letter")
+    ) {
       this.props.getProducts(
         this.props.navigation.getParam("categoryId", "0"),
         this.state.page
@@ -82,7 +90,7 @@ class CatalogScreen extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  async componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.products) {
       this.setState({ loading: false, products: nextProps.products });
     }
@@ -97,13 +105,18 @@ class CatalogScreen extends Component {
       this.setState({ focus: nextProps.focus });
     }
     if (nextProps.navigation) {
-      let data = await AsyncStorage.getItem("search");
       this.setState(
-        { search: data ? data : "", page: data ? 0 : this.state.page },
+        {
+          search: this.props.navigation.getParam("search", ""),
+          page: this.props.navigation.getParam("search") ? 0 : this.state.page
+        },
         () =>
-          this.props.navigation.getParam("letter") || data
+          this.props.navigation.getParam("letter") ||
+          this.props.navigation.getParam("search")
             ? this.props.findProducts(
-                data ? data : this.props.navigation.getParam("letter"),
+                this.props.navigation.getParam("search")
+                  ? this.props.navigation.getParam("search")
+                  : this.props.navigation.getParam("letter"),
                 this.props.navigation.getParam("categoryId", "0"),
                 this.state.page,
                 "after"

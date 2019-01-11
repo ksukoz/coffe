@@ -20,6 +20,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
+  // console.error(action.type);
   switch (action.type) {
     case GET_FULL_CATEGORIES:
       return {
@@ -44,8 +45,7 @@ export default function(state = initialState, action) {
     case GET_PRODUCTS:
       return {
         ...state,
-        products: action.payload,
-        autocomplite: []
+        products: action.payload
       };
     case GET_AUTOCOMPLITE:
       return {

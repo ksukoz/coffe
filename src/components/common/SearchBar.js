@@ -12,7 +12,7 @@ import {
   Dimensions
 } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
-import { findProducts } from "../../store/actions/catalogActions";
+import { getAutocomplite } from "../../store/actions/catalogActions";
 import { searchFocused } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
 
@@ -48,6 +48,7 @@ class SearchBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.autocomplite && this.state.search.length > 1) {
+      // console.error(nextProps.autocomplite);
       this.setState({
         products: nextProps.autocomplite.map(item => item.name.split(",")[0])
       });
@@ -59,21 +60,24 @@ class SearchBar extends Component {
 
   handleSearchInput = text => {
     if (text.length > 1) {
-      this.props.findProducts(
+      this.props.getAutocomplite(
         text,
         this.props.navigation.getParam("categoryId", "0"),
         0,
         "after",
-        "search"
+        0
       );
     }
     this.setState({ search: text });
   };
 
   handleSearch = e => {
-    AsyncStorage.setItem("search", this.state.search).then(() => {
-      this.props.navigation.navigate("CatalogScreen", { categoryId: 0 });
+    this.props.navigation.navigate("Catalog", {
+      categoryId: 0,
+      search: typeof e === "string" ? e : this.state.search
     });
+
+    this.props.searchFocused();
   };
 
   unFocus = () => {
@@ -113,14 +117,7 @@ class SearchBar extends Component {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Button
                 transparent
-                onPress={
-                  () =>
-                    this.props.navigation
-                      // .dangerouslyGetParent()
-                      // .dangerouslyGetParent()
-                      .openDrawer()
-                  // console.error(this.props.navigation.dangerouslyGetParent())
-                }
+                onPress={() => this.props.navigation.openDrawer()}
               >
                 <Icon style={styles.iconMenu} name="ios-menu" />
               </Button>
@@ -177,6 +174,7 @@ class SearchBar extends Component {
                 alignItems: "center",
                 flexDirection: "row"
               }}
+              onPress={() => this.handleSearch(item)}
             >
               <Icon
                 style={{
@@ -237,12 +235,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  autocomplite: state.catalog.autocomplite
+  autocomplite: state.catalog.autocomplite,
+  focus: state.common.focus
 });
 
 const mapDispatchToProps = dispatch => ({
-  findProducts: (value, category, page, type) =>
-    dispatch(findProducts(value, category, page, type)),
+  getAutocomplite: (value, category, page, type) =>
+    dispatch(getAutocomplite(value, category, page, type)),
   searchFocused: () => dispatch(searchFocused())
 });
 

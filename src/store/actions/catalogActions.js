@@ -73,13 +73,7 @@ export const getProducts = (category, page) => dispatch => {
     });
 };
 
-export const findProducts = (
-  value,
-  category,
-  page,
-  type,
-  search = ""
-) => dispatch => {
+export const findProducts = (value, category, page, type) => dispatch => {
   fetch(
     `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
       value
@@ -88,11 +82,25 @@ export const findProducts = (
     .then(response => response.json())
     .then(responseJson => {
       dispatch({
-        type: search
-          ? GET_AUTOCOMPLITE
-          : page == 0
-          ? GET_PRODUCTS
-          : GET_MORE_PRODUCTS,
+        type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
+        payload: responseJson.items
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
+export const getAutocomplite = (value, category, page, type) => dispatch => {
+  fetch(
+    `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
+      value
+    )}/${category}/${type}/10/${page}`
+  )
+    .then(response => response.json())
+    .then(responseJson => {
+      dispatch({
+        type: GET_AUTOCOMPLITE,
         payload: responseJson.items
       });
     })
