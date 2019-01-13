@@ -77,7 +77,7 @@ class CatalogScreen extends Component {
   componentDidMount() {
     this.props.getCart();
     this.props.getFullCategories();
-    this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
+    // this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
     if (
       !this.props.navigation.getParam("search") &&
       !this.props.navigation.getParam("letter")
