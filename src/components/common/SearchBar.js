@@ -43,7 +43,7 @@ class SearchBar extends Component {
   }
 
   componentWillUnmount() {
-    Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
+    // Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
     // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 

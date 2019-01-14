@@ -32,7 +32,7 @@ import {
   getProduct,
   getFullCategories
 } from "../../store/actions/catalogActions";
-import { getAlphabet } from "../../store/actions/commonActions";
+import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductReviews from "./ProductReviews";
@@ -84,6 +84,7 @@ class ProductCardScreen extends Component {
   componentDidMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();

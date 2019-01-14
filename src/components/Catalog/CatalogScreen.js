@@ -90,12 +90,6 @@ class CatalogScreen extends Component {
       this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
     });
 
-    this.props.navigation.setParams({
-      callback: value =>
-        this.setState({ search: value }, () =>
-          this.props.navigation.setParams({ search: value })
-        )
-    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -123,6 +117,7 @@ class CatalogScreen extends Component {
       this.props.navigation.getParam("categoryId", "0"),
       this.state.page
     );
+
   handleBackPress = () => {
     if (this.props.focus) {
       this.props.searchFocused();
