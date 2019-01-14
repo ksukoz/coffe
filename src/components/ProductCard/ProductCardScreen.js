@@ -114,7 +114,12 @@ class ProductCardScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.pop();
+    if (this.state.focus) {
+      this.props.searchFocused();
+    } else {
+      this.props.navigation.pop();
+    }
+
     return true;
   };
 
@@ -222,7 +227,7 @@ class ProductCardScreen extends Component {
                       reviewsLength={reviewsLength}
                       cart={this.state.cart}
                       onPressDelivery={() =>
-                        this.props.navigation.push("DeliveryScreen", {
+                        this.props.navigation.push("Delivery", {
                           linkName: "ProductCard",
                           productId: productItem.id,
                           tab: 0

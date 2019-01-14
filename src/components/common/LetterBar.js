@@ -91,13 +91,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     padding: scaleSize(10),
     fontSize: scaleSize(13),
-    marginRight: scaleSize(25)
+    marginRight: scaleSize(15)
   },
   alphabetActive: {
     padding: scaleSize(5),
     paddingTop: scaleSize(3),
     paddingBottom: scaleSize(3),
     margin: scaleSize(5),
+    marginTop: scaleSize(7),
     backgroundColor: "rgba(255,255,255, 0.7)",
     textAlign: "center",
     borderRadius: scaleSize(2)

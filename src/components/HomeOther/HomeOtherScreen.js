@@ -63,7 +63,7 @@ class HomeOtherScreen extends Component {
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+    // BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
   }
 

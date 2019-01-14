@@ -35,19 +35,30 @@ class SearchBar extends Component {
   }
 
   componentDidMount() {
+    this.props.navigation.addListener("didFocus", payload => {
+      console.log(this.props.navigation.state.params);
+    });
     Keyboard.addListener("keyboardDidShow", this.keyboardDidShow);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillUnmount() {
     Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { placeholder } = this.props;
     if (placeholder !== prevProps.placeholder) {
       this.setState({ placeholder });
+    }
+    if (
+      prevProps.navigation.getParam("search") !==
+      this.props.navigation.getParam("search")
+    ) {
+      this.setState({
+        search: this.props.navigation.getParam("search")
+      });
     }
     if (this.props.focus !== prevProps.focus) {
       this.props.clearAutocomplite();

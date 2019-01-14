@@ -29,8 +29,9 @@ class ProductItem extends Component {
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={() => {
-          this.props.navigation.push("ProductCardScreen", {
+          this.props.navigation.push("ProductCard", {
             productId: item.id,
+            search: this.props.navigation.getParam("search"),
             searchPlaceholder:
               this.props.categories.filter(category => category.id === item.pid)
                 .length > 0
@@ -38,7 +39,8 @@ class ProductItem extends Component {
                     category => category.id === item.pid
                   )[0].name
                 : "",
-            categoryId
+            categoryId,
+            callback: this.props.navigation.getParam("callback")
           });
         }}
         style={this.state.styles[styleIndex]}

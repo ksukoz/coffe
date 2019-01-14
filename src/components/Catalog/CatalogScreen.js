@@ -16,7 +16,7 @@ import {
 
 import { getCart } from "../../store/actions/cartActions";
 
-import { getAlphabet } from "../../store/actions/commonActions";
+import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
 import {
   getProducts,
   findProducts,
@@ -79,8 +79,22 @@ class CatalogScreen extends Component {
           this.props.navigation.getParam("categoryId", "0"),
           this.state.page
         );
+      } else {
+        this.props.findProducts(
+          this.props.navigation.getParam("letter"),
+          this.props.navigation.getParam("categoryId", "0"),
+          this.state.page,
+          "after"
+        );
       }
       this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
+    });
+
+    this.props.navigation.setParams({
+      callback: value =>
+        this.setState({ search: value }, () =>
+          this.props.navigation.setParams({ search: value })
+        )
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -110,7 +124,11 @@ class CatalogScreen extends Component {
       this.state.page
     );
   handleBackPress = () => {
-    this.props.navigation.pop();
+    if (this.props.focus) {
+      this.props.searchFocused();
+    } else {
+      this.props.navigation.pop();
+    }
     return true;
   };
 
