@@ -31,6 +31,7 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      search: "",
       categories: [],
       subcategories: false,
       dishes: false,
@@ -126,6 +127,7 @@ class HomeScreen extends Component {
               placeholder={"Найти кофе"}
               style={{ marginBottom: scaleSize(20) }}
               navigation={this.props.navigation}
+              searchedValue={value => this.setState({ search: value })}
             />
             <View style={{ marginTop: scaleSize(75) }}>
               <LetterBar
@@ -147,7 +149,8 @@ class HomeScreen extends Component {
                           this.props.navigation.navigate("Catalog", {
                             categoryId: category.id,
                             searchPlaceholder: category.name,
-                            letter: ""
+                            letter: "",
+                            search: this.state.search
                           });
                           this.props.resetProducts();
                         }}
@@ -218,7 +221,8 @@ class HomeScreen extends Component {
                       <TouchableOpacity
                         onPress={() => {
                           this.props.navigation.navigate("HomeOther", {
-                            categoryId: "0"
+                            categoryId: "0",
+                            search: this.state.search
                           });
                         }}
                         style={styles.cardItemHalf}
@@ -248,16 +252,13 @@ class HomeScreen extends Component {
                     <TouchableOpacity
                       key={category.id}
                       onPress={() => {
-                        if (category.id === "8") {
-                          this.props.getDishes();
-                        } else {
-                          this.props.navigation.navigate("Catalog", {
-                            categoryId: category.id,
-                            searchPlaceholder: category.name,
-                            letter: ""
-                          });
-                          this.props.resetProducts();
-                        }
+                        this.props.navigation.navigate("Catalog", {
+                          categoryId: category.id,
+                          searchPlaceholder: category.name,
+                          letter: "",
+                          search: this.state.search
+                        });
+                        this.props.resetProducts();
                       }}
                       style={styles.cardItemHalf}
                       activeOpacity={0.9}

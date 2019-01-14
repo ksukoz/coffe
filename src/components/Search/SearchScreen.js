@@ -23,15 +23,16 @@ import {
 } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
-import ProductItem from "./ProductItem";
+import ProductItem from "../Catalog/ProductItem";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
+import HeaderBar from "../common/HeaderBar";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
 
-class CatalogScreen extends Component {
+class SearchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,20 +55,36 @@ class CatalogScreen extends Component {
   componentDidMount() {
     this.props.getCart();
     this.props.getFullCategories();
+    console.log(this.props.navigation);
+    if (
+      !this.props.navigation.getParam("search") &&
+      !this.props.navigation.getParam("letter")
+    ) {
+      this.props.getProducts(
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page
+      );
+    }
 
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();
       }
-      if (!this.props.navigation.state.params.letter) {
-        this.props.getProducts(
-          this.props.navigation.getParam("categoryId", "0"),
-          this.state.page
-        );
-      }
-      this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
     });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.search !== this.state.search) {
+      this.props.findProducts(
+        this.props.navigation.getParam("search")
+          ? this.props.navigation.getParam("search")
+          : this.props.navigation.getParam("letter"),
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page,
+        "after"
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,17 +97,19 @@ class CatalogScreen extends Component {
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories });
     }
+
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
-
-    if (nextProps.navigation && nextProps.navigation.state.params.letter) {
-      this.props.findProducts(
-        this.props.navigation.getParam("letter"),
-        this.props.navigation.getParam("categoryId", "0"),
-        this.state.page,
-        "after"
-      );
+    if (
+      nextProps.navigation &&
+      (nextProps.navigation.state.params.letter ||
+        nextProps.navigation.state.params.search)
+    ) {
+      this.setState({
+        search: nextProps.navigation.getParam("search", ""),
+        page: nextProps.navigation.getParam("search") ? 0 : this.state.page
+      });
     }
   }
 
@@ -102,10 +121,15 @@ class CatalogScreen extends Component {
   }
 
   handleEnd = () =>
-    this.props.getProducts(
+    this.props.findProducts(
+      this.state.search
+        ? this.state.search
+        : this.props.navigation.getParam("letter"),
       this.props.navigation.getParam("categoryId", "0"),
-      this.state.page
+      this.state.page,
+      "after"
     );
+
   handleBackPress = () => {
     this.props.navigation.pop();
     return true;
@@ -137,29 +161,16 @@ class CatalogScreen extends Component {
             }}
           />
           <Image source={require(MAIN_BG)} style={styles.background} />
-          <SearchBar
-            placeholder={this.props.navigation.getParam(
-              "searchPlaceholder",
-              "Найти кофе"
-            )}
-            style={{ marginBottom: scaleSize(20) }}
+
+          <HeaderBar
+            menu={true}
+            catalog={true}
+            cart={this.state.cart}
+            title={this.state.search}
+            getStyles={this.getStyles}
             navigation={this.props.navigation.dangerouslyGetParent()}
           />
 
-          <View
-            style={[
-              styles.container,
-              {
-                marginTop: scaleSize(75)
-              }
-            ]}
-          >
-            <LetterBar
-              style={{ opacity: this.state.focus ? 0.9 : 1 }}
-              navigation={this.props.navigation}
-              categoryId={this.props.navigation.getParam("categoryId", "0")}
-            />
-          </View>
           <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
             <FlatList
               style={{
@@ -251,4 +262,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CatalogScreen);
+)(SearchScreen);

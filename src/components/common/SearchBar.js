@@ -66,6 +66,7 @@ class SearchBar extends Component {
   }
 
   handleSearchInput = text => {
+    this.props.searchedValue(text);
     if (text.length > 1) {
       this.props.getAutocomplite(
         text,

@@ -98,6 +98,7 @@ class HomeOtherScreen extends Component {
               placeholder={"Найти кофе"}
               style={{ marginBottom: scaleSize(20) }}
               navigation={this.props.navigation}
+              searchedValue={value => this.setState({ search: value })}
             />
             <View style={{ marginTop: scaleSize(75) }}>
               <LetterBar navigation={this.props.navigation} categoryId={0} />
@@ -116,12 +117,16 @@ class HomeOtherScreen extends Component {
                     key={category.id}
                     onPress={() => {
                       if (category.id === "8") {
-                        this.props.navigation.navigate("HomeDishes");
+                        this.props.navigation.navigate("HomeDishes", {
+                          categoryId: 0,
+                          search: this.state.search
+                        });
                       } else {
                         this.props.navigation.navigate("Catalog", {
                           categoryId: category.id,
                           searchPlaceholder: category.name,
-                          letter: ""
+                          letter: "",
+                          search: this.state.search
                         });
                         this.props.resetProducts();
                       }
