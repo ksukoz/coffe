@@ -66,7 +66,13 @@ class SearchBar extends Component {
 
   handleSearchInput = text => {
     if (text.length > 1) {
-      this.props.getAutocomplite(text, 0, 0, "after", 0);
+      this.props.getAutocomplite(
+        text,
+        this.props.navigation.getParam("categoryId", "0"),
+        0,
+        "after",
+        0
+      );
     }
     this.setState({ search: text });
   };
