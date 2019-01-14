@@ -100,7 +100,11 @@ class HomeOtherScreen extends Component {
               searchedValue={value => this.setState({ search: value })}
             />
             <View style={{ marginTop: scaleSize(75) }}>
-              <LetterBar navigation={this.props.navigation} categoryId={"0"} />
+              <LetterBar
+                navigation={this.props.navigation}
+                categoryId={"0"}
+                lang={this.props.navigation.getParam("letter", "")}
+              />
               {this.state.loading ? (
                 <ActivityIndicator
                   style={{ marginTop: scaleSize(75) }}

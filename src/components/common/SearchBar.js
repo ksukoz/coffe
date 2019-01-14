@@ -35,9 +35,6 @@ class SearchBar extends Component {
   }
 
   componentDidMount() {
-    this.props.navigation.addListener("didFocus", payload => {
-      console.log(this.props.navigation.state.params);
-    });
     Keyboard.addListener("keyboardDidShow", this.keyboardDidShow);
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
@@ -154,7 +151,10 @@ class SearchBar extends Component {
               >
                 <Icon style={styles.iconMenu} name="ios-menu" />
               </Button>
-              <Icon style={{ color: "#58554e" }} name="ios-search" />
+              <Icon
+                style={{ color: "#58554e", fontSize: scaleSize(18) }}
+                name="ios-search"
+              />
             </View>
           )}
           <Input
@@ -273,8 +273,8 @@ const styles = StyleSheet.create({
     paddingTop: scaleSize(13)
   },
   iconMenu: {
-    color: "#58554e",
-    marginBottom: scaleSize(5)
+    color: "#58554e"
+    // marginTop: scaleSize(1)
   }
 });
 

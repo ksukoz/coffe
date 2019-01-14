@@ -31,7 +31,7 @@ class ProductItem extends Component {
         onPress={() => {
           this.props.navigation.push("ProductCard", {
             productId: item.id,
-            search: this.props.navigation.getParam("search"),
+            search: this.props.navigation.getParam("search", ""),
             searchPlaceholder:
               this.props.categories.filter(category => category.id === item.pid)
                 .length > 0
@@ -39,8 +39,7 @@ class ProductItem extends Component {
                     category => category.id === item.pid
                   )[0].name
                 : "",
-            categoryId,
-            callback: this.props.navigation.getParam("callback")
+            categoryId
           });
         }}
         style={this.state.styles[styleIndex]}
@@ -83,7 +82,7 @@ class ProductItem extends Component {
                   : [styles.productName, { fontSize: scaleSize(15) }]
               }
             >
-              {item.name}
+              {item.name} {item.id}
             </Text>
             <Text
               style={

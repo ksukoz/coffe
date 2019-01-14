@@ -43,6 +43,7 @@ class CatalogScreen extends Component {
       search: "",
       stylesIndex: 0,
       focus: false,
+      end: false,
       loading: true
     };
     this.viewabilityConfig = {
@@ -57,13 +58,24 @@ class CatalogScreen extends Component {
       prevProps.navigation.state.params.letter !==
       this.props.navigation.state.params.letter
     ) {
-      this.props.findProducts(
-        this.props.navigation.getParam("letter"),
-        this.props.navigation.getParam("categoryId", "0"),
-        this.state.page,
-        "after"
+      this.setState(
+        { page: 0 },
+        this.props.findProducts(
+          this.props.navigation.getParam("letter"),
+          this.props.navigation.getParam("categoryId", "0"),
+          0,
+          "after"
+        )
       );
     }
+    // if (
+    //   prevProps.products.length > 0 &&
+    //   JSON.stringify(prevProps.products) === JSON.stringify(this.props.products)
+    // ) {
+    //   this.setState({ end: true });
+    // } else {
+    //   this.setState({ end: false });
+    // }
   }
 
   componentDidMount() {
@@ -79,6 +91,7 @@ class CatalogScreen extends Component {
           this.props.navigation.getParam("categoryId", "0"),
           this.state.page
         );
+        this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
       } else {
         this.props.findProducts(
           this.props.navigation.getParam("letter"),
@@ -86,8 +99,17 @@ class CatalogScreen extends Component {
           this.state.page,
           "after"
         );
+
+        this.props.navigation.getParam("letter", "").match(/[а-я]/i) !== null
+          ? this.props.getAlphabet(
+              2,
+              this.props.navigation.getParam("categoryId")
+            )
+          : this.props.getAlphabet(
+              1,
+              this.props.navigation.getParam("categoryId")
+            );
       }
-      this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
@@ -112,11 +134,21 @@ class CatalogScreen extends Component {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
-  handleEnd = () =>
-    this.props.getProducts(
-      this.props.navigation.getParam("categoryId", "0"),
-      this.state.page
-    );
+  handleEnd = () => {
+    if (!this.props.navigation.state.params.letter) {
+      this.props.getProducts(
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page
+      );
+    } else {
+      this.props.findProducts(
+        this.props.navigation.getParam("letter"),
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page,
+        "after"
+      );
+    }
+  };
 
   handleBackPress = () => {
     if (this.props.focus) {
@@ -197,6 +229,7 @@ class CatalogScreen extends Component {
               style={{ opacity: this.state.focus ? 0.9 : 1 }}
               navigation={this.props.navigation}
               categoryId={this.props.navigation.getParam("categoryId", "0")}
+              lang={this.props.navigation.getParam("letter", "")}
             />
           </View>
           <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
@@ -209,23 +242,23 @@ class CatalogScreen extends Component {
                 zIndex: 2
               }}
               keyExtractor={item => item.id}
-              onEndReached={() => {
-                if (this.state.products.length > 9) {
-                  this.setState(
-                    {
-                      loading: true,
-                      page: this.state.page + 10
-                    },
-                    () => this.handleEnd()
-                  );
-                }
-              }}
+              onEndReached={() =>
+                !this.state.end
+                  ? this.setState(
+                      {
+                        loading: true,
+                        page: this.state.page + 10
+                      },
+                      () => this.handleEnd()
+                    )
+                  : false
+              }
               ListFooterComponent={() =>
                 this.state.loading ? (
                   <ActivityIndicator size="large" animating />
                 ) : null
               }
-              onEndReachedThreshold={0.1}
+              onEndReachedThreshold={this.state.end ? 0 : 0.1}
               data={this.props.products}
               extraData={this.state}
               renderItem={({ item }) => (

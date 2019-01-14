@@ -134,6 +134,7 @@ class HomeScreen extends Component {
                 navigation={this.props.navigation}
                 categoryId={"0"}
                 style={{ opacity: this.state.focus ? 0.9 : 1 }}
+                lang={this.props.navigation.getParam("letter", "")}
               />
             </View>
             <Content style={{ flex: 2 }}>
