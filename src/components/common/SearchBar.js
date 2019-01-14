@@ -25,7 +25,7 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: "",
+      search: this.props.navigation.getParam("search", ""),
       products: [],
       placeholder: this.props.placeholder,
       focus: false,
@@ -49,6 +49,9 @@ class SearchBar extends Component {
     if (placeholder !== prevProps.placeholder) {
       this.setState({ placeholder });
     }
+    if (this.props.focus !== prevProps.focus) {
+      this.props.clearAutocomplite();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,10 +60,8 @@ class SearchBar extends Component {
         products: nextProps.autocomplite.map(item => item.name.split(",")[0])
       });
     }
-    if (nextProps.focus !== this.state.focus) {
-      this.setState({ focus: nextProps.focus }, () =>
-        this.props.clearAutocomplite()
-      );
+    if (nextProps.focus || nextProps.focus === false) {
+      this.setState({ focus: nextProps.focus });
     }
   }
 
@@ -79,7 +80,7 @@ class SearchBar extends Component {
 
   handleSearch = e => {
     Keyboard.dismiss();
-    this.props.navigation.navigate("Catalog", {
+    this.props.navigation.navigate("Search", {
       categoryId: this.props.navigation.getParam("categoryId", "0"),
       search: typeof e === "string" ? e : this.state.search
     });
@@ -99,11 +100,9 @@ class SearchBar extends Component {
   };
 
   handleBackPress = () => {
-    if (this.state.focus) {
-      this.unFocus();
-      this.props.clearAutocomplite();
-      return true;
-    }
+    this.unFocus();
+    this.props.clearAutocomplite();
+    return true;
   };
 
   render() {

@@ -52,38 +52,24 @@ class CatalogScreen extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
-  componentWillMount() {
-    // this.props.getFullCategories();
-  }
-
   componentDidMount() {
     this.props.getCart();
     this.props.getFullCategories();
-    // this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
-    if (
-      !this.props.navigation.getParam("search") &&
-      !this.props.navigation.getParam("letter")
-    ) {
+    // this.props.getProducts(
+    //   this.props.navigation.getParam("categoryId", "0"),
+    //   this.state.page
+    // );
+    this.props.navigation.addListener("didFocus", payload => {
+      if (this.props.focus) {
+        this.props.searchFocused();
+      }
+      this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
       this.props.getProducts(
         this.props.navigation.getParam("categoryId", "0"),
         this.state.page
       );
-    }
-
+    });
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.search !== this.state.search) {
-      this.props.findProducts(
-        this.props.navigation.getParam("search")
-          ? this.props.navigation.getParam("search")
-          : this.props.navigation.getParam("letter"),
-        this.props.navigation.getParam("categoryId", "0"),
-        this.state.page,
-        "after"
-      );
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,7 +83,7 @@ class CatalogScreen extends Component {
       this.setState({ categories: nextProps.categories });
     }
 
-    if (nextProps.focus !== this.state.focus) {
+    if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
     if (
@@ -287,7 +273,8 @@ const mapDispatchToProps = dispatch => ({
   getProducts: (category, page) => dispatch(getProducts(category, page)),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
-  getFullCategories: () => dispatch(getFullCategories())
+  getFullCategories: () => dispatch(getFullCategories()),
+  searchFocused: () => dispatch(searchFocused())
 });
 
 export default connect(

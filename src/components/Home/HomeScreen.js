@@ -21,7 +21,7 @@ import {
   getCategories,
   resetProducts
 } from "../../store/actions/catalogActions";
-import { getAlphabet } from "../../store/actions/commonActions";
+import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -43,6 +43,9 @@ class HomeScreen extends Component {
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.props.navigation.addListener("didFocus", payload => {
+      if (this.props.focus) {
+        this.props.searchFocused();
+      }
       this.props.getAlphabet(1, 0);
     });
     this.props.getCategories();
@@ -52,7 +55,7 @@ class HomeScreen extends Component {
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories, loading: false });
     }
-    if (nextProps.focus !== this.state.focus) {
+    if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
   }
@@ -480,7 +483,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
   resetProducts: () => dispatch(resetProducts()),
-  getAlphabet: lang => dispatch(getAlphabet(lang))
+  getAlphabet: lang => dispatch(getAlphabet(lang)),
+  searchFocused: () => dispatch(searchFocused())
 });
 
 export default connect(
