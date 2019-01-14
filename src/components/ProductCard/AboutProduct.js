@@ -31,6 +31,10 @@ class AboutProduct extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+  }
+
   _renderHeader(item, expanded) {
     return (
       <View style={[styles.accordionLinks, { borderBottomWidth: 0 }]}>
@@ -140,7 +144,7 @@ ${
                 willClose={this.props.onImgClose}
                 backgroundColor={"rgba(0,0,0,0.7)"}
                 underlayColor={"transparent"}
-                springConfig={{ tension: 100, friction: 100 }}
+                // springConfig={{ tension: 100, friction: 100 }}
               >
                 <Image
                   source={{

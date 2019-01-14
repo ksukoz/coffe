@@ -65,10 +65,6 @@ class ProductCardScreen extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
-  componentWillMount() {
-    this.props.getProduct(this.props.navigation.getParam("productId", "0"));
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.product) {
       this.setState({ loading: false, productItem: nextProps.product });
@@ -85,6 +81,7 @@ class ProductCardScreen extends Component {
   }
 
   componentDidMount() {
+    this.props.getProduct(this.props.navigation.getParam("productId", "0"));
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 
     this.props.getFullCategories();

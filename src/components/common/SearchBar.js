@@ -80,7 +80,7 @@ class SearchBar extends Component {
   handleSearch = e => {
     Keyboard.dismiss();
     this.props.navigation.navigate("Catalog", {
-      categoryId: 0,
+      categoryId: this.props.navigation.getParam("categoryId", "0"),
       search: typeof e === "string" ? e : this.state.search
     });
 

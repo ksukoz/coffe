@@ -53,25 +53,7 @@ class CatalogScreen extends Component {
   }
 
   componentWillMount() {
-    this.props.getFullCategories();
-    this.setState(
-      { search: this.props.navigation.getParam("search", "") },
-      () =>
-        this.props.navigation.getParam("letter") ||
-        this.props.navigation.getParam("search")
-          ? this.props.findProducts(
-              this.props.navigation.getParam("search")
-                ? this.props.navigation.getParam("search")
-                : this.props.navigation.getParam("letter"),
-              this.props.navigation.getParam("categoryId", "0"),
-              this.state.page,
-              "after"
-            )
-          : this.props.getProducts(
-              this.props.navigation.getParam("categoryId", "0"),
-              this.state.page
-            )
-    );
+    // this.props.getFullCategories();
   }
 
   componentDidMount() {
@@ -91,6 +73,19 @@ class CatalogScreen extends Component {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.search !== this.state.search) {
+      this.props.findProducts(
+        this.props.navigation.getParam("search")
+          ? this.props.navigation.getParam("search")
+          : this.props.navigation.getParam("letter"),
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page,
+        "after"
+      );
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.products) {
       this.setState({ loading: false, products: nextProps.products });
@@ -105,25 +100,15 @@ class CatalogScreen extends Component {
     if (nextProps.focus !== this.state.focus) {
       this.setState({ focus: nextProps.focus });
     }
-    if (nextProps.navigation) {
-      this.setState(
-        {
-          search: this.props.navigation.getParam("search", ""),
-          page: this.props.navigation.getParam("search") ? 0 : this.state.page
-        },
-        () =>
-          this.props.navigation.getParam("letter") ||
-          this.props.navigation.getParam("search")
-            ? this.props.findProducts(
-                this.props.navigation.getParam("search")
-                  ? this.props.navigation.getParam("search")
-                  : this.props.navigation.getParam("letter"),
-                this.props.navigation.getParam("categoryId", "0"),
-                this.state.page,
-                "after"
-              )
-            : null
-      );
+    if (
+      nextProps.navigation &&
+      (nextProps.navigation.state.params.letter ||
+        nextProps.navigation.state.params.search)
+    ) {
+      this.setState({
+        search: nextProps.navigation.getParam("search", ""),
+        page: nextProps.navigation.getParam("search") ? 0 : this.state.page
+      });
     }
   }
 
