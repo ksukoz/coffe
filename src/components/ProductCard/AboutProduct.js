@@ -290,6 +290,7 @@ ${
               >
                 <TouchableOpacity
                   style={{ position: "relative" }}
+                  activeOpacity={0.9}
                   onPress={() =>
                     filteredCart.length > 0
                       ? this.props.updateCart(productItem.id, 0)
@@ -329,7 +330,7 @@ ${
                         color: "#fff"
                       }}
                     >
-                      {filteredCart.length > 0 ? filteredCart[0].qty : ""}
+                      {filteredCart.length > 0 ? 1 : ""}
                     </Text>
                   </View>
                 </TouchableOpacity>

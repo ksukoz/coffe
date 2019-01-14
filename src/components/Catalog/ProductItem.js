@@ -230,6 +230,7 @@ class ProductItem extends Component {
             >
               <TouchableOpacity
                 style={{ position: "relative" }}
+                activeOpacity={0.9}
                 onPress={() =>
                   filteredCart.length > 0
                     ? this.props.updateCart(item.id, 0)
@@ -273,7 +274,7 @@ class ProductItem extends Component {
                       color: "#fff"
                     }}
                   >
-                    {filteredCart.length > 0 ? filteredCart[0].qty : ""}
+                    {filteredCart.length > 0 ? 1 : ""}
                   </Text>
                 </View>
               </TouchableOpacity>
