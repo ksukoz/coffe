@@ -210,7 +210,11 @@ ${
                     : ""}
                   {product.pid > 7
                     ? ""
-                    : `, ${product.sort_human} ${product.arabic_percent}%`}
+                    : `, ${product.sort_human} ${
+                        product.arabic_percent
+                          ? product.arabic_percent + "%"
+                          : ""
+                      }`}
                 </Text>
                 <Text style={[styles.text, { color: "#3F3B32" }]}>
                   {product.pid > 7 ? "" : `Обжарка ${product.roast_human}`}

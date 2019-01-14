@@ -17,7 +17,7 @@ import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
-import { getAlphabet } from "../../store/actions/commonActions";
+import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
 import {
   getSubCategories,
   resetProducts
@@ -31,6 +31,7 @@ class HomeOtherScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      search: "",
       categories: [],
       subcategories: false,
       dishes: false,
@@ -40,12 +41,15 @@ class HomeOtherScreen extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
-  componentWillMount() {
-    this.props.getAlphabet(1);
-  }
-
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    this.props.navigation.addListener("didFocus", payload => {
+      if (this.props.focus) {
+        this.props.searchFocused();
+      }
+
+      this.props.getAlphabet(1, 7);
+    });
     this.props.getSubCategories();
   }
 
@@ -53,7 +57,7 @@ class HomeOtherScreen extends Component {
     if (nextProps.subcategories) {
       this.setState({ categories: nextProps.subcategories, loading: false });
     }
-    if (nextProps.focus !== this.state.focus) {
+    if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
   }
@@ -274,7 +278,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getAlphabet: lang => dispatch(getAlphabet(lang)),
   getSubCategories: () => dispatch(getSubCategories()),
-  resetProducts: () => dispatch(resetProducts())
+  resetProducts: () => dispatch(resetProducts()),
+  searchFocused: () => dispatch(searchFocused())
 });
 
 export default connect(

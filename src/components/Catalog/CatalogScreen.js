@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Image,
+  Text,
   FlatList,
   ScrollView,
   BackHandler,
@@ -51,6 +52,20 @@ class CatalogScreen extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.navigation.state.params.letter !==
+      this.props.navigation.state.params.letter
+    ) {
+      this.props.findProducts(
+        this.props.navigation.getParam("letter"),
+        this.props.navigation.getParam("categoryId", "0"),
+        this.state.page,
+        "after"
+      );
+    }
+  }
+
   componentDidMount() {
     this.props.getCart();
     this.props.getFullCategories();
@@ -83,22 +98,10 @@ class CatalogScreen extends Component {
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
-
-    if (nextProps.navigation && nextProps.navigation.state.params.letter) {
-      this.props.findProducts(
-        this.props.navigation.getParam("letter"),
-        this.props.navigation.getParam("categoryId", "0"),
-        this.state.page,
-        "after"
-      );
-    }
   }
 
   componentWillUnmount() {
-    this.props.BackHandler.removeEventListener(
-      "hardwareBackPress",
-      this.handleBackPress
-    );
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   handleEnd = () =>
@@ -116,6 +119,28 @@ class CatalogScreen extends Component {
   };
 
   render() {
+    let notFound;
+    if (
+      this.props.products.length === 0 &&
+      this.props.navigation.getParam("letter")
+    ) {
+      notFound = (
+        <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
+          <Image
+            style={{
+              height: scaleSize(72),
+              width: scaleSize(72),
+              marginBottom: 15
+            }}
+            resizeMode="contain"
+            source={require("../../static/img/icon-heart.png")}
+          />
+          <Text style={{ color: "#fff" }}>Ничего не найдено</Text>
+          <Text style={{ color: "#fff" }}>Попробуйте уточнить свой запрос</Text>
+        </View>
+      );
+    }
+
     return (
       <Container style={styles.default}>
         <StatusBar
@@ -143,7 +168,8 @@ class CatalogScreen extends Component {
               "Найти кофе"
             )}
             style={{ marginBottom: scaleSize(20) }}
-            navigation={this.props.navigation.dangerouslyGetParent()}
+            navigation={this.props.navigation}
+            searchedValue={value => this.setState({ search: value })}
           />
 
           <View
@@ -161,6 +187,7 @@ class CatalogScreen extends Component {
             />
           </View>
           <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+            {notFound}
             <FlatList
               style={{
                 marginLeft: scaleSize(10),
@@ -193,6 +220,7 @@ class CatalogScreen extends Component {
                   cart={this.state.cart}
                   navigation={this.props.navigation}
                   categoryId={item.pid}
+                  search={this.state.search}
                   item={item}
                   categories={this.state.categories}
                   styleIndex={this.state.stylesIndex}

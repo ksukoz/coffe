@@ -146,7 +146,7 @@ class HomeScreen extends Component {
                     >
                       <TouchableOpacity
                         onPress={() => {
-                          this.props.navigation.navigate("Catalog", {
+                          this.props.navigation.push("Catalog", {
                             categoryId: category.id,
                             searchPlaceholder: category.name,
                             letter: "",
@@ -178,7 +178,7 @@ class HomeScreen extends Component {
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() =>
-                          this.props.navigation.navigate("RecipesMainScreen")
+                          this.props.navigation.push("RecipesMainScreen")
                         }
                         style={styles.cardItemHalf}
                         activeOpacity={0.9}
@@ -201,9 +201,7 @@ class HomeScreen extends Component {
                       key={category.id}
                     >
                       <TouchableOpacity
-                        onPress={() =>
-                          this.props.navigation.navigate("Catalog")
-                        }
+                        onPress={() => this.props.navigation.push("Catalog")}
                         style={styles.cardItemHalf}
                         activeOpacity={0.9}
                       >
@@ -220,7 +218,7 @@ class HomeScreen extends Component {
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => {
-                          this.props.navigation.navigate("HomeOther", {
+                          this.props.navigation.push("HomeOther", {
                             categoryId: "0",
                             search: this.state.search
                           });
@@ -252,7 +250,7 @@ class HomeScreen extends Component {
                     <TouchableOpacity
                       key={category.id}
                       onPress={() => {
-                        this.props.navigation.navigate("Catalog", {
+                        this.props.navigation.push("Catalog", {
                           categoryId: category.id,
                           searchPlaceholder: category.name,
                           letter: "",

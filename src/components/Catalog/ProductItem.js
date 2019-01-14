@@ -13,6 +13,7 @@ class ProductItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      search: "",
       index: 0,
       styles: [styles.product, styles.productCard, styles.productItem],
       cart: false
@@ -28,7 +29,7 @@ class ProductItem extends Component {
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={() => {
-          this.props.navigation.navigate("ProductCardScreen", {
+          this.props.navigation.push("ProductCardScreen", {
             productId: item.id,
             searchPlaceholder:
               this.props.categories.filter(category => category.id === item.pid)
@@ -36,7 +37,8 @@ class ProductItem extends Component {
                 ? this.props.categories.filter(
                     category => category.id === item.pid
                   )[0].name
-                : ""
+                : "",
+            categoryId
           });
         }}
         style={this.state.styles[styleIndex]}
@@ -99,7 +101,9 @@ class ProductItem extends Component {
                 : ""}
               {item.pid > 7
                 ? ""
-                : `, ${item.sort_human} ${item.arabic_percent}%`}
+                : `, ${item.sort_human} ${
+                    item.arabic_percent ? item.arabic_percent + "%" : ""
+                  }`}
             </Text>
             <Text
               style={
@@ -159,7 +163,7 @@ class ProductItem extends Component {
             <TouchableOpacity
               style={{ marginBottom: styleIndex === 1 ? scaleSize(7) : 0 }}
               onPress={() =>
-                this.props.navigation.navigate("ProductCardScreen", {
+                this.props.navigation.push("ProductCardScreen", {
                   productId: item.id,
                   categoryName: this.props.navigation.getParam(
                     "categoryName",
@@ -292,7 +296,7 @@ class ProductItem extends Component {
             ) : null}
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.navigate("OrderScreen", {
+                this.props.navigation.push("OrderScreen", {
                   linkName: "CatalogScreen",
                   categoryId
                 })

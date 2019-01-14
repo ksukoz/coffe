@@ -238,9 +238,8 @@ class DeliveryScreen extends Component {
                               ) {
                                 return item;
                               }
-                            })[0].cost
-                          : 50}{" "}
-                        грн
+                            })[0].cost + " грн"
+                          : ""}
                       </Text>
                     </View>
                     <View
@@ -258,9 +257,8 @@ class DeliveryScreen extends Component {
                               if (item.delivery === "np" && item.courier == 1) {
                                 return item;
                               }
-                            })[0].cost
-                          : 70}{" "}
-                        грн
+                            })[0].cost + " грн"
+                          : ""}
                       </Text>
                     </View>
                   </View>
@@ -304,9 +302,8 @@ class DeliveryScreen extends Component {
                               ) {
                                 return item;
                               }
-                            })[0].cost
-                          : 30}{" "}
-                        грн
+                            })[0].cost + " грн"
+                          : ""}
                       </Text>
                     </View>
                     <View
@@ -325,9 +322,8 @@ class DeliveryScreen extends Component {
                               ) {
                                 return item;
                               }
-                            })[0].cost
-                          : 50}{" "}
-                        грн
+                            })[0].cost + " грн"
+                          : ""}
                       </Text>
                     </View>
                   </View>

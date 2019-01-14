@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Image,
+  Text,
   FlatList,
   ScrollView,
   BackHandler,
@@ -55,16 +56,6 @@ class SearchScreen extends Component {
   componentDidMount() {
     this.props.getCart();
     this.props.getFullCategories();
-    console.log(this.props.navigation);
-    if (
-      !this.props.navigation.getParam("search") &&
-      !this.props.navigation.getParam("letter")
-    ) {
-      this.props.getProducts(
-        this.props.navigation.getParam("categoryId", "0"),
-        this.state.page
-      );
-    }
 
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
@@ -96,10 +87,6 @@ class SearchScreen extends Component {
     }
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories });
-    }
-
-    if (nextProps.focus || nextProps.focus === false) {
-      this.setState({ focus: nextProps.focus });
     }
     if (
       nextProps.navigation &&
@@ -140,6 +127,27 @@ class SearchScreen extends Component {
   };
 
   render() {
+    let notFound;
+    if (
+      this.props.products.length === 0 &&
+      this.props.navigation.getParam("search")
+    ) {
+      notFound = (
+        <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
+          <Image
+            style={{
+              height: scaleSize(72),
+              width: scaleSize(72),
+              marginBottom: 15
+            }}
+            resizeMode="contain"
+            source={require("../../static/img/icon-heart.png")}
+          />
+          <Text style={{ color: "#fff" }}>Ничего не найдено</Text>
+          <Text style={{ color: "#fff" }}>Попробуйте уточнить свой запрос</Text>
+        </View>
+      );
+    }
     return (
       <Container style={styles.default}>
         <StatusBar
@@ -172,6 +180,7 @@ class SearchScreen extends Component {
           />
 
           <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+            {notFound}
             <FlatList
               style={{
                 marginLeft: scaleSize(10),

@@ -150,6 +150,7 @@ class ProductCardScreen extends Component {
             )}
             style={{ marginBottom: scaleSize(20) }}
             navigation={this.props.navigation}
+            searchedValue={value => this.setState({ search: value })}
           />
           {this.state.loading ? (
             <ActivityIndicator
@@ -221,17 +222,17 @@ class ProductCardScreen extends Component {
                       reviewsLength={reviewsLength}
                       cart={this.state.cart}
                       onPressDelivery={() =>
-                        this.props.navigation.navigate("DeliveryScreen", {
+                        this.props.navigation.push("DeliveryScreen", {
                           linkName: "ProductCard",
                           productId: productItem.id,
                           tab: 0
                         })
                       }
                       onPressOtherProducts={() =>
-                        this.props.navigation.navigate("HomeOther")
+                        this.props.navigation.push("HomeOther")
                       }
                       onPressBuyButton={() =>
-                        this.props.navigation.navigate("OrderScreen", {
+                        this.props.navigation.push("OrderScreen", {
                           linkName: "ProductCard",
                           productId: productItem.id
                         })
