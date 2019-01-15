@@ -27,10 +27,12 @@ class LetterBar extends Component {
   }
 
   componentDidMount() {
-    // this.props.getAlphabet(
-    //   this.state.english,
-    //   this.props.navigation.getParam("categoryId", "0")
-    // );
+    if (!this.state.letter) {
+      this.props.getAlphabet(
+        this.state.english,
+        this.props.navigation.getParam("categoryId", "0")
+      );
+    }
   }
 
   changeAlphabet() {

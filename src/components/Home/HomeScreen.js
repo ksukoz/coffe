@@ -47,7 +47,6 @@ class HomeScreen extends Component {
       if (this.props.focus) {
         this.props.searchFocused();
       }
-      this.props.getAlphabet(1, 0);
     });
     this.props.getCategories();
   }

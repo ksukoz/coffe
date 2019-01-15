@@ -154,6 +154,9 @@ class CatalogScreen extends Component {
     if (this.props.focus) {
       this.props.searchFocused();
     } else {
+      this.props.navigation.getParam("letter", "").match(/[а-я]/i) !== null
+        ? this.props.getAlphabet(2, 0)
+        : this.props.getAlphabet(1, 0);
       this.props.navigation.pop();
     }
     return true;

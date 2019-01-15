@@ -282,7 +282,7 @@ ${
                     />
                   </View>
                   <Text style={[styles.numberOfReviews, styles.text]}>
-                    {product.comments} отзывов
+                    Отзывов {product.comments}
                   </Text>
                 </TouchableOpacity>
               </View>

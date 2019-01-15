@@ -137,7 +137,7 @@ class ProductItem extends Component {
                     ? scaleSize(0)
                     : styleIndex === 2
                     ? scaleSize(-10)
-                    : scaleSize(7)
+                    : scaleSize(1)
               }}
             />
             {styleIndex !== 1 ? (
@@ -224,7 +224,7 @@ class ProductItem extends Component {
                     : styles.numberOfReviews
                 }
               >
-                {item.comments} отзывов
+                Отзывов {item.comments}
               </Text>
             </TouchableOpacity>
             <View
