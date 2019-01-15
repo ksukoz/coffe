@@ -14,7 +14,6 @@ class LetterBar extends Component {
       alphabet: [],
       categoryId: 0,
       lang: 1,
-      english: this.props.navigation.getParam("lang", 1),
       letter: this.props.navigation.getParam("letter", "")
     };
     Input.defaultProps.selectionColor = "#000";
@@ -28,6 +27,12 @@ class LetterBar extends Component {
       this.setState({ lang: nextProps.lang });
     }
   }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.lang !== this.props.lang) {
+  //     this.setState({ lang: this.props.lang });
+  //   }
+  // }
 
   componentDidMount() {
     this.props.navigation.addListener("didFocus", payload => {
@@ -45,13 +50,11 @@ class LetterBar extends Component {
   }
 
   changeAlphabet() {
-    this.setState({ english: this.state.english === 1 ? 2 : 1 }, () => {
-      this.props.setLang();
-      this.props.getAlphabet(
-        this.state.english,
-        this.props.navigation.getParam("categoryId", "0")
-      );
-    });
+    this.props.setLang();
+    this.props.getAlphabet(
+      this.state.lang,
+      this.props.navigation.getParam("categoryId", "0")
+    );
   }
 
   onLetterPress(letter) {

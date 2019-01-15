@@ -14,7 +14,8 @@ import {
 import { Input, Item, Icon, Button } from "native-base";
 import {
   getAutocomplete,
-  clearAutocomplete
+  clearAutocomplete,
+  clearProducts
 } from "../../store/actions/catalogActions";
 import { searchFocused, setSearch } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
@@ -114,7 +115,7 @@ class SearchBar extends Component {
       categoryId: this.props.navigation.getParam("categoryId", "0"),
       search: typeof e === "string" ? e : this.state.search
     });
-
+    this.props.clearProducts();
     this.props.searchFocused();
   };
 
@@ -312,6 +313,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   autocomplete: state.catalog.autocomplete,
   focus: state.common.focus,
+  // lang: state.common.lang,
   search: state.common.search
 });
 
@@ -320,7 +322,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getAutocomplete(value, category, page, type)),
   searchFocused: () => dispatch(searchFocused()),
   clearAutocomplete: () => dispatch(clearAutocomplete()),
-  setSearch: value => dispatch(setSearch(value))
+  setSearch: value => dispatch(setSearch(value)),
+  clearProducts: () => dispatch(clearProducts())
 });
 
 export default connect(

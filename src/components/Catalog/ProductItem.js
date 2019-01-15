@@ -164,7 +164,7 @@ class ProductItem extends Component {
             <TouchableOpacity
               style={{ marginBottom: styleIndex === 1 ? scaleSize(7) : 0 }}
               onPress={() =>
-                this.props.navigation.push("ProductCardScreen", {
+                this.props.navigation.push("ProductCard", {
                   productId: item.id,
                   categoryName: this.props.navigation.getParam(
                     "categoryName",

@@ -70,14 +70,6 @@ class CatalogScreen extends Component {
         )
       );
     }
-    // if (
-    //   prevProps.products.length > 0 &&
-    //   JSON.stringify(prevProps.products) === JSON.stringify(this.props.products)
-    // ) {
-    //   this.setState({ end: true });
-    // } else {
-    //   this.setState({ end: false });
-    // }
   }
 
   componentDidMount() {
@@ -129,6 +121,9 @@ class CatalogScreen extends Component {
     }
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
+    }
+    if (nextProps.end || nextProps.end === false) {
+      this.setState({ end: nextProps.end });
     }
   }
 
@@ -302,6 +297,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   cart: state.cart.items,
   focus: state.common.focus,
+  end: state.catalog.end,
   products: state.catalog.products,
   categories: state.catalog.categoriesFull
 });

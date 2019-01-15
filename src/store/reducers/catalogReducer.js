@@ -7,6 +7,7 @@ import {
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
+  PRODUCTS_END,
   GET_AUTOCOMPLETE
 } from "../actions/types";
 
@@ -18,7 +19,8 @@ const initialState = {
   products: [],
   autocomplete: [],
   product: null,
-  reviews: null
+  reviews: null,
+  end: false
 };
 
 export default function(state = initialState, action) {
@@ -47,7 +49,8 @@ export default function(state = initialState, action) {
     case GET_PRODUCTS:
       return {
         ...state,
-        products: action.payload
+        products: action.payload,
+        end: false
       };
     case GET_AUTOCOMPLETE:
       return {
@@ -68,6 +71,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         reviews: action.payload.comments.reverse()
+      };
+    case PRODUCTS_END:
+      return {
+        ...state,
+        end: action.payload
       };
     default:
       return state;

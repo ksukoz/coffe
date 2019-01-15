@@ -7,6 +7,7 @@ import {
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
+  PRODUCTS_END,
   GET_MESSAGE,
   GET_AUTOCOMPLETE
 } from "./types";
@@ -65,14 +66,26 @@ export const getProducts = (category, page) => dispatch => {
   fetch(`http://kawaapi.gumione.pro/api/catalog/items/${category}/10/${page}`)
     .then(response => response.json())
     .then(responseJson => {
-      dispatch({
-        type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
-        payload: responseJson.items
-      });
+      responseJson.items.length === 0
+        ? dispatch({
+            type: PRODUCTS_END,
+            payload: true
+          })
+        : dispatch({
+            type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
+            payload: responseJson.items
+          });
     })
     .catch(error => {
       console.error(error);
     });
+};
+
+export const clearProducts = () => dispatch => {
+  dispatch({
+    type: GET_PRODUCTS,
+    payload: []
+  });
 };
 
 export const findProducts = (value, category, page, type) => dispatch => {
@@ -83,10 +96,15 @@ export const findProducts = (value, category, page, type) => dispatch => {
   )
     .then(response => response.json())
     .then(responseJson => {
-      dispatch({
-        type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
-        payload: responseJson.items
-      });
+      responseJson.items.length === 0
+        ? dispatch({
+            type: PRODUCTS_END,
+            payload: true
+          })
+        : dispatch({
+            type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
+            payload: responseJson.items
+          });
     })
     .catch(error => {
       console.error(error);

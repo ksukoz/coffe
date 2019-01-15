@@ -44,7 +44,8 @@ class SearchScreen extends Component {
       search: "",
       stylesIndex: 0,
       focus: false,
-      loading: true
+      loading: true,
+      end: false
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -76,10 +77,25 @@ class SearchScreen extends Component {
         "after"
       );
     }
+    // if (
+    //   JSON.stringify(prevProps.products) !== JSON.stringify(this.props.products)
+    // ) {
+    //   // this.props.findProducts(
+    //   //   this.props.navigation.getParam("search")
+    //   //     ? this.props.navigation.getParam("search")
+    //   //     : this.props.navigation.getParam("letter"),
+    //   //   this.props.navigation.getParam("categoryId", "0"),
+    //   //   this.state.page,
+    //   //   "after"
+    //   // );
+
+    //   this.setState({ loading: false, products: this.props.products });
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.products) {
+      console.log(nextProps.products);
       this.setState({ loading: false, products: nextProps.products });
     }
     if (nextProps.cart) {
@@ -98,6 +114,9 @@ class SearchScreen extends Component {
         page: nextProps.navigation.getParam("search") ? 0 : this.state.page
       });
     }
+    if (nextProps.end || nextProps.end === false) {
+      this.setState({ end: nextProps.end });
+    }
   }
 
   componentWillUnmount() {
@@ -107,15 +126,14 @@ class SearchScreen extends Component {
     );
   }
 
-  handleEnd = () =>
+  handleEnd = () => {
     this.props.findProducts(
-      this.state.search
-        ? this.state.search
-        : this.props.navigation.getParam("letter"),
+      this.props.search,
       this.props.navigation.getParam("categoryId", "0"),
-      this.state.page,
+      this.state.page + 10,
       "after"
     );
+  };
 
   handleBackPress = () => {
     this.props.navigation.pop();
@@ -190,17 +208,17 @@ class SearchScreen extends Component {
                 zIndex: 2
               }}
               keyExtractor={item => item.id}
-              onEndReached={() => {
-                if (this.state.products.length > 9) {
-                  this.setState(
-                    {
-                      loading: true,
-                      page: this.state.page + 10
-                    },
-                    () => this.handleEnd()
-                  );
-                }
-              }}
+              onEndReached={() =>
+                !this.state.end
+                  ? this.setState(
+                      {
+                        loading: true,
+                        page: this.state.page + 10
+                      },
+                      () => this.handleEnd()
+                    )
+                  : false
+              }
               ListFooterComponent={() =>
                 this.state.loading ? (
                   <ActivityIndicator size="large" animating />
@@ -255,6 +273,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   cart: state.cart.items,
   focus: state.common.focus,
+  search: state.common.search,
+  end: state.catalog.end,
   products: state.catalog.products,
   categories: state.catalog.categoriesFull
 });
