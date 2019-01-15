@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, Input } from "native-base";
 import { ScrollView, TouchableOpacity, StyleSheet } from "react-native";
-import { getAlphabet } from "../../store/actions/commonActions";
+import { getAlphabet, setLang } from "../../store/actions/commonActions";
 import { findProducts } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
@@ -13,7 +13,8 @@ class LetterBar extends Component {
     this.state = {
       alphabet: [],
       categoryId: 0,
-      english: 1,
+      lang: 1,
+      english: this.props.navigation.getParam("lang", 1),
       letter: this.props.navigation.getParam("letter", "")
     };
     Input.defaultProps.selectionColor = "#000";
@@ -21,27 +22,36 @@ class LetterBar extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.alphabet) {
-      // ()
       this.setState({ alphabet: nextProps.alphabet });
+    }
+    if (nextProps.lang) {
+      this.setState({ lang: nextProps.lang });
     }
   }
 
   componentDidMount() {
+    this.props.navigation.addListener("didFocus", payload => {
+      this.props.getAlphabet(
+        this.props.lang,
+        this.props.navigation.getParam("categoryId", "0")
+      );
+    });
     if (!this.state.letter) {
       this.props.getAlphabet(
-        this.state.english,
+        this.state.lang,
         this.props.navigation.getParam("categoryId", "0")
       );
     }
   }
 
   changeAlphabet() {
-    this.setState({ english: this.state.english === 1 ? 2 : 1 }, () =>
+    this.setState({ english: this.state.english === 1 ? 2 : 1 }, () => {
+      this.props.setLang();
       this.props.getAlphabet(
         this.state.english,
         this.props.navigation.getParam("categoryId", "0")
-      )
-    );
+      );
+    });
   }
 
   onLetterPress(letter) {
@@ -119,11 +129,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  alphabet: state.common.letters
+  alphabet: state.common.letters,
+  lang: state.common.lang
 });
 
 const mapDispatchToProps = dispatch => ({
   getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
+  setLang: () => dispatch(setLang()),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type))
 });

@@ -83,7 +83,6 @@ class ProductCardScreen extends Component {
 
   componentDidMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
@@ -98,10 +97,6 @@ class ProductCardScreen extends Component {
     }, 500);
   }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-  }
-
   setModalVisible(visible) {
     this.setState({ ...this.state, modalVisible: visible, opacity: visible });
   }
@@ -113,16 +108,6 @@ class ProductCardScreen extends Component {
       reviewsFormShow: !this.state.reviewsFormShow
     });
   }
-
-  handleBackPress = () => {
-    if (this.state.focus) {
-      this.props.searchFocused();
-    } else {
-      this.props.navigation.pop();
-    }
-
-    return true;
-  };
 
   render() {
     const { productItem, reviewsLength, opacity } = this.state;

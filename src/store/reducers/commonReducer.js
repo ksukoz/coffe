@@ -2,12 +2,16 @@ import {
   GET_MESSAGE,
   GET_LETTERS,
   GET_DELIVERY_COST,
+  SET_LANG,
+  SET_SEARCH,
   GET_SEARCH_FOCUS
 } from "../actions/types";
 
 const initialState = {
   message: "",
   letters: null,
+  lang: 1,
+  search: "",
   focus: false,
   delivery: []
 };
@@ -28,9 +32,19 @@ export default function(state = initialState, action) {
       return {
         ...state,
         delivery:
-          state.delivery.length === 4
+          state.delivery.length === 6
             ? [...action.payload]
             : [...state.delivery, ...action.payload]
+      };
+    case SET_LANG:
+      return {
+        ...state,
+        lang: state.lang === 1 ? 2 : 1
+      };
+    case SET_SEARCH:
+      return {
+        ...state,
+        search: action.payload
       };
     case GET_SEARCH_FOCUS:
       return {

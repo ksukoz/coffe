@@ -42,10 +42,12 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();
+      }
+      if (this.props.lang) {
+        this.props.getAlphabet(this.props.lang, 0);
       }
     });
     this.props.getCategories();
@@ -58,11 +60,6 @@ class HomeScreen extends Component {
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-    Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
   }
 
   renderLoadingView() {
@@ -87,14 +84,8 @@ class HomeScreen extends Component {
     );
   }
 
-  handleBackPress = () => {
-    this.props.navigation.pop();
-    return true;
-  };
-
   render() {
     if (this.state.loading) {
-      this.props.getAlphabet(1, 0);
       return this.renderLoadingView();
     }
     return (
@@ -126,14 +117,12 @@ class HomeScreen extends Component {
               placeholder={"Найти кофе"}
               style={{ marginBottom: scaleSize(20) }}
               navigation={this.props.navigation}
-              searchedValue={value => this.setState({ search: value })}
             />
             <View style={{ marginTop: scaleSize(75) }}>
               <LetterBar
                 navigation={this.props.navigation}
                 categoryId={"0"}
                 style={{ opacity: this.state.focus ? 0.9 : 1 }}
-                lang={this.props.navigation.getParam("letter", "")}
               />
             </View>
             <Content style={{ flex: 2 }}>
@@ -187,7 +176,8 @@ class HomeScreen extends Component {
                           style={{
                             height: scaleSize(69),
                             width: scaleSize(52),
-                            marginBottom: 15
+                            marginBottom: 15,
+                            marginBottom: scaleSize(24)
                           }}
                           resizeMode="contain"
                           source={require("../../static/img/icon-menu.png")}
@@ -277,7 +267,8 @@ class HomeScreen extends Component {
                             style={{
                               height: scaleSize(53),
                               width: scaleSize(72),
-                              marginBottom: 15
+                              marginBottom: 15,
+                              marginTop: scaleSize(20)
                             }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-zerno.png")}
@@ -287,7 +278,8 @@ class HomeScreen extends Component {
                             style={{
                               height: scaleSize(50),
                               width: scaleSize(75),
-                              marginBottom: 15
+                              marginBottom: 15,
+                              marginTop: scaleSize(8)
                             }}
                             resizeMode="contain"
                             source={require("../../static/img/icon-capsula.png")}
@@ -476,7 +468,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.catalog.categories,
-  focus: state.common.focus
+  focus: state.common.focus,
+  letters: state.common.letters
 });
 
 const mapDispatchToProps = dispatch => ({

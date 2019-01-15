@@ -288,19 +288,17 @@ export default class SelectRegionScreen extends Component {
 
   setRegion = (id, name) => {
     this.storeData("region_id", id);
-    this.storeData("region_name", name);
+
     this.props.navigation.navigate("SelectCityScreen", {
       linkName: "DeliveryScreen"
     });
+
+    // this.storeData("region_name", name);
   };
 
-  storeData = async (name, value) => {
-    try {
-      await AsyncStorage.setItem(name, value);
-    } catch (error) {
-      // Error saving data
-    }
-  };
+  async storeData(name, value) {
+    await AsyncStorage.setItem(name, value);
+  }
 
   renderLoadingView() {
     return (

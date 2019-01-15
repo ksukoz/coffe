@@ -31,8 +31,16 @@ StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const MAIN_BG = "../../static/img/background.png";
 class DeliveryScreen extends Component {
+  _didFocusSubscription;
+  _willBlurSubscription;
+
   constructor(props) {
     super(props);
+    this._didFocusSubscription = this.props.navigation.addListener(
+      "didFocus",
+      payload =>
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress)
+    );
     this.state = {
       loading: false,
       currentCity: null,
@@ -57,8 +65,15 @@ class DeliveryScreen extends Component {
     }
   }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  componentDidMount() {
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload =>
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          this.handleBackPress
+        )
+    );
   }
 
   handleBackPress = () => {
@@ -230,7 +245,7 @@ class DeliveryScreen extends Component {
                         Новая Почта, отделение
                       </Text>
                       <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 3
+                        {this.state.delivery.length > 5
                           ? this.state.delivery.filter(item => {
                               if (
                                 item.delivery === "np" &&
@@ -252,7 +267,7 @@ class DeliveryScreen extends Component {
                         Новая Почта, курьер
                       </Text>
                       <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 3
+                        {this.state.delivery.length > 5
                           ? this.state.delivery.filter(item => {
                               if (item.delivery === "np" && item.courier == 1) {
                                 return item;
@@ -290,11 +305,9 @@ class DeliveryScreen extends Component {
                         justifyContent: "space-between"
                       }}
                     >
+                      <Text style={styles.defaultFont}>Укрпочта Стандарт</Text>
                       <Text style={styles.defaultFont}>
-                        Укрпочта, отделение
-                      </Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 3
+                        {this.state.delivery.length > 5
                           ? this.state.delivery.filter(item => {
                               if (
                                 item.delivery === "up" &&
@@ -312,12 +325,71 @@ class DeliveryScreen extends Component {
                         justifyContent: "space-between"
                       }}
                     >
-                      <Text style={styles.defaultFont}>Укрпочта, курьер</Text>
+                      <Text style={styles.defaultFont}>Укрпочта Экспресс</Text>
                       <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 3
+                        {this.state.delivery.length > 5
+                          ? this.state.delivery.filter(item => {
+                              if (
+                                item.delivery === "es" &&
+                                item.courier === 0
+                              ) {
+                                return item;
+                              }
+                            })[0].cost + " грн"
+                          : ""}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      marginLeft: scaleSize(25 + 17 + 6)
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <Text style={styles.defaultFont}>
+                        Укрпочта Стандарт, курьер
+                      </Text>
+                      <Text style={styles.defaultFont}>
+                        {this.state.delivery.length > 5
                           ? this.state.delivery.filter(item => {
                               if (
                                 item.delivery === "up" &&
+                                item.courier === 1
+                              ) {
+                                return item;
+                              }
+                            })[0].cost + " грн"
+                          : ""}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <Text style={styles.defaultFont}>
+                        Укрпочта Экспресс, курьер
+                      </Text>
+                      <Text style={styles.defaultFont}>
+                        {this.state.delivery.length > 5
+                          ? this.state.delivery.filter(item => {
+                              if (
+                                item.delivery === "es" &&
                                 item.courier === 1
                               ) {
                                 return item;

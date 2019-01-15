@@ -34,14 +34,17 @@ export default class HeaderBar extends Component {
           style={{
             borderBottomWidth: 0,
             color: "#fff",
-            width: "100%"
-            // justifyContent: "space-between"
+            width: Dimensions.get("window").width,
+            marginLeft: 0,
+            justifyContent: "space-between"
           }}
         >
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center"
+              alignItems: "center",
+              marginRight: scaleSize(10),
+              flex: 3.3
             }}
           >
             <Button
@@ -69,7 +72,9 @@ export default class HeaderBar extends Component {
                 color: "#ffffff",
                 fontSize: scaleSize(20),
                 fontWeight: "500",
-                width: Dimensions.get("window").width * 0.6
+                flexWrap: "wrap",
+                width: "85%"
+                // flex: 1.5
               }}
             >
               {title}
@@ -82,7 +87,7 @@ export default class HeaderBar extends Component {
                 flex: 1,
                 alignItems: "center",
                 justifySelf: "flex-end",
-                marginRight: scaleSize(20)
+                marginRight: scaleSize(10)
               }}
             >
               <TouchableOpacity

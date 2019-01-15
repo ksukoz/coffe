@@ -11,7 +11,9 @@ export const GET_PRODUCT_REVIEWS = "GET_PRODUCT_REVIEWS";
 export const GET_CART = "GET_CART";
 
 export const GET_MESSAGE = "GET_MESSAGE";
-export const GET_AUTOCOMPLITE = "GET_AUTOCOMPLITE";
+export const GET_AUTOCOMPLETE = "GET_AUTOCOMPLETE";
 export const GET_LETTERS = "GET_LETTERS";
 export const GET_DELIVERY_COST = "GET_DELIVERY_COST";
+export const SET_LANG = "SET_LANG";
+export const SET_SEARCH = "SET_SEARCH";
 export const GET_SEARCH_FOCUS = "GET_SEARCH_FOCUS";

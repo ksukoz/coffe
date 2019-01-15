@@ -28,6 +28,8 @@ import ProductItem from "./ProductItem";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
+import KawaIcon from "../KawaIcon";
+
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
@@ -150,18 +152,6 @@ class CatalogScreen extends Component {
     }
   };
 
-  handleBackPress = () => {
-    if (this.props.focus) {
-      this.props.searchFocused();
-    } else {
-      this.props.navigation.getParam("letter", "").match(/[а-я]/i) !== null
-        ? this.props.getAlphabet(2, 0)
-        : this.props.getAlphabet(1, 0);
-      this.props.navigation.pop();
-    }
-    return true;
-  };
-
   getStyles = index => {
     this.setState({ stylesIndex: index });
   };
@@ -174,17 +164,18 @@ class CatalogScreen extends Component {
     ) {
       notFound = (
         <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
-          <Image
-            style={{
-              height: scaleSize(72),
-              width: scaleSize(72),
-              marginBottom: 15
-            }}
-            resizeMode="contain"
-            source={require("../../static/img/icon-heart.png")}
+          <KawaIcon
+            color={"#f8f8f8"}
+            name={"info"}
+            size={scaleSize(52)}
+            style={{ marginBottom: scaleSize(16) }}
           />
-          <Text style={{ color: "#fff" }}>Ничего не найдено</Text>
-          <Text style={{ color: "#fff" }}>Попробуйте уточнить свой запрос</Text>
+          <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
+            Ничего не найдено
+          </Text>
+          <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
+            Попробуйте уточнить свой запрос
+          </Text>
         </View>
       );
     }

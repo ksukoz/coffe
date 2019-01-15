@@ -241,51 +241,64 @@ export default class SelectCityScreen extends Component {
       loading: false
     };
   }
-
-  componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-
+  componentDidUpdate(prevProps, prevState) {
     let formData = new FormData();
     formData.append("username", "+380675635155");
     formData.append("password", "test");
 
-    this.retrieveData("region_id");
-    this.retrieveData("region_name");
+    console.log(
+      // "http://kawaapi.gumione.pro/api/users/cities/" +
+      this.state.region_id
+    );
 
-    fetch("http://kawaapi.gumione.pro/api/auth/login", {
-      method: "POST",
-      body: formData
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        fetch(
-          "http://kawaapi.gumione.pro/api/users/cities/" + this.state.region_id,
-          {
-            headers: new Headers({
-              Authorization: "Bearer " + responseJson.token
-            })
-          }
-        )
-          .then(response => response.json())
-          .then(responseJson => {
-            let sortedKeys = Object.keys(responseJson.cities).sort();
-            let cities = responseJson.cities[sortedKeys[0]];
-
-            this.setState(
-              {
-                loading: false,
-                cities: cities
-              },
-              function() {}
-            );
-          })
-          .catch(error => {
-            console.error(error);
-          });
+    if (prevState.region_id !== this.state.region_id) {
+      fetch("http://kawaapi.gumione.pro/api/auth/login", {
+        method: "POST",
+        body: formData
       })
-      .catch(error => {
-        console.error(error);
-      });
+        .then(response => response.json())
+        .then(responseJson => {
+          fetch(
+            "http://kawaapi.gumione.pro/api/users/cities/" +
+              this.state.region_id,
+            {
+              headers: new Headers({
+                Authorization: "Bearer " + responseJson.token
+              })
+            }
+          )
+            .then(response => response.json())
+            .then(responseJson => {
+              let sortedKeys = Object.keys(responseJson.cities).sort();
+              let cities = responseJson.cities[sortedKeys[0]];
+              console.log(
+                // "http://kawaapi.gumione.pro/api/users/cities/" +
+                this.state.region_id
+              );
+              this.setState(
+                {
+                  loading: false,
+                  cities: cities
+                },
+                function() {}
+              );
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+
+    this.retrieveData("region_id");
+
+    // this.retrieveData("region_name");
   }
 
   componentWillUnmount() {
@@ -293,18 +306,20 @@ export default class SelectCityScreen extends Component {
   }
 
   retrieveData = async name => {
+    console.log(await AsyncStorage.getItem(name));
     try {
       const value = await AsyncStorage.getItem(name);
 
-      if (name == "region_id") {
+      if (value !== null) {
         this.setState({
           region_id: value
         });
-      } else if (name == "region_name") {
-        this.setState({
-          region_name: value
-        });
       }
+      // else if (name == "region_name") {
+      //   this.setState({
+      //     region_name: value
+      //   });
+      // }
     } catch (error) {
       // Error retrieving data
     }

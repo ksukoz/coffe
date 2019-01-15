@@ -17,7 +17,7 @@ import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
-import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
+import { searchFocused } from "../../store/actions/commonActions";
 import { getDishes, resetProducts } from "../../store/actions/catalogActions";
 
 StatusBar.setBarStyle("light-content", true);
@@ -42,8 +42,6 @@ class HomeOtherScreen extends Component {
       if (this.props.focus) {
         this.props.searchFocused();
       }
-
-      this.props.getAlphabet(1, 8);
     });
     this.props.getDishes();
   }
@@ -258,7 +256,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlphabet: lang => dispatch(getAlphabet(lang)),
   getDishes: () => dispatch(getDishes()),
   resetProducts: () => dispatch(resetProducts()),
   searchFocused: () => dispatch(searchFocused())

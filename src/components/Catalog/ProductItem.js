@@ -82,7 +82,7 @@ class ProductItem extends Component {
                   : [styles.productName, { fontSize: scaleSize(15) }]
               }
             >
-              {item.name} {item.id}
+              {item.name}
             </Text>
             <Text
               style={

@@ -17,7 +17,7 @@ import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
-import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
+import { searchFocused } from "../../store/actions/commonActions";
 import {
   getSubCategories,
   resetProducts
@@ -47,8 +47,6 @@ class HomeOtherScreen extends Component {
       if (this.props.focus) {
         this.props.searchFocused();
       }
-
-      this.props.getAlphabet(1, 7);
     });
     this.props.getSubCategories();
   }
@@ -280,7 +278,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlphabet: lang => dispatch(getAlphabet(lang)),
   getSubCategories: () => dispatch(getSubCategories()),
   resetProducts: () => dispatch(resetProducts()),
   searchFocused: () => dispatch(searchFocused())

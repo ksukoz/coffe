@@ -527,7 +527,12 @@ export default class CoffeeCard extends Component {
           onStartShouldSetResponder={this.hideDesc}
         >
           <Content {...this.windowsRelease.panHandlers}>
-            <View style={{ position: "relative" }}>
+            <View
+              style={{
+                position: "relative",
+                display: this.props.pid > 7 ? "none" : "flex"
+              }}
+            >
               <Text
                 style={{
                   paddingLeft: scaleSize(15),
@@ -558,7 +563,12 @@ export default class CoffeeCard extends Component {
                 />
               </TouchableOpacity>
             </View>
-            <View style={styles.iconsRow}>
+            <View
+              style={[
+                styles.iconsRow,
+                { display: this.props.pid > 7 ? "none" : "flex" }
+              ]}
+            >
               <KawaIcon
                 color={preparation.includes("1") ? "#ea9308" : "#ffea00"}
                 name={"cup"}

@@ -25,8 +25,8 @@ import {
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "../Catalog/ProductItem";
-import LetterBar from "../common/LetterBar";
-import SearchBar from "../common/SearchBar";
+
+import KawaIcon from "../KawaIcon";
 import HeaderBar from "../common/HeaderBar";
 
 StatusBar.setBarStyle("light-content", true);
@@ -134,17 +134,18 @@ class SearchScreen extends Component {
     ) {
       notFound = (
         <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
-          <Image
-            style={{
-              height: scaleSize(72),
-              width: scaleSize(72),
-              marginBottom: 15
-            }}
-            resizeMode="contain"
-            source={require("../../static/img/icon-heart.png")}
+          <KawaIcon
+            color={"#f8f8f8"}
+            name={"info"}
+            size={scaleSize(52)}
+            style={{ marginBottom: scaleSize(16) }}
           />
-          <Text style={{ color: "#fff" }}>Ничего не найдено</Text>
-          <Text style={{ color: "#fff" }}>Попробуйте уточнить свой запрос</Text>
+          <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
+            Ничего не найдено
+          </Text>
+          <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
+            Попробуйте уточнить свой запрос
+          </Text>
         </View>
       );
     }

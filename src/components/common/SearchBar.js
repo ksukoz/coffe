@@ -13,19 +13,28 @@ import {
 } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
 import {
-  getAutocomplite,
-  clearAutocomplite
+  getAutocomplete,
+  clearAutocomplete
 } from "../../store/actions/catalogActions";
-import { searchFocused } from "../../store/actions/commonActions";
+import { searchFocused, setSearch } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
 class SearchBar extends Component {
+  _didFocusSubscription;
+  _willBlurSubscription;
+
   constructor(props) {
     super(props);
+    this._didFocusSubscription = this.props.navigation.addListener(
+      "didFocus",
+      payload => {
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+      }
+    );
     this.state = {
-      search: this.props.navigation.getParam("search", ""),
+      search: "",
       products: [],
       placeholder: this.props.placeholder,
       focus: false,
@@ -36,16 +45,18 @@ class SearchBar extends Component {
 
   componentDidMount() {
     Keyboard.addListener("keyboardDidShow", this.keyboardDidShow);
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-  }
-
-  componentWillUnmount() {
-    // Keyboard.removeListener("keyboardDidShow", this.keyboardDidShow);
-    // BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload =>
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          this.handleBackPress
+        )
+    );
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { placeholder } = this.props;
+    const { placeholder, search } = this.props;
     if (placeholder !== prevProps.placeholder) {
       this.setState({ placeholder });
     }
@@ -58,25 +69,34 @@ class SearchBar extends Component {
       });
     }
     if (this.props.focus !== prevProps.focus) {
-      this.props.clearAutocomplite();
+      this.props.clearAutocomplete();
+    }
+    if (search !== prevProps.search) {
+      this.setState({ search });
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.autocomplite && this.state.search.length > 1) {
+    if (
+      nextProps.autocomplete &&
+      this.state.search &&
+      this.state.search.length > 1
+    ) {
       this.setState({
-        products: nextProps.autocomplite.map(item => item.name.split(",")[0])
+        products: nextProps.autocomplete.map(item => item.name.split(",")[0])
       });
     }
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
+    if (nextProps.search) {
+      this.setState({ search: nextProps.search });
+    }
   }
 
   handleSearchInput = text => {
-    this.props.searchedValue(text);
     if (text.length > 1) {
-      this.props.getAutocomplite(
+      this.props.getAutocomplete(
         text,
         this.props.navigation.getParam("categoryId", "0"),
         0,
@@ -88,7 +108,7 @@ class SearchBar extends Component {
   };
 
   handleSearch = e => {
-    this.props.searchedValue(typeof e === "string" ? e : this.state.search);
+    this.props.setSearch(typeof e === "string" ? e : this.state.search);
     Keyboard.dismiss();
     this.props.navigation.push("Search", {
       categoryId: this.props.navigation.getParam("categoryId", "0"),
@@ -100,7 +120,7 @@ class SearchBar extends Component {
 
   unFocus = () => {
     Keyboard.dismiss();
-    this.setState({ focus: false }, () => this.props.searchFocused());
+    this.props.searchFocused();
   };
 
   keyboardDidShow = e => {
@@ -110,8 +130,12 @@ class SearchBar extends Component {
   };
 
   handleBackPress = () => {
-    this.unFocus();
-    this.props.clearAutocomplite();
+    if (this.props.focus) {
+      this.unFocus();
+    } else {
+      this.props.clearAutocomplete();
+      this.props.navigation.pop();
+    }
     return true;
   };
 
@@ -140,7 +164,7 @@ class SearchBar extends Component {
               name="md-arrow-back"
               onPress={() => {
                 this.unFocus();
-                this.props.clearAutocomplite();
+                this.props.clearAutocomplete();
               }}
             />
           ) : (
@@ -152,7 +176,12 @@ class SearchBar extends Component {
                 <Icon style={styles.iconMenu} name="ios-menu" />
               </Button>
               <Icon
-                style={{ color: "#58554e", fontSize: scaleSize(18) }}
+                style={{
+                  color: "#58554e",
+                  fontSize: scaleSize(18),
+                  marginRight: scaleSize(10),
+                  marginLeft: scaleSize(5)
+                }}
                 name="ios-search"
               />
             </View>
@@ -172,7 +201,7 @@ class SearchBar extends Component {
             }}
             value={this.state.search}
           />
-          {this.state.search.length > 0 ? (
+          {this.state.search && this.state.search.length > 0 ? (
             <Button
               transparent
               style={{
@@ -181,8 +210,8 @@ class SearchBar extends Component {
                 height: scaleSize(35)
               }}
               onPress={() => {
-                this.props.clearAutocomplite();
-                this.setState({ search: "" });
+                this.props.clearAutocomplete();
+                this.setState({ search: "" }, () => this.props.setSearch(""));
               }}
             >
               <Icon
@@ -214,7 +243,8 @@ class SearchBar extends Component {
               style={{
                 height: scaleSize(56),
                 alignItems: "center",
-                flexDirection: "row"
+                flexDirection: "row",
+                zIndex: this.props.focus ? 1 : -1
               }}
               onPress={() => {
                 Keyboard.dismiss();
@@ -270,7 +300,8 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     fontSize: scaleSize(13),
-    paddingTop: scaleSize(13)
+    paddingTop: scaleSize((40 - 13) / 2),
+    height: scaleSize(40)
   },
   iconMenu: {
     color: "#58554e"
@@ -279,15 +310,17 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  autocomplite: state.catalog.autocomplite,
-  focus: state.common.focus
+  autocomplete: state.catalog.autocomplete,
+  focus: state.common.focus,
+  search: state.common.search
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAutocomplite: (value, category, page, type) =>
-    dispatch(getAutocomplite(value, category, page, type)),
+  getAutocomplete: (value, category, page, type) =>
+    dispatch(getAutocomplete(value, category, page, type)),
   searchFocused: () => dispatch(searchFocused()),
-  clearAutocomplite: () => dispatch(clearAutocomplite())
+  clearAutocomplete: () => dispatch(clearAutocomplete()),
+  setSearch: value => dispatch(setSearch(value))
 });
 
 export default connect(
