@@ -124,8 +124,8 @@ export default class HeaderBar extends Component {
                   size={scaleSize(26)}
                   name={
                     this.props.cart
-                      ? "small-cart-in-catalog-with-buy"
-                      : "small-cart-in-catalog"
+                      ? "cart-with-buy-actionbar"
+                      : "cart-actionbar"
                   }
                 />
                 <View

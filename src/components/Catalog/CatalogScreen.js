@@ -193,7 +193,7 @@ class CatalogScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.7 : 0})`}
+          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
         />
         <View style={{ flex: 1 }}>
           <ScrollView

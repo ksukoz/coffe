@@ -59,10 +59,19 @@ class ProductItem extends Component {
             source={{ uri: "http://kawa.gumione.pro" + item.file }}
             style={
               styleIndex === 1
-                ? [styles.productImg, { height: scaleSize(113) }]
+                ? [
+                    styles.productImg,
+                    { width: scaleSize(80), height: scaleSize(113) }
+                  ]
                 : styleIndex === 2
-                ? [styles.productImg, { height: scaleSize(180) }]
-                : [styles.productImg, { height: scaleSize(100) }]
+                ? [
+                    styles.productImg,
+                    { width: scaleSize(90), height: scaleSize(180) }
+                  ]
+                : [
+                    styles.productImg,
+                    { width: scaleSize(70), height: scaleSize(100) }
+                  ]
             }
           />
         </View>
@@ -82,7 +91,7 @@ class ProductItem extends Component {
                   : [styles.productName, { fontSize: scaleSize(15) }]
               }
             >
-              {item.name} {item.id}
+              {item.name}
             </Text>
             <Text
               style={
@@ -130,7 +139,7 @@ class ProductItem extends Component {
                 borderBottomWidth: 1,
                 borderColor: "#89a6aa",
                 flex: 1,
-                marginBottom: scaleSize(5.5),
+                marginBottom: styleIndex === 1 ? 0 : scaleSize(5.5),
                 marginRight: styleIndex === 1 ? scaleSize(0) : scaleSize(7),
                 marginLeft:
                   styleIndex === 1
@@ -201,7 +210,7 @@ class ProductItem extends Component {
                 ) : (
                   <KawaIcon
                     style={styles.starIcon}
-                    size={scaleSize(16)}
+                    size={styleIndex === 1 ? scaleSize(12) : scaleSize(16)}
                     name="small-star-in-catalog"
                   />
                 )}
@@ -214,6 +223,8 @@ class ProductItem extends Component {
                 >
                   {item.avg_rating > 0
                     ? (+item.avg_rating).toFixed(1)
+                    : styleIndex === 2
+                    ? ""
                     : item.avg_rating}
                 </Text>
               </View>
@@ -234,7 +245,7 @@ class ProductItem extends Component {
               }}
             >
               <TouchableOpacity
-                style={{ position: "relative" }}
+                style={{ position: "relative", padding: scaleSize(10) }}
                 activeOpacity={0.9}
                 onPress={() =>
                   filteredCart.length > 0
@@ -248,32 +259,32 @@ class ProductItem extends Component {
                       ? [styles.cartIcon, { marginLeft: scaleSize(10) }]
                       : styles.cartIcon
                   }
-                  size={styleIndex === 2 ? scaleSize(25) : scaleSize(20)}
+                  size={styleIndex === 2 ? scaleSize(30) : scaleSize(20)}
                   name={
                     filteredCart.length > 0
                       ? "small-cart-in-catalog-with-buy"
-                      : "small-cart-in-catalog"
+                      : "big-cart-in-catalog"
                   }
                 />
                 <View
                   style={{
                     opacity: filteredCart.length > 0 ? 1 : 0,
                     position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    borderRadius: scaleSize(styleIndex === 2 ? 6.5 : 5),
+                    bottom: scaleSize(10),
+                    right: scaleSize(10),
+                    borderRadius: scaleSize(styleIndex === 2 ? 7.5 : 5),
                     backgroundColor: "#ef5350",
 
                     alignContent: "center",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: scaleSize(styleIndex === 2 ? 13 : 10),
-                    height: scaleSize(styleIndex === 2 ? 13 : 10)
+                    width: scaleSize(styleIndex === 2 ? 15 : 10),
+                    height: scaleSize(styleIndex === 2 ? 15 : 10)
                   }}
                 >
                   <Text
                     style={{
-                      fontSize: 7,
+                      fontSize: scaleSize(styleIndex === 2 ? 10 : 7),
                       textAlign: "center",
                       textAlignVertical: "center",
                       color: "#fff"
@@ -304,7 +315,24 @@ class ProductItem extends Component {
               }
               style={
                 styleIndex === 1
-                  ? [styles.btn, { width: "100%" }]
+                  ? [
+                      styles.btn,
+                      {
+                        width: "100%",
+                        paddingTop: scaleSize(2),
+                        paddingBottom: scaleSize(2),
+                        marginTop: scaleSize(1)
+                      }
+                    ]
+                  : styleIndex === 2
+                  ? [
+                      styles.btn,
+                      {
+                        paddingTop: scaleSize(6),
+                        paddingBottom: scaleSize(6),
+                        marginTop: scaleSize(1)
+                      }
+                    ]
                   : [styles.btn]
               }
             >
@@ -349,17 +377,15 @@ const styles = StyleSheet.create({
   productCard: {
     width: "48%",
     backgroundColor: "rgba(255,255,255, 0.7)",
-    marginRight: scaleSize(4),
-    marginLeft: scaleSize(4),
+    marginRight: scaleSize(2),
+    marginLeft: scaleSize(2),
     marginBottom: scaleSize(7),
     paddingTop: scaleSize(6),
-    paddingBottom: scaleSize(6),
     borderRadius: scaleSize(8)
   },
 
   productImg: {
     alignSelf: "center",
-    width: scaleSize(70),
     height: scaleSize(120),
     marginRight: scaleSize(12),
     marginLeft: scaleSize(12),
