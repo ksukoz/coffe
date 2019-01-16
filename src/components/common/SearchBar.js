@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import TextInputState from "react-native/lib/TextInputState";
 import { connect } from "react-redux";
 import {
   View,
@@ -9,7 +10,8 @@ import {
   FlatList,
   TouchableOpacity,
   BackHandler,
-  Dimensions
+  Dimensions,
+  findNodeHandle
 } from "react-native";
 import { Input, Item, Icon, Button } from "native-base";
 import {
@@ -100,11 +102,11 @@ class SearchBar extends Component {
   handleSearchInput = text => {
     if (text.length > 1) {
       console.log(text);
-      this.setState({ search: text }, () =>
-        this.props.getAutocomplete(
-          text,
-          this.props.navigation.getParam("categoryId", "0")
-        )
+      // this.setState({ search: text }, () =>
+      this.props.getAutocomplete(
+        text,
+        this.props.navigation.getParam("categoryId", "0")
+        // )
       );
     }
     this.setState({ search: text });
@@ -166,7 +168,7 @@ class SearchBar extends Component {
               }}
               name="md-arrow-back"
               onPress={() => {
-                this.unFocus();
+                this.setState({ focus: false }, () => this.unFocus());
                 this.props.clearAutocomplete();
               }}
             />
@@ -186,6 +188,12 @@ class SearchBar extends Component {
                   marginLeft: scaleSize(5)
                 }}
                 name="ios-search"
+                onPress={() => {
+                  this.props.searchFocused();
+                  TextInputState.focusTextInput(
+                    findNodeHandle(this.refs.inputB)
+                  );
+                }}
               />
             </View>
           )}
@@ -203,6 +211,7 @@ class SearchBar extends Component {
                   );
             }}
             value={this.state.search}
+            ref="inputB"
           />
           {this.state.search && this.state.search.length > 0 ? (
             <Button
