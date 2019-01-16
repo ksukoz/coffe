@@ -69,33 +69,16 @@ class SearchScreen extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.search !== this.state.search) {
       this.props.findProducts(
-        this.props.navigation.getParam("search")
-          ? this.props.navigation.getParam("search")
-          : this.props.navigation.getParam("letter"),
+        this.props.navigation.getParam("search"),
         this.props.navigation.getParam("categoryId", "0"),
         this.state.page,
-        "after"
+        "both"
       );
     }
-    // if (
-    //   JSON.stringify(prevProps.products) !== JSON.stringify(this.props.products)
-    // ) {
-    //   // this.props.findProducts(
-    //   //   this.props.navigation.getParam("search")
-    //   //     ? this.props.navigation.getParam("search")
-    //   //     : this.props.navigation.getParam("letter"),
-    //   //   this.props.navigation.getParam("categoryId", "0"),
-    //   //   this.state.page,
-    //   //   "after"
-    //   // );
-
-    //   this.setState({ loading: false, products: this.props.products });
-    // }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.products) {
-      console.log(nextProps.products);
       this.setState({ loading: false, products: nextProps.products });
     }
     if (nextProps.cart) {
@@ -131,7 +114,7 @@ class SearchScreen extends Component {
       this.props.search,
       this.props.navigation.getParam("categoryId", "0"),
       this.state.page + 10,
-      "after"
+      "both"
     );
   };
 
@@ -148,7 +131,8 @@ class SearchScreen extends Component {
     let notFound;
     if (
       this.props.products.length === 0 &&
-      this.props.navigation.getParam("search")
+      this.props.navigation.getParam("search") &&
+      !this.state.loading
     ) {
       notFound = (
         <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>

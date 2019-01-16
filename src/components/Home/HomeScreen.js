@@ -94,7 +94,7 @@ class HomeScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.9 : 0})`}
+          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.7 : 0})`}
         />
         <View style={{ flex: 1 }}>
           <View
@@ -103,7 +103,7 @@ class HomeScreen extends Component {
               top: 0,
               bottom: 0,
               width: "100%",
-              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.9 : 0})`,
+              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.7 : 0})`,
               zIndex: this.state.focus ? 10 : 0
             }}
           />

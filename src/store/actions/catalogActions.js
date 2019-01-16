@@ -115,7 +115,7 @@ export const getAutocomplete = (value, category, page, type) => dispatch => {
   fetch(
     `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
       value
-    )}/${category}/${type}/10/${page}`
+    )}/${category}/${type}`
   )
     .then(response => response.json())
     .then(responseJson => {

@@ -84,7 +84,9 @@ class SearchBar extends Component {
       this.state.search.length > 1
     ) {
       this.setState({
-        products: nextProps.autocomplete.map(item => item.name.split(",")[0])
+        products: nextProps.autocomplete.map(item => {
+          return { name: item.name.split(",")[0], id: item.id };
+        })
       });
     }
     if (nextProps.focus || nextProps.focus === false) {
@@ -97,12 +99,12 @@ class SearchBar extends Component {
 
   handleSearchInput = text => {
     if (text.length > 1) {
-      this.props.getAutocomplete(
-        text,
-        this.props.navigation.getParam("categoryId", "0"),
-        0,
-        "after",
-        0
+      console.log(text);
+      this.setState({ search: text }, () =>
+        this.props.getAutocomplete(
+          text,
+          this.props.navigation.getParam("categoryId", "0")
+        )
       );
     }
     this.setState({ search: text });
@@ -236,20 +238,21 @@ class SearchBar extends Component {
 
         <FlatList
           keyboardShouldPersistTaps={"handled"}
-          keyExtractor={item => item + 1}
+          keyExtractor={item => item.id}
           onEndReachedThreshold={0.1}
           data={this.state.products}
           renderItem={({ item }) => (
             <TouchableOpacity
+              key={item.id}
               style={{
                 height: scaleSize(56),
                 alignItems: "center",
                 flexDirection: "row",
-                zIndex: this.props.focus ? 1 : -1
+                zIndex: this.props.focus || this.state.focus ? 1 : -1
               }}
               onPress={() => {
                 Keyboard.dismiss();
-                this.handleSearch(item);
+                this.handleSearch(item.name);
               }}
             >
               <Icon
@@ -262,7 +265,7 @@ class SearchBar extends Component {
                 name="ios-search"
               />
               <Text style={{ color: "#fff", fontSize: scaleSize(11) }}>
-                {item}
+                {item.name}
               </Text>
             </TouchableOpacity>
           )}

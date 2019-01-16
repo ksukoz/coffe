@@ -119,7 +119,7 @@ class ProductCardScreen extends Component {
           hidden={false}
           translucent={true}
           backgroundColor={`rgba(0,0,0, ${
-            opacity ? 0.7 : this.state.focus ? 0.9 : 0
+            opacity ? 0.7 : this.state.focus ? 0.7 : 0
           })`}
         />
         <View style={{ flex: 1 }}>
@@ -129,7 +129,7 @@ class ProductCardScreen extends Component {
               top: 0,
               bottom: 0,
               width: "100%",
-              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.9 : 0})`,
+              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.7 : 0})`,
               zIndex: this.state.focus ? 10 : 0
             }}
           />
