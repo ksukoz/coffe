@@ -80,11 +80,7 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.autocomplete &&
-      this.state.search &&
-      this.state.search.length > 1
-    ) {
+    if (nextProps.autocomplete) {
       this.setState({
         products: nextProps.autocomplete.map(item => {
           return { name: item.name.split(",")[0], id: item.id };
@@ -100,17 +96,19 @@ class SearchBar extends Component {
   }
 
   handleSearchInput = text => {
-    if (text.length > 1) {
-      console.log(text);
-      this.setState({ search: text }, () => {
-        this.props.setSearch(text);
-        this.props.getAutocomplete(
-          text,
-          this.props.navigation.getParam("categoryId", "0")
-        );
-      });
-    }
-    this.setState({ search: text });
+    this.setState({ search: text }, () => {
+      if (text.length > 1) {
+        this.setState({ search: text }, () => {
+          this.props.getAutocomplete(
+            text,
+            this.props.navigation.getParam("categoryId", "0")
+          );
+        });
+      } else {
+        this.props.clearSearchedProducts();
+      }
+      this.props.setSearch(text);
+    });
   };
 
   handleSearch = e => {
@@ -316,12 +314,12 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     fontSize: scaleSize(13),
-    paddingTop: scaleSize((40 - 13) / 2),
+    marginTop: scaleSize(8),
+    overflow: "hidden",
     height: scaleSize(40)
   },
   iconMenu: {
     color: "#58554e"
-    // marginTop: scaleSize(1)
   }
 });
 

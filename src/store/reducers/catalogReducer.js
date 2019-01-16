@@ -74,7 +74,7 @@ export default function(state = initialState, action) {
     case GET_MORE_SEARCHED_PRODUCTS:
       return {
         ...state,
-        searchedProducts: [...state.searchedPoducts, ...action.payload]
+        searchedProducts: [...state.searchedProducts, ...action.payload]
       };
     case GET_PRODUCT:
       return {

@@ -117,7 +117,7 @@ export const findProducts = (value, category, page, type) => dispatch => {
                 ? GET_SEARCHED_PRODUCTS
                 : page == 0 && type == "after"
                 ? GET_PRODUCTS
-                : type == "both"
+                : page > 0 && type == "both"
                 ? GET_MORE_SEARCHED_PRODUCTS
                 : GET_MORE_PRODUCTS,
             payload: responseJson.items

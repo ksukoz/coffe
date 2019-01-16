@@ -78,7 +78,13 @@ class ProductItem extends Component {
 
         <View
           style={
-            styleIndex === 1 ? { flex: 1, padding: scaleSize(6) } : { flex: 1 }
+            styleIndex === 1
+              ? {
+                  flex: 1,
+                  padding: scaleSize(6),
+                  justifyContent: "space-between"
+                }
+              : { flex: 1 }
           }
         >
           <View>
@@ -138,6 +144,7 @@ class ProductItem extends Component {
               style={{
                 borderBottomWidth: 1,
                 borderColor: "#89a6aa",
+
                 flex: 1,
                 marginBottom: styleIndex === 1 ? 0 : scaleSize(5.5),
                 marginRight: styleIndex === 1 ? scaleSize(0) : scaleSize(7),
@@ -167,7 +174,7 @@ class ProductItem extends Component {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              flexWrap: styleIndex === 1 ? "wrap" : "nowrap"
+              flexWrap: "nowrap"
             }}
           >
             <TouchableOpacity
@@ -324,15 +331,7 @@ class ProductItem extends Component {
               }
               style={
                 styleIndex === 1
-                  ? [
-                      styles.btn,
-                      {
-                        width: "100%",
-                        paddingTop: scaleSize(2),
-                        paddingBottom: scaleSize(2),
-                        marginTop: scaleSize(1)
-                      }
-                    ]
+                  ? { display: "none" }
                   : styleIndex === 2
                   ? [
                       styles.btn,
@@ -356,6 +355,37 @@ class ProductItem extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.push("OrderScreen", {
+                linkName: "CatalogScreen",
+                categoryId
+              })
+            }
+            style={
+              styleIndex === 1
+                ? [
+                    styles.btn,
+                    {
+                      width: "100%",
+                      paddingTop: scaleSize(2),
+                      paddingBottom: scaleSize(2),
+                      marginTop: scaleSize(1)
+                    }
+                  ]
+                : { display: "none" }
+            }
+          >
+            <Text
+              style={
+                styleIndex === 1
+                  ? [styles.btnText, { textAlign: "center" }]
+                  : [styles.btnText]
+              }
+            >
+              КУПИТЬ СЕЙЧАС
+            </Text>
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     );
@@ -392,7 +422,6 @@ const styles = StyleSheet.create({
     paddingTop: scaleSize(6),
     borderRadius: scaleSize(8)
   },
-
   productImg: {
     alignSelf: "center",
     height: scaleSize(120),
