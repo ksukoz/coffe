@@ -5,6 +5,8 @@ import {
   GET_DISHES,
   GET_PRODUCTS,
   GET_MORE_PRODUCTS,
+  GET_SEARCHED_PRODUCTS,
+  GET_MORE_SEARCHED_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
   PRODUCTS_END,
@@ -17,6 +19,7 @@ const initialState = {
   dishes: [],
   categoriesFull: [],
   products: [],
+  searchedProducts: [],
   autocomplete: [],
   product: null,
   reviews: null,
@@ -52,6 +55,12 @@ export default function(state = initialState, action) {
         products: action.payload,
         end: false
       };
+    case GET_SEARCHED_PRODUCTS:
+      return {
+        ...state,
+        searchedProducts: action.payload,
+        end: false
+      };
     case GET_AUTOCOMPLETE:
       return {
         ...state,
@@ -61,6 +70,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         products: [...state.products, ...action.payload]
+      };
+    case GET_MORE_SEARCHED_PRODUCTS:
+      return {
+        ...state,
+        searchedProducts: [...state.searchedPoducts, ...action.payload]
       };
     case GET_PRODUCT:
       return {

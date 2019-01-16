@@ -117,7 +117,14 @@ class CatalogScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.products) {
+    if (nextProps.end || nextProps.end === false) {
+      this.setState({ loading: false, end: nextProps.end });
+    }
+    if (
+      nextProps.products &&
+      nextProps.end === false &&
+      JSON.stringify(nextProps.products) !== JSON.stringify(this.state.products)
+    ) {
       this.setState({ loading: false, products: nextProps.products });
     }
     if (nextProps.cart) {
@@ -128,9 +135,6 @@ class CatalogScreen extends Component {
     }
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
-    }
-    if (nextProps.end || nextProps.end === false) {
-      this.setState({ end: nextProps.end, loading: false });
     }
   }
 

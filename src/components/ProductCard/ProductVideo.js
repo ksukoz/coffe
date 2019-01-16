@@ -19,7 +19,9 @@ export default class ProductVideo extends Component {
             ]}
           >
             {videos ? (
-              videos.map(video => <YoutubePlayer video={video.code} />)
+              videos.map(video => (
+                <YoutubePlayer key={video.id} video={video.code} />
+              ))
             ) : (
               <Text />
             )}
