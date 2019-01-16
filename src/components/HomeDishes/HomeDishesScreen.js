@@ -18,7 +18,7 @@ import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
 import { searchFocused } from "../../store/actions/commonActions";
-import { getDishes, resetProducts } from "../../store/actions/catalogActions";
+import { getDishes, clearProducts } from "../../store/actions/catalogActions";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -123,7 +123,7 @@ class HomeOtherScreen extends Component {
                         letter: "",
                         search: this.state.search
                       });
-                      this.props.resetProducts();
+                      this.props.clearProducts();
                     }}
                     style={styles.cardItemHalf}
                     activeOpacity={0.9}
@@ -257,7 +257,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getDishes: () => dispatch(getDishes()),
-  resetProducts: () => dispatch(resetProducts()),
+
+  clearProducts: () => dispatch(clearProducts()),
   searchFocused: () => dispatch(searchFocused())
 });
 

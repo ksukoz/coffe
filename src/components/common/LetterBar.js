@@ -26,16 +26,10 @@ class LetterBar extends Component {
     if (nextProps.alphabet) {
       this.setState({ alphabet: nextProps.alphabet });
     }
-    if (nextProps.lang) {
+    if (nextProps.lang !== this.state.lang) {
       this.setState({ lang: nextProps.lang });
     }
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.lang !== this.props.lang) {
-  //     this.setState({ lang: this.props.lang });
-  //   }
-  // }
 
   componentDidMount() {
     this.props.navigation.addListener("didFocus", payload => {
@@ -44,12 +38,10 @@ class LetterBar extends Component {
         this.props.navigation.getParam("categoryId", "0")
       );
     });
-    if (!this.state.letter) {
-      this.props.getAlphabet(
-        this.state.lang,
-        this.props.navigation.getParam("categoryId", "0")
-      );
-    }
+    this.props.getAlphabet(
+      this.props.lang,
+      this.props.navigation.getParam("categoryId", "0")
+    );
   }
 
   changeAlphabet() {
@@ -109,16 +101,14 @@ class LetterBar extends Component {
 const styles = StyleSheet.create({
   alphabet: {
     color: "#fff",
-    padding: scaleSize(10),
-    fontSize: scaleSize(13),
-    marginRight: scaleSize(15)
-  },
-  alphabetActive: {
     padding: scaleSize(5),
     paddingTop: scaleSize(3),
     paddingBottom: scaleSize(3),
-    margin: scaleSize(5),
-    marginTop: scaleSize(7),
+    fontSize: scaleSize(13),
+    marginRight: scaleSize(25),
+    marginTop: scaleSize(7)
+  },
+  alphabetActive: {
     backgroundColor: "rgba(255,255,255, 0.7)",
     textAlign: "center",
     borderRadius: scaleSize(2)

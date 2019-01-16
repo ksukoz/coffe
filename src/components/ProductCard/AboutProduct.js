@@ -293,7 +293,7 @@ ${
                 }}
               >
                 <TouchableOpacity
-                  style={{ position: "relative" }}
+                  style={{ position: "relative", padding: scaleSize(10) }}
                   activeOpacity={0.9}
                   onPress={() =>
                     filteredCart.length > 0
@@ -303,7 +303,7 @@ ${
                 >
                   <KawaIcon
                     style={styles.cartIcon}
-                    size={scaleSize(26)}
+                    size={scaleSize(30)}
                     name={
                       filteredCart.length > 0
                         ? "small-cart-in-catalog-with-buy"
@@ -314,16 +314,16 @@ ${
                     style={{
                       opacity: filteredCart.length > 0 ? 1 : 0,
                       position: "absolute",
-                      bottom: 0,
-                      right: 0,
-                      borderRadius: scaleSize(6.5),
+                      bottom: scaleSize(10),
+                      right: scaleSize(10),
+                      borderRadius: scaleSize(7.5),
                       backgroundColor: "#ef5350",
 
                       alignContent: "center",
                       alignItems: "center",
                       justifyContent: "center",
-                      width: scaleSize(13),
-                      height: scaleSize(13)
+                      width: scaleSize(15),
+                      height: scaleSize(15)
                     }}
                   >
                     <Text

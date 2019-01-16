@@ -20,7 +20,7 @@ import SearchBar from "../common/SearchBar";
 import { searchFocused } from "../../store/actions/commonActions";
 import {
   getSubCategories,
-  resetProducts
+  clearProducts
 } from "../../store/actions/catalogActions";
 
 StatusBar.setBarStyle("light-content", true);
@@ -134,7 +134,7 @@ class HomeOtherScreen extends Component {
                           letter: "",
                           search: this.state.search
                         });
-                        this.props.resetProducts();
+                        this.props.clearProducts();
                       }
                     }}
                     style={styles.cardItemHalf}
@@ -279,7 +279,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getSubCategories: () => dispatch(getSubCategories()),
-  resetProducts: () => dispatch(resetProducts()),
+  clearProducts: () => dispatch(clearProducts()),
   searchFocused: () => dispatch(searchFocused())
 });
 

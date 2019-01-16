@@ -14,14 +14,12 @@ export const getAlphabet = (lang, id) => dispatch => {
   )
     .then(response => response.json())
     .then(responseJson => {
-      responseJson.letters.length === 0 && lang === 1
-        ? dispatch(getAlphabet(2, id))
-        : responseJson.letters.length > 0
-        ? dispatch({
+      responseJson.letters.length === 0
+        ? dispatch(getAlphabet(lang === 1 ? 2 : 1, id))
+        : dispatch({
             type: GET_LETTERS,
             payload: responseJson.letters
-          })
-        : "";
+          });
     })
     .catch(error => {
       console.error(error);

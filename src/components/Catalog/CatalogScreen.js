@@ -16,7 +16,7 @@ import {
 
 import { getCart } from "../../store/actions/cartActions";
 
-import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
+import { searchFocused } from "../../store/actions/commonActions";
 import {
   getProducts,
   findProducts,
@@ -92,7 +92,6 @@ class CatalogScreen extends Component {
           this.props.navigation.getParam("categoryId", "0"),
           this.state.page
         );
-        this.props.getAlphabet(1, this.props.navigation.getParam("categoryId"));
       } else {
         this.props.findProducts(
           this.props.navigation.getParam("letter"),
@@ -100,16 +99,6 @@ class CatalogScreen extends Component {
           this.state.page,
           "after"
         );
-
-        this.props.navigation.getParam("letter", "").match(/[а-я]/i) !== null
-          ? this.props.getAlphabet(
-              2,
-              this.props.navigation.getParam("categoryId")
-            )
-          : this.props.getAlphabet(
-              1,
-              this.props.navigation.getParam("categoryId")
-            );
       }
     });
 
@@ -166,8 +155,8 @@ class CatalogScreen extends Component {
     let notFound;
     if (
       this.props.products.length === 0 &&
-      this.props.navigation.getParam("letter") &&
-      !this.state.loading
+      !this.state.loading &&
+      this.state.end
     ) {
       notFound = (
         <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
@@ -230,7 +219,6 @@ class CatalogScreen extends Component {
               style={{ opacity: this.state.focus ? 0.9 : 1 }}
               navigation={this.props.navigation}
               categoryId={this.props.navigation.getParam("categoryId", "0")}
-              lang={this.props.navigation.getParam("letter", "")}
             />
           </View>
           <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
@@ -316,7 +304,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
-  getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
   getProducts: (category, page) => dispatch(getProducts(category, page)),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),

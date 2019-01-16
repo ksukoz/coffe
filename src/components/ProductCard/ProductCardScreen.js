@@ -119,7 +119,7 @@ class ProductCardScreen extends Component {
           hidden={false}
           translucent={true}
           backgroundColor={`rgba(0,0,0, ${
-            opacity ? 0.7 : this.state.focus ? 0.7 : 0
+            opacity ? 0.7 : this.state.focus ? 0.1 : 0
           })`}
         />
         <View style={{ flex: 1 }}>
@@ -146,6 +146,7 @@ class ProductCardScreen extends Component {
           {this.state.loading ? (
             <ActivityIndicator
               style={{ marginTop: scaleSize(75) }}
+              color="#89a6aa"
               size="large"
               animating
             />

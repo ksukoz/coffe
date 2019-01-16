@@ -19,7 +19,7 @@ import SearchBar from "../common/SearchBar";
 
 import {
   getCategories,
-  resetProducts
+  clearProducts
 } from "../../store/actions/catalogActions";
 import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
 
@@ -141,7 +141,7 @@ class HomeScreen extends Component {
                             letter: "",
                             search: this.state.search
                           });
-                          this.props.resetProducts();
+                          this.props.clearProducts();
                         }}
                         style={styles.cardItemHalf}
                         activeOpacity={0.9}
@@ -246,7 +246,7 @@ class HomeScreen extends Component {
                           letter: "",
                           search: this.state.search
                         });
-                        this.props.resetProducts();
+                        this.props.clearProducts();
                       }}
                       style={styles.cardItemHalf}
                       activeOpacity={0.9}
@@ -474,7 +474,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
-  resetProducts: () => dispatch(resetProducts()),
+  clearProducts: () => dispatch(clearProducts()),
   getAlphabet: lang => dispatch(getAlphabet(lang)),
   searchFocused: () => dispatch(searchFocused())
 });

@@ -168,13 +168,6 @@ export const getProduct = id => dispatch => {
     });
 };
 
-export const resetProducts = () => dispatch => {
-  dispatch({
-    type: GET_PRODUCTS,
-    payload: []
-  });
-};
-
 export const getProductReviews = id => dispatch => {
   fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/${id}`)
     .then(response => response.json())

@@ -245,7 +245,16 @@ class ProductItem extends Component {
               }}
             >
               <TouchableOpacity
-                style={{ position: "relative", padding: scaleSize(10) }}
+                style={
+                  styleIndex === 2
+                    ? {
+                        position: "relative",
+                        padding: scaleSize(10),
+                        paddingBottom: 0,
+                        paddingTop: 0
+                      }
+                    : { position: "relative", padding: scaleSize(10) }
+                }
                 activeOpacity={0.9}
                 onPress={() =>
                   filteredCart.length > 0
@@ -270,7 +279,7 @@ class ProductItem extends Component {
                   style={{
                     opacity: filteredCart.length > 0 ? 1 : 0,
                     position: "absolute",
-                    bottom: scaleSize(10),
+                    bottom: scaleSize(styleIndex === 2 ? 0 : 10),
                     right: scaleSize(10),
                     borderRadius: scaleSize(styleIndex === 2 ? 7.5 : 5),
                     backgroundColor: "#ef5350",
