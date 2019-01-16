@@ -146,7 +146,7 @@ class SearchBar extends Component {
 
   render() {
     return (
-      <ScrollView
+      <View
         style={[styles.head, { zIndex: this.state.focus ? 1000 : 0 }]}
         keyboardShouldPersistTaps={"handled"}
       >
@@ -244,42 +244,43 @@ class SearchBar extends Component {
             />
           )}
         </ScrollView>
-
-        <FlatList
-          keyboardShouldPersistTaps={"handled"}
-          keyExtractor={item => item.id}
-          onEndReachedThreshold={0.1}
-          data={this.state.products}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              key={item.id}
-              style={{
-                height: scaleSize(56),
-                alignItems: "center",
-                flexDirection: "row",
-                zIndex: this.props.focus || this.state.focus ? 1 : -1
-              }}
-              onPress={() => {
-                Keyboard.dismiss();
-                this.handleSearch(item.name);
-              }}
-            >
-              <Icon
+        <View style={{ flex: 1 }}>
+          <FlatList
+            keyboardShouldPersistTaps={"handled"}
+            keyExtractor={item => item.id}
+            onEndReachedThreshold={0.1}
+            data={this.state.products}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                key={item.id}
                 style={{
-                  color: "#fff",
-                  fontSize: scaleSize(11),
-                  marginLeft: scaleSize(24),
-                  marginRight: scaleSize(24)
+                  height: scaleSize(56),
+                  alignItems: "center",
+                  flexDirection: "row",
+                  zIndex: this.props.focus || this.state.focus ? 1 : -1
                 }}
-                name="ios-search"
-              />
-              <Text style={{ color: "#fff", fontSize: scaleSize(11) }}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
-      </ScrollView>
+                onPress={() => {
+                  Keyboard.dismiss();
+                  this.handleSearch(item.name);
+                }}
+              >
+                <Icon
+                  style={{
+                    color: "#fff",
+                    fontSize: scaleSize(11),
+                    marginLeft: scaleSize(24),
+                    marginRight: scaleSize(24)
+                  }}
+                  name="ios-search"
+                />
+                <Text style={{ color: "#fff", fontSize: scaleSize(11) }}>
+                  {item.name}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      </View>
     );
   }
 }

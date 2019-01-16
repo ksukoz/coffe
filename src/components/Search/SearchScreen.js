@@ -75,11 +75,24 @@ class SearchScreen extends Component {
         "both"
       );
     }
+    if (
+      JSON.stringify(prevProps.products) !==
+        JSON.stringify(this.props.products) &&
+      this.props.products.length === 0
+    ) {
+      this.setState({ loading: true });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.products) {
-      this.setState({ loading: false, products: nextProps.products });
+      if (
+        JSON.stringify(nextProps.products) !==
+        JSON.stringify(this.props.products)
+      ) {
+        this.setState({ loading: false });
+      }
+      this.setState({ products: nextProps.products });
     }
     if (nextProps.cart) {
       this.setState({ cart: nextProps.cart });
@@ -201,13 +214,14 @@ class SearchScreen extends Component {
                       },
                       () => this.handleEnd()
                     )
-                  : false
+                  : true
               }
               ListFooterComponent={() =>
                 this.state.loading ? (
-                  <ActivityIndicator size="large" animating />
+                  <ActivityIndicator size="large" color="#89a6aa" animating />
                 ) : null
               }
+              removeClippedSubviews={false}
               onEndReachedThreshold={0.1}
               data={this.props.products}
               extraData={this.state}

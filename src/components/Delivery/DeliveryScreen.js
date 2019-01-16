@@ -49,22 +49,6 @@ class DeliveryScreen extends Component {
     };
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-    this.retrieveData("user_region_name");
-    this.retrieveData("user_city_name");
-
-    this.setState({
-      loading: false
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.delivery) {
-      this.setState({ delivery: nextProps.delivery });
-    }
-  }
-
   componentDidMount() {
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
@@ -74,6 +58,14 @@ class DeliveryScreen extends Component {
           this.handleBackPress
         )
     );
+    this.retrieveData("user_region_name");
+    this.retrieveData("user_city_name");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.delivery) {
+      this.setState({ delivery: nextProps.delivery });
+    }
   }
 
   handleBackPress = () => {
@@ -95,6 +87,7 @@ class DeliveryScreen extends Component {
           );
         }
       }
+      this.setState({ loading: false });
     } catch (error) {}
   };
 
@@ -106,16 +99,7 @@ class DeliveryScreen extends Component {
           flex: 1
         }}
       >
-        <ActivityIndicator
-          color="#1c1c1c"
-          size="small"
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            height: scaleSize(80)
-          }}
-        />
+        <ActivityIndicator color="#89a6aa" size="small" />
       </View>
     );
   }
@@ -244,18 +228,23 @@ class DeliveryScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Новая Почта, отделение
                       </Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 5
-                          ? this.state.delivery.filter(item => {
-                              if (
-                                item.delivery === "np" &&
-                                item.courier === 0
-                              ) {
-                                return item;
-                              }
-                            })[0].cost + " грн"
-                          : ""}
-                      </Text>
+                      {this.state.delivery.length < 6 &&
+                      this.state.city_name !== "Выберите город" ? (
+                        <ActivityIndicator color="#89a6aa" size="small" />
+                      ) : (
+                        <Text style={styles.defaultFont}>
+                          {this.state.delivery.length > 5
+                            ? this.state.delivery.filter(item => {
+                                if (
+                                  item.delivery === "np" &&
+                                  item.courier === 0
+                                ) {
+                                  return item;
+                                }
+                              })[0].cost + " грн"
+                            : ""}
+                        </Text>
+                      )}
                     </View>
                     <View
                       style={{
@@ -266,15 +255,23 @@ class DeliveryScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Новая Почта, курьер
                       </Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 5
-                          ? this.state.delivery.filter(item => {
-                              if (item.delivery === "np" && item.courier == 1) {
-                                return item;
-                              }
-                            })[0].cost + " грн"
-                          : ""}
-                      </Text>
+                      {this.state.delivery.length < 6 &&
+                      this.state.city_name !== "Выберите город" ? (
+                        <ActivityIndicator color="#89a6aa" size="small" />
+                      ) : (
+                        <Text style={styles.defaultFont}>
+                          {this.state.delivery.length > 5
+                            ? this.state.delivery.filter(item => {
+                                if (
+                                  item.delivery === "np" &&
+                                  item.courier == 1
+                                ) {
+                                  return item;
+                                }
+                              })[0].cost + " грн"
+                            : ""}
+                        </Text>
+                      )}
                     </View>
                   </View>
                 </View>
@@ -306,18 +303,23 @@ class DeliveryScreen extends Component {
                       }}
                     >
                       <Text style={styles.defaultFont}>Укрпочта Стандарт</Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 5
-                          ? this.state.delivery.filter(item => {
-                              if (
-                                item.delivery === "up" &&
-                                item.courier === 0
-                              ) {
-                                return item;
-                              }
-                            })[0].cost + " грн"
-                          : ""}
-                      </Text>
+                      {this.state.delivery.length < 6 &&
+                      this.state.city_name !== "Выберите город" ? (
+                        <ActivityIndicator color="#89a6aa" size="small" />
+                      ) : (
+                        <Text style={styles.defaultFont}>
+                          {this.state.delivery.length > 5
+                            ? this.state.delivery.filter(item => {
+                                if (
+                                  item.delivery === "up" &&
+                                  item.courier === 0
+                                ) {
+                                  return item;
+                                }
+                              })[0].cost + " грн"
+                            : ""}
+                        </Text>
+                      )}
                     </View>
                     <View
                       style={{
@@ -326,18 +328,23 @@ class DeliveryScreen extends Component {
                       }}
                     >
                       <Text style={styles.defaultFont}>Укрпочта Экспресс</Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 5
-                          ? this.state.delivery.filter(item => {
-                              if (
-                                item.delivery === "es" &&
-                                item.courier === 0
-                              ) {
-                                return item;
-                              }
-                            })[0].cost + " грн"
-                          : ""}
-                      </Text>
+                      {this.state.delivery.length < 6 &&
+                      this.state.city_name !== "Выберите город" ? (
+                        <ActivityIndicator color="#89a6aa" size="small" />
+                      ) : (
+                        <Text style={styles.defaultFont}>
+                          {this.state.delivery.length > 5
+                            ? this.state.delivery.filter(item => {
+                                if (
+                                  item.delivery === "es" &&
+                                  item.courier === 0
+                                ) {
+                                  return item;
+                                }
+                              })[0].cost + " грн"
+                            : ""}
+                        </Text>
+                      )}
                     </View>
                   </View>
                 </View>
@@ -363,18 +370,23 @@ class DeliveryScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Укрпочта Стандарт, курьер
                       </Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 5
-                          ? this.state.delivery.filter(item => {
-                              if (
-                                item.delivery === "up" &&
-                                item.courier === 1
-                              ) {
-                                return item;
-                              }
-                            })[0].cost + " грн"
-                          : ""}
-                      </Text>
+                      {this.state.city_name !== "Выберите город" &&
+                      this.state.delivery.length < 6 ? (
+                        <ActivityIndicator color="#89a6aa" size="small" />
+                      ) : (
+                        <Text style={styles.defaultFont}>
+                          {this.state.delivery.length > 5
+                            ? this.state.delivery.filter(item => {
+                                if (
+                                  item.delivery === "up" &&
+                                  item.courier === 1
+                                ) {
+                                  return item;
+                                }
+                              })[0].cost + " грн"
+                            : ""}
+                        </Text>
+                      )}
                     </View>
                     <View
                       style={{
@@ -385,18 +397,23 @@ class DeliveryScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Укрпочта Экспресс, курьер
                       </Text>
-                      <Text style={styles.defaultFont}>
-                        {this.state.delivery.length > 5
-                          ? this.state.delivery.filter(item => {
-                              if (
-                                item.delivery === "es" &&
-                                item.courier === 1
-                              ) {
-                                return item;
-                              }
-                            })[0].cost + " грн"
-                          : ""}
-                      </Text>
+                      {this.state.delivery.length < 6 &&
+                      this.state.city_name !== "Выберите город" ? (
+                        <ActivityIndicator color="#89a6aa" size="small" />
+                      ) : (
+                        <Text style={styles.defaultFont}>
+                          {this.state.delivery.length > 5
+                            ? this.state.delivery.filter(item => {
+                                if (
+                                  item.delivery === "es" &&
+                                  item.courier === 1
+                                ) {
+                                  return item;
+                                }
+                              })[0].cost + " грн"
+                            : ""}
+                        </Text>
+                      )}
                     </View>
                   </View>
                 </View>

@@ -70,6 +70,13 @@ class CatalogScreen extends Component {
         )
       );
     }
+    if (
+      JSON.stringify(prevProps.products) !==
+        JSON.stringify(this.props.products) &&
+      this.props.products.length === 0
+    ) {
+      this.setState({ loading: true });
+    }
   }
 
   componentDidMount() {
@@ -123,7 +130,7 @@ class CatalogScreen extends Component {
       this.setState({ focus: nextProps.focus });
     }
     if (nextProps.end || nextProps.end === false) {
-      this.setState({ end: nextProps.end });
+      this.setState({ end: nextProps.end, loading: false });
     }
   }
 
@@ -155,7 +162,8 @@ class CatalogScreen extends Component {
     let notFound;
     if (
       this.props.products.length === 0 &&
-      this.props.navigation.getParam("letter")
+      this.props.navigation.getParam("letter") &&
+      !this.state.loading
     ) {
       notFound = (
         <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
@@ -244,7 +252,7 @@ class CatalogScreen extends Component {
               }
               ListFooterComponent={() =>
                 this.state.loading ? (
-                  <ActivityIndicator size="large" animating />
+                  <ActivityIndicator color="#89a6aa" size="large" animating />
                 ) : null
               }
               onEndReachedThreshold={this.state.end ? 0 : 0.1}

@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 import { Text, Input } from "native-base";
 import { ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { getAlphabet, setLang } from "../../store/actions/commonActions";
-import { findProducts } from "../../store/actions/catalogActions";
+import {
+  findProducts,
+  clearProducts
+} from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
@@ -63,6 +66,8 @@ class LetterBar extends Component {
         categoryId: this.props.categoryId,
         letter
       });
+
+      this.props.clearProducts();
       this.props.findProducts(
         letter,
         this.props.navigation.getParam("categoryId", "0"),
@@ -139,6 +144,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
   setLang: () => dispatch(setLang()),
+  clearProducts: () => dispatch(clearProducts()),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type))
 });
