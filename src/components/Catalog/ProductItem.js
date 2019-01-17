@@ -376,7 +376,13 @@ class ProductItem extends Component {
 						}
 					>
 						<Text
-							style={styleIndex === 1 ? [ styles.btnText, { textAlign: 'center' } ] : [ styles.btnText ]}
+							style={
+								styleIndex === 1 ? (
+									[ styles.btnText, { textAlign: 'center', fontSize: scaleSize(14) } ]
+								) : (
+									[ styles.btnText ]
+								)
+							}
 						>
 							КУПИТЬ СЕЙЧАС
 						</Text>
