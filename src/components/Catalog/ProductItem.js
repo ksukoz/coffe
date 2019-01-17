@@ -205,7 +205,7 @@ class ProductItem extends Component {
 								) : (
 									<KawaIcon
 										style={styles.starIcon}
-										size={styleIndex === 1 ? scaleSize(12) : scaleSize(16)}
+										size={styleIndex === 1 ? scaleSize(11) : scaleSize(16)}
 										name="small-star-in-catalog"
 									/>
 								)}
@@ -230,7 +230,7 @@ class ProductItem extends Component {
 							<Text
 								style={
 									styleIndex === 1 ? (
-										[ styles.numberOfReviews, { fontSize: scaleSize(9) } ]
+										[ styles.numberOfReviews, { fontSize: scaleSize(9), marginTop: 2 } ]
 									) : (
 										styles.numberOfReviews
 									)
