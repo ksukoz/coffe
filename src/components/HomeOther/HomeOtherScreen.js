@@ -49,6 +49,8 @@ class HomeOtherScreen extends Component {
       }
     });
     this.props.getSubCategories();
+    StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+    StatusBar.setTranslucent(true);
   }
 
   componentWillReceiveProps(nextProps) {

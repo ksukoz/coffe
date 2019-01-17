@@ -88,6 +88,9 @@ class ProductCardScreen extends Component {
       if (this.props.focus) {
         this.props.searchFocused();
       }
+
+      StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+      StatusBar.setTranslucent(true);
     });
 
     this.props.getFullCategories();

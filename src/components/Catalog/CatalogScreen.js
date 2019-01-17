@@ -100,6 +100,9 @@ class CatalogScreen extends Component {
           "after"
         );
       }
+
+      StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+      StatusBar.setTranslucent(true);
     });
 
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);

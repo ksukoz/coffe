@@ -164,7 +164,7 @@ class SearchScreen extends Component {
     return (
       <Container style={styles.default}>
         <StatusBar
-          barStyle="light-content"
+          // barStyle="light-content"
           hidden={false}
           translucent={true}
           backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.9 : 0})`}
@@ -220,7 +220,6 @@ class SearchScreen extends Component {
                   false
                 )
               }
-              removeClippedSubviews={false}
               onEndReachedThreshold={0.1}
               data={this.props.searchedProducts}
               extraData={this.state}

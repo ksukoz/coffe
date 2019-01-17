@@ -38,8 +38,11 @@ class DeliveryScreen extends Component {
     super(props);
     this._didFocusSubscription = this.props.navigation.addListener(
       "didFocus",
-      payload =>
-        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress)
+      payload => {
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+        StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+        StatusBar.setTranslucent(true);
+      }
     );
     this.state = {
       loading: false,

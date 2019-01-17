@@ -25,6 +25,7 @@ import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+StatusBar.setTranslucent(true);
 const MAIN_BG = "../../static/img/background.png";
 
 class HomeScreen extends Component {
@@ -51,6 +52,8 @@ class HomeScreen extends Component {
       }
     });
     this.props.getCategories();
+    StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+    StatusBar.setTranslucent(true);
   }
 
   componentWillReceiveProps(nextProps) {
