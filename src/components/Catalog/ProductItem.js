@@ -8,6 +8,7 @@ import StarRating from "react-native-star-rating";
 import { scaleSize } from "../../helpers/scaleSize";
 
 import { updateCart, addToCart } from "../../store/actions/cartActions";
+import { clearProducts } from "../../store/actions/catalogActions";
 
 class ProductItem extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class ProductItem extends Component {
                 : "",
             categoryId
           });
+          this.props.clearProducts();
         }}
         style={this.state.styles[styleIndex]}
       >
@@ -56,6 +58,7 @@ class ProductItem extends Component {
           ) : null}
 
           <Image
+            resizeMethod="resize"
             source={{ uri: "http://kawa.gumione.pro" + item.file }}
             style={
               styleIndex === 1
@@ -106,7 +109,7 @@ class ProductItem extends Component {
                   : [styles.productName, { fontSize: scaleSize(15) }]
               }
             >
-              {item.name}
+              {item.name} {item.id}
             </Text>
             <Text
               style={
@@ -510,7 +513,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => ({
   updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
-  addToCart: id => dispatch(addToCart(id))
+  addToCart: id => dispatch(addToCart(id)),
+  clearProducts: () => dispatch(clearProducts())
 });
 
 export default connect(

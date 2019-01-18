@@ -66,19 +66,34 @@ class ProductCardScreen extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.product !== this.props.product) {
+      this.setState({ loading: false, productItem: this.props.product });
+    }
+    if (prevProps.categories !== this.props.categories) {
+      this.setState({ categories: this.props.categories });
+    }
+    if (prevProps.cart !== this.props.cart) {
+      this.setState({ loading: false, cart: this.props.cart });
+    }
+    if (prevProps.focus !== this.props.focus) {
+      this.setState({ loading: false, focus: this.props.focus });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.product) {
-      this.setState({ loading: false, productItem: nextProps.product });
-    }
-    if (nextProps.categories) {
-      this.setState({ categories: nextProps.categories });
-    }
-    if (nextProps.cart) {
-      this.setState({ cart: nextProps.cart });
-    }
-    if (nextProps.focus || nextProps.focus === false) {
-      this.setState({ focus: nextProps.focus });
-    }
+    // if (nextProps.product) {
+    //   this.setState({ loading: false, productItem: nextProps.product });
+    // }
+    // if (nextProps.categories) {
+    //   this.setState({ categories: nextProps.categories });
+    // }
+    // if (nextProps.cart) {
+    //   this.setState({ cart: nextProps.cart });
+    // }
+    // if (nextProps.focus || nextProps.focus === false) {
+    //   this.setState({ focus: nextProps.focus });
+    // }
   }
 
   componentDidMount() {

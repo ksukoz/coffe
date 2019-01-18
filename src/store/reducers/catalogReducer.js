@@ -27,7 +27,6 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-  // console.error(action.type);
   switch (action.type) {
     case GET_FULL_CATEGORIES:
       return {
@@ -79,7 +78,7 @@ export default function(state = initialState, action) {
     case GET_PRODUCT:
       return {
         ...state,
-        product: action.payload.item
+        product: action.payload
       };
     case GET_PRODUCT_REVIEWS:
       return {

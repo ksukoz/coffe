@@ -222,6 +222,7 @@ class SearchScreen extends Component {
                 )
               }
               onEndReachedThreshold={0.1}
+              maxToRenderPerBatch={6}
               data={this.props.searchedProducts}
               extraData={this.state}
               getItemLayout={(data, index) => ({

@@ -157,15 +157,21 @@ export const getProduct = id => dispatch => {
   fetch(`http://kawaapi.gumione.pro/api/catalog/item/${id}`)
     .then(response => response.json())
     .then(responseJson => {
-      console.log(responseJson);
       dispatch({
         type: GET_PRODUCT,
-        payload: responseJson
+        payload: responseJson.item
       });
     })
     .catch(error => {
       console.error(error);
     });
+};
+
+export const clearProduct = () => dispatch => {
+  dispatch({
+    type: GET_PRODUCT,
+    payload: null
+  });
 };
 
 export const getProductReviews = id => dispatch => {

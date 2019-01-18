@@ -20,7 +20,8 @@ import { searchFocused } from "../../store/actions/commonActions";
 import {
   getProducts,
   findProducts,
-  getFullCategories
+  getFullCategories,
+  clearProduct
 } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
@@ -78,6 +79,15 @@ class CatalogScreen extends Component {
     ) {
       this.setState({ loading: true });
     }
+    if (prevProps.categories !== this.props.categories) {
+      this.setState({ categories: this.props.categories });
+    }
+    if (prevProps.cart !== this.props.cart) {
+      this.setState({ loading: false, cart: this.props.cart });
+    }
+    if (prevProps.focus !== this.props.focus) {
+      this.setState({ loading: false, focus: this.props.focus });
+    }
   }
 
   componentDidMount() {
@@ -101,7 +111,7 @@ class CatalogScreen extends Component {
           "after"
         );
       }
-
+      this.props.clearProduct();
       StatusBar.setBackgroundColor("rgba(0,0,0,0)");
       StatusBar.setTranslucent(true);
     });
@@ -120,15 +130,15 @@ class CatalogScreen extends Component {
     ) {
       this.setState({ loading: false, products: nextProps.products });
     }
-    if (nextProps.cart) {
-      this.setState({ cart: nextProps.cart });
-    }
-    if (nextProps.categories) {
-      this.setState({ categories: nextProps.categories });
-    }
-    if (nextProps.focus || nextProps.focus === false) {
-      this.setState({ focus: nextProps.focus });
-    }
+    // if (nextProps.cart) {
+    //   this.setState({ cart: nextProps.cart });
+    // }
+    // if (nextProps.categories) {
+    //   this.setState({ categories: nextProps.categories });
+    // }
+    // if (nextProps.focus || nextProps.focus === false) {
+    //   this.setState({ focus: nextProps.focus });
+    // }
   }
 
   componentWillUnmount() {
@@ -254,6 +264,7 @@ class CatalogScreen extends Component {
                   <ActivityIndicator color="#89a6aa" size="large" animating />
                 ) : null
               }
+              maxToRenderPerBatch={4}
               onEndReachedThreshold={this.state.end ? 0 : 0.1}
               data={this.props.products}
               renderItem={({ item }) => (
@@ -312,6 +323,7 @@ const mapDispatchToProps = dispatch => ({
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
   getFullCategories: () => dispatch(getFullCategories()),
+  clearProduct: () => dispatch(clearProduct()),
   searchFocused: () => dispatch(searchFocused())
 });
 
