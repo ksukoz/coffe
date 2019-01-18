@@ -222,7 +222,10 @@ class SearchScreen extends Component {
                 )
               }
               onEndReachedThreshold={0.1}
-              maxToRenderPerBatch={6}
+              initialNumToRender={6}
+              removeClippedSubviews={true}
+              maxToRenderPerBatch={4}
+              windowSize={1}
               data={this.props.searchedProducts}
               extraData={this.state}
               getItemLayout={(data, index) => ({

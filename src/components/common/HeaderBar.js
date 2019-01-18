@@ -117,20 +117,21 @@ export default class HeaderBar extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ position: "relative" }}
+                activeOpacity={0.9}
                 // onPress={() => this.setState({ cart: !this.state.cart })}
               >
                 <KawaIcon
                   style={styles.icons}
                   size={scaleSize(26)}
                   name={
-                    this.props.cart
+                    this.props.cart.length > 0
                       ? "cart-with-buy-actionbar"
                       : "cart-actionbar"
                   }
                 />
                 <View
                   style={{
-                    opacity: this.props.cart ? 1 : 0,
+                    opacity: this.props.cart.length > 0 ? 1 : 0,
                     position: "absolute",
                     bottom: 0,
                     right: 0,
@@ -152,7 +153,7 @@ export default class HeaderBar extends Component {
                       color: "#fff"
                     }}
                   >
-                    {this.props.cart ? this.props.cart.length : ""}
+                    {this.props.cart.length > 0 ? this.props.cart.length : ""}
                   </Text>
                 </View>
               </TouchableOpacity>

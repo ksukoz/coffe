@@ -79,10 +79,13 @@ class CatalogScreen extends Component {
     ) {
       this.setState({ loading: true });
     }
-    if (prevProps.categories !== this.props.categories) {
+    if (
+      JSON.stringify(prevProps.categories) !==
+      JSON.stringify(this.props.categories)
+    ) {
       this.setState({ categories: this.props.categories });
     }
-    if (prevProps.cart !== this.props.cart) {
+    if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
       this.setState({ loading: false, cart: this.props.cart });
     }
     if (prevProps.focus !== this.props.focus) {
@@ -130,15 +133,6 @@ class CatalogScreen extends Component {
     ) {
       this.setState({ loading: false, products: nextProps.products });
     }
-    // if (nextProps.cart) {
-    //   this.setState({ cart: nextProps.cart });
-    // }
-    // if (nextProps.categories) {
-    //   this.setState({ categories: nextProps.categories });
-    // }
-    // if (nextProps.focus || nextProps.focus === false) {
-    //   this.setState({ focus: nextProps.focus });
-    // }
   }
 
   componentWillUnmount() {
@@ -264,9 +258,13 @@ class CatalogScreen extends Component {
                   <ActivityIndicator color="#89a6aa" size="large" animating />
                 ) : null
               }
+              initialNumToRender={6}
+              removeClippedSubviews={true}
               maxToRenderPerBatch={4}
+              windowSize={1}
               onEndReachedThreshold={this.state.end ? 0 : 0.1}
               data={this.props.products}
+              extraData={this.state}
               renderItem={({ item }) => (
                 <ProductItem
                   cart={this.state.cart}

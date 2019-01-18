@@ -50,8 +50,8 @@ class ProductCardScreen extends Component {
     super(props);
 
     this.state = {
-      categories: [],
-      cart: [],
+      categories: this.props.categories,
+      cart: this.props.cart,
       modalVisible: false,
       opacity: 0,
       currentTab: 0,
@@ -67,13 +67,18 @@ class ProductCardScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.product !== this.props.product) {
+    if (
+      JSON.stringify(prevProps.product) !== JSON.stringify(this.props.product)
+    ) {
       this.setState({ loading: false, productItem: this.props.product });
     }
-    if (prevProps.categories !== this.props.categories) {
+    if (
+      JSON.stringify(prevProps.categories) !==
+      JSON.stringify(this.props.categories)
+    ) {
       this.setState({ categories: this.props.categories });
     }
-    if (prevProps.cart !== this.props.cart) {
+    if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
       this.setState({ loading: false, cart: this.props.cart });
     }
     if (prevProps.focus !== this.props.focus) {
@@ -81,20 +86,20 @@ class ProductCardScreen extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if (nextProps.product) {
-    //   this.setState({ loading: false, productItem: nextProps.product });
-    // }
-    // if (nextProps.categories) {
-    //   this.setState({ categories: nextProps.categories });
-    // }
-    // if (nextProps.cart) {
-    //   this.setState({ cart: nextProps.cart });
-    // }
-    // if (nextProps.focus || nextProps.focus === false) {
-    //   this.setState({ focus: nextProps.focus });
-    // }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   // if (nextProps.product) {
+  //   //   this.setState({ loading: false, productItem: nextProps.product });
+  //   // }
+  //   // if (nextProps.categories) {
+  //   //   this.setState({ categories: nextProps.categories });
+  //   // }
+  //   // if (nextProps.cart) {
+  //   //   this.setState({ cart: nextProps.cart });
+  //   // }
+  //   // if (nextProps.focus || nextProps.focus === false) {
+  //   //   this.setState({ focus: nextProps.focus });
+  //   // }
+  // }
 
   componentDidMount() {
     this.props.getProduct(this.props.navigation.getParam("productId", "0"));

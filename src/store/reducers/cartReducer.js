@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
     case GET_CART:
       return {
         ...state,
-        items: action.payload
+        items: action.payload ? action.payload : []
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Text } from "native-base";
@@ -10,7 +10,7 @@ import { scaleSize } from "../../helpers/scaleSize";
 import { updateCart, addToCart } from "../../store/actions/cartActions";
 import { clearProducts } from "../../store/actions/catalogActions";
 
-class ProductItem extends Component {
+class ProductItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +42,7 @@ class ProductItem extends Component {
                 : "",
             categoryId
           });
-          this.props.clearProducts();
+          // this.props.clearProducts();
         }}
         style={this.state.styles[styleIndex]}
       >
@@ -109,7 +109,7 @@ class ProductItem extends Component {
                   : [styles.productName, { fontSize: scaleSize(15) }]
               }
             >
-              {item.name} {item.id}
+              {item.name}
             </Text>
             <Text
               style={
@@ -186,7 +186,8 @@ class ProductItem extends Component {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              flexWrap: "nowrap"
+              flexWrap: "nowrap",
+              marginTop: styleIndex === 1 ? scaleSize(3) : 0
             }}
           >
             <TouchableOpacity

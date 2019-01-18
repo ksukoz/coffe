@@ -146,7 +146,7 @@ class SearchBar extends Component {
       this.unFocus();
     } else {
       this.props.clearAutocomplete();
-      this.props.clearProducts();
+      // this.props.clearProducts();
       this.props.clearAlphabet();
       this.props.navigation.pop();
     }
