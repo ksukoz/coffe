@@ -243,8 +243,8 @@ export default class SelectCityScreen extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     let formData = new FormData();
-    formData.append("username", "+380675635155");
-    formData.append("password", "test");
+    formData.append("login", "info@wrevery.com");
+    formData.append("password", "testtest");
 
     console.log(
       // "http://kawaapi.gumione.pro/api/users/cities/" +

@@ -184,8 +184,8 @@ export const getProductReviews = id => dispatch => {
 
 export const addProductReviews = (data, id) => dispatch => {
   let formData = new FormData();
-  formData.append("username", "+380675635155");
-  formData.append("password", "test");
+  formData.append("login", "info@wrevery.com");
+  formData.append("password", "testtest");
 
   fetch("http://kawaapi.gumione.pro/api/auth/login", {
     method: "POST",

@@ -26,6 +26,13 @@ export const getAlphabet = (lang, id) => dispatch => {
     });
 };
 
+export const clearAlphabet = () => dispatch => {
+  dispatch({
+    type: GET_LETTERS,
+    payload: []
+  });
+};
+
 export const getDelivery = (city, delivery, courier) => dispatch => {
   let formData = new FormData();
   let data = new FormData();

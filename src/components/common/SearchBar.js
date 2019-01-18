@@ -19,7 +19,11 @@ import {
   clearAutocomplete,
   clearSearchedProducts
 } from "../../store/actions/catalogActions";
-import { searchFocused, setSearch } from "../../store/actions/commonActions";
+import {
+  searchFocused,
+  setSearch,
+  clearAlphabet
+} from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
 
 import { scaleSize } from "../../helpers/scaleSize";
@@ -141,6 +145,8 @@ class SearchBar extends Component {
       this.unFocus();
     } else {
       this.props.clearAutocomplete();
+
+      this.props.clearAlphabet();
       this.props.navigation.pop();
     }
     return true;
@@ -343,6 +349,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(getAutocomplete(value, category, page, type)),
   searchFocused: () => dispatch(searchFocused()),
   clearAutocomplete: () => dispatch(clearAutocomplete()),
+  clearAlphabet: () => dispatch(clearAlphabet()),
   setSearch: value => dispatch(setSearch(value)),
   clearSearchedProducts: () => dispatch(clearSearchedProducts())
 });

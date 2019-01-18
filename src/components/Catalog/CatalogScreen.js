@@ -50,7 +50,8 @@ class CatalogScreen extends Component {
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
-      viewAreaCoveragePercentThreshold: 100
+      viewAreaCoveragePercentThreshold: 30,
+      viewAreaPercentThreshold: 30
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -229,11 +230,14 @@ class CatalogScreen extends Component {
             <FlatList
               style={{
                 marginLeft: scaleSize(10),
-                marginRight:
-                  this.state.stylesIndex === 1 ? scaleSize(5) : scaleSize(12),
+                marginRight: scaleSize(12),
                 zIndex: 2
               }}
               keyExtractor={item => item.id}
+              getItemLayout={(data, index) => ({
+                length: 100 - 1,
+                index
+              })}
               onEndReached={() =>
                 !this.state.end
                   ? this.setState(
@@ -252,7 +256,6 @@ class CatalogScreen extends Component {
               }
               onEndReachedThreshold={this.state.end ? 0 : 0.1}
               data={this.props.products}
-              extraData={this.state}
               renderItem={({ item }) => (
                 <ProductItem
                   cart={this.state.cart}
@@ -264,8 +267,6 @@ class CatalogScreen extends Component {
                   styleIndex={this.state.stylesIndex}
                 />
               )}
-              key={this.state.stylesIndex === 1 ? "h" : "v"}
-              numColumns={this.state.stylesIndex === 1 ? 2 : 1}
               viewabilityConfig={this.viewabilityConfig}
             />
           </View>

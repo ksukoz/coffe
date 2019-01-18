@@ -17,7 +17,10 @@ import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
-import { searchFocused } from "../../store/actions/commonActions";
+import {
+  searchFocused,
+  clearAlphabet
+} from "../../store/actions/commonActions";
 import { getDishes, clearProducts } from "../../store/actions/catalogActions";
 
 StatusBar.setBarStyle("light-content", true);
@@ -126,6 +129,7 @@ class HomeOtherScreen extends Component {
                         search: this.state.search
                       });
                       this.props.clearProducts();
+                      this.props.clearAlphabet();
                     }}
                     style={styles.cardItemHalf}
                     activeOpacity={0.9}
@@ -261,6 +265,7 @@ const mapDispatchToProps = dispatch => ({
   getDishes: () => dispatch(getDishes()),
 
   clearProducts: () => dispatch(clearProducts()),
+  clearAlphabet: () => dispatch(clearAlphabet()),
   searchFocused: () => dispatch(searchFocused())
 });
 

@@ -21,7 +21,11 @@ import {
   getCategories,
   clearProducts
 } from "../../store/actions/catalogActions";
-import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
+import {
+  getAlphabet,
+  searchFocused,
+  clearAlphabet
+} from "../../store/actions/commonActions";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -145,6 +149,7 @@ class HomeScreen extends Component {
                             search: this.state.search
                           });
                           this.props.clearProducts();
+                          this.props.clearAlphabet();
                         }}
                         style={styles.cardItemHalf}
                         activeOpacity={0.9}
@@ -250,6 +255,7 @@ class HomeScreen extends Component {
                           search: this.state.search
                         });
                         this.props.clearProducts();
+                        this.props.clearAlphabet();
                       }}
                       style={styles.cardItemHalf}
                       activeOpacity={0.9}
@@ -478,6 +484,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
   clearProducts: () => dispatch(clearProducts()),
+  clearAlphabet: () => dispatch(clearAlphabet()),
   getAlphabet: lang => dispatch(getAlphabet(lang)),
   searchFocused: () => dispatch(searchFocused())
 });

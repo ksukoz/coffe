@@ -50,7 +50,8 @@ class SearchScreen extends Component {
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
-      viewAreaCoveragePercentThreshold: 100
+      viewAreaCoveragePercentThreshold: 30,
+      viewAreaPercentThreshold: 30
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -223,6 +224,10 @@ class SearchScreen extends Component {
               onEndReachedThreshold={0.1}
               data={this.props.searchedProducts}
               extraData={this.state}
+              getItemLayout={(data, index) => ({
+                length: 100 - 1,
+                index
+              })}
               renderItem={({ item }) => (
                 <ProductItem
                   cart={this.state.cart}
