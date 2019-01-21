@@ -1,6 +1,6 @@
 import {
   GET_FULL_CATEGORIES,
-  GET_CATEGORIES,
+  SET_CATEGORIES,
   GET_SUBCATEGORIES,
   GET_DISHES,
   GET_PRODUCTS,
@@ -22,18 +22,11 @@ export const getFullCategories = () => dispatch => {
   return Promise.resolve();
 };
 
-export const getCategories = (type = false) => dispatch => {
-  fetch("http://kawaapi.gumione.pro/api/catalog/categories")
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({
-        type: type !== false ? GET_FULL_CATEGORIES : GET_CATEGORIES,
-        payload: responseJson.categories
-      });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const setCategories = categories => dispatch => {
+  dispatch({
+    type: SET_CATEGORIES,
+    payload: categories
+  });
 };
 
 export const getSubCategories = (type = false) => dispatch => {

@@ -1,6 +1,6 @@
 import {
   GET_FULL_CATEGORIES,
-  GET_CATEGORIES,
+  SET_CATEGORIES,
   GET_SUBCATEGORIES,
   GET_DISHES,
   GET_PRODUCTS,
@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
         ...state,
         categoriesFull: [...state.categoriesFull, ...action.payload]
       };
-    case GET_CATEGORIES:
+    case SET_CATEGORIES:
       return {
         ...state,
         categories: action.payload

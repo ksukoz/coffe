@@ -18,9 +18,10 @@ import LetterBar from "../common/LetterBar";
 import SearchBar from "../common/SearchBar";
 
 import {
-  getCategories,
-  clearProducts
+  clearProducts,
+  setCategories
 } from "../../store/actions/catalogActions";
+
 import {
   getAlphabet,
   searchFocused,
@@ -55,7 +56,7 @@ class HomeScreen extends Component {
         this.props.getAlphabet(this.props.lang, 0);
       }
     });
-    this.props.getCategories();
+    this.props.setCategories();
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     StatusBar.setTranslucent(true);
   }
@@ -482,7 +483,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCategories: () => dispatch(getCategories()),
+  setCategories: () => dispatch(setCategories()),
   clearProducts: () => dispatch(clearProducts()),
   clearAlphabet: () => dispatch(clearAlphabet()),
   getAlphabet: lang => dispatch(getAlphabet(lang)),
