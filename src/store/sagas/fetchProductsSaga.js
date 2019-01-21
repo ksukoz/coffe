@@ -1,4 +1,4 @@
-import { take, takeLatest, put, call, apply } from "redux-saga/effects";
+import { takeLatest, put, call } from "redux-saga/effects";
 import {
   setProducts,
   getEndProducts,
@@ -10,13 +10,12 @@ export function* fetchProductsSaga(item) {
   yield put(setProductsStatus(FETCHING));
   const { payload } = item;
   if (payload) {
-    console.log(payload);
     const response = yield call(
       fetch,
       payload.letter
         ? `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
             payload.letter
-          )}/after/${payload.category}/10/${payload.page}}`
+          )}/${payload.category}/after//10/${payload.page}}`
         : `http://kawaapi.gumione.pro/api/catalog/items/${
             payload.category
           }/10/${payload.page}}`

@@ -3,27 +3,15 @@ import {
   GET_DELIVERY_COST,
   GET_SEARCH_FOCUS,
   SET_LANG,
+  GET_LANG,
   SET_SEARCH
 } from "./types";
 
-export const getAlphabet = (lang, id) => dispatch => {
-  fetch(
-    `http://kawaapi.gumione.pro/api/catalog/letters/${lang}${
-      id ? `/${id}` : ""
-    }`
-  )
-    .then(response => response.json())
-    .then(responseJson => {
-      responseJson.letters.length === 0
-        ? dispatch(getAlphabet(lang === 1 ? 2 : 1, id))
-        : dispatch({
-            type: GET_LETTERS,
-            payload: responseJson.letters
-          });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getAlphabet = letters => dispatch => {
+  dispatch({
+    type: GET_LETTERS,
+    payload: letters
+  });
 };
 
 export const clearAlphabet = () => dispatch => {
@@ -95,10 +83,17 @@ export const searchFocused = () => dispatch => {
   });
 };
 
-export const setLang = () => dispatch => {
+export const setLang = (lang, id) => dispatch => {
   dispatch({
     type: SET_LANG,
-    payload: true
+    payload: { lang, id }
+  });
+};
+
+export const getLang = lang => dispatch => {
+  dispatch({
+    type: GET_LANG,
+    payload: lang
   });
 };
 

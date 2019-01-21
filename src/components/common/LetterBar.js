@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text, Input } from "native-base";
 import { ScrollView, TouchableOpacity, StyleSheet } from "react-native";
-import { getAlphabet, setLang } from "../../store/actions/commonActions";
+import { setLang } from "../../store/actions/commonActions";
 import {
-  findProducts,
+  getProductsParams,
   clearProducts
 } from "../../store/actions/catalogActions";
 
@@ -14,40 +14,38 @@ class LetterBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      alphabet: [],
-      categoryId: 0,
-      lang: 1,
+      // categoryId: 0,
+      // lang: 1,
       letter: this.props.navigation.getParam("letter", "")
     };
     Input.defaultProps.selectionColor = "#000";
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.alphabet) {
-      this.setState({ alphabet: nextProps.alphabet });
-    }
-    if (nextProps.lang !== this.state.lang) {
-      this.setState({ lang: nextProps.lang });
-    }
+    // if (nextProps.alphabet) {
+    //   this.setState({ alphabet: nextProps.alphabet });
+    // }
+    // if (nextProps.lang !== this.state.lang) {
+    //   this.setState({ lang: nextProps.lang });
+    // }
   }
 
   componentDidMount() {
+    this.props.setLang(
+      this.props.lang,
+      this.props.navigation.getParam("categoryId", "0")
+    );
     this.props.navigation.addListener("didFocus", payload => {
-      this.props.getAlphabet(
+      this.props.setLang(
         this.props.lang,
         this.props.navigation.getParam("categoryId", "0")
       );
     });
-    this.props.getAlphabet(
-      this.props.lang,
-      this.props.navigation.getParam("categoryId", "0")
-    );
   }
 
   changeAlphabet() {
-    this.props.setLang();
-    this.props.getAlphabet(
-      this.state.lang,
+    this.props.setLang(
+      this.props.lang === 1 ? 2 : 1,
       this.props.navigation.getParam("categoryId", "0")
     );
   }
@@ -60,11 +58,10 @@ class LetterBar extends Component {
       });
 
       this.props.clearProducts();
-      this.props.findProducts(
-        letter,
+      this.props.getProductsParams(
         this.props.navigation.getParam("categoryId", "0"),
         0,
-        "after"
+        letter
       );
     });
   }
@@ -72,7 +69,7 @@ class LetterBar extends Component {
   render() {
     return (
       <ScrollView horizontal={true} style={styles.alphabetMenu}>
-        {this.state.alphabet.map(item => {
+        {this.props.alphabet.map(item => {
           return (
             <TouchableOpacity
               onLongPress={() => this.changeAlphabet()}
@@ -132,11 +129,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
-  setLang: () => dispatch(setLang()),
+  setLang: (lang, id) => dispatch(setLang(lang, id)),
   clearProducts: () => dispatch(clearProducts()),
-  findProducts: (value, category, page, type) =>
-    dispatch(findProducts(value, category, page, type))
+  getProductsParams: (category, page, letter) =>
+    dispatch(getProductsParams(category, page, letter))
 });
 
 export default connect(

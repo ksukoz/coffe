@@ -9,8 +9,9 @@ import {
 
 const initialState = {
   message: "",
-  letters: null,
+  letters: [],
   lang: 1,
+  id: 0,
   search: "",
   focus: false,
   delivery: []
@@ -39,7 +40,8 @@ export default function(state = initialState, action) {
     case SET_LANG:
       return {
         ...state,
-        lang: state.lang === 1 ? 2 : 1
+        lang: action.payload.lang,
+        id: action.payload.id
       };
     case SET_SEARCH:
       return {

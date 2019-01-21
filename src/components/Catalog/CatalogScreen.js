@@ -321,8 +321,8 @@ const mapDispatchToProps = dispatch => ({
   setProducts: () => dispatch(setProducts()),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
-  getProductsParams: (category, page) =>
-    dispatch(getProductsParams(category, page)),
+  getProductsParams: (category, page, letter) =>
+    dispatch(getProductsParams(category, page, letter)),
   clearProduct: () => dispatch(clearProduct()),
   searchFocused: () => dispatch(searchFocused())
 });

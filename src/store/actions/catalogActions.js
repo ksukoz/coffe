@@ -41,7 +41,6 @@ export const getProductsParams = (
   page = 0,
   letter = false
 ) => dispatch => {
-  console.log(category, page, letter);
   dispatch({
     type: GET_CATEGORY,
     payload: { category, page, letter }
@@ -91,7 +90,7 @@ export const findProducts = (value, category, page, type) => dispatch => {
   )
     .then(response => response.json())
     .then(responseJson => {
-      console.log(responseJson.items);
+      // console.log(responseJson.items);
       responseJson.items.length === 0
         ? dispatch({
             type: PRODUCTS_END,
