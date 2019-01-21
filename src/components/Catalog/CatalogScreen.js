@@ -18,9 +18,9 @@ import { getCart } from "../../store/actions/cartActions";
 
 import { searchFocused } from "../../store/actions/commonActions";
 import {
-  getProducts,
+  getProductsParams,
+  setProducts,
   findProducts,
-  getFullCategories,
   clearProduct
 } from "../../store/actions/catalogActions";
 
@@ -40,7 +40,6 @@ class CatalogScreen extends Component {
     super(props);
     this.state = {
       products: [],
-      categories: [],
       page: 0,
       cart: [],
       search: "",
@@ -64,11 +63,10 @@ class CatalogScreen extends Component {
     ) {
       this.setState(
         { page: 0 },
-        this.props.findProducts(
-          this.props.navigation.getParam("letter"),
+        this.props.getProductsParams(
           this.props.navigation.getParam("categoryId", "0"),
           0,
-          "after"
+          this.props.navigation.getParam("letter")
         )
       );
     }
@@ -95,30 +93,24 @@ class CatalogScreen extends Component {
 
   componentDidMount() {
     this.props.getCart();
-    this.props.getFullCategories();
 
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();
       }
       if (!this.props.navigation.state.params.letter) {
-        this.props.getProducts(
-          this.props.navigation.getParam("categoryId", "0"),
-          this.state.page
-        );
+        this.props.setProducts;
       } else {
-        this.props.findProducts(
-          this.props.navigation.getParam("letter"),
+        this.props.getProductsParams(
           this.props.navigation.getParam("categoryId", "0"),
           this.state.page,
-          "after"
+          this.props.navigation.getParam("letter")
         );
       }
       this.props.clearProduct();
       StatusBar.setBackgroundColor("rgba(0,0,0,0)");
       StatusBar.setTranslucent(true);
     });
-
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
@@ -141,16 +133,15 @@ class CatalogScreen extends Component {
 
   handleEnd = () => {
     if (!this.props.navigation.state.params.letter) {
-      this.props.getProducts(
+      this.props.getProductsParams(
         this.props.navigation.getParam("categoryId", "0"),
         this.state.page
       );
     } else {
-      this.props.findProducts(
-        this.props.navigation.getParam("letter"),
+      this.props.getProductsParams(
         this.props.navigation.getParam("categoryId", "0"),
         this.state.page,
-        "after"
+        this.props.navigation.getParam("letter")
       );
     }
   };
@@ -160,6 +151,11 @@ class CatalogScreen extends Component {
   };
 
   render() {
+    const categories = [
+      ...this.props.categories,
+      ...this.props.subcategories,
+      ...this.props.dishes
+    ];
     let notFound;
     if (
       this.props.products.length === 0 &&
@@ -243,7 +239,9 @@ class CatalogScreen extends Component {
                 index
               })}
               onEndReached={() =>
-                !this.state.end
+                this.props.fetch
+                  ? false
+                  : !this.state.end
                   ? this.setState(
                       {
                         loading: true,
@@ -272,7 +270,7 @@ class CatalogScreen extends Component {
                   categoryId={item.pid}
                   search={this.state.search}
                   item={item}
-                  categories={this.state.categories}
+                  categories={categories}
                   styleIndex={this.state.stylesIndex}
                 />
               )}
@@ -312,15 +310,19 @@ const mapStateToProps = state => ({
   focus: state.common.focus,
   end: state.catalog.end,
   products: state.catalog.products,
-  categories: state.catalog.categoriesFull
+  fetch: state.catalog.fetch,
+  categories: state.catalog.categories,
+  subcategories: state.catalog.subcategories,
+  dishes: state.catalog.dishes
 });
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
-  getProducts: (category, page) => dispatch(getProducts(category, page)),
+  setProducts: () => dispatch(setProducts()),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
-  getFullCategories: () => dispatch(getFullCategories()),
+  getProductsParams: (category, page) =>
+    dispatch(getProductsParams(category, page)),
   clearProduct: () => dispatch(clearProduct()),
   searchFocused: () => dispatch(searchFocused())
 });

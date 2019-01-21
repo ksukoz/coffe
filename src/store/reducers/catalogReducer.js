@@ -3,8 +3,11 @@ import {
   SET_CATEGORIES,
   SET_SUBCATEGORIES,
   SET_DISHES,
-  GET_PRODUCTS,
-  GET_MORE_PRODUCTS,
+  GET_CATEGORY,
+  SET_PRODUCTS,
+  CLEAR_PRODUCTS,
+  FETCHING,
+  FETCHED,
   GET_SEARCHED_PRODUCTS,
   GET_MORE_SEARCHED_PRODUCTS,
   GET_PRODUCT,
@@ -17,7 +20,10 @@ const initialState = {
   categories: [],
   subcategories: [],
   dishes: [],
-  categoriesFull: [],
+  status: false,
+  category: "",
+  page: 0,
+  letter: false,
   products: [],
   searchedProducts: [],
   autocomplete: [],
@@ -43,16 +49,39 @@ export default function(state = initialState, action) {
         ...state,
         subcategories: action.payload
       };
+    case GET_CATEGORY:
+      return {
+        ...state,
+        category: action.payload.category,
+        page: action.payload.page,
+        letter: action.payload.letter
+      };
     case SET_DISHES:
       return {
         ...state,
         dishes: action.payload
       };
-    case GET_PRODUCTS:
+    case SET_PRODUCTS:
+      return {
+        ...state,
+        products: [...state.products, ...action.payload],
+        end: false
+      };
+    case CLEAR_PRODUCTS:
       return {
         ...state,
         products: action.payload,
         end: false
+      };
+    case FETCHING:
+      return {
+        ...state,
+        fetch: true
+      };
+    case FETCHED:
+      return {
+        ...state,
+        fetch: false
       };
     case GET_SEARCHED_PRODUCTS:
       return {
@@ -64,11 +93,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         autocomplete: action.payload
-      };
-    case GET_MORE_PRODUCTS:
-      return {
-        ...state,
-        products: [...state.products, ...action.payload]
       };
     case GET_MORE_SEARCHED_PRODUCTS:
       return {

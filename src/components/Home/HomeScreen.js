@@ -21,7 +21,8 @@ import {
   clearProducts,
   setCategories,
   setSubCategories,
-  setDishes
+  setDishes,
+  getProductsParams
 } from "../../store/actions/catalogActions";
 
 import {
@@ -154,6 +155,7 @@ class HomeScreen extends Component {
                             search: this.state.search
                           });
                           this.props.clearProducts();
+                          this.props.getProductsParams(category.id);
                           this.props.clearAlphabet();
                         }}
                         style={styles.cardItemHalf}
@@ -260,6 +262,7 @@ class HomeScreen extends Component {
                           search: this.state.search
                         });
                         this.props.clearProducts();
+                        this.props.getProductsParams(category.id);
                         this.props.clearAlphabet();
                       }}
                       style={styles.cardItemHalf}
@@ -491,6 +494,7 @@ const mapDispatchToProps = dispatch => ({
   setCategories: () => dispatch(setCategories()),
   setSubCategories: () => dispatch(setSubCategories()),
   setDishes: () => dispatch(setDishes()),
+  getProductsParams: category => dispatch(getProductsParams(category)),
   clearProducts: () => dispatch(clearProducts()),
   clearAlphabet: () => dispatch(clearAlphabet()),
   getAlphabet: lang => dispatch(getAlphabet(lang)),

@@ -2,7 +2,9 @@ import {
   SET_CATEGORIES,
   SET_SUBCATEGORIES,
   SET_DISHES,
-  GET_PRODUCTS,
+  GET_CATEGORY,
+  SET_PRODUCTS,
+  CLEAR_PRODUCTS,
   GET_MORE_PRODUCTS,
   GET_PRODUCT,
   GET_PRODUCT_REVIEWS,
@@ -34,28 +36,42 @@ export const setDishes = categories => dispatch => {
   });
 };
 
-export const getProducts = (category, page) => dispatch => {
-  fetch(`http://kawaapi.gumione.pro/api/catalog/items/${category}/10/${page}`)
-    .then(response => response.json())
-    .then(responseJson => {
-      responseJson.items.length === 0
-        ? dispatch({
-            type: PRODUCTS_END,
-            payload: true
-          })
-        : dispatch({
-            type: page == 0 ? GET_PRODUCTS : GET_MORE_PRODUCTS,
-            payload: responseJson.items
-          });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getProductsParams = (
+  category,
+  page = 0,
+  letter = false
+) => dispatch => {
+  console.log(category, page, letter);
+  dispatch({
+    type: GET_CATEGORY,
+    payload: { category, page, letter }
+  });
+};
+
+export const setProducts = products => dispatch => {
+  dispatch({
+    type: SET_PRODUCTS,
+    payload: products
+  });
+};
+
+export const setProductsStatus = fetch => dispatch => {
+  dispatch({
+    type: fetch
+  });
+};
+
+export const getEndProducts = () => dispatch => {
+  dispatch({
+    type: PRODUCTS_END,
+    payload: true
+  });
 };
 
 export const clearProducts = () => dispatch => {
+  // console.log("cleared");
   dispatch({
-    type: GET_PRODUCTS,
+    type: CLEAR_PRODUCTS,
     payload: []
   });
 };
@@ -86,7 +102,7 @@ export const findProducts = (value, category, page, type) => dispatch => {
               page == 0 && type == "both"
                 ? GET_SEARCHED_PRODUCTS
                 : page == 0 && type == "after"
-                ? GET_PRODUCTS
+                ? SET_PRODUCTS
                 : page > 0 && type == "both"
                 ? GET_MORE_SEARCHED_PRODUCTS
                 : GET_MORE_PRODUCTS,
