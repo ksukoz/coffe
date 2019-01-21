@@ -1,9 +1,12 @@
-import { takeLatest, put, call } from "redux-saga/effects";
-import { SET_CATEGORIES } from "../actions/types";
-import { setCategories } from "../actions/catalogActions";
+import { put, call } from "redux-saga/effects";
+import {
+  setCategories,
+  setSubCategories,
+  setDishes
+} from "../actions/catalogActions";
 
-function* fetchCategories() {
-  const response = yield yield call(
+export function* fetchCategoriesSaga() {
+  const response = yield call(
     fetch,
     "http://kawaapi.gumione.pro/api/catalog/categories"
   );
@@ -11,6 +14,20 @@ function* fetchCategories() {
   yield put(setCategories(categories));
 }
 
-export function* fetchCategoriesSaga() {
-  yield takeLatest(SET_CATEGORIES, fetchCategories);
+export function* fetchSubCategoriesSaga() {
+  const response = yield call(
+    fetch,
+    "http://kawaapi.gumione.pro/api/catalog/categories/7"
+  );
+  const { categories } = yield response.json();
+  yield put(setSubCategories(categories));
+}
+
+export function* fetchDishesSaga() {
+  const response = yield call(
+    fetch,
+    "http://kawaapi.gumione.pro/api/catalog/categories/8"
+  );
+  const { categories } = yield response.json();
+  yield put(setDishes(categories));
 }

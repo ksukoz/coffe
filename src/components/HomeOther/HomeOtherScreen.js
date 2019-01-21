@@ -35,10 +35,7 @@ class HomeOtherScreen extends Component {
     super(props);
     this.state = {
       search: "",
-      categories: [],
-      subcategories: false,
       dishes: false,
-      loading: true,
       focus: false
     };
     Input.defaultProps.selectionColor = "#000";
@@ -51,15 +48,12 @@ class HomeOtherScreen extends Component {
         this.props.searchFocused();
       }
     });
-    this.props.getSubCategories();
+    // this.props.getSubCategories();
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     StatusBar.setTranslucent(true);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.subcategories) {
-      this.setState({ categories: nextProps.subcategories, loading: false });
-    }
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
@@ -113,17 +107,10 @@ class HomeOtherScreen extends Component {
                 categoryId={0}
                 lang={this.props.navigation.getParam("letter", "")}
               />
-              {this.state.loading ? (
-                <ActivityIndicator
-                  style={{ marginTop: scaleSize(75) }}
-                  size="large"
-                  animating
-                />
-              ) : null}
             </View>
             <Content style={{ flex: 2 }}>
               <View style={styles.cardDouble}>
-                {this.state.categories.map(category => (
+                {this.props.subcategories.map(category => (
                   <TouchableOpacity
                     key={category.id}
                     onPress={() => {
@@ -284,7 +271,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSubCategories: () => dispatch(getSubCategories()),
   clearProducts: () => dispatch(clearProducts()),
   clearAlphabet: () => dispatch(clearAlphabet()),
   searchFocused: () => dispatch(searchFocused())

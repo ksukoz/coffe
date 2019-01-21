@@ -19,7 +19,9 @@ import SearchBar from "../common/SearchBar";
 
 import {
   clearProducts,
-  setCategories
+  setCategories,
+  setSubCategories,
+  setDishes
 } from "../../store/actions/catalogActions";
 
 import {
@@ -57,13 +59,15 @@ class HomeScreen extends Component {
       }
     });
     this.props.setCategories();
+    this.props.setSubCategories();
+    this.props.setDishes();
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     StatusBar.setTranslucent(true);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.categories) {
-      this.setState({ categories: nextProps.categories, loading: false });
+      this.setState({ loading: false });
     }
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
@@ -135,7 +139,7 @@ class HomeScreen extends Component {
             </View>
             <Content style={{ flex: 2 }}>
               <View style={styles.cardDouble}>
-                {this.state.categories.map(category =>
+                {this.props.categories.map(category =>
                   category.id == "4" ? (
                     <View
                       style={{ width: "100%", flexDirection: "row" }}
@@ -478,12 +482,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   categories: state.catalog.categories,
+  subcategories: state.catalog.subcategories,
   focus: state.common.focus,
   letters: state.common.letters
 });
 
 const mapDispatchToProps = dispatch => ({
   setCategories: () => dispatch(setCategories()),
+  setSubCategories: () => dispatch(setSubCategories()),
+  setDishes: () => dispatch(setDishes()),
   clearProducts: () => dispatch(clearProducts()),
   clearAlphabet: () => dispatch(clearAlphabet()),
   getAlphabet: lang => dispatch(getAlphabet(lang)),

@@ -1,8 +1,8 @@
 import {
   GET_FULL_CATEGORIES,
   SET_CATEGORIES,
-  GET_SUBCATEGORIES,
-  GET_DISHES,
+  SET_SUBCATEGORIES,
+  SET_DISHES,
   GET_PRODUCTS,
   GET_MORE_PRODUCTS,
   GET_SEARCHED_PRODUCTS,
@@ -38,12 +38,12 @@ export default function(state = initialState, action) {
         ...state,
         categories: action.payload
       };
-    case GET_SUBCATEGORIES:
+    case SET_SUBCATEGORIES:
       return {
         ...state,
         subcategories: action.payload
       };
-    case GET_DISHES:
+    case SET_DISHES:
       return {
         ...state,
         dishes: action.payload
