@@ -1,35 +1,10 @@
-import { GET_CART, GET_MESSAGE } from "./types";
+import { GET_CART, SET_CART, GET_MESSAGE } from "./types";
 
-export const getCart = () => dispatch => {
-  let formData = new FormData();
-  formData.append("login", "info@wrevery.com");
-  formData.append("password", "testtest");
-
-  fetch("http://kawaapi.gumione.pro/api/auth/login", {
-    method: "POST",
-    body: formData
-  })
-    .then(response => response.json())
-    .then(responseJson => {
-      fetch("http://kawaapi.gumione.pro/api/catalog/cart", {
-        headers: new Headers({
-          Authorization: "Bearer " + responseJson.token
-        })
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          dispatch({
-            type: GET_CART,
-            payload: responseJson.cart
-          });
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getCart = cart => dispatch => {
+  dispatch({
+    type: SET_CART,
+    payload: cart
+  });
 };
 
 export const addToCart = id => dispatch => {

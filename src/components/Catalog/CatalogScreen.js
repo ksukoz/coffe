@@ -39,7 +39,6 @@ class CatalogScreen extends Component {
     this.state = {
       products: [],
       page: 0,
-      cart: [],
       search: "",
       stylesIndex: 0,
       focus: false,
@@ -90,7 +89,7 @@ class CatalogScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getCart();
+    // this.props.getCart();
 
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
@@ -263,7 +262,7 @@ class CatalogScreen extends Component {
               extraData={this.state}
               renderItem={({ item }) => (
                 <ProductItem
-                  cart={this.state.cart}
+                  cart={this.props.cart}
                   navigation={this.props.navigation}
                   categoryId={item.pid}
                   search={this.state.search}
@@ -315,7 +314,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCart: () => dispatch(getCart()),
+  // getCart: () => dispatch(getCart()),
   getProductsParams: (category, page, letter) =>
     dispatch(getProductsParams(category, page, letter)),
   clearProduct: () => dispatch(clearProduct()),

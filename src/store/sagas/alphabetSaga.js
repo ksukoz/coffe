@@ -1,12 +1,6 @@
-import { take, takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put, call } from "redux-saga/effects";
 import { getAlphabet } from "../actions/commonActions";
-import {
-  GET_CATEGORY,
-  FETCHED,
-  FETCHING,
-  SET_LANG,
-  GET_LETTERS
-} from "../actions/types";
+import { SET_LANG } from "../actions/types";
 
 export function* fetchAlphabetSaga(item) {
   const { payload } = item;

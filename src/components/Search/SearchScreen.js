@@ -20,7 +20,6 @@ import { getAlphabet } from "../../store/actions/commonActions";
 import {
   getProducts,
   findProducts,
-  getFullCategories,
   clearSearchedProducts
 } from "../../store/actions/catalogActions";
 
@@ -41,7 +40,6 @@ class SearchScreen extends Component {
       products: [],
       categories: [],
       page: 0,
-      cart: [],
       search: "",
       stylesIndex: 0,
       focus: false,
@@ -57,8 +55,7 @@ class SearchScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getCart();
-    this.props.getFullCategories();
+    // this.props.getCart();
 
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
@@ -92,9 +89,6 @@ class SearchScreen extends Component {
     }
     if (nextProps.searchedProducts && nextProps.end === false) {
       this.setState({ loading: false, products: nextProps.searchedProducts });
-    }
-    if (nextProps.cart) {
-      this.setState({ cart: nextProps.cart });
     }
     if (nextProps.categories) {
       this.setState({ categories: nextProps.categories });
@@ -187,7 +181,7 @@ class SearchScreen extends Component {
           <HeaderBar
             menu={true}
             catalog={true}
-            cart={this.state.cart}
+            cart={this.props.cart}
             title={this.state.search}
             getStyles={this.getStyles}
             navigation={this.props.navigation.dangerouslyGetParent()}
@@ -285,13 +279,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCart: () => dispatch(getCart()),
+  // getCart: () => dispatch(getCart()),
   clearSearchedProducts: () => dispatch(clearSearchedProducts()),
   getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
   getProducts: (category, page) => dispatch(getProducts(category, page)),
   findProducts: (value, category, page, type) =>
     dispatch(findProducts(value, category, page, type)),
-  getFullCategories: () => dispatch(getFullCategories()),
   searchFocused: () => dispatch(searchFocused())
 });
 

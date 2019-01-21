@@ -18,6 +18,7 @@ export default class HeaderBar extends Component {
   render() {
     const { navigation, title } = this.props;
     let linkName;
+    console.log(this.props.cart);
 
     if (navigation) {
       linkName = navigation.getParam("linkName", "Home");

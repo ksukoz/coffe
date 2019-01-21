@@ -7,9 +7,10 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GET_CART:
+      console.log(action.payload);
       return {
         ...state,
-        items: action.payload ? action.payload : []
+        items: action.payload
       };
     default:
       return state;

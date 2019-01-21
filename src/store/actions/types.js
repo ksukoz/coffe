@@ -15,6 +15,7 @@ export const GET_PRODUCT_REVIEWS = "GET_PRODUCT_REVIEWS";
 export const PRODUCTS_END = "PRODUCTS_END";
 
 export const GET_CART = "GET_CART";
+export const SET_CART = "SET_CART";
 
 export const FETCHING = "FETCHING";
 export const FETCHED = "FETCHED";
