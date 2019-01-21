@@ -6,7 +6,8 @@ import {
   SET_PRODUCTS,
   CLEAR_PRODUCTS,
   GET_MORE_PRODUCTS,
-  GET_PRODUCT,
+  SET_PRODUCT,
+  GET_PRODUCT_ID,
   GET_PRODUCT_REVIEWS,
   PRODUCTS_END,
   GET_MESSAGE,
@@ -138,39 +139,33 @@ export const clearAutocomplete = () => dispatch => {
   });
 };
 
-export const getProduct = id => dispatch => {
-  fetch(`http://kawaapi.gumione.pro/api/catalog/item/${id}`)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({
-        type: GET_PRODUCT,
-        payload: responseJson.item
-      });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getProductID = id => dispatch => {
+  console.log(id);
+  dispatch({
+    type: GET_PRODUCT_ID,
+    payload: id
+  });
+};
+
+export const getProduct = item => dispatch => {
+  dispatch({
+    type: SET_PRODUCT,
+    payload: item
+  });
 };
 
 export const clearProduct = () => dispatch => {
   dispatch({
-    type: GET_PRODUCT,
+    type: SET_PRODUCT,
     payload: null
   });
 };
 
-export const getProductReviews = id => dispatch => {
-  fetch(`http://kawaapi.gumione.pro/api/catalog/get_comments/${id}`)
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({
-        type: GET_PRODUCT_REVIEWS,
-        payload: responseJson
-      });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getProductReviews = comments => dispatch => {
+  dispatch({
+    type: GET_PRODUCT_REVIEWS,
+    payload: comments
+  });
 };
 
 export const addProductReviews = (data, id) => dispatch => {

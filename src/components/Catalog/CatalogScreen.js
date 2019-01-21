@@ -19,8 +19,6 @@ import { getCart } from "../../store/actions/cartActions";
 import { searchFocused } from "../../store/actions/commonActions";
 import {
   getProductsParams,
-  setProducts,
-  findProducts,
   clearProduct
 } from "../../store/actions/catalogActions";
 
@@ -318,9 +316,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
-  setProducts: () => dispatch(setProducts()),
-  findProducts: (value, category, page, type) =>
-    dispatch(findProducts(value, category, page, type)),
   getProductsParams: (category, page, letter) =>
     dispatch(getProductsParams(category, page, letter)),
   clearProduct: () => dispatch(clearProduct()),

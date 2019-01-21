@@ -514,8 +514,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => ({
   updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
-  addToCart: id => dispatch(addToCart(id)),
-  clearProducts: () => dispatch(clearProducts())
+  addToCart: id => dispatch(addToCart(id))
 });
 
 export default connect(

@@ -28,11 +28,8 @@ import SearchBar from "../common/SearchBar";
 import AboutProduct from "./AboutProduct";
 import CoffeeCard from "./CoffeeCard";
 
-import {
-  getProduct,
-  getFullCategories
-} from "../../store/actions/catalogActions";
-import { getAlphabet, searchFocused } from "../../store/actions/commonActions";
+import { getProductID } from "../../store/actions/catalogActions";
+import { searchFocused } from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductReviews from "./ProductReviews";
@@ -50,7 +47,6 @@ class ProductCardScreen extends Component {
     super(props);
 
     this.state = {
-      categories: this.props.categories,
       cart: this.props.cart,
       modalVisible: false,
       opacity: 0,
@@ -72,12 +68,6 @@ class ProductCardScreen extends Component {
     ) {
       this.setState({ loading: false, productItem: this.props.product });
     }
-    if (
-      JSON.stringify(prevProps.categories) !==
-      JSON.stringify(this.props.categories)
-    ) {
-      this.setState({ categories: this.props.categories });
-    }
     if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
       this.setState({ loading: false, cart: this.props.cart });
     }
@@ -86,34 +76,16 @@ class ProductCardScreen extends Component {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   // if (nextProps.product) {
-  //   //   this.setState({ loading: false, productItem: nextProps.product });
-  //   // }
-  //   // if (nextProps.categories) {
-  //   //   this.setState({ categories: nextProps.categories });
-  //   // }
-  //   // if (nextProps.cart) {
-  //   //   this.setState({ cart: nextProps.cart });
-  //   // }
-  //   // if (nextProps.focus || nextProps.focus === false) {
-  //   //   this.setState({ focus: nextProps.focus });
-  //   // }
-  // }
-
   componentDidMount() {
-    this.props.getProduct(this.props.navigation.getParam("productId", "0"));
-
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();
       }
 
+      this.props.getProductID(this.props.navigation.getParam("productId", "0"));
       StatusBar.setBackgroundColor("rgba(0,0,0,0)");
       StatusBar.setTranslucent(true);
     });
-
-    this.props.getFullCategories();
 
     setTimeout(() => {
       this.setState({ currentTab: this.props.navigation.getParam("tab", 0) });
@@ -133,6 +105,11 @@ class ProductCardScreen extends Component {
   }
 
   render() {
+    const categories = [
+      ...this.props.categories,
+      ...this.props.subcategories,
+      ...this.props.dishes
+    ];
     const { productItem, reviewsLength, opacity } = this.state;
 
     return (
@@ -252,7 +229,7 @@ class ProductCardScreen extends Component {
                           productId: productItem.id
                         })
                       }
-                      categories={this.state.categories}
+                      categories={categories}
                       navigation={this.props.navigation}
                       onReviewsPress={() => this.onReviewsPress()}
                     />
@@ -600,13 +577,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   product: state.catalog.product,
   focus: state.common.focus,
-  categories: state.catalog.categoriesFull,
+  categories: state.catalog.categories,
+  subcategories: state.catalog.subcategories,
+  dishes: state.catalog.dishes,
   cart: state.cart.items
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProduct: id => dispatch(getProduct(id)),
-  getFullCategories: () => dispatch(getFullCategories()),
+  getProductID: id => dispatch(getProductID(id)),
   searchFocused: () => dispatch(searchFocused())
 });
 

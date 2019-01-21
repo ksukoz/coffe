@@ -11,10 +11,7 @@ import {
 import { Text, Input, Card, CardItem } from "native-base";
 import StarRating from "react-native-star-rating";
 
-import {
-  getProductReviews,
-  addProductReviews
-} from "../../store/actions/catalogActions";
+import { addProductReviews } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
@@ -35,9 +32,7 @@ class ProductReviews extends Component {
     Input.defaultProps.selectionColor = "#000";
   }
 
-  componentWillMount() {
-    this.props.getProductReviews(this.props.id);
-  }
+  componentWillMount() {}
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.reviews) {
@@ -72,7 +67,7 @@ class ProductReviews extends Component {
   }
 
   render() {
-    const { reviews, review, loading, rating, message } = this.state;
+    const { review, loading, rating, message } = this.state;
     const { productName, showReviewsForm } = this.props;
 
     return (
@@ -182,8 +177,8 @@ class ProductReviews extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-            {reviews.length > 0 ? (
-              reviews.map(review => {
+            {this.props.reviews.length > 0 ? (
+              this.props.reviews.map(review => {
                 let date = new Date(+`${review.date}000`);
 
                 return (
@@ -319,7 +314,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getProductReviews: id => dispatch(getProductReviews(id)),
   addProductReviews: (data, id) => dispatch(addProductReviews(data, id))
 });
 

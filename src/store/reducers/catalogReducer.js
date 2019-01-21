@@ -10,7 +10,8 @@ import {
   FETCHED,
   GET_SEARCHED_PRODUCTS,
   GET_MORE_SEARCHED_PRODUCTS,
-  GET_PRODUCT,
+  SET_PRODUCT,
+  GET_PRODUCT_ID,
   GET_PRODUCT_REVIEWS,
   PRODUCTS_END,
   GET_AUTOCOMPLETE
@@ -24,11 +25,12 @@ const initialState = {
   category: "",
   page: 0,
   letter: false,
+  id: "",
   products: [],
   searchedProducts: [],
   autocomplete: [],
   product: null,
-  reviews: null,
+  reviews: [],
   end: false
 };
 
@@ -99,15 +101,20 @@ export default function(state = initialState, action) {
         ...state,
         searchedProducts: [...state.searchedProducts, ...action.payload]
       };
-    case GET_PRODUCT:
+    case SET_PRODUCT:
       return {
         ...state,
         product: action.payload
       };
+    case GET_PRODUCT_ID:
+      return {
+        ...state,
+        id: action.payload
+      };
     case GET_PRODUCT_REVIEWS:
       return {
         ...state,
-        reviews: action.payload.comments.reverse()
+        reviews: action.payload
       };
     case PRODUCTS_END:
       return {

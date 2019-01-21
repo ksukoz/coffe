@@ -9,7 +9,6 @@ import {
 } from "../actions/types";
 
 export function* fetchAlphabetSaga(item) {
-  console.log(item);
   const { payload } = item;
   if (payload) {
     const response = yield call(
