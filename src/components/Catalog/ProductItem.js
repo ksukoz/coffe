@@ -24,7 +24,9 @@ class ProductItem extends PureComponent {
   render() {
     const { item, categoryId, styleIndex, cart } = this.props;
 
-    const filteredCart = cart.filter(cartItem => cartItem.id === item.id);
+    const filteredCart = cart
+      ? cart.filter(cartItem => cartItem.id === item.id)
+      : [];
 
     return (
       <TouchableOpacity

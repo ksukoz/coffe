@@ -16,6 +16,8 @@ export const PRODUCTS_END = "PRODUCTS_END";
 
 export const GET_CART = "GET_CART";
 export const SET_CART = "SET_CART";
+export const ADD_TO_CART = "ADD_TO_CART";
+export const CHANGE_CART = "CHANGE_CART";
 
 export const FETCHING = "FETCHING";
 export const FETCHED = "FETCHED";

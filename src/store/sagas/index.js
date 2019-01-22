@@ -10,4 +10,9 @@ export {
   fetchProductReviewsSaga,
   watchFetchProductReviewsSaga
 } from "./fetchProductReviewsSaga";
-export { fetchCartSaga, watchCartSaga } from "./cartSaga";
+export {
+  fetchCartSaga,
+  addToCartSaga,
+  updateCartSaga,
+  watchCartSaga // watchCartSaga
+} from "./cartSaga";

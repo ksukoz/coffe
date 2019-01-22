@@ -14,8 +14,6 @@ import {
   StyleSheet
 } from "react-native";
 
-import { getCart } from "../../store/actions/cartActions";
-
 import { getAlphabet } from "../../store/actions/commonActions";
 import {
   getProducts,
@@ -55,8 +53,6 @@ class SearchScreen extends Component {
   }
 
   componentDidMount() {
-    // this.props.getCart();
-
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();
@@ -221,7 +217,7 @@ class SearchScreen extends Component {
               maxToRenderPerBatch={4}
               windowSize={1}
               data={this.props.searchedProducts}
-              extraData={this.state}
+              extraData={this.props}
               getItemLayout={(data, index) => ({
                 length: 100 - 1,
                 index
@@ -279,7 +275,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  // getCart: () => dispatch(getCart()),
   clearSearchedProducts: () => dispatch(clearSearchedProducts()),
   getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
   getProducts: (category, page) => dispatch(getProducts(category, page)),
