@@ -1,11 +1,9 @@
-import { takeLatest, takeEvery, put, call } from "redux-saga/effects";
+import { takeLatest, take, takeEvery, put, call } from "redux-saga/effects";
 import { getProductReviews } from "../actions/catalogActions";
 import { GET_PRODUCT_ID, ADD_PRODUCT_REVIEW } from "../actions/types";
 
-export function* fetchProductReviewsSaga() {
-  // console.log(item);
-
-  const item = yield take(GET_PRODUCT_ID);
+export function* fetchProductReviewsSaga(item) {
+  // const item = yield take(GET_PRODUCT_ID);
   const { payload } = item;
   if (payload) {
     const response = yield call(
@@ -13,7 +11,6 @@ export function* fetchProductReviewsSaga() {
       `http://kawaapi.gumione.pro/api/catalog/get_comments/${payload}`
     );
     const { comments } = yield response.json();
-    console.log(comments);
     yield put(getProductReviews(comments.reverse()));
   }
 }
@@ -35,19 +32,19 @@ export function* addProductReviewSaga(item) {
     );
     let { token } = yield response.json();
 
-    // const response2 = yield call(
-    //   fetch,
-    //   `http://kawaapi.gumione.pro/api/catalog/add_comment`,
-    //   {
-    //     headers: new Headers({
-    //       Authorization: "Bearer " + token
-    //     }),
-    //     method: "POST",
-    //     body: payload.data
-    //   }
-    // );
+    const response2 = yield call(
+      fetch,
+      `http://kawaapi.gumione.pro/api/catalog/add_comment`,
+      {
+        headers: new Headers({
+          Authorization: "Bearer " + token
+        }),
+        method: "POST",
+        body: payload.data
+      }
+    );
 
-    // yield call(getProductID(payload.id));
+    yield call(() => fetchProductReviewsSaga({ payload: payload.id }));
   }
 }
 

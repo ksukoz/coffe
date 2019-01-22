@@ -19,6 +19,8 @@ import { scaleSize } from "../../helpers/scaleSize";
 
 import { updateCart, addToCart } from "../../store/actions/cartActions";
 
+import Share from "react-native-share";
+
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class AboutProduct extends Component {
@@ -90,6 +92,14 @@ ${
         />
       </View>
     );
+  }
+
+  onShare(id) {
+    const shareOptions = {
+      title: `Поделиться ссылкой`,
+      url: `http://kawa-share.surge.sh/${id}`
+    };
+    return Share.open(shareOptions);
   }
 
   render() {
@@ -179,7 +189,11 @@ ${
                   resizeMode="contain"
                 />
               </View>
-              <TouchableOpacity style={styles.shareBtn} onPress={() => {}}>
+              <TouchableOpacity
+                style={styles.shareBtn}
+                onPress={() => this.onShare(product.id)}
+                activeOpacity={0.9}
+              >
                 <KawaIcon color="#302c23" size={25} name="share" />
               </TouchableOpacity>
             </CardItem>
