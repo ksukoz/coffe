@@ -3,6 +3,7 @@ import HomeScreen from "./HomeScreen.js";
 import HomeOther from "../HomeOther/index.js";
 import HomeDishes from "../HomeDishes/index.js";
 import Catalog from "../Catalog/index.js";
+import Cart from "../Cart/index.js";
 import Search from "../Search/index.js";
 import Profile from "../Profile/index.js";
 import ProfileEdit from "../ProfileEdit/index.js";
@@ -32,6 +33,7 @@ const Home = StackNavigator(
     Catalog: { screen: Catalog },
     ProductCard: { screen: ProductCard },
     Delivery: { screen: Delivery },
+    Cart: { screen: Cart },
     Order: { screen: Order }
   },
   {

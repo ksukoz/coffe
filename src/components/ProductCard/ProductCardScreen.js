@@ -140,7 +140,7 @@ class ProductCardScreen extends Component {
               "Найти кофе"
             )}
             style={{ marginBottom: scaleSize(20) }}
-            navigation={this.props.navigation}
+            navigation={this.props.navigation.dangerouslyGetParent()}
             searchedValue={value => this.setState({ search: value })}
           />
           {this.state.loading ? (

@@ -10,44 +10,43 @@ import { scaleSize } from "../../helpers/scaleSize";
 import { updateCart, addToCart } from "../../store/actions/cartActions";
 // import { clearProducts } from "../../store/actions/catalogActions";
 
-class ProductItem extends PureComponent {
+class CartItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      search: "",
-      index: 0,
-      styles: [styles.product, styles.productCard, styles.productItem],
-      cart: false
+      search: ""
+      // index: 0,
+      // cart: false
     };
   }
 
   render() {
-    const { item, categoryId, styleIndex, cart } = this.props;
+    const { cart } = this.props;
 
-    const filteredCart = cart
-      ? cart.filter(cartItem => cartItem.id === item.id)
-      : [];
+    // const filteredCart = cart
+    //   ? cart.filter(cartItem => cartItem.id === item.id)
+    //   : [];
 
     return (
       <TouchableOpacity
         activeOpacity={0.9}
-        onPress={() => {
-          this.props.navigation.push("ProductCard", {
-            productId: item.id,
-            search: this.props.navigation.getParam("search", ""),
-            searchPlaceholder:
-              this.props.categories.filter(category => category.id === item.pid)
-                .length > 0
-                ? this.props.categories.filter(
-                    category => category.id === item.pid
-                  )[0].name
-                : "",
-            categoryId
-          });
-        }}
-        style={this.state.styles[styleIndex]}
+        // onPress={() => {
+        //   this.props.navigation.push("ProductCard", {
+        //     productId: item.id,
+        //     search: this.props.navigation.getParam("search", ""),
+        //     searchPlaceholder:
+        //       this.props.categories.filter(category => category.id === item.pid)
+        //         .length > 0
+        //         ? this.props.categories.filter(
+        //             category => category.id === item.pid
+        //           )[0].name
+        //         : "",
+        //     categoryId
+        //   });
+        // }}
+        style={styles.product}
       >
-        <View style={{ position: "relative" }}>
+        {/* <View style={{ position: "relative" }}>
           {item.new == 1 && Date.now() <= +`${item.new_date}000` ? (
             <View style={styles.imgHit}>
               <Text style={styles.imgLabel}>{"Новинка".toUpperCase()}</Text>
@@ -281,7 +280,6 @@ class ProductItem extends PureComponent {
                     : { position: "relative", padding: scaleSize(10) }
                 }
                 activeOpacity={0.9}
-                onLongPress={() => this.props.navigation.push("Cart")}
                 onPress={() =>
                   filteredCart.length > 0
                     ? this.props.updateCart(item.id, 0)
@@ -408,7 +406,7 @@ class ProductItem extends PureComponent {
               КУПИТЬ СЕЙЧАС
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </TouchableOpacity>
     );
   }
@@ -515,11 +513,11 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
-  addToCart: id => dispatch(addToCart(id))
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
+  // addToCart: id => dispatch(addToCart(id))
 });
 
 export default connect(
   null,
   mapDispatchToProps
-)(ProductItem);
+)(CartItem);

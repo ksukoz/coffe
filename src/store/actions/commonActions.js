@@ -22,50 +22,11 @@ export const clearAlphabet = () => dispatch => {
   });
 };
 
-export const getDelivery = (city, delivery, courier) => dispatch => {
-  let formData = new FormData();
-  let data = new FormData();
-  let cost;
-  formData.append("username", "+380675635155");
-  formData.append("password", "test");
-
-  data.append("city", city);
-  data.append("delivery", delivery);
-  data.append("courier", courier);
-
-  fetch("http://kawaapi.gumione.pro/api/auth/login", {
-    method: "POST",
-    body: formData
-  })
-    .then(response => response.json())
-    .then(responseJson => {
-      fetch("http://kawaapi.gumione.pro/api/catalog/delivery_cost", {
-        method: "POST",
-        headers: new Headers({
-          Authorization: "Bearer " + responseJson.token
-        }),
-        body: data
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          dispatch({
-            type: GET_DELIVERY_COST,
-            payload: [
-              {
-                delivery: delivery === 1 ? "np" : delivery === 2 ? "up" : "es",
-                courier: courier,
-                cost: responseJson.cost
-              }
-            ]
-          });
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getDelivery = cost => dispatch => {
+  dispatch({
+    type: GET_DELIVERY_COST,
+    payload: cost
+  });
 };
 
 export const getDeliveryCost = city => dispatch => {

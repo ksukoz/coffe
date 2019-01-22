@@ -309,6 +309,7 @@ ${
                 <TouchableOpacity
                   style={{ position: "relative", padding: scaleSize(10) }}
                   activeOpacity={0.9}
+                  onLongPress={() => this.props.navigation.push("Cart")}
                   onPress={() =>
                     filteredCart.length > 0
                       ? this.props.updateCart(productItem.id, 0)
