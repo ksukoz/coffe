@@ -98,16 +98,16 @@ export const getLang = lang => dispatch => {
   });
 };
 
-export const setSearch = (search, categoryId) => dispatch => {
-  dispatch({
-    type: SET_SEARCH,
-    payload: { search, id: categoryId }
-  });
-};
-
 export const getSearch = (search, categoryId) => dispatch => {
   dispatch({
     type: GET_SEARCH,
     payload: { search, id: categoryId }
+  });
+};
+
+export const setSearch = (search, categoryId, page) => dispatch => {
+  dispatch({
+    type: SET_SEARCH,
+    payload: { search, id: categoryId, page }
   });
 };

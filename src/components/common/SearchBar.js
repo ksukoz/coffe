@@ -21,8 +21,8 @@ import {
 } from "../../store/actions/catalogActions";
 import {
   searchFocused,
-  setSearch,
   getSearch,
+  setSearch,
   clearAlphabet
 } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
@@ -97,7 +97,7 @@ class SearchBar extends Component {
     if (nextProps.focus || nextProps.focus === false) {
       this.setState({ focus: nextProps.focus });
     }
-    if (nextProps.search) {
+    if (nextProps.search && typeof nextProps.search === "string") {
       this.setState({ search: nextProps.search });
     }
   }
@@ -108,21 +108,21 @@ class SearchBar extends Component {
         this.setState({ search: text }, () => {
           this.props.getSearch(
             text,
-
             this.props.navigation.getParam("categoryId", "0")
           );
         });
       } else {
         this.props.clearSearchedProducts();
       }
-      this.props.setSearch(text);
+      this.props.getSearch(text);
     });
   };
 
   handleSearch = e => {
     this.props.setSearch(
       typeof e === "string" ? e : this.state.search,
-      this.props.navigation.getParam("categoryId", "0")
+      this.props.navigation.getParam("categoryId", "0"),
+      "0"
     );
     Keyboard.dismiss();
     this.props.navigation.push("Search", {
@@ -333,7 +333,6 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     fontSize: scaleSize(13),
-    // marginTop: scaleSize((40 - 13) / 2),
     height: scaleSize(40)
   },
   iconMenu: {
@@ -354,7 +353,8 @@ const mapDispatchToProps = dispatch => ({
   clearAutocomplete: () => dispatch(clearAutocomplete()),
   clearAlphabet: () => dispatch(clearAlphabet()),
   getSearch: (value, categoryId) => dispatch(getSearch(value, categoryId)),
-  setSearch: (value, categoryId) => dispatch(setSearch(value, categoryId)),
+  setSearch: (value, categoryId, page) =>
+    dispatch(setSearch(value, categoryId, page)),
   clearSearchedProducts: () => dispatch(clearSearchedProducts())
 });
 

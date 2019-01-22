@@ -45,6 +45,10 @@ export default function(state = initialState, action) {
         id: action.payload.id
       };
     case SET_SEARCH:
+      return {
+        ...state,
+        search: action.payload
+      };
     case GET_SEARCH:
       return {
         ...state,

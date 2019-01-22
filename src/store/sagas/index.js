@@ -19,7 +19,11 @@ export {
 } from "./cartSaga";
 export {
   fetchAutoCompleteSaga,
-  watchFetchAutoCompleteSaga
-} from // updateCartSaga,
-// watchCartSaga
+  watchFetchAutoCompleteSaga // updateCartSaga,
+} from // watchCartSaga
 "./fetchAutocompleteSaga";
+export {
+  fetchSearchedProductsSaga,
+  watchFetchSearchedProductsSaga // updateCartSaga,
+} from // watchCartSaga
+"./fetchSearchedProductsSaga";

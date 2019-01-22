@@ -9,7 +9,7 @@ import {
   FETCHING,
   FETCHED,
   GET_SEARCHED_PRODUCTS,
-  GET_MORE_SEARCHED_PRODUCTS,
+  CLEAR_SEARCHED_PRODUCTS,
   SET_PRODUCT,
   GET_PRODUCT_ID,
   GET_PRODUCT_REVIEWS,
@@ -87,21 +87,22 @@ export default function(state = initialState, action) {
         ...state,
         fetch: false
       };
-    case GET_SEARCHED_PRODUCTS:
+    case CLEAR_SEARCHED_PRODUCTS:
       return {
         ...state,
         searchedProducts: action.payload,
+        end: false
+      };
+    case GET_SEARCHED_PRODUCTS:
+      return {
+        ...state,
+        searchedProducts: [...state.searchedProducts, ...action.payload],
         end: false
       };
     case GET_AUTOCOMPLETE:
       return {
         ...state,
         autocomplete: action.payload
-      };
-    case GET_MORE_SEARCHED_PRODUCTS:
-      return {
-        ...state,
-        searchedProducts: [...state.searchedProducts, ...action.payload]
       };
     case SET_PRODUCT:
       return {

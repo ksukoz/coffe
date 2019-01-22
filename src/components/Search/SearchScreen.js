@@ -14,12 +14,10 @@ import {
   StyleSheet
 } from "react-native";
 
-import { getAlphabet } from "../../store/actions/commonActions";
-import {
-  getProducts,
-  findProducts,
-  clearSearchedProducts
-} from "../../store/actions/catalogActions";
+import { getCart } from "../../store/actions/cartActions";
+
+import { getAlphabet, setSearch } from "../../store/actions/commonActions";
+import { clearSearchedProducts } from "../../store/actions/catalogActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import ProductItem from "../Catalog/ProductItem";
@@ -35,8 +33,8 @@ class SearchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: [],
-      categories: [],
+      // products: [],
+      // categories: [],
       page: 0,
       search: "",
       stylesIndex: 0,
@@ -54,6 +52,7 @@ class SearchScreen extends Component {
 
   componentDidMount() {
     this.props.navigation.addListener("didFocus", payload => {
+      this.props.getCart();
       if (this.props.focus) {
         this.props.searchFocused();
       }
@@ -62,14 +61,6 @@ class SearchScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.search !== this.state.search) {
-      this.props.findProducts(
-        this.props.navigation.getParam("search"),
-        this.props.navigation.getParam("categoryId", "0"),
-        this.state.page,
-        "both"
-      );
-    }
     if (
       JSON.stringify(prevProps.searchedProducts) !==
         JSON.stringify(this.props.searchedProducts) &&
@@ -86,19 +77,6 @@ class SearchScreen extends Component {
     if (nextProps.searchedProducts && nextProps.end === false) {
       this.setState({ loading: false, products: nextProps.searchedProducts });
     }
-    if (nextProps.categories) {
-      this.setState({ categories: nextProps.categories });
-    }
-    if (
-      nextProps.navigation &&
-      (nextProps.navigation.state.params.letter ||
-        nextProps.navigation.state.params.search)
-    ) {
-      this.setState({
-        search: nextProps.navigation.getParam("search", ""),
-        page: nextProps.navigation.getParam("search") ? 0 : this.state.page
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -109,15 +87,11 @@ class SearchScreen extends Component {
   }
 
   handleEnd = () => {
-    this.props.findProducts(
-      this.props.search,
-      this.props.navigation.getParam("categoryId", "0"),
-      this.state.page + 10,
-      "both"
-    );
+    this.props.setSearch(this.props.search, this.props.id, this.state.page);
   };
 
   handleBackPress = () => {
+    this.props.setSearch(this.props.search, this.props.id);
     this.props.clearSearchedProducts();
     this.props.navigation.pop();
     return true;
@@ -128,12 +102,17 @@ class SearchScreen extends Component {
   };
 
   render() {
+    const categories = [
+      ...this.props.categories,
+      ...this.props.subcategories,
+      ...this.props.dishes
+    ];
     let notFound;
     if (
       this.props.searchedProducts.length === 0 &&
       this.props.navigation.getParam("search") &&
       !this.state.loading &&
-      this.state.end
+      this.props.end
     ) {
       notFound = (
         <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
@@ -178,7 +157,7 @@ class SearchScreen extends Component {
             menu={true}
             catalog={true}
             cart={this.props.cart}
-            title={this.state.search}
+            title={this.props.search}
             getStyles={this.getStyles}
             navigation={this.props.navigation.dangerouslyGetParent()}
           />
@@ -194,7 +173,9 @@ class SearchScreen extends Component {
               }}
               keyExtractor={item => item.id}
               onEndReached={() =>
-                !this.state.end
+                this.props.fetch
+                  ? false
+                  : !this.props.end
                   ? this.setState(
                       {
                         loading: true,
@@ -202,7 +183,7 @@ class SearchScreen extends Component {
                       },
                       () => this.handleEnd()
                     )
-                  : true
+                  : false
               }
               ListFooterComponent={() =>
                 this.state.loading ? (
@@ -224,11 +205,11 @@ class SearchScreen extends Component {
               })}
               renderItem={({ item }) => (
                 <ProductItem
-                  cart={this.state.cart}
+                  cart={this.props.cart}
                   navigation={this.props.navigation}
                   categoryId={item.pid}
                   item={item}
-                  categories={this.state.categories}
+                  categories={categories}
                   styleIndex={this.state.stylesIndex}
                 />
               )}
@@ -268,19 +249,23 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   cart: state.cart.items,
   focus: state.common.focus,
-  search: state.common.search,
+  search: state.common.search.search,
+  id: state.common.search.id,
   end: state.catalog.end,
   searchedProducts: state.catalog.searchedProducts,
-  categories: state.catalog.categoriesFull
+  fetch: state.catalog.fetch,
+  categories: state.catalog.categories,
+  subcategories: state.catalog.subcategories,
+  dishes: state.catalog.dishes
 });
 
 const mapDispatchToProps = dispatch => ({
   clearSearchedProducts: () => dispatch(clearSearchedProducts()),
   getAlphabet: (lang, id) => dispatch(getAlphabet(lang, id)),
-  getProducts: (category, page) => dispatch(getProducts(category, page)),
-  findProducts: (value, category, page, type) =>
-    dispatch(findProducts(value, category, page, type)),
-  searchFocused: () => dispatch(searchFocused())
+  setSearch: (value, categoryId, page) =>
+    dispatch(setSearch(value, categoryId, page)),
+  searchFocused: () => dispatch(searchFocused()),
+  getCart: () => dispatch(getCart())
 });
 
 export default connect(

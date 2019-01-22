@@ -1,0 +1,29 @@
+import { takeLatest, put, call } from "redux-saga/effects";
+import {
+  findProducts,
+  getEndProducts,
+  setProductsStatus
+} from "../actions/catalogActions";
+import { GET_CATEGORY, FETCHED, FETCHING, SET_SEARCH } from "../actions/types";
+
+export function* fetchSearchedProductsSaga(item) {
+  const { payload } = item;
+  if (payload && payload.page) {
+    yield put(setProductsStatus(FETCHING));
+    const response = yield call(
+      fetch,
+      `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
+        payload.search
+      )}/${payload.category}/both//10/${payload.page}}`
+    );
+    const { items } = yield response.json();
+    items.length > 0
+      ? yield put(findProducts(items))
+      : yield put(getEndProducts());
+  }
+  yield put(setProductsStatus(FETCHED));
+}
+
+export function* watchFetchSearchedProductsSaga() {
+  yield takeLatest(SET_SEARCH, fetchSearchedProductsSaga);
+}

@@ -8,7 +8,7 @@ import StarRating from "react-native-star-rating";
 import { scaleSize } from "../../helpers/scaleSize";
 
 import { updateCart, addToCart } from "../../store/actions/cartActions";
-import { clearProducts } from "../../store/actions/catalogActions";
+// import { clearProducts } from "../../store/actions/catalogActions";
 
 class ProductItem extends PureComponent {
   constructor(props) {
