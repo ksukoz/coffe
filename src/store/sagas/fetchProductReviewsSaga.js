@@ -1,9 +1,8 @@
-import { takeLatest, take, takeEvery, put, call } from "redux-saga/effects";
+import { takeLatest, takeEvery, put, call } from "redux-saga/effects";
 import { getProductReviews } from "../actions/catalogActions";
 import { GET_PRODUCT_ID, ADD_PRODUCT_REVIEW } from "../actions/types";
 
 export function* fetchProductReviewsSaga(item) {
-  // const item = yield take(GET_PRODUCT_ID);
   const { payload } = item;
   if (payload) {
     const response = yield call(

@@ -22,6 +22,7 @@ import {
 import {
   searchFocused,
   setSearch,
+  getSearch,
   clearAlphabet
 } from "../../store/actions/commonActions";
 import KawaIcon from "../KawaIcon";
@@ -105,8 +106,9 @@ class SearchBar extends Component {
     this.setState({ search: text }, () => {
       if (text.length > 1) {
         this.setState({ search: text }, () => {
-          this.props.getAutocomplete(
+          this.props.getSearch(
             text,
+
             this.props.navigation.getParam("categoryId", "0")
           );
         });
@@ -118,7 +120,10 @@ class SearchBar extends Component {
   };
 
   handleSearch = e => {
-    this.props.setSearch(typeof e === "string" ? e : this.state.search);
+    this.props.setSearch(
+      typeof e === "string" ? e : this.state.search,
+      this.props.navigation.getParam("categoryId", "0")
+    );
     Keyboard.dismiss();
     this.props.navigation.push("Search", {
       categoryId: this.props.navigation.getParam("categoryId", "0"),
@@ -339,8 +344,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   autocomplete: state.catalog.autocomplete,
   focus: state.common.focus,
-  // lang: state.common.lang,
-  search: state.common.search
+  search: state.common.search.search
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -349,7 +353,8 @@ const mapDispatchToProps = dispatch => ({
   searchFocused: () => dispatch(searchFocused()),
   clearAutocomplete: () => dispatch(clearAutocomplete()),
   clearAlphabet: () => dispatch(clearAlphabet()),
-  setSearch: value => dispatch(setSearch(value)),
+  getSearch: (value, categoryId) => dispatch(getSearch(value, categoryId)),
+  setSearch: (value, categoryId) => dispatch(setSearch(value, categoryId)),
   clearSearchedProducts: () => dispatch(clearSearchedProducts())
 });
 

@@ -4,6 +4,7 @@ import {
   GET_DELIVERY_COST,
   SET_LANG,
   SET_SEARCH,
+  GET_SEARCH,
   GET_SEARCH_FOCUS
 } from "../actions/types";
 
@@ -44,6 +45,7 @@ export default function(state = initialState, action) {
         id: action.payload.id
       };
     case SET_SEARCH:
+    case GET_SEARCH:
       return {
         ...state,
         search: action.payload

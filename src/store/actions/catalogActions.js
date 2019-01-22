@@ -114,22 +114,11 @@ export const findProducts = (value, category, page, type) => dispatch => {
     });
 };
 
-export const getAutocomplete = (value, category, page, type) => dispatch => {
-  fetch(
-    `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
-      value
-    )}/${category}/${type}`
-  )
-    .then(response => response.json())
-    .then(responseJson => {
-      dispatch({
-        type: GET_AUTOCOMPLETE,
-        payload: responseJson.items
-      });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+export const getAutocomplete = items => dispatch => {
+  dispatch({
+    type: GET_AUTOCOMPLETE,
+    payload: items
+  });
 };
 
 export const clearAutocomplete = () => dispatch => {
@@ -172,36 +161,4 @@ export const addProductReviews = (data, id) => dispatch => {
     type: ADD_PRODUCT_REVIEW,
     payload: { data, id }
   });
-  // let formData = new FormData();
-  // formData.append("login", "info@wrevery.com");
-  // formData.append("password", "testtest");
-
-  // fetch("http://kawaapi.gumione.pro/api/auth/login", {
-  //   method: "POST",
-  //   body: formData
-  // })
-  //   .then(response => response.json())
-  //   .then(responseJson => {
-  //     fetch("http://kawaapi.gumione.pro/api/catalog/add_comment", {
-  //       method: "POST",
-  //       headers: new Headers({
-  //         Authorization: "Bearer " + responseJson.token
-  //       }),
-  //       body: data
-  //     })
-  //       .then(response => response.json())
-  //       .then(responseJson => {
-  //         dispatch(getProductReviews(id));
-  //         dispatch({
-  //           type: GET_MESSAGE,
-  //           payload: responseJson.message
-  //         });
-  //       })
-  //       .catch(error => {
-  //         console.error(error);
-  //       });
-  //   })
-  //   .catch(error => {
-  //     console.error(error);
-  //   });
 };

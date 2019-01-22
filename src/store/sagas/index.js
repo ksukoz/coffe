@@ -15,5 +15,11 @@ export {
   fetchCartSaga,
   addToCartSaga,
   updateCartSaga,
-  watchCartSaga // watchCartSaga
+  watchCartSaga
 } from "./cartSaga";
+export {
+  fetchAutoCompleteSaga,
+  watchFetchAutoCompleteSaga
+} from // updateCartSaga,
+// watchCartSaga
+"./fetchAutocompleteSaga";

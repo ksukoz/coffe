@@ -4,7 +4,8 @@ import {
   GET_SEARCH_FOCUS,
   SET_LANG,
   GET_LANG,
-  SET_SEARCH
+  SET_SEARCH,
+  GET_SEARCH
 } from "./types";
 
 export const getAlphabet = letters => dispatch => {
@@ -97,10 +98,16 @@ export const getLang = lang => dispatch => {
   });
 };
 
-export const setSearch = value => dispatch => {
-  console.log(value);
+export const setSearch = (search, categoryId) => dispatch => {
   dispatch({
     type: SET_SEARCH,
-    payload: value
+    payload: { search, id: categoryId }
+  });
+};
+
+export const getSearch = (search, categoryId) => dispatch => {
+  dispatch({
+    type: GET_SEARCH,
+    payload: { search, id: categoryId }
   });
 };

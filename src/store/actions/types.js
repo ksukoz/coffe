@@ -29,4 +29,5 @@ export const GET_DELIVERY_COST = "GET_DELIVERY_COST";
 export const SET_LANG = "SET_LANG";
 export const GET_LANG = "GET_LANG";
 export const SET_SEARCH = "SET_SEARCH";
+export const GET_SEARCH = "GET_SEARCH";
 export const GET_SEARCH_FOCUS = "GET_SEARCH_FOCUS";
