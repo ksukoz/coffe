@@ -17,8 +17,7 @@ import { Input, Item, Icon, Button } from "native-base";
 import {
   getAutocomplete,
   clearAutocomplete,
-  clearSearchedProducts,
-  clearProducts
+  clearSearchedProducts
 } from "../../store/actions/catalogActions";
 import {
   searchFocused,
@@ -146,7 +145,6 @@ class SearchBar extends Component {
       this.unFocus();
     } else {
       this.props.clearAutocomplete();
-      this.props.clearProducts();
       this.props.clearAlphabet();
       this.props.navigation.pop();
     }
@@ -352,7 +350,6 @@ const mapDispatchToProps = dispatch => ({
   clearAutocomplete: () => dispatch(clearAutocomplete()),
   clearAlphabet: () => dispatch(clearAlphabet()),
   setSearch: value => dispatch(setSearch(value)),
-  clearProducts: () => dispatch(clearProducts()),
   clearSearchedProducts: () => dispatch(clearSearchedProducts())
 });
 

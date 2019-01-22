@@ -44,7 +44,6 @@ class ProductItem extends PureComponent {
                 : "",
             categoryId
           });
-          // this.props.clearProducts();
         }}
         style={this.state.styles[styleIndex]}
       >
