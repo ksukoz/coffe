@@ -13,6 +13,7 @@ import {
   SET_PRODUCT,
   GET_PRODUCT_ID,
   GET_PRODUCT_REVIEWS,
+  ADD_PRODUCT_REVIEW,
   PRODUCTS_END,
   GET_AUTOCOMPLETE
 } from "../actions/types";
@@ -31,6 +32,7 @@ const initialState = {
   autocomplete: [],
   product: null,
   reviews: [],
+  review: null,
   end: false
 };
 
@@ -115,6 +117,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         reviews: action.payload
+      };
+    case ADD_PRODUCT_REVIEW:
+      return {
+        ...state,
+        review: action.payload
       };
     case PRODUCTS_END:
       return {

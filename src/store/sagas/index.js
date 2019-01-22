@@ -8,6 +8,7 @@ export { fetchAlphabetSaga, watchAlphabetSaga } from "./alphabetSaga";
 export { fetchProductSaga, watchFetchProductSaga } from "./fetchProductSaga";
 export {
   fetchProductReviewsSaga,
+  addProductReviewSaga,
   watchFetchProductReviewsSaga
 } from "./fetchProductReviewsSaga";
 export {

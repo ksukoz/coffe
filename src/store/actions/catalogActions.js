@@ -9,6 +9,7 @@ import {
   SET_PRODUCT,
   GET_PRODUCT_ID,
   GET_PRODUCT_REVIEWS,
+  ADD_PRODUCT_REVIEW,
   PRODUCTS_END,
   GET_MESSAGE,
   GET_AUTOCOMPLETE,
@@ -69,7 +70,6 @@ export const getEndProducts = () => dispatch => {
 };
 
 export const clearProducts = () => dispatch => {
-  // console.log("cleared");
   dispatch({
     type: CLEAR_PRODUCTS,
     payload: []
@@ -140,7 +140,6 @@ export const clearAutocomplete = () => dispatch => {
 };
 
 export const getProductID = id => dispatch => {
-  console.log(id);
   dispatch({
     type: GET_PRODUCT_ID,
     payload: id
@@ -169,36 +168,40 @@ export const getProductReviews = comments => dispatch => {
 };
 
 export const addProductReviews = (data, id) => dispatch => {
-  let formData = new FormData();
-  formData.append("login", "info@wrevery.com");
-  formData.append("password", "testtest");
+  dispatch({
+    type: ADD_PRODUCT_REVIEW,
+    payload: { data, id }
+  });
+  // let formData = new FormData();
+  // formData.append("login", "info@wrevery.com");
+  // formData.append("password", "testtest");
 
-  fetch("http://kawaapi.gumione.pro/api/auth/login", {
-    method: "POST",
-    body: formData
-  })
-    .then(response => response.json())
-    .then(responseJson => {
-      fetch("http://kawaapi.gumione.pro/api/catalog/add_comment", {
-        method: "POST",
-        headers: new Headers({
-          Authorization: "Bearer " + responseJson.token
-        }),
-        body: data
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          dispatch(getProductReviews(id));
-          dispatch({
-            type: GET_MESSAGE,
-            payload: responseJson.message
-          });
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  // fetch("http://kawaapi.gumione.pro/api/auth/login", {
+  //   method: "POST",
+  //   body: formData
+  // })
+  //   .then(response => response.json())
+  //   .then(responseJson => {
+  //     fetch("http://kawaapi.gumione.pro/api/catalog/add_comment", {
+  //       method: "POST",
+  //       headers: new Headers({
+  //         Authorization: "Bearer " + responseJson.token
+  //       }),
+  //       body: data
+  //     })
+  //       .then(response => response.json())
+  //       .then(responseJson => {
+  //         dispatch(getProductReviews(id));
+  //         dispatch({
+  //           type: GET_MESSAGE,
+  //           payload: responseJson.message
+  //         });
+  //       })
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+  //   })
+  //   .catch(error => {
+  //     console.error(error);
+  //   });
 };
