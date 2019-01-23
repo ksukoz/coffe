@@ -223,12 +223,12 @@ class ProductCardScreen extends Component {
                       onPressOtherProducts={() =>
                         this.props.navigation.push("HomeOther")
                       }
-                      onPressBuyButton={() =>
-                        this.props.navigation.push("OrderScreen", {
-                          linkName: "ProductCard",
-                          productId: productItem.id
-                        })
-                      }
+                      onPressBuyButton={() => {
+                        this.props.addToCart(productItem.id);
+                        this.props.navigation.push("Order", {
+                          itemId: productItem.id
+                        });
+                      }}
                       categories={categories}
                       navigation={this.props.navigation}
                       onReviewsPress={() => this.onReviewsPress()}

@@ -8,7 +8,7 @@ import StarRating from "react-native-star-rating";
 import { scaleSize } from "../../helpers/scaleSize";
 
 import { updateCart, addToCart } from "../../store/actions/cartActions";
-// import { clearProducts } from "../../store/actions/catalogActions";
+import { getProductID } from "../../store/actions/catalogActions";
 
 class ProductItem extends PureComponent {
   constructor(props) {
@@ -342,12 +342,13 @@ class ProductItem extends PureComponent {
               </Text>
             ) : null}
             <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.push("OrderScreen", {
-                  linkName: "CatalogScreen",
-                  categoryId
-                })
-              }
+              onPress={() => {
+                this.props.getProductID(item.id);
+                this.props.addToCart(item.id);
+                this.props.navigation.push("Order", {
+                  itemId: item.id
+                });
+              }}
               style={
                 styleIndex === 1
                   ? { display: "none" }
@@ -375,12 +376,12 @@ class ProductItem extends PureComponent {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.push("OrderScreen", {
-                linkName: "CatalogScreen",
-                categoryId
-              })
-            }
+            onPress={() => {
+              this.props.getProductID(item);
+              this.props.navigation.push("Order", {
+                itemId: item.id
+              });
+            }}
             style={
               styleIndex === 1
                 ? [
@@ -516,7 +517,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => ({
   updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
-  addToCart: id => dispatch(addToCart(id))
+  addToCart: id => dispatch(addToCart(id)),
+  getProductID: id => dispatch(getProductID(id))
 });
 
 export default connect(

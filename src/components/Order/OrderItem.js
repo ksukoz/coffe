@@ -44,10 +44,10 @@ class OrderItem extends PureComponent {
   };
 
   render() {
-    const { cart, item } = this.props;
-    // const filteredCart = cart
-    //   ? cart.filter(cartItem => cartItem.id === item.id)
-    //   : [];
+    const { cart, item, product } = this.props;
+    const filteredCart =
+      cart && product ? cart.filter(cartItem => cartItem.id === item.id) : [];
+    console.log(filteredCart);
 
     return (
       <View
@@ -66,48 +66,41 @@ class OrderItem extends PureComponent {
         //     categoryId
         //   });
         // }}
-        style={styles.product}
+        style={this.props.product ? styles.productItem : styles.product}
       >
-        <TouchableOpacity
-          onPress={() => this.onDeletePressHandler(item.id)}
-          activeOpacity={0.9}
-          style={{
-            position: "absolute",
-            top: scaleSize(8),
-            right: scaleSize(8),
-            width: scaleSize(19),
-            height: scaleSize(19),
-            zIndex: 3
-          }}
-        >
-          <Icon
-            style={{
-              color: "#302c23",
-              fontSize: scaleSize(19)
-            }}
-            name="cancel"
-            type="MaterialIcons"
-          />
-        </TouchableOpacity>
-        <View>
+        <View style={{ position: "relative" }}>
+          {item.new == 1 && Date.now() <= +`${item.new_date}000` ? (
+            <View style={styles.imgHit}>
+              <Text style={styles.imgLabel}>{"Новинка".toUpperCase()}</Text>
+            </View>
+          ) : item.popular == 1 ? (
+            <View style={styles.imgHit}>
+              <Text style={styles.imgLabel}>{"Хит".toUpperCase()}</Text>
+            </View>
+          ) : null}
           <Image
             resizeMethod="resize"
             source={{ uri: "http://kawa.gumione.pro" + item.file }}
-            style={styles.productImg}
+            style={
+              this.props.product
+                ? [
+                    styles.productImg,
+                    { width: scaleSize(90), height: scaleSize(180) }
+                  ]
+                : styles.productImg
+            }
           />
         </View>
 
         <View style={{ flex: 1 }}>
           <View
             style={{
-              borderBottomWidth: 1,
-              borderColor: "#89a6aa",
+              // borderBottomWidth: 1,
+              // borderColor: "#89a6aa",
               paddingBottom: scaleSize(8)
             }}
           >
-            <Text style={styles.productName}>
-              {item.name} Lorem ipsum dolor sit amet
-            </Text>
+            <Text style={styles.productName}>{item.name}</Text>
             <Text style={[styles.productSort, {}]}>
               {this.props.categories.filter(
                 category => category.id === item.pid
@@ -126,74 +119,168 @@ class OrderItem extends PureComponent {
               {item.pid > 7 ? "" : `Обжарка ${item.roast_human}`}
             </Text>
           </View>
+          {this.props.product ? (
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: scaleSize(-8)
+              }}
+            >
+              <View
+                style={{
+                  borderBottomWidth: 1,
+                  borderColor: "#89a6aa",
+
+                  flex: 1,
+                  marginBottom: scaleSize(5.5),
+                  marginRight: scaleSize(7),
+                  marginLeft: scaleSize(-10)
+                }}
+              />
+              <Text
+                style={{
+                  color: "#010101",
+                  fontSize: scaleSize(27),
+                  fontWeight: "300"
+                }}
+              >
+                {(+item.price).toFixed()} грн
+              </Text>
+            </View>
+          ) : null}
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "flex-end",
-              marginTop: scaleSize(6)
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "nowrap",
+              marginTop: scaleSize(3)
             }}
           >
-            <View
-              style={{
-                flex: 2,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
+            <TouchableOpacity
+              style={{ marginBottom: scaleSize(7) }}
+              onPress={() =>
+                this.props.navigation.push("ProductCard", {
+                  productId: item.id,
+                  categoryName: this.props.navigation.getParam(
+                    "categoryName",
+                    "0"
+                  ),
+                  tab: 2
+                })
+              }
             >
-              <TouchableOpacity
-                onPress={() =>
-                  item.qty == "1"
-                    ? false
-                    : this.props.updateCart(item.id, +item.qty - 1)
-                }
-                activeOpacity={0.9}
-              >
-                <Icon
-                  style={{
-                    color: "#7e7a71",
-                    fontSize: scaleSize(18),
-                    opacity: item.qty == "1" ? 0.5 : 1
-                  }}
-                  name="remove-circle-outline"
-                  type="MaterialIcons"
-                />
-              </TouchableOpacity>
-              <Text
+              <View
                 style={{
-                  color: "#302c23",
-                  fontSize: scaleSize(16),
-                  paddingLeft: scaleSize(7),
-                  paddingRight: scaleSize(7)
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: scaleSize(5)
                 }}
               >
-                {item.qty}
+                {this.props.product ? (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginBottom: scaleSize(5)
+                    }}
+                  >
+                    <StarRating
+                      disabled={true}
+                      maxStars={5}
+                      rating={item.avg_rating}
+                      starSize={scaleSize(23)}
+                      starStyle={{ marginRight: scaleSize(2) }}
+                      emptyStarColor={"#ffea00"}
+                      fullStarColor={"#ffea00"}
+                    />
+                  </View>
+                ) : (
+                  <KawaIcon
+                    style={styles.starIcon}
+                    size={scaleSize(16)}
+                    name="small-star-in-catalog"
+                  />
+                )}
+                <Text style={styles.productRating}>
+                  {this.props.product
+                    ? ""
+                    : item.avg_rating > 0
+                    ? (+item.avg_rating).toFixed(1)
+                    : item.avg_rating}
+                </Text>
+              </View>
+              <Text style={styles.numberOfReviews}>
+                Отзывов {item.comments}
               </Text>
-              <TouchableOpacity
-                onPress={() => this.props.updateCart(item.id, +item.qty + 1)}
-                activeOpacity={0.9}
-              >
-                <Icon
-                  style={{
-                    color: "#7e7a71",
-                    fontSize: scaleSize(18)
-                  }}
-                  name="control-point"
-                  type="MaterialIcons"
-                />
-              </TouchableOpacity>
-            </View>
-            <Text
+            </TouchableOpacity>
+            <View
               style={{
-                flex: 1,
-                textAlign: "right",
-                color: "#010101",
-                fontSize: scaleSize(19),
-                fontWeight: "300"
+                flexDirection: "row",
+                marginTop: scaleSize(-6)
               }}
             >
-              {(+item.price).toFixed()} грн
-            </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() =>
+                    product && filteredCart[0]
+                      ? this.props.updateCart(item.id, +filteredCart[0].qty - 1)
+                      : item.qty > 1
+                      ? this.props.updateCart(item.id, +item.qty - 1)
+                      : false
+                  }
+                  activeOpacity={0.9}
+                >
+                  <Icon
+                    style={{
+                      color: "#7e7a71",
+                      fontSize: scaleSize(18),
+                      opacity:
+                        product && filteredCart[0] && filteredCart[0].qty == "1"
+                          ? 0.5
+                          : item.qty == "1"
+                          ? 0.5
+                          : 1
+                    }}
+                    name="remove-circle-outline"
+                    type="MaterialIcons"
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    color: "#302c23",
+                    fontSize: scaleSize(16),
+                    paddingLeft: scaleSize(7),
+                    paddingRight: scaleSize(7)
+                  }}
+                >
+                  {product && filteredCart[0] ? filteredCart[0].qty : item.qty}
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    product && filteredCart[0]
+                      ? this.props.updateCart(item.id, +filteredCart[0].qty + 1)
+                      : this.props.updateCart(item.id, +item.qty - 1)
+                  }
+                  activeOpacity={0.9}
+                >
+                  <Icon
+                    style={{
+                      color: "#7e7a71",
+                      fontSize: scaleSize(18)
+                    }}
+                    name="control-point"
+                    type="MaterialIcons"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
       </View>
@@ -212,6 +299,16 @@ const styles = StyleSheet.create({
     borderRadius: scaleSize(8),
     position: "relative"
   },
+  productItem: {
+    backgroundColor: "rgba(255,255,255, 0.7)",
+    marginBottom: scaleSize(7),
+    flexDirection: "column",
+    paddingTop: scaleSize(6),
+    paddingBottom: scaleSize(6),
+    paddingRight: scaleSize(10),
+    paddingLeft: scaleSize(10),
+    borderRadius: scaleSize(8)
+  },
   productImg: {
     alignSelf: "center",
     height: scaleSize(100),
@@ -219,6 +316,26 @@ const styles = StyleSheet.create({
     marginRight: scaleSize(12),
     marginLeft: scaleSize(12),
     marginTop: scaleSize(4)
+  },
+  imgHit: {
+    position: "absolute",
+    top: scaleSize(10),
+    left: scaleSize(5),
+    backgroundColor: "#ef5350",
+    zIndex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    height: scaleSize(17),
+    borderTopLeftRadius: scaleSize(10),
+    borderBottomRightRadius: scaleSize(10)
+  },
+  imgLabel: {
+    fontSize: scaleSize(10),
+    paddingLeft: scaleSize(10),
+    paddingRight: scaleSize(10),
+    paddingTop: scaleSize(5),
+    paddingBottom: scaleSize(5),
+    color: "#fff"
   },
   productSort: {
     fontSize: scaleSize(13),
@@ -233,6 +350,19 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(15),
     marginBottom: scaleSize(3),
     color: "#010101"
+  },
+  starIcon: {
+    color: "#ffea00",
+    marginRight: scaleSize(5)
+  },
+  productRating: {
+    color: "#48433b",
+    fontSize: scaleSize(13)
+  },
+  numberOfReviews: {
+    color: "#48433b",
+    fontSize: scaleSize(13),
+    marginTop: scaleSize(-2)
   },
   btn: {
     backgroundColor: "#ea9308",

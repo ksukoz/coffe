@@ -176,7 +176,7 @@ class CartScreen extends Component {
             />
           </View> */}
           <ScrollView
-            style={{ marginTop: scaleSize(10) }}
+            style={{ marginTop: scaleSize(-10) }}
             // contentContainerStyle={{ flex: 1 }}
           >
             {notFound}
@@ -225,7 +225,7 @@ class CartScreen extends Component {
                 {this.props.cart
                   .map(item => item.qty * item.price)
                   .reduce((sum, item) => sum + item)}{" "}
-                грн.
+                грн
               </Text>
             </View>
             <TouchableOpacity

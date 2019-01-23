@@ -15,12 +15,13 @@ import {
 } from "react-native";
 
 import { getCart } from "../../store/actions/cartActions";
+import { getProductID } from "../../store/actions/catalogActions";
 
 import { searchFocused } from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import OrderItem from "./OrderItem";
-import HeaderBar from "../common/HeaderBar";
+import SearchBar from "../common/SearchBar";
 
 // import KawaIcon from "../KawaIcon";
 
@@ -37,6 +38,9 @@ class OrderScreen extends Component {
     this._didFocusSubscription = this.props.navigation.addListener(
       "didFocus",
       payload => {
+        if (this.props.navigation.getParam("itemId")) {
+          this.props.getProductID(this.props.navigation.getParam("itemId"));
+        }
         BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
       }
     );
@@ -63,6 +67,7 @@ class OrderScreen extends Component {
   }
 
   componentDidMount() {
+    // console.log(this.props);
     this.props.getCart();
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
@@ -143,23 +148,12 @@ class OrderScreen extends Component {
             }}
           />
           <Image source={require(MAIN_BG)} style={styles.background} />
-          <HeaderBar
-            menu={true}
-            // catalog={true}
-            // cart={this.props.cart}
-            title={"Корзина"}
-            // getStyles={this.getStyles}
-            navigation={this.props.navigation.dangerouslyGetParent()}
-          />
-          {/* <SearchBar
-            placeholder={this.props.navigation.getParam(
-              "searchPlaceholder",
-              "Найти кофе"
-            )}
+          <SearchBar
+            placeholder={"Найти кофе"}
             style={{ marginBottom: scaleSize(20) }}
             navigation={this.props.navigation}
-            searchedValue={value => this.setState({ search: value })}
-          /> */}
+          />
+
           {/* 
           <View
             style={[
@@ -176,40 +170,55 @@ class OrderScreen extends Component {
             />
           </View> */}
           <ScrollView
-            style={{ marginTop: scaleSize(10) }}
+            style={{ marginTop: scaleSize(99) }}
             // contentContainerStyle={{ flex: 1 }}
           >
-            {notFound}
-            <FlatList
-              style={{
-                marginLeft: scaleSize(10),
-                marginRight: scaleSize(10),
-                marginBottom: scaleSize(20),
-                zIndex: 2
-              }}
-              keyExtractor={item => item.id}
-              getItemLayout={(data, index) => ({
-                length: 100 - 1,
-                index
-              })}
-              initialNumToRender={6}
-              removeClippedSubviews={true}
-              maxToRenderPerBatch={4}
-              windowSize={1}
-              data={this.props.cart}
-              extraData={this.props}
-              renderItem={({ item }) => (
+            {this.props.navigation.getParam("itemId") && this.props.product ? (
+              <View
+                style={{
+                  paddingLeft: scaleSize(10),
+                  paddingRight: scaleSize(10)
+                }}
+              >
                 <OrderItem
                   cart={this.props.cart}
-                  // navigation={this.props.navigation}
-                  // categoryId={item.pid}
-                  // search={this.state.search}
-                  item={item}
+                  product={true}
+                  item={this.props.product}
                   categories={categories}
                 />
-              )}
-              viewabilityConfig={this.viewabilityConfig}
-            />
+              </View>
+            ) : (
+              <FlatList
+                style={{
+                  marginLeft: scaleSize(10),
+                  marginRight: scaleSize(10),
+                  marginBottom: scaleSize(20),
+                  zIndex: 2
+                }}
+                keyExtractor={item => item.id}
+                getItemLayout={(data, index) => ({
+                  length: 100 - 1,
+                  index
+                })}
+                initialNumToRender={6}
+                removeClippedSubviews={true}
+                maxToRenderPerBatch={4}
+                windowSize={1}
+                data={this.props.cart}
+                extraData={this.props}
+                renderItem={({ item }) => (
+                  <OrderItem
+                    cart={this.props.cart}
+                    // navigation={this.props.navigation}
+                    // categoryId={item.pid}
+                    // search={this.state.search}
+                    item={item}
+                    categories={categories}
+                  />
+                )}
+                viewabilityConfig={this.viewabilityConfig}
+              />
+            )}
             <View
               style={{
                 flexDirection: "row",
@@ -290,6 +299,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   cart: state.cart.items,
+  product: state.catalog.product,
   categories: state.catalog.categories,
   subcategories: state.catalog.subcategories,
   dishes: state.catalog.dishes
@@ -297,6 +307,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
+  getProductID: id => dispatch(getProductID(id)),
   searchFocused: () => dispatch(searchFocused())
 });
 
