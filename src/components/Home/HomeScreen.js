@@ -51,7 +51,6 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();

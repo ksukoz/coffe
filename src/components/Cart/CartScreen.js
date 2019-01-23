@@ -229,12 +229,7 @@ class CartScreen extends Component {
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.push("OrderScreen", {
-                  linkName: "CatalogScreen",
-                  categoryId
-                })
-              }
+              onPress={() => this.props.navigation.push("Order")}
               style={styles.btn}
             >
               <Text style={styles.btnText}>
