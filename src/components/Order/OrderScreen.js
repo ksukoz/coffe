@@ -23,7 +23,12 @@ import { scaleSize } from "../../helpers/scaleSize";
 import OrderItem from "./OrderItem";
 import SearchBar from "../common/SearchBar";
 
+import TextInputMask from "react-native-text-input-mask";
+
 // import KawaIcon from "../KawaIcon";
+
+Input.defaultProps.selectionColor = "#ea9308";
+TextInputMask.defaultProps.selectionColor = "#ea9308";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -103,6 +108,11 @@ class OrderScreen extends Component {
       ...this.props.dishes
     ];
     let notFound;
+    const { cart, product } = this.props;
+    const filteredCart =
+      cart && product
+        ? cart.filter(cartItem => cartItem.id === product.id)
+        : [];
 
     // if (
     //   this.props.products.length === 0 &&
@@ -153,27 +163,10 @@ class OrderScreen extends Component {
             style={{ marginBottom: scaleSize(20) }}
             navigation={this.props.navigation}
           />
-
-          {/* 
-          <View
-            style={[
-              styles.container,
-              {
-                marginTop: scaleSize(75)
-              }
-            ]}
-          >
-            <LetterBar
-              style={{ opacity: this.state.focus ? 0.9 : 1 }}
-              navigation={this.props.navigation}
-              categoryId={this.props.navigation.getParam("categoryId", "0")}
-            />
-          </View> */}
-          <ScrollView
-            style={{ marginTop: scaleSize(99) }}
-            // contentContainerStyle={{ flex: 1 }}
-          >
-            {this.props.navigation.getParam("itemId") && this.props.product ? (
+          <ScrollView style={{ marginTop: scaleSize(99) }}>
+            {this.props.navigation.getParam("itemId") &&
+            this.props.product &&
+            filteredCart[0] ? (
               <View
                 style={{
                   paddingLeft: scaleSize(10),
@@ -209,9 +202,6 @@ class OrderScreen extends Component {
                 renderItem={({ item }) => (
                   <OrderItem
                     cart={this.props.cart}
-                    // navigation={this.props.navigation}
-                    // categoryId={item.pid}
-                    // search={this.state.search}
                     item={item}
                     categories={categories}
                   />
@@ -219,6 +209,40 @@ class OrderScreen extends Component {
                 viewabilityConfig={this.viewabilityConfig}
               />
             )}
+
+            <View
+              style={{ marginLeft: scaleSize(10), marginRight: scaleSize(10) }}
+            >
+              <Text
+                style={[
+                  styles.default,
+                  {
+                    marginLeft: scaleSize(8),
+                    marginBottom: scaleSize(8),
+                    fontSize: scaleSize(14)
+                  }
+                ]}
+              >
+                Оформление заказа
+              </Text>
+              <View style={styles.block}>
+                <Input style={styles.profileInput}>efimoff@gmail.com</Input>
+                <TextInputMask
+                  placeholder={"+38 (___) ___ __ __"}
+                  placeholderTextColor="#000"
+                  keyboardType="phone-pad"
+                  mask={"+38 ([000]) [000] [00] [00]"}
+                  // onBlur={() => this.onUnFocus('phone')}
+                  // onFocus={() => this.onFocus('phone')}
+                  style={styles.profileInputPhone}
+                >
+                  +38 (
+                </TextInputMask>
+                <Input style={styles.profileInput}>Максим Ефимов</Input>
+                <Input style={styles.profileInput}>Максим Ефимов</Input>
+              </View>
+            </View>
+
             <View
               style={{
                 flexDirection: "row",
@@ -228,16 +252,49 @@ class OrderScreen extends Component {
               }}
             >
               <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                Итого:
+                Продукты:
               </Text>
               <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                {this.props.cart
-                  .map(item => item.qty * item.price)
-                  .reduce((sum, item) => sum + item)}{" "}
+                {this.props.navigation.getParam("itemId") &&
+                this.props.product &&
+                filteredCart[0]
+                  ? filteredCart[0].qty * filteredCart[0].price
+                  : this.props.cart
+                      .map(item => item.qty * item.price)
+                      .reduce((sum, item) => sum + item)}{" "}
                 грн.
               </Text>
             </View>
-            <TouchableOpacity
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingLeft: scaleSize(10),
+                paddingRight: scaleSize(10)
+              }}
+            >
+              <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
+                Доставка:
+              </Text>
+              <Text style={{ fontSize: scaleSize(16), color: "#fff" }}> </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingLeft: scaleSize(10),
+                paddingRight: scaleSize(10)
+              }}
+            >
+              <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
+                Всего к оплате:
+              </Text>
+              <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
+                {" "}
+                грн.
+              </Text>
+            </View>
+            {/* <TouchableOpacity
               onPress={() =>
                 this.props.navigation.push("OrderScreen", {
                   linkName: "CatalogScreen",
@@ -249,7 +306,7 @@ class OrderScreen extends Component {
               <Text style={styles.btnText}>
                 {"Оформить сейчас".toUpperCase()}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         </View>
       </Container>
@@ -271,11 +328,38 @@ const styles = StyleSheet.create({
     width: "100%",
     height: scaleSize(130 - 75)
   },
+  block: {
+    backgroundColor: "rgba(255,255,255, 0.7)",
+    marginBottom: scaleSize(7),
+    paddingTop: scaleSize(16),
+    paddingBottom: scaleSize(16),
+    paddingRight: scaleSize(15),
+    paddingLeft: scaleSize(15),
+    borderRadius: scaleSize(8)
+  },
   default: {
     color: "#fff"
   },
   searchInput: {
     fontSize: scaleSize(13)
+  },
+  profileInput: {
+    fontSize: scaleSize(16),
+    height: scaleSize(40),
+    marginBottom: scaleSize(15),
+    borderBottomColor: "#89a6aa",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0
+  },
+  profileInputPhone: {
+    fontSize: scaleSize(16),
+    borderBottomColor: "#89a6aa",
+    borderBottomWidth: 1,
+    width: "100%",
+    paddingLeft: 0,
+    paddingTop: 10,
+    paddingBottom: 10
   },
   btn: {
     marginLeft: scaleSize(10),

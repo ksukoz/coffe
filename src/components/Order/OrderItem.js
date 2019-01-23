@@ -47,7 +47,6 @@ class OrderItem extends PureComponent {
     const { cart, item, product } = this.props;
     const filteredCart =
       cart && product ? cart.filter(cartItem => cartItem.id === item.id) : [];
-    console.log(filteredCart);
 
     return (
       <View
@@ -118,36 +117,38 @@ class OrderItem extends PureComponent {
             <Text style={styles.productRoast}>
               {item.pid > 7 ? "" : `Обжарка ${item.roast_human}`}
             </Text>
+            <Text style={styles.productRoast}>Код товара {item.code}</Text>
           </View>
-          {this.props.product ? (
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: product ? scaleSize(-30) : scaleSize(-20)
+            }}
+          >
             <View
               style={{
-                flexDirection: "row",
-                marginTop: scaleSize(-8)
+                borderBottomWidth: 1,
+                borderColor: "#89a6aa",
+
+                flex: 1,
+                marginBottom: scaleSize(5.5),
+                marginRight: scaleSize(7),
+                marginLeft: product ? scaleSize(-10) : 0
+              }}
+            />
+            <Text
+              style={{
+                color: "#010101",
+                fontSize: product ? scaleSize(27) : scaleSize(19),
+                fontWeight: "300"
               }}
             >
-              <View
-                style={{
-                  borderBottomWidth: 1,
-                  borderColor: "#89a6aa",
-
-                  flex: 1,
-                  marginBottom: scaleSize(5.5),
-                  marginRight: scaleSize(7),
-                  marginLeft: scaleSize(-10)
-                }}
-              />
-              <Text
-                style={{
-                  color: "#010101",
-                  fontSize: scaleSize(27),
-                  fontWeight: "300"
-                }}
-              >
-                {(+item.price).toFixed()} грн
-              </Text>
-            </View>
-          ) : null}
+              {product && filteredCart[0]
+                ? (filteredCart[0].qty * item.price).toFixed()
+                : (item.qty * item.price).toFixed()}{" "}
+              грн
+            </Text>
+          </View>
           <View
             style={{
               flexDirection: "row",
@@ -266,7 +267,7 @@ class OrderItem extends PureComponent {
                   onPress={() =>
                     product && filteredCart[0]
                       ? this.props.updateCart(item.id, +filteredCart[0].qty + 1)
-                      : this.props.updateCart(item.id, +item.qty - 1)
+                      : this.props.updateCart(item.id, +item.qty + 1)
                   }
                   activeOpacity={0.9}
                 >
