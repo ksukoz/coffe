@@ -1,13 +1,20 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { Text } from "native-base";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Text,
+  Alert
+} from "react-native";
+import { Icon } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
-import { updateCart, addToCart } from "../../store/actions/cartActions";
+import { updateCart } from "../../store/actions/cartActions";
 // import { clearProducts } from "../../store/actions/catalogActions";
 
 class CartItem extends PureComponent {
@@ -20,17 +27,31 @@ class CartItem extends PureComponent {
     };
   }
 
+  onDeletePressHandler = id => {
+    Alert.alert(
+      "Вы удалили",
+      "My Alert Msg",
+      [
+        { text: "OK", onPress: () => this.props.updateCart(id, 0) },
+        {
+          text: "Отмена",
+          onPress: () => {},
+          style: "destructive"
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   render() {
     const { cart, item } = this.props;
-    console.log(this.props);
-
     // const filteredCart = cart
     //   ? cart.filter(cartItem => cartItem.id === item.id)
     //   : [];
 
     return (
-      <TouchableOpacity
-        activeOpacity={0.9}
+      <View
+        // activeOpacity={0.9}
         // onPress={() => {
         //   this.props.navigation.push("ProductCard", {
         //     productId: item.id,
@@ -47,6 +68,27 @@ class CartItem extends PureComponent {
         // }}
         style={styles.product}
       >
+        <TouchableOpacity
+          onPress={() => this.onDeletePressHandler(item.id)}
+          activeOpacity={0.9}
+          style={{
+            position: "absolute",
+            top: scaleSize(8),
+            right: scaleSize(8),
+            width: scaleSize(19),
+            height: scaleSize(19),
+            zIndex: 3
+          }}
+        >
+          <Icon
+            style={{
+              color: "#302c23",
+              fontSize: scaleSize(19)
+            }}
+            name="cancel"
+            type="MaterialIcons"
+          />
+        </TouchableOpacity>
         <View>
           <Image
             resizeMethod="resize"
@@ -91,8 +133,60 @@ class CartItem extends PureComponent {
               marginTop: scaleSize(6)
             }}
           >
+            <View
+              style={{
+                flex: 2,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  item.qty == "1"
+                    ? false
+                    : this.props.updateCart(item.id, +item.qty - 1)
+                }
+                activeOpacity={0.9}
+              >
+                <Icon
+                  style={{
+                    color: "#7e7a71",
+                    fontSize: scaleSize(18),
+                    opacity: item.qty == "1" ? 0.5 : 1
+                  }}
+                  name="remove-circle-outline"
+                  type="MaterialIcons"
+                />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: "#302c23",
+                  fontSize: scaleSize(16),
+                  paddingLeft: scaleSize(7),
+                  paddingRight: scaleSize(7)
+                }}
+              >
+                {item.qty}
+              </Text>
+              <TouchableOpacity
+                onPress={() => this.props.updateCart(item.id, +item.qty + 1)}
+                activeOpacity={0.9}
+              >
+                <Icon
+                  style={{
+                    color: "#7e7a71",
+                    fontSize: scaleSize(18)
+                  }}
+                  name="control-point"
+                  type="MaterialIcons"
+                />
+              </TouchableOpacity>
+            </View>
             <Text
               style={{
+                flex: 1,
+                textAlign: "right",
                 color: "#010101",
                 fontSize: scaleSize(19),
                 fontWeight: "300"
@@ -102,234 +196,7 @@ class CartItem extends PureComponent {
             </Text>
           </View>
         </View>
-
-        {/*<View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "nowrap",
-              marginTop: styleIndex === 1 ? scaleSize(3) : 0
-            }}
-          >
-            <TouchableOpacity
-              style={{ marginBottom: styleIndex === 1 ? scaleSize(7) : 0 }}
-              onPress={() =>
-                this.props.navigation.push("ProductCard", {
-                  productId: item.id,
-                  categoryName: this.props.navigation.getParam(
-                    "categoryName",
-                    "0"
-                  ),
-                  tab: 2
-                })
-              }
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginTop: styleIndex === 1 ? scaleSize(5) : 0
-                }}
-              >
-                {styleIndex === 2 ? (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginBottom: scaleSize(5)
-                    }}
-                  >
-                    <StarRating
-                      disabled={true}
-                      maxStars={5}
-                      rating={item.avg_rating}
-                      starSize={scaleSize(23)}
-                      starStyle={{ marginRight: scaleSize(2) }}
-                      emptyStarColor={"#ffea00"}
-                      fullStarColor={"#ffea00"}
-                    />
-                  </View>
-                ) : (
-                  <KawaIcon
-                    style={styles.starIcon}
-                    size={styleIndex === 1 ? scaleSize(11) : scaleSize(16)}
-                    name="small-star-in-catalog"
-                  />
-                )}
-                <Text
-                  style={
-                    styleIndex === 1
-                      ? [styles.productRating, { fontSize: scaleSize(9) }]
-                      : styles.productRating
-                  }
-                >
-                  {styleIndex === 2
-                    ? ""
-                    : item.avg_rating > 0
-                    ? (+item.avg_rating).toFixed(1)
-                    : item.avg_rating}
-                </Text>
-              </View>
-              <Text
-                style={
-                  styleIndex === 1
-                    ? [
-                        styles.numberOfReviews,
-                        { fontSize: scaleSize(9), marginTop: 1 }
-                      ]
-                    : styles.numberOfReviews
-                }
-              >
-                Отзывов {item.comments}
-              </Text>
-            </TouchableOpacity>
-            <View
-              style={{
-                alignSelf: "center",
-                marginLeft: scaleSize(-4)
-              }}
-            >
-              <TouchableOpacity
-                style={
-                  styleIndex === 2
-                    ? {
-                        position: "relative",
-                        padding: scaleSize(10),
-                        paddingBottom: 0,
-                        paddingTop: 0
-                      }
-                    : { position: "relative", padding: scaleSize(10) }
-                }
-                activeOpacity={0.9}
-                onPress={() =>
-                  filteredCart.length > 0
-                    ? this.props.updateCart(item.id, 0)
-                    : this.props.addToCart(item.id)
-                }
-              >
-                <KawaIcon
-                  style={
-                    styleIndex === 1
-                      ? [styles.cartIcon, { marginLeft: scaleSize(10) }]
-                      : styles.cartIcon
-                  }
-                  size={styleIndex === 2 ? scaleSize(30) : scaleSize(20)}
-                  name={
-                    filteredCart.length > 0
-                      ? "small-cart-in-catalog-with-buy"
-                      : "big-cart-in-catalog"
-                  }
-                />
-                <View
-                  style={{
-                    opacity: filteredCart.length > 0 ? 1 : 0,
-                    position: "absolute",
-                    bottom: scaleSize(styleIndex === 2 ? 0 : 10),
-                    right: scaleSize(10),
-                    borderRadius: scaleSize(styleIndex === 2 ? 7.5 : 5),
-                    backgroundColor: "#ef5350",
-
-                    alignContent: "center",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: scaleSize(styleIndex === 2 ? 15 : 10),
-                    height: scaleSize(styleIndex === 2 ? 15 : 10)
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: scaleSize(styleIndex === 2 ? 10 : 7),
-                      textAlign: "center",
-                      textAlignVertical: "center",
-                      color: "#fff"
-                    }}
-                  >
-                    {filteredCart.length > 0 ? 1 : ""}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            {styleIndex === 1 ? (
-              <Text
-                style={{
-                  color: "#010101",
-                  fontSize: scaleSize(16),
-                  fontWeight: "300"
-                }}
-              >
-                {(+item.price).toFixed()} грн
-              </Text>
-            ) : null}
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.push("OrderScreen", {
-                  linkName: "CatalogScreen",
-                  categoryId
-                })
-              }
-              style={
-                styleIndex === 1
-                  ? { display: "none" }
-                  : styleIndex === 2
-                  ? [
-                      styles.btn,
-                      {
-                        paddingTop: scaleSize(6),
-                        paddingBottom: scaleSize(6),
-                        marginTop: scaleSize(1)
-                      }
-                    ]
-                  : [styles.btn]
-              }
-            >
-              <Text
-                style={
-                  styleIndex === 1
-                    ? [styles.btnText, { textAlign: "center" }]
-                    : [styles.btnText]
-                }
-              >
-                КУПИТЬ СЕЙЧАС
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.push("OrderScreen", {
-                linkName: "CatalogScreen",
-                categoryId
-              })
-            }
-            style={
-              styleIndex === 1
-                ? [
-                    styles.btn,
-                    {
-                      width: "100%",
-                      paddingTop: scaleSize(2),
-                      paddingBottom: scaleSize(2),
-                      marginTop: scaleSize(1)
-                    }
-                  ]
-                : { display: "none" }
-            }
-          >
-            <Text
-              style={
-                styleIndex === 1
-                  ? [
-                      styles.btnText,
-                      { textAlign: "center", fontSize: scaleSize(14) }
-                    ]
-                  : [styles.btnText]
-              }
-            >
-              КУПИТЬ СЕЙЧАС
-            </Text>
-          </TouchableOpacity> */}
-        {/* </View> */}
-      </TouchableOpacity>
+      </View>
     );
   }
 }
@@ -342,28 +209,8 @@ const styles = StyleSheet.create({
     paddingTop: scaleSize(6),
     paddingBottom: scaleSize(6),
     paddingRight: scaleSize(10),
-    borderRadius: scaleSize(8)
-  },
-  productItem: {
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    marginBottom: scaleSize(7),
-    flexDirection: "column",
-    paddingTop: scaleSize(6),
-    paddingBottom: scaleSize(6),
-    paddingRight: scaleSize(10),
-    paddingLeft: scaleSize(10),
-    borderRadius: scaleSize(8)
-  },
-
-  productCard: {
-    width: "48%",
-    backgroundColor: "rgba(255,255,255, 0.7)",
-    justifyContent: "space-between",
-    marginRight: scaleSize(2),
-    marginLeft: scaleSize(2),
-    marginBottom: scaleSize(7),
-    paddingTop: scaleSize(6),
-    borderRadius: scaleSize(8)
+    borderRadius: scaleSize(8),
+    position: "relative"
   },
   productImg: {
     alignSelf: "center",
@@ -372,26 +219,6 @@ const styles = StyleSheet.create({
     marginRight: scaleSize(12),
     marginLeft: scaleSize(12),
     marginTop: scaleSize(4)
-  },
-  imgHit: {
-    position: "absolute",
-    top: scaleSize(-2),
-    left: scaleSize(5),
-    backgroundColor: "#ef5350",
-    zIndex: 2,
-    alignItems: "center",
-    justifyContent: "center",
-    height: scaleSize(17),
-    borderTopLeftRadius: scaleSize(10),
-    borderBottomRightRadius: scaleSize(10)
-  },
-  imgLabel: {
-    fontSize: scaleSize(10),
-    paddingLeft: scaleSize(10),
-    paddingRight: scaleSize(10),
-    paddingTop: scaleSize(5),
-    paddingBottom: scaleSize(5),
-    color: "#fff"
   },
   productSort: {
     fontSize: scaleSize(13),
@@ -406,22 +233,6 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(15),
     marginBottom: scaleSize(3),
     color: "#010101"
-  },
-  starIcon: {
-    color: "#ffea00",
-    marginRight: scaleSize(5)
-  },
-  productRating: {
-    color: "#48433b",
-    fontSize: scaleSize(13)
-  },
-  numberOfReviews: {
-    color: "#48433b",
-    fontSize: scaleSize(13),
-    marginTop: scaleSize(-2)
-  },
-  cartIcon: {
-    color: "#48433b"
   },
   btn: {
     backgroundColor: "#ea9308",
@@ -440,7 +251,6 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => ({
   updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
-  // addToCart: id => dispatch(addToCart(id))
 });
 
 export default connect(

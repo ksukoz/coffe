@@ -63,7 +63,6 @@ class CartScreen extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.cart);
     this.props.getCart();
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
