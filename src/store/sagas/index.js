@@ -25,3 +25,7 @@ export {
   fetchSearchedProductsSaga,
   watchFetchSearchedProductsSaga // updateCartSaga, // watchCartSaga
 } from "./fetchSearchedProductsSaga";
+export {
+  fetchUserSaga,
+  watchUserSaga // updateCartSaga, // watchCartSaga
+} from "./userSaga";

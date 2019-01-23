@@ -15,6 +15,7 @@ import {
 } from "react-native";
 
 import { getCart } from "../../store/actions/cartActions";
+import { getUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
 
 import { searchFocused } from "../../store/actions/commonActions";
@@ -74,6 +75,7 @@ class OrderScreen extends Component {
   componentDidMount() {
     // console.log(this.props);
     this.props.getCart();
+    this.props.getUser();
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload =>
@@ -346,7 +348,7 @@ const styles = StyleSheet.create({
   profileInput: {
     fontSize: scaleSize(16),
     height: scaleSize(40),
-    marginBottom: scaleSize(15),
+    marginBottom: scaleSize(20),
     borderBottomColor: "#89a6aa",
     borderBottomWidth: 1,
     width: "100%",
@@ -392,7 +394,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
   getProductID: id => dispatch(getProductID(id)),
-  searchFocused: () => dispatch(searchFocused())
+  searchFocused: () => dispatch(searchFocused()),
+  getUser: () => dispatch(getUser())
 });
 
 export default connect(
