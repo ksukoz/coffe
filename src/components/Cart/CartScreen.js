@@ -5,7 +5,7 @@ import {
   View,
   StatusBar,
   Dimensions,
-  ActivityIndicator,
+  TouchableOpacity,
   Image,
   Text,
   FlatList,
@@ -99,6 +99,7 @@ class CartScreen extends Component {
       ...this.props.dishes
     ];
     let notFound;
+
     // if (
     //   this.props.products.length === 0 &&
     //   !this.state.loading &&
@@ -144,7 +145,7 @@ class CartScreen extends Component {
           />
           <Image source={require(MAIN_BG)} style={styles.background} />
           <HeaderBar
-            // menu={true}
+            menu={true}
             // catalog={true}
             // cart={this.props.cart}
             title={"Корзина"}
@@ -175,12 +176,16 @@ class CartScreen extends Component {
               categoryId={this.props.navigation.getParam("categoryId", "0")}
             />
           </View> */}
-          <View style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
+          <ScrollView
+            style={{ marginTop: scaleSize(10) }}
+            // contentContainerStyle={{ flex: 1 }}
+          >
             {notFound}
             <FlatList
               style={{
                 marginLeft: scaleSize(10),
-                marginRight: scaleSize(12),
+                marginRight: scaleSize(10),
+                marginBottom: scaleSize(20),
                 zIndex: 2
               }}
               keyExtractor={item => item.id}
@@ -188,30 +193,10 @@ class CartScreen extends Component {
                 length: 100 - 1,
                 index
               })}
-              onEndReached={() =>
-                // this.props.fetch
-                //   ? false
-                //   : !this.state.end
-                //   ? this.setState(
-                //       {
-                //         loading: true,
-                //         page: this.state.page + 10
-                //       },
-                //       () => this.handleEnd()
-                //     )
-                // :
-                false
-              }
-              // ListFooterComponent={() =>
-              //   this.state.loading ? (
-              //     <ActivityIndicator color="#89a6aa" size="large" animating />
-              //   ) : null
-              // }
               initialNumToRender={6}
               removeClippedSubviews={true}
               maxToRenderPerBatch={4}
               windowSize={1}
-              // onEndReachedThreshold={this.state.end ? 0 : 0.1}
               data={this.props.cart}
               extraData={this.props}
               renderItem={({ item }) => (
@@ -220,14 +205,44 @@ class CartScreen extends Component {
                   // navigation={this.props.navigation}
                   // categoryId={item.pid}
                   // search={this.state.search}
-                  // item={item}
+                  item={item}
                   categories={categories}
-                  // styleIndex={this.state.stylesIndex}
                 />
               )}
               viewabilityConfig={this.viewabilityConfig}
             />
-          </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                paddingLeft: scaleSize(10),
+                paddingRight: scaleSize(10)
+              }}
+            >
+              <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
+                Итого:
+              </Text>
+              <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
+                {this.props.cart
+                  .map(item => item.qty * item.price)
+                  .reduce((sum, item) => sum + item)}{" "}
+                грн.
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.push("OrderScreen", {
+                  linkName: "CatalogScreen",
+                  categoryId
+                })
+              }
+              style={styles.btn}
+            >
+              <Text style={styles.btnText}>
+                {"Оформить сейчас".toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </Container>
     );
@@ -253,6 +268,24 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     fontSize: scaleSize(13)
+  },
+  btn: {
+    marginLeft: scaleSize(10),
+    marginRight: scaleSize(10),
+    marginBottom: scaleSize(40),
+    marginTop: scaleSize(24),
+    backgroundColor: "#ea9308",
+    borderRadius: scaleSize(3)
+  },
+  btnText: {
+    fontSize: scaleSize(14),
+    textAlign: "center",
+    color: "#f8f8f8",
+    paddingTop: scaleSize(7),
+    paddingBottom: scaleSize(7),
+    paddingRight: scaleSize(7),
+    paddingLeft: scaleSize(7)
+    // fontWeight: "400"
   }
 });
 

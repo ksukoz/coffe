@@ -19,11 +19,9 @@ export {
 } from "./cartSaga";
 export {
   fetchAutoCompleteSaga,
-  watchFetchAutoCompleteSaga // updateCartSaga,
-} from // watchCartSaga
-"./fetchAutocompleteSaga";
+  watchFetchAutoCompleteSaga // updateCartSaga, // watchCartSaga
+} from "./fetchAutocompleteSaga";
 export {
   fetchSearchedProductsSaga,
-  watchFetchSearchedProductsSaga // updateCartSaga,
-} from // watchCartSaga
-"./fetchSearchedProductsSaga";
+  watchFetchSearchedProductsSaga // updateCartSaga, // watchCartSaga
+} from "./fetchSearchedProductsSaga";

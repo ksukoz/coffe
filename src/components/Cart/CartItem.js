@@ -21,7 +21,8 @@ class CartItem extends PureComponent {
   }
 
   render() {
-    const { cart } = this.props;
+    const { cart, item } = this.props;
+    console.log(this.props);
 
     // const filteredCart = cart
     //   ? cart.filter(cartItem => cartItem.id === item.id)
@@ -46,80 +47,26 @@ class CartItem extends PureComponent {
         // }}
         style={styles.product}
       >
-        {/* <View style={{ position: "relative" }}>
-          {item.new == 1 && Date.now() <= +`${item.new_date}000` ? (
-            <View style={styles.imgHit}>
-              <Text style={styles.imgLabel}>{"Новинка".toUpperCase()}</Text>
-            </View>
-          ) : item.popular == 1 ? (
-            <View style={styles.imgHit}>
-              <Text style={styles.imgLabel}>{"Хит".toUpperCase()}</Text>
-            </View>
-          ) : null}
-
+        <View>
           <Image
             resizeMethod="resize"
             source={{ uri: "http://kawa.gumione.pro" + item.file }}
-            style={
-              styleIndex === 1
-                ? [
-                    styles.productImg,
-                    { width: scaleSize(80), height: scaleSize(113) }
-                  ]
-                : styleIndex === 2
-                ? [
-                    styles.productImg,
-                    { width: scaleSize(90), height: scaleSize(180) }
-                  ]
-                : [
-                    styles.productImg,
-                    { width: scaleSize(70), height: scaleSize(100) }
-                  ]
-            }
+            style={styles.productImg}
           />
         </View>
 
-        <View
-          style={
-            styleIndex === 1
-              ? {
-                  flex: 1,
-                  padding: scaleSize(6),
-                  justifyContent: "flex-end"
-                }
-              : { flex: 1 }
-          }
-        >
+        <View style={{ flex: 1 }}>
           <View
-            style={
-              styleIndex === 1
-                ? {
-                    flex: 1,
-                    alignSelf: "flex-start"
-                  }
-                : ""
-            }
+            style={{
+              borderBottomWidth: 1,
+              borderColor: "#89a6aa",
+              paddingBottom: scaleSize(8)
+            }}
           >
-            <Text
-              style={
-                styleIndex === 1
-                  ? [styles.productName, { fontSize: scaleSize(11) }]
-                  : styleIndex === 2
-                  ? [styles.productName, { fontSize: scaleSize(19) }]
-                  : [styles.productName, { fontSize: scaleSize(15) }]
-              }
-            >
-              {item.name}
+            <Text style={styles.productName}>
+              {item.name} Lorem ipsum dolor sit amet
             </Text>
-            <Text
-              style={
-                styleIndex === 1
-                  ? [styles.productSort, { fontSize: scaleSize(11) }]
-                  : styleIndex === 2
-                  ? [styles.productSort, { fontSize: scaleSize(16) }]
-                  : [styles.productSort, { fontSize: scaleSize(13) }]
-              }
-            >
+            <Text style={[styles.productSort, {}]}>
               {this.props.categories.filter(
                 category => category.id === item.pid
               ).length > 0
@@ -133,55 +80,30 @@ class CartItem extends PureComponent {
                     item.arabic_percent ? item.arabic_percent + "%" : ""
                   }`}
             </Text>
-            <Text
-              style={
-                styleIndex === 1
-                  ? [styles.productRoast, { fontSize: scaleSize(11) }]
-                  : styleIndex === 2
-                  ? [styles.productRoast, { fontSize: scaleSize(16) }]
-                  : [styles.productRoast, { fontSize: scaleSize(13) }]
-              }
-            >
+            <Text style={styles.productRoast}>
               {item.pid > 7 ? "" : `Обжарка ${item.roast_human}`}
             </Text>
           </View>
-
           <View
             style={{
               flexDirection: "row",
-              marginTop: styleIndex === 1 ? scaleSize(10) : scaleSize(-8)
+              justifyContent: "flex-end",
+              marginTop: scaleSize(6)
             }}
           >
-            <View
+            <Text
               style={{
-                borderBottomWidth: 1,
-                borderColor: "#89a6aa",
-
-                flex: 1,
-                marginBottom: styleIndex === 1 ? 0 : scaleSize(5.5),
-                marginRight: styleIndex === 1 ? scaleSize(0) : scaleSize(7),
-                marginLeft:
-                  styleIndex === 1
-                    ? scaleSize(0)
-                    : styleIndex === 2
-                    ? scaleSize(-10)
-                    : scaleSize(1)
+                color: "#010101",
+                fontSize: scaleSize(19),
+                fontWeight: "300"
               }}
-            />
-            {styleIndex !== 1 ? (
-              <Text
-                style={{
-                  color: "#010101",
-                  fontSize: styleIndex === 2 ? scaleSize(27) : scaleSize(20),
-                  fontWeight: "300"
-                }}
-              >
-                {(+item.price).toFixed()} грн
-              </Text>
-            ) : null}
+            >
+              {(+item.price).toFixed()} грн
+            </Text>
           </View>
+        </View>
 
-          <View
+        {/*<View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -405,8 +327,8 @@ class CartItem extends PureComponent {
             >
               КУПИТЬ СЕЙЧАС
             </Text>
-          </TouchableOpacity>
-        </View> */}
+          </TouchableOpacity> */}
+        {/* </View> */}
       </TouchableOpacity>
     );
   }
@@ -445,7 +367,8 @@ const styles = StyleSheet.create({
   },
   productImg: {
     alignSelf: "center",
-    height: scaleSize(120),
+    height: scaleSize(100),
+    width: scaleSize(56),
     marginRight: scaleSize(12),
     marginLeft: scaleSize(12),
     marginTop: scaleSize(4)
@@ -471,13 +394,16 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   productSort: {
+    fontSize: scaleSize(13),
     color: "#48433b",
     marginBottom: 1
   },
   productRoast: {
-    color: "#48433b"
+    color: "#48433b",
+    fontSize: scaleSize(13)
   },
   productName: {
+    fontSize: scaleSize(15),
     marginBottom: scaleSize(3),
     color: "#010101"
   },
