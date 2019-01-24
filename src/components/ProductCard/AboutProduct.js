@@ -7,7 +7,8 @@ import {
   Dimensions,
   Image,
   TouchableWithoutFeedback,
-  StyleSheet
+  StyleSheet,
+  findNodeHandle
 } from "react-native";
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -95,6 +96,31 @@ ${
       </View>
     );
   }
+  claseCallback() {}
+
+  renderHeader(close) {
+    this.closeCallback = close;
+    return (
+      <TouchableOpacity onPress={close}>
+        <Text
+          style={{
+            color: this.textColor,
+            borderWidth: 1,
+            borderColor: this.textColor,
+            backgroundColor: this.bgColor,
+            padding: 8,
+            borderRadius: 3,
+            textAlign: "center",
+            marginTop: 20,
+            marginRight: 14,
+            alignSelf: "flex-end"
+          }}
+        >
+          CLOSE
+        </Text>
+      </TouchableOpacity>
+    );
+  }
 
   onShare(id) {
     const shareOptions = {
@@ -138,6 +164,7 @@ ${
                 textAlign: "center",
                 alignItems: "center"
               }}
+              onTouchStart={(e, state, context) => this.refs.modal.open()}
             >
               {product.new == 1 && Date.now() <= +`${product.new_date}000` ? (
                 <View style={styles.imgHit}>
@@ -194,44 +221,47 @@ ${
                   loop
                 >
                   {product.file.map(image => (
-                    // <Lightbox
-                    //   style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
-                    //   navigator={this.props.navigator}
-                    //   onOpen={this.props.onImgPress}
-                    //   willClose={this.props.onImgClose}
-                    //   backgroundColor={"rgba(0,0,0,0.7)"}
-                    //   underlayColor={"transparent"}
-                    //   // springConfig={{ tension: 100, friction: 100 }}
-                    // >
-                    // <View>
-                    <TouchableWithoutFeedback
-                      style={{ zIndex: 2 }}
-                      onPress={() => console.log("press")}
+                    <Lightbox
+                      style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
+                      navigator={this.props.navigator}
+                      onOpen={this.props.onImgPress}
+                      willClose={this.props.onImgClose}
+                      backgroundColor={"rgba(0,0,0,0.7)"}
+                      underlayColor={"transparent"}
+                      renderHeader={this.renderHeader}
+                      ref="modal"
                     >
-                      <Image
-                        source={{
-                          uri: `http://kawa.gumione.pro/${image}`
-                        }}
-                        style={{
-                          // flex: 1,
-                          height: scaleSize(154)
-                        }}
-                        resizeMethod="scale"
-                        resizeMode="contain"
-                      />
-                    </TouchableWithoutFeedback>
-                    // </View>
-                    // </Lightbox>
+                      {/* // <View> */}
+                      <TouchableWithoutFeedback style={{ zIndex: 2 }}>
+                        <Image
+                          source={{
+                            uri: `http://kawa.gumione.pro/${image}`
+                          }}
+                          style={{
+                            // flex: 1,
+                            height: scaleSize(154)
+                          }}
+                          resizeMethod="scale"
+                          resizeMode="contain"
+                        />
+                      </TouchableWithoutFeedback>
+                      {/* // </View> */}
+                    </Lightbox>
                   ))}
                 </Swiper>
               ) : (
                 <Lightbox
                   style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
                   navigator={this.props.navigator}
-                  onOpen={this.props.onImgPress}
+                  onOpen={
+                    // console.log(this.props.navigation)
+                    this.props.onImgPress
+                  }
                   willClose={this.props.onImgClose}
                   backgroundColor={"rgba(0,0,0,0.7)"}
                   underlayColor={"transparent"}
+                  renderHeader={this.renderHeader}
+                  // ref="modal"
                   // springConfig={{ tension: 100, friction: 100 }}
                 >
                   <Image

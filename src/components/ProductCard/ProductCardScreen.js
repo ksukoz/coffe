@@ -210,6 +210,7 @@ class ProductCardScreen extends Component {
                   <Content>
                     <AboutProduct
                       onImgPress={() => this.setState({ opacity: true })}
+                      focus={this.state.opacity}
                       onImgClose={() => this.setState({ opacity: false })}
                       productItem={productItem}
                       reviewsLength={reviewsLength}
