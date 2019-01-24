@@ -14,7 +14,7 @@ import {
   StyleSheet
 } from "react-native";
 
-import { getCart } from "../../store/actions/cartActions";
+import { getCart, updateCart } from "../../store/actions/cartActions";
 
 import { searchFocused } from "../../store/actions/commonActions";
 
@@ -22,7 +22,10 @@ import { scaleSize } from "../../helpers/scaleSize";
 import CartItem from "./CartItem";
 import HeaderBar from "../common/HeaderBar";
 
-// import KawaIcon from "../KawaIcon";
+import Modal from "react-native-modal";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -42,8 +45,11 @@ class CartScreen extends Component {
     );
     this.state = {
       search: "",
+      name: "",
+      id: "",
       focus: false,
-      loading: true
+      loading: true,
+      modalVisible: false
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -80,15 +86,26 @@ class CartScreen extends Component {
     }
   }
 
-  handleEnd = () => {};
-
-  getStyles = index => {
-    this.setState({ stylesIndex: index });
-  };
-
   handleBackPress = () => {
     this.props.navigation.pop();
     return true;
+  };
+
+  onDeletePressHandler = (id, name) => {
+    this.setState({ id, name, modalVisible: true });
+    // Alert.alert(
+    //   "Вы удалили",
+    //   "My Alert Msg",
+    //   [
+    //     { text: "OK", onPress: () => this.props.updateCart(id, 0) },
+    //     {
+    //       text: "Отмена",
+    //       onPress: () => {},
+    //       style: "destructive"
+    //     }
+    //   ],
+    //   { cancelable: false }
+    // );
   };
 
   render() {
@@ -128,7 +145,9 @@ class CartScreen extends Component {
           barStyle="light-content"
           hidden={false}
           translucent={true}
-          backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
+          backgroundColor={`rgba(0,0,0,${
+            this.state.focus ? 0.1 : this.state.modalVisible ? 0.7 : 0
+          })`}
         />
         <View style={{ flex: 1 }}>
           <ScrollView
@@ -145,40 +164,11 @@ class CartScreen extends Component {
           <Image source={require(MAIN_BG)} style={styles.background} />
           <HeaderBar
             menu={true}
-            // catalog={true}
-            // cart={this.props.cart}
+            cart={this.props.cart}
             title={"Корзина"}
-            // getStyles={this.getStyles}
             navigation={this.props.navigation.dangerouslyGetParent()}
           />
-          {/* <SearchBar
-            placeholder={this.props.navigation.getParam(
-              "searchPlaceholder",
-              "Найти кофе"
-            )}
-            style={{ marginBottom: scaleSize(20) }}
-            navigation={this.props.navigation}
-            searchedValue={value => this.setState({ search: value })}
-          /> */}
-          {/* 
-          <View
-            style={[
-              styles.container,
-              {
-                marginTop: scaleSize(75)
-              }
-            ]}
-          >
-            <LetterBar
-              style={{ opacity: this.state.focus ? 0.9 : 1 }}
-              navigation={this.props.navigation}
-              categoryId={this.props.navigation.getParam("categoryId", "0")}
-            />
-          </View> */}
-          <ScrollView
-            style={{ marginTop: scaleSize(-10) }}
-            // contentContainerStyle={{ flex: 1 }}
-          >
+          <ScrollView style={{ marginTop: scaleSize(-10) }}>
             {notFound}
             <FlatList
               style={{
@@ -201,11 +191,9 @@ class CartScreen extends Component {
               renderItem={({ item }) => (
                 <CartItem
                   cart={this.props.cart}
-                  // navigation={this.props.navigation}
-                  // categoryId={item.pid}
-                  // search={this.state.search}
                   item={item}
                   categories={categories}
+                  onDeletePressHandler={this.onDeletePressHandler}
                 />
               )}
               viewabilityConfig={this.viewabilityConfig}
@@ -237,6 +225,97 @@ class CartScreen extends Component {
               </Text>
             </TouchableOpacity>
           </ScrollView>
+          <Modal
+            backdropTransitionInTiming={0}
+            backdropTransitionOutTiming={0}
+            animationInTiming={0}
+            animationOutTiming={0}
+            style={{ backgroundColor: "rgba(0,0,0,0.7)", margin: 0 }}
+            visible={this.state.modalVisible}
+            onBackdropPress={() => {
+              this.setState({ modalVisible: false });
+            }}
+            onBackButtonPress={() => {
+              this.setState({ modalVisible: false });
+            }}
+          >
+            <View
+              style={{
+                borderRadius: scaleSize(5),
+                padding: scaleSize(20),
+                alignSelf: "center",
+                backgroundColor: "#fff",
+                width: SCREEN_WIDTH * 0.8
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: scaleSize(20),
+                  fontWeight: "bold",
+                  marginBottom: scaleSize(15),
+                  color: "#302c23"
+                }}
+              >
+                Вы удалили
+              </Text>
+              <Text
+                style={{
+                  fontSize: scaleSize(16),
+                  marginBottom: scaleSize(20),
+                  color: "#302c23"
+                }}
+              >
+                {this.state.name}
+              </Text>
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-end" }}
+              >
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "transparent",
+                    alignSelf: "flex-end"
+                  }}
+                  onPress={() => {
+                    this.setState({ modalVisible: false }, () =>
+                      this.props.updateCart(this.state.id, 0)
+                    );
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: scaleSize(14),
+                      fontWeight: "bold",
+                      marginTop: scaleSize(20),
+                      marginRight: scaleSize(40),
+                      color: "#302c23"
+                    }}
+                  >
+                    {"OK".toUpperCase()}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "transparent",
+                    alignSelf: "flex-end"
+                  }}
+                  onPress={() => {
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: scaleSize(14),
+                      fontWeight: "bold",
+                      marginTop: scaleSize(20),
+                      color: "#302c23"
+                    }}
+                  >
+                    {"Отмена".toUpperCase()}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </View>
       </Container>
     );
@@ -292,7 +371,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
-  searchFocused: () => dispatch(searchFocused())
+  searchFocused: () => dispatch(searchFocused()),
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
 });
 
 export default connect(

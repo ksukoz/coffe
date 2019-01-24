@@ -153,8 +153,12 @@ ${
                 <Swiper
                   // style={styles.wrapper}
                   height={scaleSize(175)}
+                  keyboardShouldPersistTaps={"always"}
+                  onMomentumScrollBegin={(e, state, context) =>
+                    console.log(e, state, context)
+                  }
                   onMomentumScrollEnd={(e, state, context) =>
-                    console.log("index:", state.index)
+                    console.log(e, state, context)
                   }
                   dot={
                     <View
@@ -199,24 +203,24 @@ ${
                     //   underlayColor={"transparent"}
                     //   // springConfig={{ tension: 100, friction: 100 }}
                     // >
-                    <View>
-                      <TouchableWithoutFeedback
-                        style={{ zIndex: 2 }}
-                        onPress={() => console.log("press")}
-                      >
-                        <Image
-                          source={{
-                            uri: `http://kawa.gumione.pro/${image}`
-                          }}
-                          style={{
-                            // flex: 1,
-                            height: scaleSize(154)
-                          }}
-                          resizeMethod="scale"
-                          resizeMode="contain"
-                        />
-                      </TouchableWithoutFeedback>
-                    </View>
+                    // <View>
+                    <TouchableWithoutFeedback
+                      style={{ zIndex: 2 }}
+                      onPress={() => console.log("press")}
+                    >
+                      <Image
+                        source={{
+                          uri: `http://kawa.gumione.pro/${image}`
+                        }}
+                        style={{
+                          // flex: 1,
+                          height: scaleSize(154)
+                        }}
+                        resizeMethod="scale"
+                        resizeMode="contain"
+                      />
+                    </TouchableWithoutFeedback>
+                    // </View>
                     // </Lightbox>
                   ))}
                 </Swiper>

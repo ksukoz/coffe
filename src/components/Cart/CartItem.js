@@ -9,67 +9,42 @@ import {
   Alert
 } from "react-native";
 import { Icon } from "native-base";
-import KawaIcon from "../KawaIcon";
-import StarRating from "react-native-star-rating";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
 import { updateCart } from "../../store/actions/cartActions";
-// import { clearProducts } from "../../store/actions/catalogActions";
 
 class CartItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       search: ""
-      // index: 0,
-      // cart: false
     };
   }
 
-  onDeletePressHandler = id => {
-    Alert.alert(
-      "Вы удалили",
-      "My Alert Msg",
-      [
-        { text: "OK", onPress: () => this.props.updateCart(id, 0) },
-        {
-          text: "Отмена",
-          onPress: () => {},
-          style: "destructive"
-        }
-      ],
-      { cancelable: false }
-    );
-  };
+  // onDeletePressHandler = id => {
+  //   Alert.alert(
+  //     "Вы удалили",
+  //     "My Alert Msg",
+  //     [
+  //       { text: "OK", onPress: () => this.props.updateCart(id, 0) },
+  //       {
+  //         text: "Отмена",
+  //         onPress: () => {},
+  //         style: "destructive"
+  //       }
+  //     ],
+  //     { cancelable: false }
+  //   );
+  // };
 
   render() {
     const { cart, item } = this.props;
-    // const filteredCart = cart
-    //   ? cart.filter(cartItem => cartItem.id === item.id)
-    //   : [];
 
     return (
-      <View
-        // activeOpacity={0.9}
-        // onPress={() => {
-        //   this.props.navigation.push("ProductCard", {
-        //     productId: item.id,
-        //     search: this.props.navigation.getParam("search", ""),
-        //     searchPlaceholder:
-        //       this.props.categories.filter(category => category.id === item.pid)
-        //         .length > 0
-        //         ? this.props.categories.filter(
-        //             category => category.id === item.pid
-        //           )[0].name
-        //         : "",
-        //     categoryId
-        //   });
-        // }}
-        style={styles.product}
-      >
+      <View style={styles.product}>
         <TouchableOpacity
-          onPress={() => this.onDeletePressHandler(item.id)}
+          onPress={() => this.props.onDeletePressHandler(item.id, item.name)}
           activeOpacity={0.9}
           style={{
             position: "absolute",
@@ -222,6 +197,7 @@ const styles = StyleSheet.create({
     fontSize: scaleSize(13)
   },
   productName: {
+    width: "80%",
     fontSize: scaleSize(15),
     marginBottom: scaleSize(3),
     color: "#010101"
