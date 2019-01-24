@@ -154,6 +154,7 @@ class ProductCardScreen extends Component {
             <View style={{ marginTop: scaleSize(75), flexGrow: 1 }}>
               <Tabs
                 transparent
+                locked
                 style={{ flex: 1 }}
                 page={this.state.currentTab}
                 tabBarUnderlineStyle={{

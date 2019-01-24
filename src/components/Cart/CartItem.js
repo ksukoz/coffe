@@ -105,25 +105,17 @@ class CartItem extends PureComponent {
               paddingBottom: scaleSize(8)
             }}
           >
-            <Text style={styles.productName}>
-              {item.name} Lorem ipsum dolor sit amet
-            </Text>
+            <Text style={styles.productName}>{item.name}</Text>
             <Text style={[styles.productSort, {}]}>
-              {this.props.categories.filter(
-                category => category.id === item.pid
-              ).length > 0
-                ? this.props.categories.filter(
-                    category => category.id === item.pid
-                  )[0].name
-                : ""}
+              {item.cname}
               {item.pid > 7
                 ? ""
-                : `, ${item.sort_human} ${
+                : `, ${item.sort} ${
                     item.arabic_percent ? item.arabic_percent + "%" : ""
                   }`}
             </Text>
             <Text style={styles.productRoast}>
-              {item.pid > 7 ? "" : `Обжарка ${item.roast_human}`}
+              {item.pid > 7 ? "" : `Обжарка ${item.roast}`}
             </Text>
           </View>
           <View

@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  TouchableWithoutFeedback,
   StyleSheet
 } from "react-native";
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 import Lightbox from "react-native-lightbox";
+import Swiper from "react-native-swiper";
 
 import MyWebView from "react-native-webview-autoheight";
 
@@ -147,27 +149,100 @@ ${
                 </View>
               ) : null}
 
-              <Lightbox
-                style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
-                navigator={this.props.navigator}
-                onOpen={this.props.onImgPress}
-                willClose={this.props.onImgClose}
-                backgroundColor={"rgba(0,0,0,0.7)"}
-                underlayColor={"transparent"}
-                // springConfig={{ tension: 100, friction: 100 }}
-              >
-                <Image
-                  source={{
-                    uri: `http://kawa.gumione.pro${product.file}`
+              {product.file.length > 1 ? (
+                <Swiper
+                  // style={styles.wrapper}
+                  height={scaleSize(175)}
+                  onMomentumScrollEnd={(e, state, context) =>
+                    console.log("index:", state.index)
+                  }
+                  dot={
+                    <View
+                      style={{
+                        backgroundColor: "rgba(0,0,0,.2)",
+                        width: 5,
+                        height: 5,
+                        borderRadius: 4,
+                        marginLeft: 3,
+                        marginRight: 3,
+                        marginTop: 3,
+                        marginBottom: 3
+                      }}
+                    />
+                  }
+                  activeDot={
+                    <View
+                      style={{
+                        backgroundColor: "#89a6aa",
+                        width: 8,
+                        height: 8,
+                        borderRadius: 4,
+                        marginLeft: 3,
+                        marginRight: 3,
+                        marginTop: 3,
+                        marginBottom: 3
+                      }}
+                    />
+                  }
+                  paginationStyle={{
+                    bottom: 0
                   }}
-                  style={{
-                    flex: 1,
-                    height: scaleSize(154)
-                  }}
-                  resizeMethod="scale"
-                  resizeMode="contain"
-                />
-              </Lightbox>
+                  loop
+                >
+                  {product.file.map(image => (
+                    // <Lightbox
+                    //   style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
+                    //   navigator={this.props.navigator}
+                    //   onOpen={this.props.onImgPress}
+                    //   willClose={this.props.onImgClose}
+                    //   backgroundColor={"rgba(0,0,0,0.7)"}
+                    //   underlayColor={"transparent"}
+                    //   // springConfig={{ tension: 100, friction: 100 }}
+                    // >
+                    <View>
+                      <TouchableWithoutFeedback
+                        style={{ zIndex: 2 }}
+                        onPress={() => console.log("press")}
+                      >
+                        <Image
+                          source={{
+                            uri: `http://kawa.gumione.pro/${image}`
+                          }}
+                          style={{
+                            // flex: 1,
+                            height: scaleSize(154)
+                          }}
+                          resizeMethod="scale"
+                          resizeMode="contain"
+                        />
+                      </TouchableWithoutFeedback>
+                    </View>
+                    // </Lightbox>
+                  ))}
+                </Swiper>
+              ) : (
+                <Lightbox
+                  style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
+                  navigator={this.props.navigator}
+                  onOpen={this.props.onImgPress}
+                  willClose={this.props.onImgClose}
+                  backgroundColor={"rgba(0,0,0,0.7)"}
+                  underlayColor={"transparent"}
+                  // springConfig={{ tension: 100, friction: 100 }}
+                >
+                  <Image
+                    source={{
+                      uri: `http://kawa.gumione.pro${product.file}`
+                    }}
+                    style={{
+                      flex: 1,
+                      height: scaleSize(154)
+                    }}
+                    resizeMethod="scale"
+                    resizeMode="contain"
+                  />
+                </Lightbox>
+              )}
               <View
                 style={{
                   position: "absolute",

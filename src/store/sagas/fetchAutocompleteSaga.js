@@ -5,7 +5,6 @@ import { GET_SEARCH } from "../actions/types";
 export function* fetchAutoCompleteSaga(item) {
   const { payload } = item;
   if (payload && payload.id) {
-    // console.log(payload);
     const response = yield call(
       fetch,
       `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
