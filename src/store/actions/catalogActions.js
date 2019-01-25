@@ -3,6 +3,7 @@ import {
   SET_SUBCATEGORIES,
   SET_DISHES,
   GET_CATEGORY,
+  GET_CATEGORIES,
   SET_PRODUCTS,
   CLEAR_PRODUCTS,
   CLEAR_SEARCHED_PRODUCTS,
@@ -14,6 +15,12 @@ import {
   GET_AUTOCOMPLETE,
   GET_SEARCHED_PRODUCTS
 } from "./types";
+
+export const getCategories = () => dispatch => {
+  dispatch({
+    type: GET_CATEGORIES
+  });
+};
 
 export const setCategories = categories => dispatch => {
   dispatch({

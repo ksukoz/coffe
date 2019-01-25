@@ -24,7 +24,8 @@ import {
   setCategories,
   setSubCategories,
   setDishes,
-  getProductsParams
+  getProductsParams,
+  getCategories
 } from "../../store/actions/catalogActions";
 
 import {
@@ -60,10 +61,15 @@ class HomeScreen extends Component {
       if (this.props.lang) {
         this.props.getAlphabet(this.props.lang, 0);
       }
-      this.props.setCategories();
-      this.props.setSubCategories();
-      this.props.setDishes();
+      this.props.getCategories();
+      // this.setState({ loading: true });
+      // this.props.setCategories();
+      // this.props.setSubCategories();
+      // this.props.setDishes();
     });
+    // this.props.setCategories();
+    // this.props.setSubCategories();
+    // this.props.setDishes();
     if (Platform.OS === "android") {
       Linking.getInitialURL().then(url => {
         this.navigate(url);
@@ -87,7 +93,7 @@ class HomeScreen extends Component {
     const routeName = route.split("/")[0];
 
     if (routeName === "kawa-share.surge.sh") {
-      navigate("People", { id });
+      navigate("ProductCard", { id });
     }
   };
 
@@ -521,6 +527,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setCategories: () => dispatch(setCategories()),
+  getCategories: () => dispatch(getCategories()),
   setSubCategories: () => dispatch(setSubCategories()),
   setDishes: () => dispatch(setDishes()),
   getProductsParams: category => dispatch(getProductsParams(category)),

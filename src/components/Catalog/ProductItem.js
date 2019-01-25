@@ -33,7 +33,7 @@ class ProductItem extends PureComponent {
         activeOpacity={0.9}
         onPress={() => {
           this.props.navigation.push("ProductCard", {
-            productId: item.id,
+            id: item.id,
             search: this.props.navigation.getParam("search", ""),
             searchPlaceholder:
               this.props.categories.filter(category => category.id === item.pid)

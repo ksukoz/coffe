@@ -82,7 +82,7 @@ class ProductCardScreen extends Component {
         this.props.searchFocused();
       }
 
-      this.props.getProductID(this.props.navigation.getParam("productId", "0"));
+      this.props.getProductID(this.props.navigation.getParam("id", "0"));
       StatusBar.setBackgroundColor("rgba(0,0,0,0)");
       StatusBar.setTranslucent(true);
     });
