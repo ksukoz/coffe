@@ -15,6 +15,7 @@ import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 import Lightbox from "react-native-lightbox";
 import Swiper from "react-native-swiper";
+import Carousel from "react-native-carousel-view";
 
 import MyWebView from "react-native-webview-autoheight";
 
@@ -25,12 +26,20 @@ import { updateCart, addToCart } from "../../store/actions/cartActions";
 import Share from "react-native-share";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
+const WINDOW_WIDTH = Dimensions.get("window").width;
+const urls = [
+  "https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg",
+  "https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg",
+  "https://www.gettyimages.ie/gi-resources/images/Homepage/Hero/UK/CMS_Creative_164657191_Kingfisher.jpg",
+  "https://www.w3schools.com/w3css/img_lights.jpg"
+];
 
 class AboutProduct extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      index: 0,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
@@ -96,31 +105,30 @@ ${
       </View>
     );
   }
-  claseCallback() {}
 
-  renderHeader(close) {
-    this.closeCallback = close;
-    return (
-      <TouchableOpacity onPress={close}>
-        <Text
-          style={{
-            color: this.textColor,
-            borderWidth: 1,
-            borderColor: this.textColor,
-            backgroundColor: this.bgColor,
-            padding: 8,
-            borderRadius: 3,
-            textAlign: "center",
-            marginTop: 20,
-            marginRight: 14,
-            alignSelf: "flex-end"
+  renderCarousel = () => (
+    <Carousel
+      width={375}
+      height={300}
+      initialPage={this.state.index}
+      indicatorAtBottom={true}
+      indicatorSize={20}
+      animate={false}
+      indicatorText="✽"
+      indicatorColor="red"
+      onPageChange={number => this.setState({ index: number })}
+    >
+      {this.props.productItem.file.map(url => (
+        <Image
+          style={{ width: 200, height: 200 }}
+          resizeMode="contain"
+          source={{
+            uri: `http://kawa.gumione.pro${url}`
           }}
-        >
-          CLOSE
-        </Text>
-      </TouchableOpacity>
-    );
-  }
+        />
+      ))}
+    </Carousel>
+  );
 
   onShare(id) {
     const shareOptions = {
@@ -153,7 +161,7 @@ ${
     }
 
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={"always"}>
         <View style={[styles.container, { marginBottom: scaleSize(8) }]}>
           <Card transparent style={{ backgroundColor: "transparent" }}>
             <CardItem
@@ -164,7 +172,7 @@ ${
                 textAlign: "center",
                 alignItems: "center"
               }}
-              onTouchStart={(e, state, context) => this.refs.modal.open()}
+              // onTouchStart={(e, state, context) => this.refs.modal.open()}
             >
               {product.new == 1 && Date.now() <= +`${product.new_date}000` ? (
                 <View style={styles.imgHit}>
@@ -177,92 +185,69 @@ ${
               ) : null}
 
               {product.file.length > 1 ? (
-                <Swiper
-                  // style={styles.wrapper}
-                  height={scaleSize(175)}
-                  keyboardShouldPersistTaps={"always"}
-                  onMomentumScrollBegin={(e, state, context) =>
-                    console.log(e, state, context)
-                  }
-                  onMomentumScrollEnd={(e, state, context) =>
-                    console.log(e, state, context)
-                  }
-                  dot={
-                    <View
-                      style={{
-                        backgroundColor: "rgba(0,0,0,.2)",
-                        width: 5,
-                        height: 5,
-                        borderRadius: 4,
-                        marginLeft: 3,
-                        marginRight: 3,
-                        marginTop: 3,
-                        marginBottom: 3
-                      }}
-                    />
-                  }
-                  activeDot={
-                    <View
-                      style={{
-                        backgroundColor: "#89a6aa",
-                        width: 8,
-                        height: 8,
-                        borderRadius: 4,
-                        marginLeft: 3,
-                        marginRight: 3,
-                        marginTop: 3,
-                        marginBottom: 3
-                      }}
-                    />
-                  }
-                  paginationStyle={{
-                    bottom: 0
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center"
                   }}
-                  loop
                 >
-                  {product.file.map(image => (
-                    <Lightbox
-                      style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
-                      navigator={this.props.navigator}
-                      onOpen={this.props.onImgPress}
-                      willClose={this.props.onImgClose}
-                      backgroundColor={"rgba(0,0,0,0.7)"}
-                      underlayColor={"transparent"}
-                      renderHeader={this.renderHeader}
-                      ref="modal"
+                  <View
+                    style={{
+                      flex: 0.5,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Carousel
+                      width={375}
+                      height={300}
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      initialPage={this.state.index}
+                      indicatorAtBottom={true}
+                      indicatorSize={20}
+                      animate={false}
+                      indicatorText="✽"
+                      indicatorColor="red"
+                      onPageChange={number => this.setState({ index: number })}
                     >
-                      {/* // <View> */}
-                      <TouchableWithoutFeedback style={{ zIndex: 2 }}>
-                        <Image
-                          source={{
-                            uri: `http://kawa.gumione.pro/${image}`
-                          }}
-                          style={{
-                            // flex: 1,
-                            height: scaleSize(154)
-                          }}
-                          resizeMethod="scale"
-                          resizeMode="contain"
-                        />
-                      </TouchableWithoutFeedback>
-                      {/* // </View> */}
-                    </Lightbox>
-                  ))}
-                </Swiper>
+                      {product.file.map(url => (
+                        <View key={url} style={{ width: 375, height: 300 }}>
+                          <Lightbox
+                            springConfig={{ tension: 15, friction: 7 }}
+                            swipeToDismiss={true}
+                            renderContent={() => this.renderCarousel()}
+                            style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
+                            navigator={this.props.navigator}
+                            onOpen={this.props.onImgPress}
+                            willClose={this.props.onImgClose}
+                            backgroundColor={"rgba(0,0,0,0.7)"}
+                            underlayColor={"transparent"}
+                          >
+                            <Image
+                              style={{ width: 375, height: 300, zIndex: 1 }}
+                              resizeMode="contain"
+                              source={{
+                                uri: `http://kawa.gumione.pro${url}`
+                              }}
+                            />
+                          </Lightbox>
+                        </View>
+                      ))}
+                    </Carousel>
+                  </View>
+                </View>
               ) : (
                 <Lightbox
                   style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
                   navigator={this.props.navigator}
-                  onOpen={
-                    // console.log(this.props.navigation)
-                    this.props.onImgPress
-                  }
+                  onOpen={this.props.onImgPress}
                   willClose={this.props.onImgClose}
                   backgroundColor={"rgba(0,0,0,0.7)"}
                   underlayColor={"transparent"}
-                  renderHeader={this.renderHeader}
-                  // ref="modal"
-                  // springConfig={{ tension: 100, friction: 100 }}
                 >
                   <Image
                     source={{
@@ -277,27 +262,29 @@ ${
                   />
                 </Lightbox>
               )}
-              <View
-                style={{
-                  position: "absolute",
-                  flex: 1,
-                  left: 0,
-                  right: 0,
-                  bottom: scaleSize(-20),
-                  top: scaleSize(20)
-                }}
-              >
-                <Image
-                  source={{
-                    uri: `http://kawa.gumione.pro${product.file}`
-                  }}
+              {product.file.length > 1 ? null : (
+                <View
                   style={{
-                    height: scaleSize(154)
+                    position: "absolute",
+                    flex: 1,
+                    left: 0,
+                    right: 0,
+                    bottom: scaleSize(-20),
+                    top: scaleSize(20)
                   }}
-                  resizeMethod="scale"
-                  resizeMode="contain"
-                />
-              </View>
+                >
+                  <Image
+                    source={{
+                      uri: `http://kawa.gumione.pro${product.file}`
+                    }}
+                    style={{
+                      height: scaleSize(154)
+                    }}
+                    resizeMethod="scale"
+                    resizeMode="contain"
+                  />
+                </View>
+              )}
               <TouchableOpacity
                 style={styles.shareBtn}
                 onPress={() => this.onShare(product.id)}
@@ -579,6 +566,7 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   shareBtn: {
+    zIndex: 5,
     position: "absolute",
     top: scaleSize(10),
     right: scaleSize(10)

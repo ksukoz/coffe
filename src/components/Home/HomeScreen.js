@@ -11,7 +11,9 @@ import {
   AsyncStorage,
   Image,
   Keyboard,
-  BackHandler
+  BackHandler,
+  Linking,
+  Platform
 } from "react-native";
 import { scaleSize } from "../../helpers/scaleSize";
 import LetterBar from "../common/LetterBar";
@@ -58,12 +60,39 @@ class HomeScreen extends Component {
       if (this.props.lang) {
         this.props.getAlphabet(this.props.lang, 0);
       }
+      this.props.setCategories();
+      this.props.setSubCategories();
+      this.props.setDishes();
     });
-    this.props.setCategories();
-    this.props.setSubCategories();
-    this.props.setDishes();
+    if (Platform.OS === "android") {
+      Linking.getInitialURL().then(url => {
+        this.navigate(url);
+      });
+    } else {
+      Linking.addEventListener("url", this.handleOpenURL);
+    }
     StatusBar.setBackgroundColor("rgba(0,0,0,0)");
     StatusBar.setTranslucent(true);
+  }
+
+  handleOpenURL = event => {
+    // D
+    this.navigate(event.url);
+  };
+  navigate = url => {
+    // E
+    const { navigate } = this.props.navigation;
+    const route = url.replace(/.*?:\/\//g, "");
+    const id = route.match(/\/([^\/]+)\/?$/)[1];
+    const routeName = route.split("/")[0];
+
+    if (routeName === "kawa-share.surge.sh") {
+      navigate("People", { id });
+    }
+  };
+
+  componentWillUnmount() {
+    Linking.removeEventListener("url", this.handleOpenURL);
   }
 
   componentWillReceiveProps(nextProps) {

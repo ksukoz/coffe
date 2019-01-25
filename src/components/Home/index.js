@@ -31,7 +31,7 @@ const Home = StackNavigator(
     HomeDishes: { screen: HomeDishes },
     Search: { screen: Search },
     Catalog: { screen: Catalog },
-    ProductCard: { screen: ProductCard },
+    ProductCard: { screen: ProductCard, path: "kawa-share.surge.sh/:user" },
     Delivery: { screen: Delivery },
     Cart: { screen: Cart },
     Order: { screen: Order }
