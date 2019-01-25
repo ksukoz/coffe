@@ -94,28 +94,20 @@ class OrderItem extends PureComponent {
         <View style={{ flex: 1 }}>
           <View
             style={{
-              // borderBottomWidth: 1,
-              // borderColor: "#89a6aa",
               paddingBottom: scaleSize(8)
             }}
           >
             <Text style={styles.productName}>{item.name}</Text>
             <Text style={[styles.productSort, {}]}>
-              {this.props.categories.filter(
-                category => category.id === item.pid
-              ).length > 0
-                ? this.props.categories.filter(
-                    category => category.id === item.pid
-                  )[0].name
-                : ""}
+              {item.cname}
               {item.pid > 7
                 ? ""
-                : `, ${item.sort_human} ${
+                : `, ${item.sort} ${
                     item.arabic_percent ? item.arabic_percent + "%" : ""
                   }`}
             </Text>
             <Text style={styles.productRoast}>
-              {item.pid > 7 ? "" : `Обжарка ${item.roast_human}`}
+              {item.pid > 7 ? "" : `Обжарка ${item.roast}`}
             </Text>
             <Text style={styles.productRoast}>Код товара {item.code}</Text>
           </View>

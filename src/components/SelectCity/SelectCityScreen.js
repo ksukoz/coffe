@@ -338,12 +338,17 @@ export default class SelectCityScreen extends Component {
     this.storeData("user_region_id", this.state.region_id);
     this.storeData("user_city_name", name);
     this.storeData("user_region_name", this.state.region_name);
-    this.props.navigation.navigate(
-      this.props.navigation.getParam("linkName", "ProfileEdit"),
-      {
-        productId: this.props.navigation.getParam("productId", "0")
-      }
-    );
+    if (this.props.navigation.getParam("linkName")) {
+      this.props.navigation.navigate(
+        this.props.navigation.getParam("linkName")
+      );
+    }
+    // this.props.navigation.navigate(
+    //   this.props.navigation.getParam("linkName", "ProfileEdit"),
+    //   {
+    //     productId: this.props.navigation.getParam("productId", "0")
+    //   }
+    // );
   };
 
   handleBackPress = () => {

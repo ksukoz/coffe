@@ -14,7 +14,6 @@ import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
 import StarRating from "react-native-star-rating";
 import Lightbox from "react-native-lightbox";
-import Swiper from "react-native-swiper";
 import Carousel from "react-native-carousel-view";
 
 import MyWebView from "react-native-webview-autoheight";
@@ -26,7 +25,7 @@ import { updateCart, addToCart } from "../../store/actions/cartActions";
 import Share from "react-native-share";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
-const WINDOW_WIDTH = Dimensions.get("window").width;
+const SCREEN_WIDTH = Dimensions.get("window").width;
 const urls = [
   "https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg",
   "https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg",
@@ -39,15 +38,15 @@ class AboutProduct extends Component {
     super(props);
 
     this.state = {
-      index: 0,
+      // index: 0,
       loading: true
     };
     Input.defaultProps.selectionColor = "#000";
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps);
+  // }
 
   _renderHeader(item, expanded) {
     return (
@@ -108,24 +107,25 @@ ${
 
   renderCarousel = () => (
     <Carousel
-      width={375}
-      height={300}
+      width={SCREEN_WIDTH}
+      height={SCREEN_HEIGHT}
       initialPage={this.state.index}
       indicatorAtBottom={true}
       indicatorSize={20}
       animate={false}
-      indicatorText="✽"
-      indicatorColor="red"
-      onPageChange={number => this.setState({ index: number })}
+      indicatorColor="#89a6aa"
+      // onPageChange={number => this.setState({ index: number })}
     >
       {this.props.productItem.file.map(url => (
-        <Image
-          style={{ width: 200, height: 200 }}
-          resizeMode="contain"
-          source={{
-            uri: `http://kawa.gumione.pro${url}`
-          }}
-        />
+        <View>
+          <Image
+            style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT }}
+            resizeMode="contain"
+            source={{
+              uri: `http://kawa.gumione.pro${url}`
+            }}
+          />
+        </View>
       ))}
     </Carousel>
   );
@@ -200,8 +200,8 @@ ${
                     }}
                   >
                     <Carousel
-                      width={375}
-                      height={300}
+                      width={SCREEN_WIDTH}
+                      height={scaleSize(175)}
                       style={{
                         justifyContent: "center",
                         alignItems: "center"
@@ -210,15 +210,20 @@ ${
                       indicatorAtBottom={true}
                       indicatorSize={20}
                       animate={false}
-                      indicatorText="✽"
-                      indicatorColor="red"
-                      onPageChange={number => this.setState({ index: number })}
+                      indicatorColor="#89a6aa"
+                      // onPageChange={number => this.setState({ index: number })}
                     >
                       {product.file.map(url => (
-                        <View key={url} style={{ width: 375, height: 300 }}>
+                        <View
+                          key={url}
+                          style={{
+                            width: SCREEN_WIDTH,
+                            height: scaleSize(170)
+                          }}
+                        >
                           <Lightbox
                             springConfig={{ tension: 15, friction: 7 }}
-                            swipeToDismiss={true}
+                            swipeToDismiss={false}
                             renderContent={() => this.renderCarousel()}
                             style={{ flex: 1, flexGrow: 1, zIndex: 2 }}
                             navigator={this.props.navigator}
@@ -228,7 +233,11 @@ ${
                             underlayColor={"transparent"}
                           >
                             <Image
-                              style={{ width: 375, height: 300, zIndex: 1 }}
+                              style={{
+                                width: SCREEN_WIDTH,
+                                height: scaleSize(154),
+                                zIndex: 1
+                              }}
                               resizeMode="contain"
                               source={{
                                 uri: `http://kawa.gumione.pro${url}`

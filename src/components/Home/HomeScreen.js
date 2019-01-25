@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
-  AsyncStorage,
+  ScrollView,
   Image,
   Keyboard,
   BackHandler,
@@ -62,14 +62,7 @@ class HomeScreen extends Component {
         this.props.getAlphabet(this.props.lang, 0);
       }
       this.props.getCategories();
-      // this.setState({ loading: true });
-      // this.props.setCategories();
-      // this.props.setSubCategories();
-      // this.props.setDishes();
     });
-    // this.props.setCategories();
-    // this.props.setSubCategories();
-    // this.props.setDishes();
     if (Platform.OS === "android") {
       Linking.getInitialURL().then(url => {
         this.navigate(url);
@@ -112,7 +105,7 @@ class HomeScreen extends Component {
 
   renderLoadingView() {
     return (
-      <View
+      <ScrollView
         style={{
           width: "100%",
           flex: 1
@@ -128,7 +121,7 @@ class HomeScreen extends Component {
             height: 80
           }}
         />
-      </View>
+      </ScrollView>
     );
   }
 

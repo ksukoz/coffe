@@ -29,3 +29,7 @@ export {
   fetchUserSaga,
   watchUserSaga // updateCartSaga, // watchCartSaga
 } from "./userSaga";
+export {
+  fetchDeliverySaga,
+  watchDeliverySaga // updateCartSaga, // watchCartSaga
+} from "./deliverySaga";

@@ -11,14 +11,21 @@ import {
   FlatList,
   ScrollView,
   BackHandler,
+  AsyncStorage,
+  Platform,
   StyleSheet
 } from "react-native";
+
+import RadioGroup, { Radio } from "react-native-radio-input";
 
 import { getCart } from "../../store/actions/cartActions";
 import { getUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
 
-import { searchFocused } from "../../store/actions/commonActions";
+import {
+  searchFocused,
+  getDeliveryCost
+} from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 import OrderItem from "./OrderItem";
@@ -26,7 +33,7 @@ import SearchBar from "../common/SearchBar";
 
 import TextInputMask from "react-native-text-input-mask";
 
-// import KawaIcon from "../KawaIcon";
+import KawaIcon from "../KawaIcon";
 
 Input.defaultProps.selectionColor = "#ea9308";
 TextInputMask.defaultProps.selectionColor = "#ea9308";
@@ -47,13 +54,20 @@ class OrderScreen extends Component {
         if (this.props.navigation.getParam("itemId")) {
           this.props.getProductID(this.props.navigation.getParam("itemId"));
         }
+        this.props.getCart();
+        this.props.getUser();
         BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
       }
     );
     this.state = {
       search: "",
       focus: false,
-      loading: true
+      loading: true,
+      city: "",
+      email: "",
+      firstname: "",
+      lastname: "",
+      phone: ""
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -73,9 +87,6 @@ class OrderScreen extends Component {
   }
 
   componentDidMount() {
-    // console.log(this.props);
-    this.props.getCart();
-    this.props.getUser();
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload =>
@@ -84,15 +95,51 @@ class OrderScreen extends Component {
           this.handleBackPress
         )
     );
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "didFocus",
+      payload => {
+        this.retrieveData("user_region_name");
+        this.retrieveData("user_city_name");
+      }
+    );
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (nextProps.user) {
+      this.setState({
+        // city: nextProps.user.city,
+        email: nextProps.user.email,
+        firstname: nextProps.user.firstname,
+        lastname: nextProps.user.lastname,
+        phone: nextProps.user.phone
+      });
+    }
     if (nextProps.end || nextProps.end === false) {
       this.setState({ loading: false, end: nextProps.end });
     }
   }
 
   handleEnd = () => {};
+
+  retrieveData = async name => {
+    try {
+      const value = await AsyncStorage.getItem(name);
+
+      if (value) {
+        console.log(value);
+        if (name == "user_city_name") {
+          this.setState(
+            {
+              city: value
+            },
+            () => this.props.getDeliveryCost(value)
+          );
+        }
+      }
+      this.setState({ loading: false });
+    } catch (error) {}
+  };
 
   getStyles = index => {
     this.setState({ stylesIndex: index });
@@ -228,7 +275,11 @@ class OrderScreen extends Component {
                 Оформление заказа
               </Text>
               <View style={styles.block}>
-                <Input style={styles.profileInput}>efimoff@gmail.com</Input>
+                <Input
+                  style={styles.profileInput}
+                  placeholder={"Эл.почта"}
+                  value={this.state.email}
+                />
                 <TextInputMask
                   placeholder={"+38 (___) ___ __ __"}
                   placeholderTextColor="#000"
@@ -237,11 +288,216 @@ class OrderScreen extends Component {
                   // onBlur={() => this.onUnFocus('phone')}
                   // onFocus={() => this.onFocus('phone')}
                   style={styles.profileInputPhone}
+                  value={this.state.phone}
+                />
+                <Input
+                  style={styles.profileInput}
+                  placeholder={"Имя"}
+                  value={this.state.firstname}
+                />
+                <Input
+                  style={styles.profileInput}
+                  placeholder={"Фамилия"}
+                  value={this.state.lastname}
+                />
+                <View style={styles.cardFullCity}>
+                  <View
+                    style={{
+                      width: "100%",
+                      paddingLeft: 0,
+                      paddingRight: 0,
+                      marginLeft: 0,
+                      marginRight: 0
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.props.navigation.navigate("SelectRegionScreen", {
+                          linkName: "Order"
+                        })
+                      }
+                      style={{
+                        paddingLeft: scaleSize(15),
+                        paddingRight: scaleSize(15),
+                        width: "100%",
+                        flexDirection: "row"
+                      }}
+                    >
+                      <Text
+                        onFocus={() =>
+                          this.props.navigation.navigate("SelectRegionScreen", {
+                            linkName: "Order"
+                          })
+                        }
+                        style={{
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          height: scaleSize(40),
+                          fontSize: scaleSize(20),
+                          color: "rgba(255, 255, 255, .7)",
+                          width: "100%",
+                          paddingLeft: 0,
+                          marginBottom: scaleSize(25),
+
+                          borderBottomColor: "#fff",
+                          borderBottomWidth: 1
+                        }}
+                      >
+                        {this.state.city}
+                      </Text>
+                      <KawaIcon
+                        style={{
+                          color: "#fff",
+                          position: "absolute",
+                          right: scaleSize(15),
+                          top: scaleSize(10)
+                        }}
+                        name={"arrow-next"}
+                        size={scaleSize(14)}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
                 >
-                  +38 (
-                </TextInputMask>
-                <Input style={styles.profileInput}>Максим Ефимов</Input>
-                <Input style={styles.profileInput}>Максим Ефимов</Input>
+                  <RadioGroup
+                    getChecked={function() {}}
+                    RadioGroupStyle={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      flexWrap: "wrap",
+                      borderRadius: 0
+                    }}
+                    RadioStyle={{
+                      paddingLeft: 0,
+                      marginRight: 20,
+                      marginLeft: 0,
+                      borderRadius: 0
+                    }}
+                    IconStyle={{
+                      borderRadius: 0,
+                      width: scaleSize(18),
+                      height: scaleSize(18),
+                      fontSize: scaleSize(18),
+                      alignSelf: "flex-start"
+                      // marginRight: scaleSize(10)
+                    }}
+                  >
+                    <Radio
+                      label={"VISA, MasterCard"}
+                      value={"VISA, MasterCard"}
+                      iconName={"check-box"}
+                    />
+                    <View
+                      style={{
+                        alignSelf: "center"
+                      }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Image
+                          source={require("../../static/img/visa.png")}
+                          style={{
+                            width: scaleSize(47),
+                            height: scaleSize(15),
+                            marginRight: scaleSize(24)
+                          }}
+                        />
+                        <Image
+                          source={require("../../static/img/mastercard.png")}
+                          style={{
+                            width: scaleSize(31),
+                            height: scaleSize(18)
+                          }}
+                        />
+                      </View>
+                    </View>
+                    <Radio
+                      label={"Privat 24"}
+                      value={"Privat 24"}
+                      iconName={"check-box"}
+                    />
+                    <View
+                      style={{
+                        alignSelf: "center"
+                      }}
+                    >
+                      <Image
+                        source={require("../../static/img/privat24.png")}
+                        style={{ width: scaleSize(102), height: scaleSize(20) }}
+                      />
+                    </View>
+                    {Platform.OS === "ios" ? (
+                      <Radio
+                        label={"Apple Pay"}
+                        value={"Apple Pay"}
+                        iconName={"check-box"}
+                      />
+                    ) : (
+                      <Radio
+                        label={"Google Pay"}
+                        value={"Google Pay"}
+                        iconName={"check-box"}
+                      />
+                    )}
+                    <View
+                      style={{
+                        alignSelf: "center",
+                        justifyContent: "flex-end",
+                        width: scaleSize(100)
+                      }}
+                    >
+                      {Platform.OS === "ios" ? (
+                        <Image
+                          source={require("../../static/img/apay.png")}
+                          style={{
+                            alignSelf: "flex-end",
+                            width: scaleSize(50),
+                            height: scaleSize(23)
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          source={require("../../static/img/gpay.png")}
+                          style={{
+                            alignSelf: "flex-end",
+                            width: scaleSize(58),
+                            height: scaleSize(23)
+                          }}
+                        />
+                      )}
+                    </View>
+
+                    <Radio
+                      label={"Masterpass"}
+                      value={"Masterpass"}
+                      iconName={"check-box"}
+                    />
+                    <View
+                      style={{
+                        alignSelf: "center"
+                      }}
+                    >
+                      <Image
+                        source={require("../../static/img/masterpass2.png")}
+                        style={{ width: scaleSize(30), height: scaleSize(24) }}
+                      />
+                    </View>
+                    <Radio
+                      label={"Безналичная оплата, счет на Email"}
+                      value={"Безналичная оплата, счет на Email"}
+                      iconName={"check-box"}
+                    />
+                  </RadioGroup>
+                </View>
               </View>
             </View>
 
@@ -250,7 +506,8 @@ class OrderScreen extends Component {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 paddingLeft: scaleSize(10),
-                paddingRight: scaleSize(10)
+                paddingRight: scaleSize(10),
+                marginBottom: scaleSize(15)
               }}
             >
               <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
@@ -272,7 +529,8 @@ class OrderScreen extends Component {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 paddingLeft: scaleSize(10),
-                paddingRight: scaleSize(10)
+                paddingRight: scaleSize(10),
+                marginBottom: scaleSize(15)
               }}
             >
               <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
@@ -285,7 +543,8 @@ class OrderScreen extends Component {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 paddingLeft: scaleSize(10),
-                paddingRight: scaleSize(10)
+                paddingRight: scaleSize(10),
+                marginBottom: scaleSize(15)
               }}
             >
               <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
@@ -361,7 +620,8 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingLeft: 0,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    marginBottom: scaleSize(20)
   },
   btn: {
     marginLeft: scaleSize(10),
@@ -379,21 +639,24 @@ const styles = StyleSheet.create({
     paddingBottom: scaleSize(7),
     paddingRight: scaleSize(7),
     paddingLeft: scaleSize(7)
-    // fontWeight: "400"
   }
 });
 
 const mapStateToProps = state => ({
+  city: state.common.city,
+  delivery: state.common.delivery,
   cart: state.cart.items,
   product: state.catalog.product,
   categories: state.catalog.categories,
   subcategories: state.catalog.subcategories,
-  dishes: state.catalog.dishes
+  dishes: state.catalog.dishes,
+  user: state.user.info
 });
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
   getProductID: id => dispatch(getProductID(id)),
+  getDeliveryCost: city => dispatch(getDeliveryCost(city)),
   searchFocused: () => dispatch(searchFocused()),
   getUser: () => dispatch(getUser())
 });

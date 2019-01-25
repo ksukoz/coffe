@@ -63,9 +63,7 @@ class ProductCardScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      JSON.stringify(prevProps.product) !== JSON.stringify(this.props.product)
-    ) {
+    if (prevProps.product !== this.props.product) {
       this.setState({ loading: false, productItem: this.props.product });
     }
     if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {

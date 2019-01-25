@@ -13,7 +13,7 @@ import { Text, Container, List, ListItem, Content } from "native-base";
 const routes = {
   1: { name: "Главная", route: "Home", icon: "house" },
   2: { name: "Личные данные", route: "Profile", icon: "menu-personal-info" },
-  3: { name: "Корзина", route: "Home", icon: "menu-cart" },
+  3: { name: "Корзина", route: "Cart", icon: "menu-cart" },
   4: { name: "Мои заказы", route: "Home", icon: "menu-my-orders" },
   5: { name: "Мои оценки", route: "Home", icon: "menu-my-appraisal" },
   6: { name: "Добавлено мной", route: "Home", icon: "menu-my_addition" },

@@ -1,6 +1,7 @@
 import {
   GET_LETTERS,
   GET_DELIVERY_COST,
+  SET_DELIVERY_COST,
   GET_SEARCH_FOCUS,
   SET_LANG,
   GET_LANG,
@@ -22,20 +23,18 @@ export const clearAlphabet = () => dispatch => {
   });
 };
 
-export const getDelivery = cost => dispatch => {
+export const setDelivery = cost => dispatch => {
   dispatch({
-    type: GET_DELIVERY_COST,
+    type: SET_DELIVERY_COST,
     payload: cost
   });
 };
 
 export const getDeliveryCost = city => dispatch => {
-  dispatch(getDelivery(city, 1, 1));
-  dispatch(getDelivery(city, 1, 0));
-  dispatch(getDelivery(city, 2, 1));
-  dispatch(getDelivery(city, 2, 0));
-  dispatch(getDelivery(city, 3, 1));
-  dispatch(getDelivery(city, 3, 0));
+  dispatch({
+    type: GET_DELIVERY_COST,
+    payload: city
+  });
 };
 
 export const searchFocused = () => dispatch => {

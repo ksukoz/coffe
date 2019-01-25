@@ -56,7 +56,8 @@ const HomeScreenRouter = DrawerNavigator(
     RecipeProductScreen: { screen: RecipeProduct },
     RecipeFavoriteScreen: { screen: RecipeFavorite },
     RecipeFeedbackScreen: { screen: RecipeFeedback },
-    Order: { screen: Order }
+    Order: { screen: Order },
+    Cart: { screen: Cart }
   },
   {
     contentComponent: props => <SideBar {...props} />,

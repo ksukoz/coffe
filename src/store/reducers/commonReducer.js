@@ -2,6 +2,7 @@ import {
   GET_MESSAGE,
   GET_LETTERS,
   GET_DELIVERY_COST,
+  SET_DELIVERY_COST,
   SET_LANG,
   SET_SEARCH,
   GET_SEARCH,
@@ -15,7 +16,8 @@ const initialState = {
   id: 0,
   search: "",
   focus: false,
-  delivery: []
+  delivery: [],
+  city: ""
 };
 
 export default function(state = initialState, action) {
@@ -30,13 +32,18 @@ export default function(state = initialState, action) {
         ...state,
         letters: action.payload
       };
-    case GET_DELIVERY_COST:
+    case SET_DELIVERY_COST:
       return {
         ...state,
         delivery:
           state.delivery.length === 6
             ? [...action.payload]
             : [...state.delivery, ...action.payload]
+      };
+    case GET_DELIVERY_COST:
+      return {
+        ...state,
+        city: action.payload
       };
     case SET_LANG:
       return {

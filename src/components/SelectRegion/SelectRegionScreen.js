@@ -288,10 +288,13 @@ export default class SelectRegionScreen extends Component {
 
   setRegion = (id, name) => {
     this.storeData("region_id", id);
-
-    this.props.navigation.navigate("SelectCityScreen", {
-      linkName: "DeliveryScreen"
-    });
+    if (this.props.navigation.getParam("linkName")) {
+      this.props.navigation.navigate("SelectCityScreen", {
+        linkName: this.props.navigation.getParam("linkName")
+      });
+    } else {
+      this.props.navigation.navigate("SelectCityScreen");
+    }
 
     // this.storeData("region_name", name);
   };
