@@ -45,6 +45,7 @@ class HomeScreen extends Component {
 			subcategories: false,
 			dishes: false,
 			loading: true,
+			link: true,
 			focus: false,
 			productId: ''
 		};
@@ -52,44 +53,52 @@ class HomeScreen extends Component {
 	}
 
 	componentDidMount() {
-		this.props.navigation.addListener('didFocus', (payload) => {
-			if (this.props.categories.length > 0) {
-				this.setState({ loading: false });
+		this.props.navigation
+			? this.props.navigation.addListener('didFocus', (payload) => {
+					if (this.props.categories.length > 0) {
+						this.setState({ loading: false });
+					}
+					if (this.props.focus) {
+						this.props.searchFocused();
+					}
+					if (this.props.lang) {
+						this.props.getAlphabet(this.props.lang, 0);
+					}
+					this.props.getCategories();
+				})
+			: '';
+		if (
+			this.state.link &&
+			this.props.categories.length > 0 &&
+			this.props.subcategories.length > 0 &&
+			this.props.dishes.length > 0
+		) {
+			if (Platform.OS === 'android') {
+				Linking.getInitialURL().then((url) => {
+					this.navigate(url);
+				});
+			} else {
+				Linking.addEventListener('url', this.handleOpenURL);
 			}
-			if (this.props.focus) {
-				this.props.searchFocused();
-			}
-			if (this.props.lang) {
-				this.props.getAlphabet(this.props.lang, 0);
-			}
-			this.props.getCategories();
-		});
-		InteractionManager.runAfterInteractions(() => {
-			if (this.props.categories.length > 0) {
+		}
+		StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+		StatusBar.setTranslucent(true);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			this.state.link &&
+			this.props.categories.length > 0 &&
+			this.props.subcategories.length > 0 &&
+			this.props.dishes.length > 0
+		) {
+			this.setState({ link: false }, () => {
 				if (Platform.OS === 'android') {
 					Linking.getInitialURL().then((url) => {
 						this.navigate(url);
 					});
 				} else {
 					Linking.addEventListener('url', this.handleOpenURL);
-				}
-			}
-		});
-		StatusBar.setBackgroundColor('rgba(0,0,0,0)');
-		StatusBar.setTranslucent(true);
-	}
-
-	componentDidUpdate(prevProps) {
-		if (prevProps.categories.length === 0 && this.props.categories.length > 0) {
-			InteractionManager.runAfterInteractions(() => {
-				if (this.props.categories.length > 0) {
-					if (Platform.OS === 'android') {
-						Linking.getInitialURL().then((url) => {
-							this.navigate(url);
-						});
-					} else {
-						Linking.addEventListener('url', this.handleOpenURL);
-					}
 				}
 			});
 		}
@@ -515,6 +524,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
 	categories: state.catalog.categories,
 	subcategories: state.catalog.subcategories,
+	dishes: state.catalog.dishes,
 	focus: state.common.focus,
 	letters: state.common.letters
 });
