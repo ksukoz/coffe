@@ -45,7 +45,7 @@ class AboutProduct extends Component {
 	}
 
 	// componentWillReceiveProps(nextProps) {
-	//   console.log(nextProps);
+	//
 	// }
 
 	_renderHeader(item, expanded) {

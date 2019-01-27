@@ -60,7 +60,6 @@ class DeliveryScreen extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// console.error(nextProps.delivery);
 		if (nextProps.delivery) {
 			this.setState({ delivery: nextProps.delivery });
 		}

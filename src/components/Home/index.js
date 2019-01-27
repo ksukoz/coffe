@@ -14,7 +14,7 @@ import MyCoffee from '../MyCoffee/index.js';
 import Info from '../Info/index.js';
 import Delivery from '../Delivery/index.js';
 import SideBar from '../SideBar.js';
-import { DrawerNavigator, StackNavigator } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 import { Dimensions } from 'react-native';
 import RecipesMain from '../Recipes/Main/index.js';
 import RecipeSearch from '../Recipes/Search/index.js';
@@ -27,7 +27,7 @@ import Order from '../Order/index.js';
 
 const prefix = 'http://';
 
-const Home = StackNavigator(
+const Home = createStackNavigator(
 	{
 		Home: { screen: HomeScreen },
 		HomeOther: { screen: HomeOther },
@@ -44,7 +44,7 @@ const Home = StackNavigator(
 	}
 );
 
-const HomeScreenRouter = DrawerNavigator(
+const HomeScreenRouter = createDrawerNavigator(
 	{
 		Home: { screen: Home },
 		Profile: { screen: Profile },
