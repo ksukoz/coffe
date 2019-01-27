@@ -172,11 +172,7 @@ class SearchScreen extends Component {
 											)
 										: false}
 							ListFooterComponent={() =>
-								this.state.loading ? (
-									<ActivityIndicator size="large" color="#89a6aa" animating />
-								) : (
-									false
-								)}
+								!this.state.end ? <ActivityIndicator size="large" color="#89a6aa" animating /> : false}
 							onEndReachedThreshold={0.1}
 							initialNumToRender={6}
 							removeClippedSubviews={true}
