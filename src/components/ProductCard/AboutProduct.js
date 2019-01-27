@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-	View,
-	ScrollView,
-	TouchableOpacity,
-	Dimensions,
-	Image,
-	TouchableWithoutFeedback,
-	StyleSheet,
-	findNodeHandle
-} from 'react-native';
+import { View, ScrollView, TouchableOpacity, Dimensions, Image, StyleSheet, findNodeHandle } from 'react-native';
 import { Text, Input, Accordion, Card, CardItem } from 'native-base';
 import KawaIcon from '../KawaIcon';
 import StarRating from 'react-native-star-rating';
@@ -101,31 +92,6 @@ ${item.pid == '3' || item.pid == '4' ? `<p>Количество: ${item.quantity
 		);
 	}
 
-	renderCarousel = () => (
-		<Carousel
-			width={SCREEN_WIDTH - scaleSize(20)}
-			height={SCREEN_HEIGHT}
-			initialPage={this.state.index}
-			indicatorAtBottom={true}
-			indicatorSize={20}
-			animate={false}
-			indicatorColor="#89a6aa"
-			onPageChange={(number) => this.setState({ index: number })}
-		>
-			{this.props.productItem.file.map((url) => (
-				<View>
-					<Image
-						style={{ width: SCREEN_WIDTH - scaleSize(20), height: -scaleSize(20) }}
-						resizeMode="contain"
-						source={{
-							uri: `http://kawa.gumione.pro${url}`
-						}}
-					/>
-				</View>
-			))}
-		</Carousel>
-	);
-
 	onShare(id) {
 		const shareOptions = {
 			title: `Поделиться ссылкой`,
@@ -194,7 +160,7 @@ ${item.pid == '3' || item.pid == '4' ? `<p>Количество: ${item.quantity
 										}}
 									>
 										<Carousel
-											width={SCREEN_WIDTH - scaleSize(20)}
+											width={SCREEN_WIDTH - scaleSize(50)}
 											height={scaleSize(175)}
 											style={{
 												justifyContent: 'center',
@@ -206,19 +172,55 @@ ${item.pid == '3' || item.pid == '4' ? `<p>Количество: ${item.quantity
 											animate={false}
 											indicatorColor="#89a6aa"
 											onPageChange={(number) => this.setState({ index: number })}
+											ref="carousel"
+											onScroll={() =>
+												this.refs.carousel.props.onPageChange((number) =>
+													this.setState({ index: number })
+												)}
 										>
 											{product.file.map((url) => (
 												<View
 													key={url}
 													style={{
-														width: SCREEN_WIDTH,
+														width: SCREEN_WIDTH - scaleSize(50),
 														height: scaleSize(170)
 													}}
 												>
 													<Lightbox
-														springConfig={{ tension: 15, friction: 7 }}
+														springConfig={{ tension: 15, friction: 7, zIndex: 2 }}
 														swipeToDismiss={false}
-														renderContent={() => this.renderCarousel()}
+														renderContent={() => (
+															<Carousel
+																width={SCREEN_WIDTH - scaleSize(20)}
+																height={SCREEN_HEIGHT}
+																initialPage={this.state.index}
+																indicatorAtBottom={true}
+																indicatorSize={20}
+																animate={false}
+																indicatorColor="#89a6aa"
+																onPageChange={(number) =>
+																	this.setState({ index: number })}
+																onScroll={() =>
+																	this.refs.carousel.props.onPageChange((number) =>
+																		this.setState({ index: number })
+																	)}
+															>
+																{this.props.productItem.file.map((url) => (
+																	<View>
+																		<Image
+																			style={{
+																				width: SCREEN_WIDTH - scaleSize(20),
+																				height: SCREEN_HEIGHT - scaleSize(20)
+																			}}
+																			resizeMode="contain"
+																			source={{
+																				uri: `http://kawa.gumione.pro${url}`
+																			}}
+																		/>
+																	</View>
+																))}
+															</Carousel>
+														)}
 														style={{ flex: 1, flexGrow: 1 }}
 														navigator={this.props.navigator}
 														onOpen={this.props.onImgPress}
@@ -228,7 +230,7 @@ ${item.pid == '3' || item.pid == '4' ? `<p>Количество: ${item.quantity
 													>
 														<Image
 															style={{
-																width: SCREEN_WIDTH - scaleSize(20),
+																width: SCREEN_WIDTH - scaleSize(50),
 																height: scaleSize(154),
 																zIndex: 1
 															}}
@@ -451,7 +453,11 @@ ${item.pid == '3' || item.pid == '4' ? `<p>Количество: ${item.quantity
 								</TouchableOpacity>
 							</View>
 							<View>
-								<TouchableOpacity onPress={this.props.onPressBuyButton} style={[ styles.btn ]}>
+								<TouchableOpacity
+									onPress={this.props.onPressBuyButton}
+									style={[ styles.btn ]}
+									activeOpacity={0.9}
+								>
 									<Text style={styles.btnText}>КУПИТЬ СЕЙЧАС</Text>
 								</TouchableOpacity>
 							</View>

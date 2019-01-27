@@ -20,6 +20,7 @@ import AboutProduct from './AboutProduct';
 import CoffeeCard from './CoffeeCard';
 
 import { getProductID } from '../../store/actions/catalogActions';
+import { addToCart } from '../../store/actions/cartActions';
 import { searchFocused } from '../../store/actions/commonActions';
 
 import { scaleSize } from '../../helpers/scaleSize';
@@ -546,6 +547,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	getProductID: (id) => dispatch(getProductID(id)),
+	addToCart: (id) => dispatch(addToCart(id)),
 	searchFocused: () => dispatch(searchFocused())
 });
 

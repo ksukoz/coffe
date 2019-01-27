@@ -108,10 +108,14 @@ class OrderScreen extends Component {
 			});
 		}
 		if (nextProps.cart && nextProps.cart.length > 0 && this.props.navigation.getParam('itemId')) {
+			console.log(nextProps.cart.filter((item) => item.id === this.props.navigation.getParam('itemId'))[0]);
 			this.setState({
 				loading: false,
 				product: nextProps.cart.filter((item) => item.id === this.props.navigation.getParam('itemId'))[0]
 			});
+		}
+		if (nextProps.focus || !nextProps.focus) {
+			this.setState({ focus: nextProps.focus });
 		}
 	}
 
@@ -194,7 +198,7 @@ class OrderScreen extends Component {
 									<OrderItem
 										cart={this.props.cart}
 										product={true}
-										item={this.props.product}
+										item={product}
 										categories={categories}
 									/>
 								</View>
@@ -1155,6 +1159,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
 	city: state.common.city,
+	focus: state.common.focus,
 	delivery: state.common.delivery,
 	cart: state.cart.items,
 	product: state.catalog.product,

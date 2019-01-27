@@ -22,22 +22,6 @@ class CartItem extends PureComponent {
     };
   }
 
-  // onDeletePressHandler = id => {
-  //   Alert.alert(
-  //     "Вы удалили",
-  //     "My Alert Msg",
-  //     [
-  //       { text: "OK", onPress: () => this.props.updateCart(id, 0) },
-  //       {
-  //         text: "Отмена",
-  //         onPress: () => {},
-  //         style: "destructive"
-  //       }
-  //     ],
-  //     { cancelable: false }
-  //   );
-  // };
-
   render() {
     const { cart, item } = this.props;
 
