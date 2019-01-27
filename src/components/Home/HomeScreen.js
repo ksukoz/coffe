@@ -148,6 +148,7 @@ class HomeScreen extends Component {
 						flex: 1,
 						justifyContent: 'center',
 						alignItems: 'center',
+						alignSelf: 'center',
 						height: 80
 					}}
 				/>

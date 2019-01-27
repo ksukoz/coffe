@@ -84,17 +84,14 @@ class OrderScreen extends Component {
 		this._willBlurSubscription = this.props.navigation.addListener('willBlur', (payload) =>
 			BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
 		);
-		this._willBlurSubscription = this.props.navigation.addListener('didFocus', (payload) => {
-			this.retrieveData('user_region_name');
-			this.retrieveData('user_city_name');
-		});
+
+		this.retrieveData('user_region_name');
+		this.retrieveData('user_city_name');
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
 		if (nextProps.user) {
 			this.setState({
-				// city: nextProps.user.city,
 				email: nextProps.user.email,
 				firstname: nextProps.user.firstname,
 				lastname: nextProps.user.lastname,
@@ -113,7 +110,6 @@ class OrderScreen extends Component {
 			const value = await AsyncStorage.getItem(name);
 
 			if (value) {
-				console.log(value);
 				if (name == 'user_city_name') {
 					this.setState(
 						{
@@ -142,29 +138,6 @@ class OrderScreen extends Component {
 		const { cart, product } = this.props;
 		const filteredCart = cart && product ? cart.filter((cartItem) => cartItem.id === product.id) : [];
 
-		// if (
-		//   this.props.products.length === 0 &&
-		//   !this.state.loading &&
-		//   this.state.end
-		// ) {
-		//   notFound = (
-		//     <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
-		//       <KawaIcon
-		//         color={"#f8f8f8"}
-		//         name={"info"}
-		//         size={scaleSize(52)}
-		//         style={{ marginBottom: scaleSize(16) }}
-		//       />
-		//       <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
-		//         Ничего не найдено
-		//       </Text>
-		//       <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
-		//         Попробуйте уточнить свой запрос
-		//       </Text>
-		//     </View>
-		//   );
-		// }
-
 		return (
 			<Container style={styles.default}>
 				<StatusBar
@@ -191,7 +164,7 @@ class OrderScreen extends Component {
 						style={{ marginBottom: scaleSize(20) }}
 						navigation={this.props.navigation}
 					/>
-					<ScrollView style={{ marginTop: scaleSize(99) }}>
+					<Content style={{ marginTop: scaleSize(99) }}>
 						{this.props.navigation.getParam('itemId') && this.props.product && filteredCart[0] ? (
 							<View
 								style={{
@@ -337,27 +310,31 @@ class OrderScreen extends Component {
 											paddingLeft: 0,
 											marginRight: 20,
 											marginLeft: 0,
+											marginBottom: scaleSize(16),
 											borderRadius: 0
+										}}
+										coreStyle={{
+											fontSize: scaleSize(21),
+											marginLeft: -3
 										}}
 										IconStyle={{
 											borderRadius: 0,
-											width: scaleSize(18),
-											height: scaleSize(18),
+											padding: 0,
+											width: scaleSize(17),
+											height: scaleSize(17),
 											fontSize: scaleSize(18),
-											alignSelf: 'flex-start'
-											// marginRight: scaleSize(10)
+											paddingTop: -2,
+											borderRadius: 3,
+											borderColor: '#302c23'
 										}}
+										labelStyle={{ fontSize: scaleSize(16) }}
 									>
 										<Radio
 											label={'VISA, MasterCard'}
 											value={'VISA, MasterCard'}
 											iconName={'check-box'}
 										/>
-										<View
-											style={{
-												alignSelf: 'center'
-											}}
-										>
+										<View style={styles.imgBlock}>
 											<View
 												style={{
 													flexDirection: 'row',
@@ -382,11 +359,7 @@ class OrderScreen extends Component {
 											</View>
 										</View>
 										<Radio label={'Privat 24'} value={'Privat 24'} iconName={'check-box'} />
-										<View
-											style={{
-												alignSelf: 'center'
-											}}
-										>
+										<View style={styles.imgBlock}>
 											<Image
 												source={require('../../static/img/privat24.png')}
 												style={{ width: scaleSize(102), height: scaleSize(20) }}
@@ -397,13 +370,7 @@ class OrderScreen extends Component {
 										) : (
 											<Radio label={'Google Pay'} value={'Google Pay'} iconName={'check-box'} />
 										)}
-										<View
-											style={{
-												alignSelf: 'center',
-												justifyContent: 'flex-end',
-												width: scaleSize(100)
-											}}
-										>
+										<View style={styles.imgBlock}>
 											{Platform.OS === 'ios' ? (
 												<Image
 													source={require('../../static/img/apay.png')}
@@ -426,11 +393,7 @@ class OrderScreen extends Component {
 										</View>
 
 										<Radio label={'Masterpass'} value={'Masterpass'} iconName={'check-box'} />
-										<View
-											style={{
-												alignSelf: 'center'
-											}}
-										>
+										<View style={[ styles.imgBlock, { marginTop: 0 } ]}>
 											<Image
 												source={require('../../static/img/masterpass.png')}
 												style={{ width: scaleSize(30), height: scaleSize(24) }}
@@ -504,7 +467,7 @@ class OrderScreen extends Component {
                 {"Оформить сейчас".toUpperCase()}
               </Text>
             </TouchableOpacity> */}
-					</ScrollView>
+					</Content>
 				</View>
 			</Container>
 		);
@@ -575,6 +538,11 @@ const styles = StyleSheet.create({
 		paddingBottom: scaleSize(7),
 		paddingRight: scaleSize(7),
 		paddingLeft: scaleSize(7)
+	},
+	imgBlock: {
+		alignItems: 'flex-end',
+		marginTop: scaleSize(4),
+		width: '30%'
 	}
 });
 

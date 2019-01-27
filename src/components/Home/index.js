@@ -40,10 +40,7 @@ const Home = StackNavigator(
 		Order: { screen: Order }
 	},
 	{
-		headerMode: 'none',
-		transitionConfig: () => ({
-			containerStyle: {}
-		})
+		headerMode: 'none'
 	}
 );
 
