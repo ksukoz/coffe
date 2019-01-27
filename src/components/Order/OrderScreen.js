@@ -14,9 +14,11 @@ import {
 	AsyncStorage,
 	Platform,
 	StyleSheet,
-	InteractionManager,
+	Linking,
 	ActivityIndicator
 } from 'react-native';
+
+import Modal from 'react-native-modal';
 
 import { getCart } from '../../store/actions/cartActions';
 import { getUser } from '../../store/actions/userActions';
@@ -39,6 +41,9 @@ StatusBar.setBarStyle('light-content', true);
 StatusBar.setBackgroundColor('rgba(0,0,0,0)');
 const MAIN_BG = '../../static/img/background.png';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
 class OrderScreen extends Component {
 	_didFocusSubscription;
 	_willBlurSubscription;
@@ -59,7 +64,10 @@ class OrderScreen extends Component {
 			phone: '',
 			deliveryCompany: {},
 			payment: '',
-			product: null
+			product: null,
+
+			modalVisible: false,
+			opacity: 0
 		};
 		this.viewabilityConfig = {
 			waitForInteraction: true,
@@ -146,6 +154,10 @@ class OrderScreen extends Component {
 		return true;
 	};
 
+	setModalVisible(visible) {
+		this.setState({ ...this.state, modalVisible: visible, opacity: visible });
+	}
+
 	render() {
 		const categories = [ ...this.props.categories, ...this.props.subcategories, ...this.props.dishes ];
 		let notFound;
@@ -158,7 +170,7 @@ class OrderScreen extends Component {
 					barStyle="light-content"
 					hidden={false}
 					translucent={true}
-					backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : 0})`}
+					backgroundColor={`rgba(0,0,0,${this.state.focus ? 0.1 : this.state.opacity ? 0.7 : 0})`}
 				/>
 				<View style={{ flex: 1 }}>
 					<ScrollView
@@ -377,6 +389,24 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																deliveryCompany: {
+																	delivery: 'np',
+																	courier: '0',
+																	cost:
+																		this.props.delivery.length > 5
+																			? this.props.delivery.filter((item) => {
+																					if (
+																						item.delivery === 'np' &&
+																						item.courier === '0'
+																					) {
+																						return item;
+																					}
+																				})[0].cost
+																			: ''
+																}
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>
 														Новая Почта, отделение
@@ -445,6 +475,24 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																deliveryCompany: {
+																	delivery: 'np',
+																	courier: 1,
+																	cost:
+																		this.props.delivery.length > 5
+																			? this.props.delivery.filter((item) => {
+																					if (
+																						item.delivery === 'np' &&
+																						item.courier === 1
+																					) {
+																						return item;
+																					}
+																				})[0].cost
+																			: ''
+																}
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>Новая Почта, курьер</Text>
 												</View>
@@ -511,6 +559,24 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																deliveryCompany: {
+																	delivery: 'up',
+																	courier: '0',
+																	cost:
+																		this.props.delivery.length > 5
+																			? this.props.delivery.filter((item) => {
+																					if (
+																						item.delivery === 'up' &&
+																						item.courier === '0'
+																					) {
+																						return item;
+																					}
+																				})[0].cost
+																			: ''
+																}
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>Укрпочта Стандарт</Text>
 												</View>
@@ -576,7 +642,24 @@ class OrderScreen extends Component {
 																deliveryCompany.courier === '0'
 																	? '#302c23'
 																	: 'transparent'
-														}}
+														}}	onPress={() =>
+													this.setState({
+														deliveryCompany: {
+															delivery: 'es',
+															courier: '0',
+															cost:
+																this.props.delivery.length > 5
+																	? this.props.delivery.filter((item) => {
+																			if (
+																				item.delivery === 'es' &&
+																				item.courier === '0'
+																			) {
+																				return item;
+																			}
+																		})[0].cost
+																	: ''
+														}
+													})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>Укрпочта Экспресс</Text>
 												</View>
@@ -643,6 +726,24 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																deliveryCompany: {
+																	delivery: 'up',
+																	courier: 1,
+																	cost:
+																		this.props.delivery.length > 5
+																			? this.props.delivery.filter((item) => {
+																					if (
+																						item.delivery === 'up' &&
+																						item.courier === 1
+																					) {
+																						return item;
+																					}
+																				})[0].cost
+																			: ''
+																}
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>
 														Укрпочта Стандарт, курьер
@@ -711,6 +812,24 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																deliveryCompany: {
+																	delivery: 'es',
+																	courier: 1,
+																	cost:
+																		this.props.delivery.length > 5
+																			? this.props.delivery.filter((item) => {
+																					if (
+																						item.delivery === 'es' &&
+																						item.courier === 1
+																					) {
+																						return item;
+																					}
+																				})[0].cost
+																			: ''
+																}
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>
 														Укрпочта Экспресс, курьер
@@ -825,6 +944,10 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																payment: 'VISA, MasterCard'
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>VISA, MasterCard</Text>
 												</View>
@@ -873,6 +996,10 @@ class OrderScreen extends Component {
 															backgroundColor:
 																payment === 'Privat 24' ? '#302c23' : 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																payment: 'Privat 24'
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>Privat 24</Text>
 												</View>
@@ -911,6 +1038,10 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																payment: Platform.OS === 'ios' ? 'Apple Pay' : 'Google Pay'
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>
 														{Platform.OS === 'ios' ? 'Apple Pay' : 'Google Pay'}
@@ -958,6 +1089,10 @@ class OrderScreen extends Component {
 															backgroundColor:
 																payment === 'Masterpass' ? '#302c23' : 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																payment: 'Masterpass'
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>Masterpass</Text>
 												</View>
@@ -996,6 +1131,10 @@ class OrderScreen extends Component {
 																	? '#302c23'
 																	: 'transparent'
 														}}
+														onPress={() =>
+															this.setState({
+																payment: 'Безналичная оплата, счет на Email'
+															})}
 													/>
 													<Text style={{ fontSize: scaleSize(16) }}>
 														Безналичная оплата, счет на Email
@@ -1038,7 +1177,9 @@ class OrderScreen extends Component {
 								}}
 							>
 								<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>Доставка:</Text>
-								<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>{deliveryCompany.cost}</Text>
+								<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>
+									{deliveryCompany.cost} грн.
+								</Text>
 							</View>
 							<View
 								style={{
@@ -1077,9 +1218,129 @@ class OrderScreen extends Component {
                 {"Оформить сейчас".toUpperCase()}
               </Text>
             </TouchableOpacity> */}
+							<View>
+								<TouchableOpacity
+									style={styles.questionsBtn}
+									onPress={() => this.setModalVisible(true)}
+								>
+									<KawaIcon
+										style={{
+											color: '#f8f8f8',
+											position: 'relative',
+											paddingRight: scaleSize(5)
+										}}
+										name={'telephone'}
+										size={20}
+									/>
+									<Text
+										style={{
+											color: '#f8f8f8',
+											fontSize: scaleSize(14)
+										}}
+									>
+										Возникли вопросы?
+									</Text>
+								</TouchableOpacity>
+							</View>
 						</Content>
 					)}
 				</View>
+				<Modal
+					backdropTransitionInTiming={0}
+					backdropTransitionOutTiming={0}
+					animationInTiming={0}
+					animationOutTiming={0}
+					style={{ backgroundColor: 'rgba(0,0,0,0.7)', margin: 0 }}
+					visible={this.state.modalVisible}
+					onBackdropPress={() => {
+						this.setModalVisible(!this.state.modalVisible);
+					}}
+					onBackButtonPress={() => {
+						this.setModalVisible(!this.state.modalVisible);
+					}}
+				>
+					<View
+						style={{
+							borderRadius: scaleSize(5),
+							padding: scaleSize(20),
+							alignSelf: 'center',
+							backgroundColor: '#fff',
+							width: SCREEN_WIDTH * 0.8
+						}}
+					>
+						<Text
+							style={{
+								fontSize: scaleSize(22),
+								fontWeight: 'bold',
+								marginBottom: scaleSize(20),
+								color: '#302c23'
+							}}
+						>
+							Выбрать номер
+						</Text>
+						<TouchableOpacity
+							style={styles.phoneNumber}
+							onPress={() => Linking.openURL(`tel:+380994556565`)}
+						>
+							<Image
+								source={require('../../static/img/vodafon.png')}
+								style={{
+									width: scaleSize(30),
+									height: scaleSize(30),
+									marginRight: scaleSize(5)
+								}}
+							/>
+							<Text>(099) 455 65 65</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.phoneNumber}
+							onPress={() => Linking.openURL(`tel:+380674556565`)}
+						>
+							<Image
+								source={require('../../static/img/kyivstar.png')}
+								style={{
+									width: scaleSize(30),
+									height: scaleSize(30),
+									marginRight: scaleSize(5)
+								}}
+							/>
+							<Text>(067) 455 65 65</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.phoneNumber}
+							onPress={() => Linking.openURL(`tel:+380934556565`)}
+						>
+							<Image
+								source={require('../../static/img/lifecell.png')}
+								style={{
+									width: scaleSize(30),
+									height: scaleSize(30),
+									marginRight: scaleSize(5)
+								}}
+							/>
+							<Text>(093) 455 65 65</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{
+								backgroundColor: 'transparent',
+								alignSelf: 'flex-end'
+							}}
+							onPress={() => {
+								this.setModalVisible(!this.state.modalVisible);
+							}}
+						>
+							<Text
+								style={{
+									fontWeight: 'bold',
+									marginTop: scaleSize(20),
+									color: '#302c23'
+								}}
+							>
+								{'Отмена'.toUpperCase()}
+							</Text>
+						</TouchableOpacity>
+					</View>
+				</Modal>
 			</Container>
 		);
 	}
@@ -1154,6 +1415,23 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-end',
 		marginTop: scaleSize(4),
 		width: '30%'
+	},
+	questionsBtn: {
+		backgroundColor: '#89a6aa',
+		// alignSelf: 'center',
+		justifyContent: 'center',
+		flexDirection: 'row',
+		padding: scaleSize(10),
+		paddingLeft: scaleSize(7),
+		paddingRight: scaleSize(7),
+		borderRadius: scaleSize(3),
+		marginBottom: scaleSize(5),
+		marginTop: scaleSize(5)
+	},
+	phoneNumber: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginBottom: scaleSize(8)
 	}
 });
 
