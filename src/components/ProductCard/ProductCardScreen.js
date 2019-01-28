@@ -55,14 +55,11 @@ class ProductCardScreen extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.product !== this.props.product) {
-			this.setState({ loading: false, productItem: this.props.product });
-		}
 		if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
-			this.setState({ loading: false, cart: this.props.cart });
+			this.setState({ cart: this.props.cart });
 		}
 		if (prevProps.focus !== this.props.focus) {
-			this.setState({ loading: false, focus: this.props.focus });
+			this.setState({ focus: this.props.focus });
 		}
 	}
 
@@ -80,6 +77,12 @@ class ProductCardScreen extends Component {
 		setTimeout(() => {
 			this.setState({ currentTab: this.props.navigation.getParam('tab', 0) });
 		}, 500);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.product && nextProps.cart) {
+			this.setState({ loading: false, productItem: nextProps.product, cart: nextProps.cart });
+		}
 	}
 
 	setModalVisible(visible) {
