@@ -24,6 +24,7 @@ import RecipeFavorite from "../Recipes/Favorite/index.js";
 import RecipeFeedback from "../Recipes/Feedback/index.js";
 import ProductCard from "../ProductCard/index.js";
 import Order from "../Order/index.js";
+import OrderSingle from "../OrderSingle/index.js";
 import Payment from "../Payment/index.js";
 
 const prefix = "http://";
@@ -39,6 +40,7 @@ const Home = createStackNavigator(
     Delivery: { screen: Delivery },
     Cart: { screen: Cart },
     Order: { screen: Order },
+    OrderSingle: { screen: OrderSingle },
     Payment: { screen: Payment }
   },
   {
