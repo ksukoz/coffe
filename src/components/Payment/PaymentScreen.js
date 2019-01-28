@@ -30,7 +30,7 @@ import {
 } from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
-import OrderItem from "./OrderItem";
+// import OrderItem from "./OrderItem";
 import SearchBar from "../common/SearchBar";
 
 import TextInputMask from "react-native-text-input-mask";
@@ -47,7 +47,7 @@ const MAIN_BG = "../../static/img/background.png";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-class OrderScreen extends Component {
+class PaymentScreen extends Component {
   _didFocusSubscription;
   _willBlurSubscription;
 
@@ -60,36 +60,30 @@ class OrderScreen extends Component {
       }
     );
     this.state = {
-      search: "",
-      focus: false,
-      loading: true,
-      city: "Город, область",
-      email: "",
-      firstname: "",
-      lastname: "",
-      phone: "",
-      deliveryCompany: {},
-      payment: "",
-      product: null,
-
-      modalVisible: false,
-      opacity: 0
-    };
-    this.viewabilityConfig = {
-      waitForInteraction: true,
-      viewAreaCoveragePercentThreshold: 30,
-      viewAreaPercentThreshold: 30
+      // search: "",
+      // focus: false,
+      // loading: true,
+      // city: "Город, область",
+      // email: "",
+      // firstname: "",
+      // lastname: "",
+      // phone: "",
+      // deliveryCompany: {},
+      // payment: "",
+      // product: null,
+      // modalVisible: false,
+      // opacity: 0
     };
     Input.defaultProps.selectionColor = "#000";
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
-      this.setState({ loading: false, cart: this.props.cart });
-    }
-    if (prevProps.focus !== this.props.focus) {
-      this.setState({ loading: false, focus: this.props.focus });
-    }
+    // if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
+    //   this.setState({ loading: false, cart: this.props.cart });
+    // }
+    // if (prevProps.focus !== this.props.focus) {
+    //   this.setState({ loading: false, focus: this.props.focus });
+    // }
   }
 
   componentDidMount() {
@@ -103,64 +97,63 @@ class OrderScreen extends Component {
     );
 
     this.props.navigation.addListener("didFocus", () => {
-      console.error(this.state.product);
-      if (!this.props.navigation.getParam("itemId")) {
-        this.setState({ loading: false });
-      }
-      this.retrieveData("user_region_name");
-      this.retrieveData("user_city_name");
-      this.props.getCart();
-      this.props.getUser();
+      // console.error(this.state.product);
+      // if (!this.props.navigation.getParam("itemId")) {
+      //   this.setState({ loading: false });
+      // }
+      // this.retrieveData("user_region_name");
+      // this.retrieveData("user_city_name");
+      // this.props.getCart();
+      // this.props.getUser();
     });
   }
 
   componentWillUnmount() {}
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user) {
-      this.setState({
-        email: nextProps.user.email,
-        firstname: nextProps.user.firstname,
-        lastname: nextProps.user.lastname,
-        phone: nextProps.user.phone
-      });
-    }
-    if (
-      nextProps.cart &&
-      nextProps.cart.length > 0 &&
-      this.props.navigation.getParam("itemId")
-    ) {
-      this.setState({
-        loading: false,
-        product: nextProps.cart.filter(
-          item => item.id === this.props.navigation.getParam("itemId")
-        )[0]
-      });
-    }
-    if (nextProps.focus || !nextProps.focus) {
-      this.setState({ focus: nextProps.focus });
-    }
+    // if (nextProps.user) {
+    //   this.setState({
+    //     email: nextProps.user.email,
+    //     firstname: nextProps.user.firstname,
+    //     lastname: nextProps.user.lastname,
+    //     phone: nextProps.user.phone
+    //   });
+    // }
+    // if (
+    //   nextProps.cart &&
+    //   nextProps.cart.length > 0 &&
+    //   this.props.navigation.getParam("itemId")
+    // ) {
+    //   this.setState({
+    //     loading: false,
+    //     product: nextProps.cart.filter(
+    //       item => item.id === this.props.navigation.getParam("itemId")
+    //     )[0]
+    //   });
+    // }
+    // if (nextProps.focus || !nextProps.focus) {
+    //   this.setState({ focus: nextProps.focus });
+    // }
   }
 
   retrieveData = async name => {
-    try {
-      const value = await AsyncStorage.getItem(name);
-
-      if (value) {
-        if (name == "user_city_name") {
-          this.setState(
-            {
-              city: value
-            },
-            () => this.props.getDeliveryCost(value)
-          );
-        }
-      }
-    } catch (error) {}
+    // try {
+    //   const value = await AsyncStorage.getItem(name);
+    //   if (value) {
+    //     if (name == "user_city_name") {
+    //       this.setState(
+    //         {
+    //           city: value
+    //         },
+    //         () => this.props.getDeliveryCost(value)
+    //       );
+    //     }
+    //   }
+    // } catch (error) {}
   };
 
   getStyles = index => {
-    this.setState({ stylesIndex: index });
+    // this.setState({ stylesIndex: index });
   };
 
   handleBackPress = () => {
@@ -169,18 +162,18 @@ class OrderScreen extends Component {
   };
 
   setModalVisible(visible) {
-    this.setState({ ...this.state, modalVisible: visible, opacity: visible });
+    // this.setState({ ...this.state, modalVisible: visible, opacity: visible });
   }
 
   render() {
     const categories = [
-      ...this.props.categories,
-      ...this.props.subcategories,
-      ...this.props.dishes
+      // ...this.props.categories,
+      // ...this.props.subcategories,
+      // ...this.props.dishes
     ];
-    let notFound;
-    const { cart } = this.props;
-    const { deliveryCompany, payment, product } = this.state;
+    // let notFound;
+    // const { cart } = this.props;
+    // const { deliveryCompany, payment, product } = this.state;
 
     return (
       <Container style={styles.default}>
@@ -211,7 +204,7 @@ class OrderScreen extends Component {
             navigation={this.props.navigation}
           />
 
-          {this.state.loading ? (
+          {/* {this.state.loading ? (
             <ActivityIndicator
               style={{ marginTop: scaleSize(75) }}
               color="#89a6aa"
@@ -1436,7 +1429,8 @@ class OrderScreen extends Component {
               </Text>
             </TouchableOpacity>
           </View>
-        </Modal>
+        </Modal> */}
+        </View>
       </Container>
     );
   }
@@ -1536,26 +1530,26 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  city: state.common.city,
-  focus: state.common.focus,
-  delivery: state.common.delivery,
-  cart: state.cart.items,
-  product: state.catalog.product,
-  categories: state.catalog.categories,
-  subcategories: state.catalog.subcategories,
-  dishes: state.catalog.dishes,
-  user: state.user.info
+  // city: state.common.city,
+  // focus: state.common.focus,
+  // delivery: state.common.delivery,
+  // cart: state.cart.items,
+  // product: state.catalog.product,
+  // categories: state.catalog.categories,
+  // subcategories: state.catalog.subcategories,
+  // dishes: state.catalog.dishes,
+  // user: state.user.info
 });
 
 const mapDispatchToProps = dispatch => ({
-  getCart: () => dispatch(getCart()),
-  getProductID: id => dispatch(getProductID(id)),
-  getDeliveryCost: city => dispatch(getDeliveryCost(city)),
-  searchFocused: () => dispatch(searchFocused()),
-  getUser: () => dispatch(getUser())
+  // getCart: () => dispatch(getCart()),
+  // getProductID: id => dispatch(getProductID(id)),
+  // getDeliveryCost: city => dispatch(getDeliveryCost(city)),
+  // searchFocused: () => dispatch(searchFocused()),
+  // getUser: () => dispatch(getUser())
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(OrderScreen);
+)(PaymentScreen);

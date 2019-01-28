@@ -282,7 +282,19 @@ export default class SelectRegionScreen extends Component {
   }
 
   handleBackPress = () => {
-    this.props.navigation.navigate("ProfileEdit");
+    if (this.props.navigation.getParam("linkName")) {
+      this.props.navigation.navigate(
+        this.props.navigation.getParam("linkName"),
+        {
+          linkName: this.props.navigation.getParam("linkName"),
+          itemId: this.props.navigation.getParam("itemId")
+            ? this.props.navigation.getParam("itemId")
+            : ""
+        }
+      );
+    } else {
+      this.props.navigation.navigate("ProfileEdit");
+    }
     return true;
   };
 
@@ -290,7 +302,10 @@ export default class SelectRegionScreen extends Component {
     this.storeData("region_id", id);
     if (this.props.navigation.getParam("linkName")) {
       this.props.navigation.navigate("SelectCityScreen", {
-        linkName: this.props.navigation.getParam("linkName")
+        linkName: this.props.navigation.getParam("linkName"),
+        itemId: this.props.navigation.getParam("itemId")
+          ? this.props.navigation.getParam("itemId")
+          : ""
       });
     } else {
       this.props.navigation.navigate("SelectCityScreen");
@@ -354,7 +369,10 @@ export default class SelectRegionScreen extends Component {
               transparent
               onPress={() =>
                 navigation.navigate(linkName, {
-                  productId: navigation.getParam("productId", "0")
+                  productId: navigation.getParam("productId", "0"),
+                  itemId: this.props.navigation.getParam("itemId")
+                    ? this.props.navigation.getParam("itemId")
+                    : ""
                 })
               }
             >

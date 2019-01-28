@@ -340,7 +340,12 @@ export default class SelectCityScreen extends Component {
     this.storeData("user_region_name", this.state.region_name);
     if (this.props.navigation.getParam("linkName")) {
       this.props.navigation.navigate(
-        this.props.navigation.getParam("linkName")
+        this.props.navigation.getParam("linkName"),
+        {
+          itemId: this.props.navigation.getParam("itemId")
+            ? this.props.navigation.getParam("itemId")
+            : ""
+        }
       );
     }
     // this.props.navigation.navigate(
@@ -352,7 +357,11 @@ export default class SelectCityScreen extends Component {
   };
 
   handleBackPress = () => {
-    this.props.navigation.navigate("SelectRegion");
+    this.props.navigation.navigate("SelectRegion", {
+      itemId: this.props.navigation.getParam("itemId")
+        ? this.props.navigation.getParam("itemId")
+        : ""
+    });
     return true;
   };
 
@@ -399,7 +408,13 @@ export default class SelectCityScreen extends Component {
           <Item style={{ borderBottomWidth: 0, color: "#fff" }}>
             <Button
               transparent
-              onPress={() => this.props.navigation.navigate("SelectRegion")}
+              onPress={() =>
+                this.props.navigation.navigate("SelectRegion", {
+                  itemId: this.props.navigation.getParam("itemId")
+                    ? this.props.navigation.getParam("itemId")
+                    : ""
+                })
+              }
             >
               <KawaIcon
                 style={{ color: "#fff", paddingLeft: 18, paddingRight: 20 }}

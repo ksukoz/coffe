@@ -1,30 +1,37 @@
-import { takeLatest, takeEvery, take, put, call } from 'redux-saga/effects';
-import { GET_USER } from '../actions/types';
+import { takeLatest, takeEvery, take, put, call } from "redux-saga/effects";
+import { GET_USER } from "../actions/types";
 import {
-	setUser
-	// updateUser
-} from '../actions/userActions';
+  setUser
+  // updateUser
+} from "../actions/userActions";
 
 export function* fetchUserSaga() {
-	yield take(GET_USER);
-	let formData = new FormData();
-	formData.append('login', 'info@wrevery.com');
-	formData.append('password', 'testtest');
+  let formData = new FormData();
+  formData.append("login", "info@wrevery.com");
+  formData.append("password", "testtest");
 
-	const response = yield call(fetch, `http://kawaapi.gumione.pro/api/auth/login`, {
-		method: 'POST',
-		body: formData
-	});
-	let { token } = yield response.json();
+  const response = yield call(
+    fetch,
+    `http://kawaapi.gumione.pro/api/auth/login`,
+    {
+      method: "POST",
+      body: formData
+    }
+  );
+  let { token } = yield response.json();
 
-	const response2 = yield call(fetch, `http://kawaapi.gumione.pro/api/profile/get`, {
-		headers: new Headers({
-			Authorization: 'Bearer ' + token
-		})
-	});
+  const response2 = yield call(
+    fetch,
+    `http://kawaapi.gumione.pro/api/profile/get`,
+    {
+      headers: new Headers({
+        Authorization: "Bearer " + token
+      })
+    }
+  );
 
-	const { profile } = yield response2.json();
-	yield put(setUser(profile));
+  const { profile } = yield response2.json();
+  yield put(setUser(profile));
 }
 
 // export function* updateCartSaga(item) {
@@ -65,6 +72,6 @@ export function* fetchUserSaga() {
 // }
 
 export function* watchUserSaga() {
-	// yield takeLatest(UPDATE_USER, updateUserSaga);
-	// yield takeLatest(GET_USER, fetchUserSaga);
+  // yield takeLatest(UPDATE_USER, updateUserSaga);
+  yield takeLatest(GET_USER, fetchUserSaga);
 }
