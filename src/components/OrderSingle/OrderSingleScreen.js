@@ -21,7 +21,7 @@ import {
 import Modal from "react-native-modal";
 
 import { getCart } from "../../store/actions/cartActions";
-import { getUser } from "../../store/actions/userActions";
+import { getUser, updateUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
 
 import {
@@ -70,8 +70,9 @@ class OrderSingleScreen extends Component {
       deliveryCompany: {},
       payment: "",
       product: null,
-
+      department: "",
       modalVisible: false,
+      modalVisible2: false,
       opacity: 0
     };
     this.viewabilityConfig = {
@@ -104,6 +105,7 @@ class OrderSingleScreen extends Component {
     this.props.navigation.addListener("didFocus", () => {
       this.retrieveData("user_region_name");
       this.retrieveData("user_city_name");
+      this.retrieveData("department");
       this.props.getCart();
       this.props.getUser();
     });
@@ -127,7 +129,6 @@ class OrderSingleScreen extends Component {
         item => item.id === this.props.navigation.getParam("itemId")
       )[0]
     ) {
-      // console.log(nextProps.cart);
       this.setState({
         loading: false,
         product: nextProps.cart.filter(
@@ -154,6 +155,11 @@ class OrderSingleScreen extends Component {
           );
         }
       }
+      if (name == "department") {
+        this.setState({
+          department: value
+        });
+      }
     } catch (error) {}
   };
 
@@ -169,6 +175,16 @@ class OrderSingleScreen extends Component {
   setModalVisible(visible) {
     this.setState({ ...this.state, modalVisible: visible, opacity: visible });
   }
+
+  changeHandler = (value, name) => {
+    this.setState({ [name]: value });
+  };
+
+  userModalHandler = type => {
+    if (this.props.user[type] !== this.state[type]) {
+      this.setState({ modalVisible2: true });
+    }
+  };
 
   render() {
     const categories = [
@@ -187,7 +203,11 @@ class OrderSingleScreen extends Component {
           hidden={false}
           translucent={true}
           backgroundColor={`rgba(0,0,0,${
-            this.state.focus ? 0.1 : this.state.opacity ? 0.7 : 0
+            this.state.focus
+              ? 0.1
+              : this.state.opacity || this.state.modalVisible2
+              ? 0.7
+              : 0
           })`}
         />
         <View style={{ flex: 1 }}>
@@ -255,6 +275,12 @@ class OrderSingleScreen extends Component {
                     style={styles.profileInput}
                     placeholder={"Эл.почта"}
                     value={this.state.email}
+                    onChangeText={value => this.changeHandler(value, "email")}
+                    onEndEditing={() =>
+                      user.email !== this.state.email
+                        ? this.setState({ modalVisible2: true })
+                        : ""
+                    }
                   />
                   <TextInputMask
                     placeholder={"+38 (___) ___ __ __"}
@@ -265,16 +291,26 @@ class OrderSingleScreen extends Component {
                     // onFocus={() => this.onFocus('phone')}
                     style={styles.profileInputPhone}
                     value={this.state.phone}
+                    onChangeText={value => this.changeHandler(value, "phone")}
+                    onEndEditing={() => this.userModalHandler("firstname")}
                   />
                   <Input
                     style={styles.profileInput}
                     placeholder={"Имя"}
                     value={this.state.firstname}
+                    onChangeText={value =>
+                      this.changeHandler(value, "firstname")
+                    }
+                    onEndEditing={() => this.userModalHandler("firstname")}
                   />
                   <Input
                     style={styles.profileInput}
                     placeholder={"Фамилия"}
                     value={this.state.lastname}
+                    onChangeText={value =>
+                      this.changeHandler(value, "lastname")
+                    }
+                    onEndEditing={() => this.userModalHandler("lastname")}
                   />
                   <View style={styles.cardFullCity}>
                     <View
@@ -418,6 +454,93 @@ class OrderSingleScreen extends Component {
                           />
                           <Text style={styles.defaultText}>
                             Новая Почта, отделение
+                          </Text>
+                        </View>
+                        {this.props.delivery.length < 6 &&
+                        this.state.city !== "Город, область" ? (
+                          <ActivityIndicator color="#89a6aa" size="small" />
+                        ) : (
+                          <Text style={styles.defaultText}>
+                            {this.props.delivery.length > 5
+                              ? this.props.delivery.filter(item => {
+                                  if (
+                                    item.delivery === "np" &&
+                                    item.courier === "0"
+                                  ) {
+                                    return item;
+                                  }
+                                })[0].cost + " грн"
+                              : ""}
+                          </Text>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          marginBottom: scaleSize(16)
+                        }}
+                        activeOpacity={0.9}
+                        onPress={() =>
+                          this.setState({
+                            deliveryCompany: {
+                              delivery: "np",
+                              courier: "0",
+                              cost:
+                                this.props.delivery.length > 5
+                                  ? this.props.delivery.filter(item => {
+                                      if (
+                                        item.delivery === "np" &&
+                                        item.courier === "0"
+                                      ) {
+                                        return item;
+                                      }
+                                    })[0].cost
+                                  : ""
+                            }
+                          })
+                        }
+                      >
+                        <View style={{ flexDirection: "row" }}>
+                          <CheckBox
+                            checked={
+                              deliveryCompany.delivery === "np" &&
+                              deliveryCompany.courier === "0"
+                                ? true
+                                : false
+                            }
+                            style={{
+                              left: 0,
+                              marginRight: scaleSize(16),
+                              borderColor: "#302c23",
+                              backgroundColor:
+                                deliveryCompany.delivery === "np" &&
+                                deliveryCompany.courier === "0"
+                                  ? "#302c23"
+                                  : "transparent"
+                            }}
+                            onPress={() =>
+                              this.setState({
+                                deliveryCompany: {
+                                  delivery: "np",
+                                  courier: "0",
+                                  cost:
+                                    this.props.delivery.length > 5
+                                      ? this.props.delivery.filter(item => {
+                                          if (
+                                            item.delivery === "np" &&
+                                            item.courier === "0"
+                                          ) {
+                                            return item;
+                                          }
+                                        })[0].cost
+                                      : ""
+                                }
+                              })
+                            }
+                          />
+                          <Text style={styles.defaultText}>
+                            Новая Почта, при получении
                           </Text>
                         </View>
                         {this.props.delivery.length < 6 &&
@@ -885,17 +1008,18 @@ class OrderSingleScreen extends Component {
                         }}
                       >
                         <TouchableOpacity
-                          onPress={() =>
-                            this.props.navigation.navigate(
-                              "SelectRegionScreen",
-                              {
-                                linkName: "OrderSingle",
-                                itemId: this.props.navigation.getParam("itemId")
-                                  ? this.props.navigation.getParam("itemId")
-                                  : ""
-                              }
-                            )
-                          }
+                          onPress={() => {
+                            if (deliveryCompany.courier === "0") {
+                              this.props.navigation.navigate("Department", {
+                                city: this.state.city,
+                                post:
+                                  deliveryCompany.delivery === "np"
+                                    ? "np"
+                                    : "up",
+                                linkName: "OrderScreen"
+                              });
+                            }
+                          }}
                           style={{
                             width: "100%",
                             flexDirection: "row"
@@ -923,7 +1047,9 @@ class OrderSingleScreen extends Component {
                               borderBottomWidth: 1
                             }}
                           >
-                            {deliveryCompany.courier === "0"
+                            {department
+                              ? department
+                              : deliveryCompany.courier === "0"
                               ? "Номер отделения, адрес"
                               : "Адрес (улица, дом) доставки"}
                           </Text>
@@ -1301,6 +1427,7 @@ class OrderSingleScreen extends Component {
                       : ""
                   }
                   style={styles.btn}
+                  activeOpacity={0.9}
                 >
                   <Text style={styles.btnText}>{"Оплатить".toUpperCase()}</Text>
                 </TouchableOpacity>
@@ -1308,6 +1435,92 @@ class OrderSingleScreen extends Component {
             </Content>
           )}
         </View>
+        <Modal
+          backdropTransitionInTiming={0}
+          backdropTransitionOutTiming={0}
+          animationInTiming={0}
+          animationOutTiming={0}
+          style={{ backgroundColor: "rgba(0,0,0,0.7)", margin: 0 }}
+          visible={this.state.modalVisible2}
+          onBackdropPress={() => {
+            this.setState({ modalVisible2: false });
+          }}
+          onBackButtonPress={() => {
+            this.setState({ modalVisible2: false });
+          }}
+        >
+          <View
+            style={{
+              borderRadius: scaleSize(5),
+              padding: scaleSize(20),
+              alignSelf: "center",
+              backgroundColor: "#fff",
+              width: SCREEN_WIDTH * 0.8
+            }}
+          >
+            <Text
+              style={{
+                fontSize: scaleSize(22),
+                fontWeight: "bold",
+                marginBottom: scaleSize(20),
+                color: "#302c23"
+              }}
+            >
+              Обновить ваши данные?
+            </Text>
+            <Text>
+              Вы указали новые данные, использовать их для следующих заказов,
+              обновив ими старые данные?
+            </Text>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "transparent",
+                  alignSelf: "flex-end",
+                  marginRight: scaleSize(20)
+                }}
+                onPress={() => {
+                  this.setState({ modalVisible2: false }, () =>
+                    this.props.updateUser(
+                      this.state.firstname,
+                      this.state.lastname,
+                      this.state.city
+                    )
+                  );
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    marginTop: scaleSize(20),
+                    color: "#302c23"
+                  }}
+                >
+                  {"Обновить".toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "transparent",
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => {
+                  this.setState({ modalVisible2: false });
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    marginTop: scaleSize(20),
+                    color: "#302c23"
+                  }}
+                >
+                  {"Отмена".toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
         <Modal
           backdropTransitionInTiming={0}
           backdropTransitionOutTiming={0}

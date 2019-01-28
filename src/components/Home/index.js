@@ -26,6 +26,7 @@ import ProductCard from "../ProductCard/index.js";
 import Order from "../Order/index.js";
 import OrderSingle from "../OrderSingle/index.js";
 import Payment from "../Payment/index.js";
+import Department from "../Department/index.js";
 
 const prefix = "http://";
 
@@ -41,7 +42,8 @@ const Home = createStackNavigator(
     Cart: { screen: Cart },
     Order: { screen: Order },
     OrderSingle: { screen: OrderSingle },
-    Payment: { screen: Payment }
+    Payment: { screen: Payment },
+    Department: { screen: Department }
   },
   {
     headerMode: "none"

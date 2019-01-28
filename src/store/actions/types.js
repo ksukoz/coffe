@@ -23,6 +23,7 @@ export const CHANGE_CART = "CHANGE_CART";
 
 export const GET_USER = "GET_USER";
 export const SET_USER = "SET_USER";
+export const UPDATE_USER = "UPDATE_USER";
 
 export const FETCHING = "FETCHING";
 export const FETCHED = "FETCHED";

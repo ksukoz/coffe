@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Content, Input } from "native-base";
+import { Container, Icon, Input } from "native-base";
 import {
   View,
   StatusBar,
@@ -23,6 +23,7 @@ import CartItem from "./CartItem";
 import HeaderBar from "../common/HeaderBar";
 
 import Modal from "react-native-modal";
+import SearchBar from "../common/SearchBar";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -44,7 +45,7 @@ class CartScreen extends Component {
       }
     );
     this.state = {
-      search: "",
+      search: false,
       name: "",
       id: "",
       focus: false,
@@ -93,19 +94,6 @@ class CartScreen extends Component {
 
   onDeletePressHandler = (id, name) => {
     this.setState({ id, name, modalVisible: true });
-    // Alert.alert(
-    //   "Вы удалили",
-    //   "My Alert Msg",
-    //   [
-    //     { text: "OK", onPress: () => this.props.updateCart(id, 0) },
-    //     {
-    //       text: "Отмена",
-    //       onPress: () => {},
-    //       style: "destructive"
-    //     }
-    //   ],
-    //   { cancelable: false }
-    // );
   };
 
   render() {
@@ -115,29 +103,6 @@ class CartScreen extends Component {
       ...this.props.dishes
     ];
     let notFound;
-
-    // if (
-    //   this.props.products.length === 0 &&
-    //   !this.state.loading &&
-    //   this.state.end
-    // ) {
-    //   notFound = (
-    //     <View style={{ flex: 1, alignItems: "center", zIndex: 90 }}>
-    //       <KawaIcon
-    //         color={"#f8f8f8"}
-    //         name={"info"}
-    //         size={scaleSize(52)}
-    //         style={{ marginBottom: scaleSize(16) }}
-    //       />
-    //       <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
-    //         Ничего не найдено
-    //       </Text>
-    //       <Text style={{ color: "#f8f8f8", fontSize: scaleSize(16) }}>
-    //         Попробуйте уточнить свой запрос
-    //       </Text>
-    //     </View>
-    //   );
-    // }
 
     return (
       <Container style={styles.default}>
@@ -162,13 +127,43 @@ class CartScreen extends Component {
             }}
           />
           <Image source={require(MAIN_BG)} style={styles.background} />
-          <HeaderBar
-            menu={true}
-            cart={this.props.cart}
-            title={"Корзина"}
-            navigation={this.props.navigation.dangerouslyGetParent()}
+          {!this.state.search ? (
+            <HeaderBar
+              style={{ display: !this.state.search ? "flex" : "none" }}
+              menu={true}
+              cart={this.props.cart}
+              title={"Корзина"}
+              navigation={this.props.navigation.dangerouslyGetParent()}
+            />
+          ) : (
+            <SearchBar
+              placeholder={"Найти кофе"}
+              style={{
+                marginBottom: scaleSize(20),
+                opacity: this.state.search ? 1 : 0
+              }}
+              navigation={this.props.navigation}
+            />
+          )}
+          <Icon
+            style={{
+              position: "absolute",
+              fontSize: scaleSize(20),
+              width: scaleSize(20),
+              height: scaleSize(20),
+              zIndex: 1000,
+              top: scaleSize(38),
+              right: scaleSize(15),
+              color: "#fff"
+            }}
+            name="ios-search"
+            onPress={() => this.setState({ search: true })}
           />
-          <ScrollView style={{ marginTop: scaleSize(-10) }}>
+          <ScrollView
+            style={{
+              marginTop: !this.state.search ? scaleSize(-10) : scaleSize(80)
+            }}
+          >
             {notFound}
             <FlatList
               style={{
@@ -367,6 +362,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   cart: state.cart.items,
+  focus: state.common.focus,
   categories: state.catalog.categories,
   subcategories: state.catalog.subcategories,
   dishes: state.catalog.dishes

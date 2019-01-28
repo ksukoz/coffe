@@ -5,37 +5,19 @@ import {
   View,
   StatusBar,
   Dimensions,
-  TouchableOpacity,
   Image,
   Text,
-  FlatList,
-  ScrollView,
+  TouchableOpacity,
   BackHandler,
-  AsyncStorage,
-  Platform,
-  StyleSheet,
-  Linking,
-  ActivityIndicator
+  StyleSheet
 } from "react-native";
 
-import Modal from "react-native-modal";
-
-import { getCart } from "../../store/actions/cartActions";
-import { getUser } from "../../store/actions/userActions";
-import { getProductID } from "../../store/actions/catalogActions";
-
-import {
-  searchFocused,
-  getDeliveryCost
-} from "../../store/actions/commonActions";
-
 import { scaleSize } from "../../helpers/scaleSize";
-// import OrderItem from "./OrderItem";
-import SearchBar from "../common/SearchBar";
+import HeaderBar from "../common/HeaderBar";
+
+import RadioGroup, { Radio } from "react-native-radio-input";
 
 import TextInputMask from "react-native-text-input-mask";
-
-import KawaIcon from "../KawaIcon";
 
 Input.defaultProps.selectionColor = "#ea9308";
 TextInputMask.defaultProps.selectionColor = "#ea9308";
@@ -43,9 +25,6 @@ TextInputMask.defaultProps.selectionColor = "#ea9308";
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class PaymentScreen extends Component {
   _didFocusSubscription;
@@ -60,30 +39,15 @@ class PaymentScreen extends Component {
       }
     );
     this.state = {
-      // search: "",
-      // focus: false,
-      // loading: true,
-      // city: "Город, область",
-      // email: "",
-      // firstname: "",
-      // lastname: "",
-      // phone: "",
-      // deliveryCompany: {},
-      // payment: "",
-      // product: null,
-      // modalVisible: false,
-      // opacity: 0
+      name: "",
+      number: "",
+      account: "",
+      mfo: "",
+      add: "",
+      email: "",
+      type: "legal"
     };
     Input.defaultProps.selectionColor = "#000";
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
-    //   this.setState({ loading: false, cart: this.props.cart });
-    // }
-    // if (prevProps.focus !== this.props.focus) {
-    //   this.setState({ loading: false, focus: this.props.focus });
-    // }
   }
 
   componentDidMount() {
@@ -95,65 +59,12 @@ class PaymentScreen extends Component {
           this.handleBackPress
         )
     );
-
-    this.props.navigation.addListener("didFocus", () => {
-      // console.error(this.state.product);
-      // if (!this.props.navigation.getParam("itemId")) {
-      //   this.setState({ loading: false });
-      // }
-      // this.retrieveData("user_region_name");
-      // this.retrieveData("user_city_name");
-      // this.props.getCart();
-      // this.props.getUser();
-    });
   }
 
   componentWillUnmount() {}
 
-  componentWillReceiveProps(nextProps) {
-    // if (nextProps.user) {
-    //   this.setState({
-    //     email: nextProps.user.email,
-    //     firstname: nextProps.user.firstname,
-    //     lastname: nextProps.user.lastname,
-    //     phone: nextProps.user.phone
-    //   });
-    // }
-    // if (
-    //   nextProps.cart &&
-    //   nextProps.cart.length > 0 &&
-    //   this.props.navigation.getParam("itemId")
-    // ) {
-    //   this.setState({
-    //     loading: false,
-    //     product: nextProps.cart.filter(
-    //       item => item.id === this.props.navigation.getParam("itemId")
-    //     )[0]
-    //   });
-    // }
-    // if (nextProps.focus || !nextProps.focus) {
-    //   this.setState({ focus: nextProps.focus });
-    // }
-  }
-
-  retrieveData = async name => {
-    // try {
-    //   const value = await AsyncStorage.getItem(name);
-    //   if (value) {
-    //     if (name == "user_city_name") {
-    //       this.setState(
-    //         {
-    //           city: value
-    //         },
-    //         () => this.props.getDeliveryCost(value)
-    //       );
-    //     }
-    //   }
-    // } catch (error) {}
-  };
-
-  getStyles = index => {
-    // this.setState({ stylesIndex: index });
+  changeHandler = (value, name) => {
+    this.setState({ [name]: value });
   };
 
   handleBackPress = () => {
@@ -161,20 +72,7 @@ class PaymentScreen extends Component {
     return true;
   };
 
-  setModalVisible(visible) {
-    // this.setState({ ...this.state, modalVisible: visible, opacity: visible });
-  }
-
   render() {
-    const categories = [
-      // ...this.props.categories,
-      // ...this.props.subcategories,
-      // ...this.props.dishes
-    ];
-    // let notFound;
-    // const { cart } = this.props;
-    // const { deliveryCompany, payment, product } = this.state;
-
     return (
       <Container style={styles.default}>
         <StatusBar
@@ -186,1250 +84,108 @@ class PaymentScreen extends Component {
           })`}
         />
         <View style={{ flex: 1 }}>
-          <ScrollView
-            keyboardShouldPersistTaps={"handled"}
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              width: "100%",
-              backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.7 : 0})`,
-              zIndex: this.state.focus ? 10 : 0
-            }}
-          />
           <Image source={require(MAIN_BG)} style={styles.background} />
-          <SearchBar
-            placeholder={"Найти кофе"}
-            style={{ marginBottom: scaleSize(20) }}
-            navigation={this.props.navigation}
-          />
-
-          {/* {this.state.loading ? (
-            <ActivityIndicator
-              style={{ marginTop: scaleSize(75) }}
-              color="#89a6aa"
-              size="large"
-              animating
-            />
-          ) : (
-            <Content style={{ marginTop: scaleSize(99) }}>
-              {product ? (
-                <View
-                  style={{
-                    paddingLeft: scaleSize(10),
-                    paddingRight: scaleSize(10)
-                  }}
-                >
-                  <OrderItem
-                    cart={this.props.cart}
-                    product={true}
-                    item={product}
-                    categories={categories}
-                  />
-                </View>
-              ) : (
-                <FlatList
-                  style={{
-                    marginLeft: scaleSize(10),
-                    marginRight: scaleSize(10),
-                    marginBottom: scaleSize(20),
-                    zIndex: 2
-                  }}
-                  keyExtractor={item => item.id}
-                  getItemLayout={(data, index) => ({
-                    length: 100 - 1,
-                    index
-                  })}
-                  initialNumToRender={6}
-                  removeClippedSubviews={true}
-                  maxToRenderPerBatch={4}
-                  windowSize={1}
-                  data={this.props.cart}
-                  extraData={this.props}
-                  renderItem={({ item }) => (
-                    <OrderItem
-                      cart={this.props.cart}
-                      item={item}
-                      categories={categories}
-                    />
-                  )}
-                  viewabilityConfig={this.viewabilityConfig}
-                />
-              )}
-
-              <View
-                style={{
-                  marginLeft: scaleSize(10),
-                  marginRight: scaleSize(10)
-                }}
-              >
-                <Text
-                  style={[
-                    styles.default,
-                    {
-                      marginLeft: scaleSize(8),
-                      marginBottom: scaleSize(8),
-                      fontSize: scaleSize(14)
-                    }
-                  ]}
-                >
-                  Оформление заказа
-                </Text>
-                <View style={styles.block}>
-                  <Input
-                    style={styles.profileInput}
-                    placeholder={"Эл.почта"}
-                    value={this.state.email}
-                  />
-                  <TextInputMask
-                    placeholder={"+38 (___) ___ __ __"}
-                    placeholderTextColor="#000"
-                    keyboardType="phone-pad"
-                    mask={"+38 ([000]) [000] [00] [00]"}
-                    // onBlur={() => this.onUnFocus('phone')}
-                    // onFocus={() => this.onFocus('phone')}
-                    style={styles.profileInputPhone}
-                    value={this.state.phone}
-                  />
-                  <Input
-                    style={styles.profileInput}
-                    placeholder={"Имя"}
-                    value={this.state.firstname}
-                  />
-                  <Input
-                    style={styles.profileInput}
-                    placeholder={"Фамилия"}
-                    value={this.state.lastname}
-                  />
-                  <View style={styles.cardFullCity}>
-                    <View
-                      style={{
-                        width: "100%",
-                        paddingLeft: 0,
-                        paddingRight: 0,
-                        marginLeft: 0,
-                        marginRight: 0
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "#302c23",
-                          fontSize: scaleSize(12)
-                        }}
-                      >
-                        Доставка
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() =>
-                          this.props.navigation.navigate("SelectRegionScreen", {
-                            linkName: "Order",
-                            itemId: this.props.navigation.getParam("itemId")
-                              ? this.props.navigation.getParam("itemId")
-                              : ""
-                          })
-                        }
-                        style={{
-                          width: "100%",
-                          flexDirection: "row"
-                        }}
-                      >
-                        <Text
-                          onFocus={() =>
-                            this.props.navigation.navigate(
-                              "SelectRegionScreen",
-                              {
-                                linkName: "Order",
-                                itemId: this.props.navigation.getParam("itemId")
-                                  ? this.props.navigation.getParam("itemId")
-                                  : ""
-                              }
-                            )
-                          }
-                          style={{
-                            paddingTop: 0,
-                            paddingBottom: 0,
-                            height: scaleSize(35),
-                            fontSize: scaleSize(16),
-                            color: "#302c23",
-                            width: "100%",
-                            paddingLeft: 0,
-                            marginBottom: scaleSize(25),
-
-                            borderBottomColor: "#89a6aa",
-                            borderBottomWidth: 1
-                          }}
-                        >
-                          {this.state.city}
-                        </Text>
-                        <KawaIcon
-                          style={{
-                            color: "#302c23",
-                            position: "absolute",
-                            right: scaleSize(0),
-                            top: scaleSize(5)
-                          }}
-                          name={"arrow-next"}
-                          size={scaleSize(14)}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany: {
-                              delivery: "np",
-                              courier: "0",
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "np" &&
-                                        item.courier === "0"
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0"
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany: {
-                                  delivery: "np",
-                                  courier: "0",
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "np" &&
-                                            item.courier === "0"
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Новая Почта, отделение
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "np" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany: {
-                              delivery: "np",
-                              courier: 1,
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "np" &&
-                                        item.courier === 1
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany: {
-                                  delivery: "np",
-                                  courier: 1,
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "np" &&
-                                            item.courier === 1
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Новая Почта, курьер
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "np" &&
-                                    item.courier == 1
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany: {
-                              delivery: "up",
-                              courier: "0",
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "up" &&
-                                        item.courier === "0"
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === "0"
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany: {
-                                  delivery: "up",
-                                  courier: "0",
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "up" &&
-                                            item.courier === "0"
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Укрпочта Стандарт
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "up" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany: {
-                              delivery: "es",
-                              courier: "0",
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "es" &&
-                                        item.courier === "0"
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === "0"
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "es" &&
-                                deliveryCompany.courier === "0"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany: {
-                                  delivery: "es",
-                                  courier: "0",
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "es" &&
-                                            item.courier === "0"
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Укрпочта Экспресс
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "es" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany: {
-                              delivery: "up",
-                              courier: 1,
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "up" &&
-                                        item.courier === 1
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany: {
-                                  delivery: "up",
-                                  courier: 1,
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "up" &&
-                                            item.courier === 1
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Укрпочта Стандарт, курьер
-                          </Text>
-                        </View>
-                        {this.state.city !== "Город, область" &&
-                        this.props.delivery.length < 6 ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "up" &&
-                                    item.courier === 1
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany: {
-                              delivery: "es",
-                              courier: 1,
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "es" &&
-                                        item.courier === 1
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "es" &&
-                                deliveryCompany.courier === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany: {
-                                  delivery: "es",
-                                  courier: 1,
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "es" &&
-                                            item.courier === 1
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Укрпочта Экспресс, курьер
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "es" &&
-                                    item.courier === 1
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                    <View style={styles.cardFullCity}>
-                      <View
-                        style={{
-                          width: "100%",
-                          paddingLeft: 0,
-                          paddingRight: 0,
-                          marginLeft: 0,
-                          marginRight: 0
-                        }}
-                      >
-                        <TouchableOpacity
-                          onPress={() =>
-                            this.props.navigation.navigate(
-                              "SelectRegionScreen",
-                              {
-                                linkName: "Order",
-                                itemId: this.props.navigation.getParam("itemId")
-                                  ? this.props.navigation.getParam("itemId")
-                                  : ""
-                              }
-                            )
-                          }
-                          style={{
-                            width: "100%",
-                            flexDirection: "row"
-                          }}
-                        >
-                          <Text
-                            onFocus={
-                              () => {}
-                              // this.props.navigation.navigate('SelectRegionScreen', {
-                              // 	linkName: 'Order',
-                              // itemId: this.props.navigation.getParam("itemId") ? this.props.navigation.getParam("itemId") : ''
-                              // })
-                            }
-                            style={{
-                              paddingTop: 0,
-                              paddingBottom: 0,
-                              height: scaleSize(35),
-                              fontSize: scaleSize(16),
-                              color: "#302c23",
-                              width: "100%",
-                              paddingLeft: 0,
-                              marginBottom: scaleSize(25),
-
-                              borderBottomColor: "#89a6aa",
-                              borderBottomWidth: 1
-                            }}
-                          >
-                            {deliveryCompany.courier === "0"
-                              ? "Номер отделения, адрес"
-                              : "Адрес (улица, дом) доставки"}
-                          </Text>
-                          <KawaIcon
-                            style={{
-                              color: "#302c23",
-                              position: "absolute",
-                              right: scaleSize(0),
-                              top: scaleSize(5)
-                            }}
-                            name={"arrow-next"}
-                            size={scaleSize(14)}
-                          />
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                  <View>
-                    <Text
-                      style={{
-                        color: "#302c23",
-                        fontSize: scaleSize(12),
-                        marginBottom: scaleSize(16)
-                      }}
-                    >
-                      Оплата
-                    </Text>
-                    <View>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            payment: "VISA, MasterCard"
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              payment === "VISA, MasterCard" ? true : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                payment === "VISA, MasterCard"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                payment: "VISA, MasterCard"
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            VISA, MasterCard
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center"
-                          }}
-                        >
-                          <Image
-                            source={require("../../static/img/visa.png")}
-                            style={{
-                              width: scaleSize(47),
-                              height: scaleSize(15),
-                              marginRight: scaleSize(24)
-                            }}
-                          />
-                          <Image
-                            source={require("../../static/img/mastercard.png")}
-                            style={{
-                              width: scaleSize(31),
-                              height: scaleSize(18)
-                            }}
-                          />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            payment: "Privat 24"
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={payment === "Privat 24" ? true : false}
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                payment === "Privat 24"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                payment: "Privat 24"
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>Privat 24</Text>
-                        </View>
-                        <Image
-                          source={require("../../static/img/privat24.png")}
-                          style={{
-                            width: scaleSize(102),
-                            height: scaleSize(20)
-                          }}
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            payment:
-                              Platform.OS === "ios" ? "Apple Pay" : "Google Pay"
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              payment === "Apple Pay" ||
-                              payment === "Google Pay"
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                payment === "Apple Pay" ||
-                                payment === "Google Pay"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                payment:
-                                  Platform.OS === "ios"
-                                    ? "Apple Pay"
-                                    : "Google Pay"
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            {Platform.OS === "ios" ? "Apple Pay" : "Google Pay"}
-                          </Text>
-                        </View>
-                        {Platform.OS === "ios" ? (
-                          <Image
-                            source={require("../../static/img/apay.png")}
-                            style={{
-                              alignSelf: "flex-end",
-                              width: scaleSize(50),
-                              height: scaleSize(23)
-                            }}
-                          />
-                        ) : (
-                          <Image
-                            source={require("../../static/img/gpay.png")}
-                            style={{
-                              alignSelf: "flex-end",
-                              width: scaleSize(58),
-                              height: scaleSize(23)
-                            }}
-                          />
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            payment: "Masterpass"
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={payment === "Masterpass" ? true : false}
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                payment === "Masterpass"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                payment: "Masterpass"
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>Masterpass</Text>
-                        </View>
-                        <Image
-                          source={require("../../static/img/masterpass2.png")}
-                          style={{
-                            width: scaleSize(30),
-                            height: scaleSize(24)
-                          }}
-                        />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            payment: "Безналичная оплата, счет на Email"
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              payment === "Безналичная оплата, счет на Email"
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                payment === "Безналичная оплата, счет на Email"
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                payment: "Безналичная оплата, счет на Email"
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Безналичная оплата, счет на Email
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10),
-                  marginBottom: scaleSize(15)
-                }}
-              >
-                <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                  Продукты:
-                </Text>
-                <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                  {product
-                    ? product.qty * product.price
-                    : this.props.cart
-                        .map(item => item.qty * item.price)
-                        .reduce((sum, item) => sum + item)}{" "}
-                  грн.
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10),
-                  marginBottom: scaleSize(15)
-                }}
-              >
-                <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                  Доставка:
-                </Text>
-                <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                  {deliveryCompany.cost} грн.
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingLeft: scaleSize(10),
-                  paddingRight: scaleSize(10),
-                  marginBottom: scaleSize(15)
-                }}
-              >
-                <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                  Всего к оплате:
-                </Text>
-                <Text style={{ fontSize: scaleSize(16), color: "#fff" }}>
-                  {product
-                    ? deliveryCompany.cost
-                      ? product.qty * product.price + +deliveryCompany.cost
-                      : product.qty * product.price
-                    : this.props.cart
-                        .map(item => item.qty * item.price)
-                        .reduce((sum, item) => sum + item) +
-                      (deliveryCompany.cost ? +deliveryCompany.cost : 0)}{" "}
-                  грн.
-                </Text>
-              </View>
-              <View
-                style={{
-                  marginLeft: scaleSize(10),
-                  marginRight: scaleSize(10),
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.questionsBtn}
-                  onPress={() => this.setModalVisible(true)}
-                >
-                  <KawaIcon
-                    style={{
-                      color: "#f8f8f8",
-                      position: "relative",
-                      paddingRight: scaleSize(5)
-                    }}
-                    name={"telephone"}
-                    size={20}
-                  />
-                  <Text
-                    style={{
-                      color: "#f8f8f8",
-                      fontSize: scaleSize(14)
-                    }}
-                  >
-                    Возникли вопросы?
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    payment === "Безналичная оплата, счет на Email"
-                      ? this.props.navigation.push("Payment")
-                      : ""
-                  }
-                  style={styles.btn}
-                >
-                  <Text style={styles.btnText}>{"Оплатить".toUpperCase()}</Text>
-                </TouchableOpacity>
-              </View>
-            </Content>
-          )}
-        </View>
-        <Modal
-          backdropTransitionInTiming={0}
-          backdropTransitionOutTiming={0}
-          animationInTiming={0}
-          animationOutTiming={0}
-          style={{ backgroundColor: "rgba(0,0,0,0.7)", margin: 0 }}
-          visible={this.state.modalVisible}
-          onBackdropPress={() => {
-            this.setModalVisible(!this.state.modalVisible);
-          }}
-          onBackButtonPress={() => {
-            this.setModalVisible(!this.state.modalVisible);
-          }}
-        >
-          <View
+          <HeaderBar navigation={this.props.navigation} title={"Реквизиты"} />
+          <Content
             style={{
-              borderRadius: scaleSize(5),
-              padding: scaleSize(20),
-              alignSelf: "center",
-              backgroundColor: "#fff",
-              width: SCREEN_WIDTH * 0.8
+              marginLeft: scaleSize(8),
+              marginRight: scaleSize(8),
+              marginTop: scaleSize(20)
             }}
           >
-            <Text
-              style={{
-                fontSize: scaleSize(22),
-                fontWeight: "bold",
-                marginBottom: scaleSize(20),
-                color: "#302c23"
-              }}
-            >
-              Выбрать номер
-            </Text>
-            <TouchableOpacity
-              style={styles.phoneNumber}
-              onPress={() => Linking.openURL(`tel:+380994556565`)}
-            >
-              <Image
-                source={require("../../static/img/vodafon.png")}
-                style={{
-                  width: scaleSize(30),
-                  height: scaleSize(30),
-                  marginRight: scaleSize(5)
+            <View style={styles.block}>
+              <Text style={styles.defaultSmall}>
+                Форма собственности плательщика
+              </Text>
+              <RadioGroup
+                getChecked={value => this.setState({ type: value })}
+                RadioGroupStyle={{
+                  flexDirection: "row",
+                  marginLeft: scaleSize(-5)
                 }}
-              />
-              <Text>(099) 455 65 65</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.phoneNumber}
-              onPress={() => Linking.openURL(`tel:+380674556565`)}
-            >
-              <Image
-                source={require("../../static/img/kyivstar.png")}
-                style={{
-                  width: scaleSize(30),
-                  height: scaleSize(30),
-                  marginRight: scaleSize(5)
+                coreStyle={{ fontSize: scaleSize(18) }}
+                RadioStyle={{
+                  paddingLeft: 0,
+                  marginRight: scaleSize(30),
+                  marginLeft: 0
                 }}
-              />
-              <Text>(067) 455 65 65</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.phoneNumber}
-              onPress={() => Linking.openURL(`tel:+380934556565`)}
-            >
-              <Image
-                source={require("../../static/img/lifecell.png")}
-                style={{
-                  width: scaleSize(30),
-                  height: scaleSize(30),
-                  marginRight: scaleSize(5)
-                }}
-              />
-              <Text>(093) 455 65 65</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: "transparent",
-                alignSelf: "flex-end"
-              }}
-              onPress={() => {
-                this.setModalVisible(!this.state.modalVisible);
-              }}
-            >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  marginTop: scaleSize(20),
+                labelStyle={{
+                  fontSize: scaleSize(16),
                   color: "#302c23"
                 }}
               >
-                {"Отмена".toUpperCase()}
+                <Radio label={"Юридическое"} value={"legal"} />
+                <Radio label={"Физическое"} value={"phys"} />
+              </RadioGroup>
+            </View>
+            <View style={[styles.block, { marginBottom: scaleSize(24) }]}>
+              <Text style={styles.defaultSmall}>
+                {this.state.type === "legal"
+                  ? "Название предприятия"
+                  : "ФИО предпринимателя"}
               </Text>
+              <Input
+                style={styles.profileInput}
+                placeholder={
+                  this.state.type === "legal" ? "" : "Фамилия Имя Отчество"
+                }
+                value={this.state.name}
+                onChangeText={value => this.changeHandler(value, "name")}
+              />
+              <Text style={styles.defaultSmall}>
+                {this.state.type === "legal"
+                  ? "ЕГРПОУ предприятия"
+                  : "ИНН предпринимателя"}
+              </Text>
+              <Input
+                style={styles.profileInput}
+                placeholder={
+                  this.state.type === "legal" ? "" : "Номер налогоплательщика"
+                }
+                value={this.state.number}
+                onChangeText={value => this.changeHandler(value, "number")}
+              />
+              <Text style={styles.defaultSmall}>Расчетный счет</Text>
+              <Input
+                style={styles.profileInput}
+                placeholder={"Расчетный счет"}
+                value={this.state.account}
+                onChangeText={value => this.changeHandler(value, "account")}
+              />
+              <Text style={styles.defaultSmall}>МФО</Text>
+              <Input
+                style={styles.profileInput}
+                placeholder={"Код банка в котором открыт счет"}
+                value={this.state.mfo}
+                onChangeText={value => this.changeHandler(value, "mfo")}
+              />
+              <Text style={styles.defaultSmall}>Примечание</Text>
+              <Input
+                style={styles.profileInput}
+                placeholder={"Будет включено в назначение платежа"}
+                value={this.state.add}
+                onChangeText={value => this.changeHandler(value, "add")}
+              />
+              <Text style={styles.defaultSmall}>Электронная почта</Text>
+              <Input
+                style={styles.profileInput}
+                placeholder={"На этот адрес будет отправлен счет"}
+                value={this.state.email}
+                onChangeText={value => this.changeHandler(value, "email")}
+              />
+            </View>
+            <TouchableOpacity
+              // onPress={() =>
+              //   payment === "Безналичная оплата, счет на Email"
+              //     ? this.props.navigation.push("Payment")
+              //     : ""
+              // }
+              style={styles.btn}
+              activeOpacity={0.9}
+            >
+              <Text style={styles.btnText}>{"Оплатить".toUpperCase()}</Text>
             </TouchableOpacity>
-          </View>
-        </Modal> */}
+          </Content>
         </View>
       </Container>
     );
@@ -1459,15 +215,13 @@ const styles = StyleSheet.create({
     paddingLeft: scaleSize(15),
     borderRadius: scaleSize(8)
   },
-  default: {
-    color: "#fff"
-  },
   defaultText: {
     fontSize: scaleSize(16),
     color: "#302c23"
   },
-  searchInput: {
-    fontSize: scaleSize(13)
+  defaultSmall: {
+    fontSize: scaleSize(12),
+    color: "#302c23"
   },
   profileInput: {
     fontSize: scaleSize(16),
@@ -1478,18 +232,10 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingLeft: 0
   },
-  profileInputPhone: {
-    fontSize: scaleSize(16),
-    borderBottomColor: "#89a6aa",
-    borderBottomWidth: 1,
-    width: "100%",
-    paddingLeft: 0,
-    paddingTop: 10,
-    paddingBottom: 10,
-    marginBottom: scaleSize(20)
-  },
   btn: {
-    marginLeft: scaleSize(10),
+    // marginLeft: scaleSize(10),
+    // width: "100%",
+    alignItems: "center",
     marginBottom: scaleSize(10),
     marginTop: scaleSize(5),
     backgroundColor: "#ea9308",
@@ -1503,29 +249,6 @@ const styles = StyleSheet.create({
     paddingBottom: scaleSize(11),
     paddingRight: scaleSize(24),
     paddingLeft: scaleSize(24)
-  },
-  imgBlock: {
-    alignItems: "flex-end",
-    marginTop: scaleSize(4),
-    width: "30%"
-  },
-  questionsBtn: {
-    backgroundColor: "#89a6aa",
-    height: scaleSize(40),
-    justifyContent: "center",
-    flexDirection: "row",
-    padding: scaleSize(10),
-    paddingBottom: scaleSize(11),
-    paddingLeft: scaleSize(7),
-    paddingRight: scaleSize(7),
-    borderRadius: scaleSize(3),
-    marginBottom: scaleSize(5),
-    marginTop: scaleSize(5)
-  },
-  phoneNumber: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: scaleSize(8)
   }
 });
 

@@ -1,4 +1,4 @@
-import { GET_USER, SET_USER } from "./types";
+import { GET_USER, SET_USER, UPDATE_USER } from "./types";
 
 export const setUser = user => dispatch => {
   dispatch({
@@ -13,9 +13,9 @@ export const getUser = () => dispatch => {
   });
 };
 
-// export const updateCart = (id, quantity) => dispatch => {
-//   dispatch({
-//     type: CHANGE_CART,
-//     payload: { id, qty: quantity }
-//   });
-// };
+export const updateUser = (firstName, lastName, city) => dispatch => {
+  dispatch({
+    type: UPDATE_USER,
+    payload: { firstName, lastName, city }
+  });
+};

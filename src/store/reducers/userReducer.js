@@ -1,8 +1,11 @@
-import { GET_USER, SET_USER } from "../actions/types";
+import { GET_USER, SET_USER, UPDATE_USER } from "../actions/types";
 
 const initialState = {
   // items: null,
-  info: null
+  info: null,
+  firstName: "",
+  lastName: "",
+  city: ""
 };
 
 export default function(state = initialState, action) {
@@ -16,6 +19,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         info: action.payload
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName,
+        city: action.payload.city
       };
     default:
       return state;
