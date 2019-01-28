@@ -116,5 +116,5 @@ export function* updateCartSaga(item) {
 export function* watchCartSaga() {
   yield takeLatest(ADD_TO_CART, addToCartSaga);
   yield takeLatest(CHANGE_CART, updateCartSaga);
-  yield takeEvery(GET_CART, fetchCartSaga);
+  yield takeLatest(GET_CART, fetchCartSaga);
 }

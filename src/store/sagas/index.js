@@ -3,33 +3,15 @@ export {
   fetchSubCategoriesSaga,
   fetchDishesSaga
 } from "./fetchCategoriesSaga";
-export { fetchProductsSaga, watchFetchProductsSaga } from "./fetchProductsSaga";
-export { fetchAlphabetSaga, watchAlphabetSaga } from "./alphabetSaga";
-export { fetchProductSaga, watchFetchProductSaga } from "./fetchProductSaga";
+export { watchFetchProductsSaga } from "./fetchProductsSaga";
+export { watchAlphabetSaga } from "./alphabetSaga";
+export { watchFetchProductSaga } from "./fetchProductSaga";
 export {
-  fetchProductReviewsSaga,
   addProductReviewSaga,
   watchFetchProductReviewsSaga
 } from "./fetchProductReviewsSaga";
-export {
-  fetchCartSaga,
-  addToCartSaga,
-  updateCartSaga,
-  watchCartSaga
-} from "./cartSaga";
-export {
-  fetchAutoCompleteSaga,
-  watchFetchAutoCompleteSaga // updateCartSaga, // watchCartSaga
-} from "./fetchAutocompleteSaga";
-export {
-  fetchSearchedProductsSaga,
-  watchFetchSearchedProductsSaga // updateCartSaga, // watchCartSaga
-} from "./fetchSearchedProductsSaga";
-export {
-  fetchUserSaga,
-  watchUserSaga // updateCartSaga, // watchCartSaga
-} from "./userSaga";
-export {
-  fetchDeliverySaga,
-  watchDeliverySaga // updateCartSaga, // watchCartSaga
-} from "./deliverySaga";
+export { addToCartSaga, updateCartSaga, watchCartSaga } from "./cartSaga";
+export { watchFetchAutoCompleteSaga } from "./fetchAutocompleteSaga";
+export { watchFetchSearchedProductsSaga } from "./fetchSearchedProductsSaga";
+export { watchUserSaga } from "./userSaga";
+export { watchDeliverySaga } from "./deliverySaga";

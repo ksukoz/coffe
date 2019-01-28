@@ -106,10 +106,10 @@ class OrderScreen extends Component {
       if (!this.props.navigation.getParam("itemId")) {
         this.setState({ loading: false });
       }
-      this.props.getCart();
-      this.props.getUser();
       this.retrieveData("user_region_name");
       this.retrieveData("user_city_name");
+      this.props.getCart();
+      this.props.getUser();
     });
   }
 
@@ -155,7 +155,7 @@ class OrderScreen extends Component {
           );
         }
       }
-      this.setState({ loading: false });
+      // this.setState({ loading: false });
     } catch (error) {}
   };
 
