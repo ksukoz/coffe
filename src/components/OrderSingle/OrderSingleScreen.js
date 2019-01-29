@@ -262,10 +262,11 @@ class OrderSingleScreen extends Component {
 										placeholder={'Электронная почта'}
 										value={this.state.email}
 										onChangeText={(value) => this.changeHandler(value, 'email')}
-										onEndEditing={() =>
-											user.email !== this.state.email
-												? this.setState({ modalVisible2: true })
-												: ''}
+										onEndEditing={() => {}
+										// user.email !== this.state.email
+										// 	? this.setState({ modalVisible2: true })
+										// 	: ''
+										}
 									/>
 									<Label
 										style={{

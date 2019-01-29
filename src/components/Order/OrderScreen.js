@@ -280,10 +280,11 @@ class OrderScreen extends Component {
 										placeholder={'Электронная почта'}
 										value={this.state.email}
 										onChangeText={(value) => this.changeHandler(value, 'email')}
-										onEndEditing={() =>
-											user.email !== this.state.email
-												? this.setState({ modalVisible2: true })
-												: ''}
+										onEndEditing={() => {}
+										// user.email !== this.state.email
+										// 	? this.setState({ modalVisible2: true })
+										// 	: ''
+										}
 									/>
 									<Label
 										style={{
@@ -1018,8 +1019,7 @@ class OrderScreen extends Component {
 															this.props.navigation.navigate('Department', {
 																city: this.state.city,
 																post: deliveryCompany.delivery === 'np' ? 'np' : 'up',
-																linkName: 'Order',
-																itemId: ''
+																linkName: 'Order'
 															});
 														}
 													}}
@@ -1029,12 +1029,6 @@ class OrderScreen extends Component {
 													}}
 												>
 													<Text
-														onFocus={() => {}
-														// this.props.navigation.navigate('SelectRegionScreen', {
-														// 	linkName: 'Order',
-														// itemId: this.props.navigation.getParam("itemId") ? this.props.navigation.getParam("itemId") : ''
-														// })
-														}
 														style={{
 															paddingTop: 0,
 															paddingBottom: 0,

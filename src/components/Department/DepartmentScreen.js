@@ -242,12 +242,10 @@ export default class DepartmentScreen extends Component {
 
 	componentDidMount() {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-
+		// console.error(this.props.navigation.getParam('linkName'));
 		let formData = new FormData();
 		formData.append('login', 'info@wrevery.com');
 		formData.append('password', 'testtest');
-
-		// console.error(this.props.navigation.getParam('city').split('(')[0]);
 
 		fetch('http://kawaapi.gumione.pro/api/auth/login', {
 			method: 'POST',
@@ -255,11 +253,6 @@ export default class DepartmentScreen extends Component {
 		})
 			.then((response) => response.json())
 			.then((responseJson) => {
-				// console.error(
-				//   `http://kawaapi.gumione.pro/api/users/warehouses/${this.props.navigation.getParam(
-				//     "post"
-				//   )}/${encodeURI(this.props.navigation.getParam("city"))}}`
-				// );
 				fetch(
 					`http://kawaapi.gumione.pro/api/users/warehouses/${this.props.navigation.getParam(
 						'post'
@@ -294,23 +287,19 @@ export default class DepartmentScreen extends Component {
 	}
 
 	handleBackPress = () => {
-		if (this.props.navigation.getParam('linkName')) {
-			this.props.navigation.navigate(this.props.navigation.getParam('linkName'), {
-				linkName: this.props.navigation.getParam('linkName')
-			});
-		}
+		// if (this.props.navigation.getParam('linkName')) {
+		// 	this.props.navigation.navigate(this.props.navigation.getParam('linkName'), {
+		// 		linkName: this.props.navigation.getParam('linkName')
+		// 	});
+		// }
+		this.props.navigation.pop();
 
 		return true;
 	};
 
 	setRegion = (id, name) => {
 		this.storeData('department', id);
-		if (this.props.navigation.getParam('linkName')) {
-			this.props.navigation.navigate(this.props.navigation.getParam('linkName'), {
-				linkName: this.props.navigation.getParam('linkName'),
-				itemId: this.props.navigation.getParam('itemId') ? this.props.navigation.getParam('itemId') : ''
-			});
-		}
+		this.props.navigation.pop();
 	};
 
 	async storeData(name, value) {
@@ -352,9 +341,6 @@ export default class DepartmentScreen extends Component {
 		const { navigation, title } = this.props;
 		let linkName;
 
-		if (navigation) {
-			linkName = navigation.getParam('linkName', 'ProfileEdit');
-		}
 		if (this.state.loading) {
 			return this.renderLoadingView();
 		}
@@ -364,16 +350,7 @@ export default class DepartmentScreen extends Component {
 				<Image source={require(MAIN_BG)} style={styles.background} />
 				<View style={styles.head}>
 					<Item style={{ borderBottomWidth: 0, color: '#fff' }}>
-						<Button
-							transparent
-							onPress={() =>
-								navigation.navigate(linkName, {
-									productId: navigation.getParam('productId', '0'),
-									itemId: this.props.navigation.getParam('itemId')
-										? this.props.navigation.getParam('itemId')
-										: ''
-								})}
-						>
+						<Button transparent onPress={() => this.props.navigation.pop()}>
 							<KawaIcon
 								style={{ color: '#fff', paddingLeft: 18, paddingRight: 20 }}
 								name={'arrow-back2'}

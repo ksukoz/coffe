@@ -334,23 +334,12 @@ export default class SelectCityScreen extends Component {
 		this.storeData('user_region_id', this.state.region_id);
 		this.storeData('user_city_name', name);
 		this.storeData('user_region_name', this.state.region_name);
-		if (this.props.navigation.getParam('linkName')) {
-			this.props.navigation.navigate(this.props.navigation.getParam('linkName'), {
-				itemId: this.props.navigation.getParam('itemId') ? this.props.navigation.getParam('itemId') : ''
-			});
-		}
-		// this.props.navigation.navigate(
-		//   this.props.navigation.getParam("linkName", "ProfileEdit"),
-		//   {
-		//     productId: this.props.navigation.getParam("productId", "0")
-		//   }
-		// );
+		this.props.navigation.pop();
+		this.props.navigation.pop();
 	};
 
 	handleBackPress = () => {
-		this.props.navigation.navigate('SelectRegion', {
-			itemId: this.props.navigation.getParam('itemId') ? this.props.navigation.getParam('itemId') : ''
-		});
+		this.props.navigation.pop();
 		return true;
 	};
 
@@ -395,15 +384,7 @@ export default class SelectCityScreen extends Component {
 				<Image source={require(MAIN_BG)} style={styles.background} />
 				<View style={styles.head}>
 					<Item style={{ borderBottomWidth: 0, color: '#fff' }}>
-						<Button
-							transparent
-							onPress={() =>
-								this.props.navigation.navigate('SelectRegion', {
-									itemId: this.props.navigation.getParam('itemId')
-										? this.props.navigation.getParam('itemId')
-										: ''
-								})}
-						>
+						<Button transparent onPress={() => this.props.navigation.pop()}>
 							<KawaIcon
 								style={{ color: '#fff', paddingLeft: 18, paddingRight: 20 }}
 								name={'arrow-back2'}
