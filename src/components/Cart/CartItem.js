@@ -27,10 +27,11 @@ class CartItem extends PureComponent {
 					activeOpacity={0.9}
 					style={{
 						position: 'absolute',
-						top: scaleSize(8),
-						right: scaleSize(8),
-						width: scaleSize(19),
-						height: scaleSize(19),
+						top: scaleSize(3),
+						right: scaleSize(3),
+						width: scaleSize(29),
+						height: scaleSize(29),
+						padding: scaleSize(5),
 						zIndex: 3
 					}}
 				>
@@ -86,6 +87,11 @@ class CartItem extends PureComponent {
 							}}
 						>
 							<TouchableOpacity
+								style={{
+									paddingLeft: scaleSize(10),
+									paddingTop: scaleSize(5),
+									paddingBottom: scaleSize(5)
+								}}
 								onPress={() =>
 									item.qty == '1'
 										? false
@@ -117,6 +123,11 @@ class CartItem extends PureComponent {
 								{qty}
 							</Text>
 							<TouchableOpacity
+								style={{
+									paddingRight: scaleSize(10),
+									paddingTop: scaleSize(5),
+									paddingBottom: scaleSize(5)
+								}}
 								onPress={() =>
 									item.qty == qty
 										? this.setState({ qty: +item.qty + 1 }, () =>

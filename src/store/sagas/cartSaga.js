@@ -2,7 +2,6 @@ import { take, takeLatest, takeEvery, put, call, fork, select } from 'redux-saga
 import { getAlphabet } from '../actions/commonActions';
 import { CHANGE_CART, GET_CART, ADD_TO_CART } from '../actions/types';
 import { setCart, getCart } from '../actions/cartActions';
-// import { getToken } from '../actions/userActions';
 
 const getToken = (state) => state.user.token;
 

@@ -55,8 +55,8 @@ class HomeScreen extends Component {
 	}
 
 	componentDidMount() {
-		this.props.logIn('diec@ukr.net', 'test');
-		// this.props.login('info@wrevery.com', 'testtest');
+		// this.props.logIn('diec@ukr.net', 'test');
+		this.props.logIn('info@wrevery.com', 'testtest');
 		this.props.navigation.addListener('didFocus', (payload) => {
 			if (this.props.categories.length > 0) {
 				this.setState({ loading: false });
@@ -94,7 +94,8 @@ class HomeScreen extends Component {
 			!this.state.link &&
 			this.props.categories.length > 0 &&
 			this.props.subcategories.length > 0 &&
-			this.props.dishes.length > 0
+			this.props.dishes.length > 0 &&
+			this.props.token
 		) {
 			this.setState({ link: true }, () => {
 				if (Platform.OS === 'android') {
@@ -531,7 +532,8 @@ const mapStateToProps = (state) => ({
 	subcategories: state.catalog.subcategories,
 	dishes: state.catalog.dishes,
 	focus: state.common.focus,
-	letters: state.common.letters
+	letters: state.common.letters,
+	token: state.user.token
 });
 
 const mapDispatchToProps = (dispatch) => ({
