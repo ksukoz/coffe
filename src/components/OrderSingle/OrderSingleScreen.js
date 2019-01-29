@@ -84,9 +84,9 @@ class OrderSingleScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
-      this.setState({ loading: false, cart: this.props.cart });
-    }
+    // if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
+    //   this.setState({ loading: false, cart: this.props.cart });
+    // }
     if (prevProps.focus !== this.props.focus) {
       this.setState({ loading: false, focus: this.props.focus });
     }
@@ -409,7 +409,8 @@ class OrderSingleScreen extends Component {
                                         return item;
                                       }
                                     })[0].cost
-                                  : ""
+                                  : "",
+                              payment: 1
                             }
                           })
                         }
@@ -418,7 +419,8 @@ class OrderSingleScreen extends Component {
                           <CheckBox
                             checked={
                               deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0"
+                              deliveryCompany.courier === "0" &&
+                              deliveryCompany.payment === 1
                                 ? true
                                 : false
                             }
@@ -428,7 +430,8 @@ class OrderSingleScreen extends Component {
                               borderColor: "#302c23",
                               backgroundColor:
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0"
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 1
                                   ? "#302c23"
                                   : "transparent"
                             }}
@@ -447,7 +450,8 @@ class OrderSingleScreen extends Component {
                                             return item;
                                           }
                                         })[0].cost
-                                      : ""
+                                      : "",
+                                  payment: 1
                                 }
                               })
                             }
@@ -496,7 +500,8 @@ class OrderSingleScreen extends Component {
                                         return item;
                                       }
                                     })[0].cost
-                                  : ""
+                                  : "",
+                              payment: 2
                             }
                           })
                         }
@@ -505,7 +510,8 @@ class OrderSingleScreen extends Component {
                           <CheckBox
                             checked={
                               deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0"
+                              deliveryCompany.courier === "0" &&
+                              deliveryCompany.payment === 2
                                 ? true
                                 : false
                             }
@@ -515,7 +521,8 @@ class OrderSingleScreen extends Component {
                               borderColor: "#302c23",
                               backgroundColor:
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0"
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
                                   ? "#302c23"
                                   : "transparent"
                             }}
@@ -534,7 +541,8 @@ class OrderSingleScreen extends Component {
                                             return item;
                                           }
                                         })[0].cost
-                                      : ""
+                                      : "",
+                                  payment: 2
                                 }
                               })
                             }

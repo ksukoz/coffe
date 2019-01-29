@@ -423,7 +423,8 @@ class OrderScreen extends Component {
                                         return item;
                                       }
                                     })[0].cost
-                                  : ""
+                                  : "",
+                              payment: 1
                             }
                           })
                         }
@@ -432,7 +433,8 @@ class OrderScreen extends Component {
                           <CheckBox
                             checked={
                               deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0"
+                              deliveryCompany.courier === "0" &&
+                              deliveryCompany.payment === 1
                                 ? true
                                 : false
                             }
@@ -442,7 +444,8 @@ class OrderScreen extends Component {
                               borderColor: "#302c23",
                               backgroundColor:
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0"
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 1
                                   ? "#302c23"
                                   : "transparent"
                             }}
@@ -461,13 +464,105 @@ class OrderScreen extends Component {
                                             return item;
                                           }
                                         })[0].cost
-                                      : ""
+                                      : "",
+                                  payment: 1
                                 }
                               })
                             }
                           />
                           <Text style={styles.defaultText}>
                             Новая Почта, отделение
+                          </Text>
+                        </View>
+                        {this.props.delivery.length < 6 &&
+                        this.state.city !== "Город, область" ? (
+                          <ActivityIndicator color="#89a6aa" size="small" />
+                        ) : (
+                          <Text style={styles.defaultText}>
+                            {this.props.delivery.length > 5
+                              ? this.props.delivery.filter(item => {
+                                  if (
+                                    item.delivery === "np" &&
+                                    item.courier === "0"
+                                  ) {
+                                    return item;
+                                  }
+                                })[0].cost + " грн"
+                              : ""}
+                          </Text>
+                        )}
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          marginBottom: scaleSize(16)
+                        }}
+                        activeOpacity={0.9}
+                        onPress={() =>
+                          this.setState({
+                            deliveryCompany: {
+                              delivery: "np",
+                              courier: "0",
+                              cost:
+                                this.props.delivery.length > 5
+                                  ? this.props.delivery.filter(item => {
+                                      if (
+                                        item.delivery === "np" &&
+                                        item.courier === "0"
+                                      ) {
+                                        return item;
+                                      }
+                                    })[0].cost
+                                  : "",
+                              payment: 2
+                            }
+                          })
+                        }
+                      >
+                        <View style={{ flexDirection: "row" }}>
+                          <CheckBox
+                            checked={
+                              deliveryCompany.delivery === "np" &&
+                              deliveryCompany.courier === "0" &&
+                              deliveryCompany.payment === 2
+                                ? true
+                                : false
+                            }
+                            style={{
+                              left: 0,
+                              marginRight: scaleSize(16),
+                              borderColor: "#302c23",
+                              backgroundColor:
+                                deliveryCompany.delivery === "np" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? "#302c23"
+                                  : "transparent"
+                            }}
+                            onPress={() =>
+                              this.setState({
+                                deliveryCompany: {
+                                  delivery: "np",
+                                  courier: "0",
+                                  cost:
+                                    this.props.delivery.length > 5
+                                      ? this.props.delivery.filter(item => {
+                                          if (
+                                            item.delivery === "np" &&
+                                            item.courier === "0"
+                                          ) {
+                                            return item;
+                                          }
+                                        })[0].cost
+                                      : "",
+                                  payment: 2
+                                }
+                              })
+                            }
+                          />
+                          <Text style={styles.defaultText}>
+                            Новая Почта, при получении
                           </Text>
                         </View>
                         {this.props.delivery.length < 6 &&
@@ -943,7 +1038,8 @@ class OrderScreen extends Component {
                                   deliveryCompany.delivery === "np"
                                     ? "np"
                                     : "up",
-                                linkName: "OrderScreen"
+                                linkName: "Order",
+                                itemId: ""
                               });
                             }
                           }}
