@@ -247,6 +247,8 @@ export default class DepartmentScreen extends Component {
 		formData.append('login', 'info@wrevery.com');
 		formData.append('password', 'testtest');
 
+		// console.error(this.props.navigation.getParam('city').split('(')[0]);
+
 		fetch('http://kawaapi.gumione.pro/api/auth/login', {
 			method: 'POST',
 			body: formData
@@ -261,7 +263,7 @@ export default class DepartmentScreen extends Component {
 				fetch(
 					`http://kawaapi.gumione.pro/api/users/warehouses/${this.props.navigation.getParam(
 						'post'
-					)}/${encodeURI(this.props.navigation.getParam('city'))}`,
+					)}/${encodeURI(this.props.navigation.getParam('city').split('(')[0])}`,
 					{
 						headers: new Headers({
 							Authorization: 'Bearer ' + responseJson.token
