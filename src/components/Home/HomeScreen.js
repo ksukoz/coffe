@@ -31,6 +31,8 @@ import {
 
 import { getAlphabet, searchFocused, clearAlphabet } from '../../store/actions/commonActions';
 
+import { logIn } from '../../store/actions/userActions';
+
 StatusBar.setBarStyle('light-content', true);
 StatusBar.setBackgroundColor('rgba(0,0,0,0)');
 StatusBar.setTranslucent(true);
@@ -53,6 +55,8 @@ class HomeScreen extends Component {
 	}
 
 	componentDidMount() {
+		this.props.logIn('diec@ukr.net', 'test');
+		// this.props.login('info@wrevery.com', 'testtest');
 		this.props.navigation.addListener('didFocus', (payload) => {
 			if (this.props.categories.length > 0) {
 				this.setState({ loading: false });
@@ -531,6 +535,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+	logIn: (login, password) => dispatch(logIn(login, password)),
 	setCategories: () => dispatch(setCategories()),
 	getCategories: () => dispatch(getCategories()),
 	setSubCategories: () => dispatch(setSubCategories()),

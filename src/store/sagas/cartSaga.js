@@ -1,48 +1,34 @@
-import { take, takeLatest, takeEvery, put, call, fork } from 'redux-saga/effects';
+import { take, takeLatest, takeEvery, put, call, fork, select } from 'redux-saga/effects';
 import { getAlphabet } from '../actions/commonActions';
 import { CHANGE_CART, GET_CART, ADD_TO_CART } from '../actions/types';
 import { setCart, getCart } from '../actions/cartActions';
+// import { getToken } from '../actions/userActions';
+
+const getToken = (state) => state.user.token;
 
 export function* fetchCartSaga() {
-	let formData = new FormData();
-	formData.append('login', 'info@wrevery.com');
-	formData.append('password', 'testtest');
+	const token = yield select(getToken);
 
-	const response = yield call(fetch, `http://kawaapi.gumione.pro/api/auth/login`, {
-		method: 'POST',
-		body: formData
-	});
-	let { token } = yield response.json();
-
-	const response2 = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/cart`, {
+	const response = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/cart`, {
 		headers: new Headers({
 			Authorization: 'Bearer ' + token
 		})
 	});
 
-	const { cart } = yield response2.json();
-
+	const { cart } = yield response.json();
 	yield put(setCart(cart));
 }
 
 export function* addToCartSaga(item) {
 	const { payload } = item;
 	if (payload) {
-		let formData = new FormData();
-		let data = new FormData();
-		formData.append('login', 'info@wrevery.com');
-		formData.append('password', 'testtest');
+		const token = yield select(getToken);
 
+		let data = new FormData();
 		data.append('item_id', payload.id);
 		data.append('qty', payload.qty);
 
-		const response = yield call(fetch, `http://kawaapi.gumione.pro/api/auth/login`, {
-			method: 'POST',
-			body: formData
-		});
-		let { token } = yield response.json();
-
-		const response2 = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/cart_add`, {
+		const response = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/cart_add`, {
 			headers: new Headers({
 				Authorization: 'Bearer ' + token
 			}),
@@ -57,21 +43,14 @@ export function* addToCartSaga(item) {
 export function* updateCartSaga(item) {
 	const { payload } = item;
 	if (payload) {
-		let formData = new FormData();
+		const token = yield select(getToken);
+
 		let data = new FormData();
-		formData.append('login', 'info@wrevery.com');
-		formData.append('password', 'testtest');
 
 		data.append('item_id', payload.id);
 		data.append('qty', payload.qty);
 
-		const response = yield call(fetch, `http://kawaapi.gumione.pro/api/auth/login`, {
-			method: 'POST',
-			body: formData
-		});
-		let { token } = yield response.json();
-
-		const response2 = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/cart_update`, {
+		const response = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/cart_update`, {
 			headers: new Headers({
 				Authorization: 'Bearer ' + token
 			}),

@@ -1,53 +1,36 @@
-import { takeLatest, takeEvery, put, call } from "redux-saga/effects";
-import { getProductReviews } from "../actions/catalogActions";
-import { GET_PRODUCT_ID, ADD_PRODUCT_REVIEW } from "../actions/types";
+import { takeLatest, takeEvery, put, call } from 'redux-saga/effects';
+import { getProductReviews } from '../actions/catalogActions';
+import { GET_PRODUCT_ID, ADD_PRODUCT_REVIEW } from '../actions/types';
+
+const getToken = (state) => state.user.token;
 
 export function* fetchProductReviewsSaga(item) {
-  const { payload } = item;
-  if (payload) {
-    const response = yield call(
-      fetch,
-      `http://kawaapi.gumione.pro/api/catalog/get_comments/${payload}`
-    );
-    const { comments } = yield response.json();
-    yield put(getProductReviews(comments.reverse()));
-  }
+	const { payload } = item;
+	if (payload) {
+		const response = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/get_comments/${payload}`);
+		const { comments } = yield response.json();
+		yield put(getProductReviews(comments.reverse()));
+	}
 }
 
 export function* addProductReviewSaga(item) {
-  const { payload } = item;
-  if (payload) {
-    let formData = new FormData();
-    formData.append("login", "info@wrevery.com");
-    formData.append("password", "testtest");
+	const { payload } = item;
+	if (payload) {
+		const token = yield select(getToken);
 
-    const response = yield call(
-      fetch,
-      `http://kawaapi.gumione.pro/api/auth/login`,
-      {
-        method: "POST",
-        body: formData
-      }
-    );
-    let { token } = yield response.json();
+		const response = yield call(fetch, `http://kawaapi.gumione.pro/api/catalog/add_comment`, {
+			headers: new Headers({
+				Authorization: 'Bearer ' + token
+			}),
+			method: 'POST',
+			body: payload.data
+		});
 
-    const response2 = yield call(
-      fetch,
-      `http://kawaapi.gumione.pro/api/catalog/add_comment`,
-      {
-        headers: new Headers({
-          Authorization: "Bearer " + token
-        }),
-        method: "POST",
-        body: payload.data
-      }
-    );
-
-    yield call(() => fetchProductReviewsSaga({ payload: payload.id }));
-  }
+		yield call(() => fetchProductReviewsSaga({ payload: payload.id }));
+	}
 }
 
 export function* watchFetchProductReviewsSaga() {
-  yield takeLatest(ADD_PRODUCT_REVIEW, addProductReviewSaga);
-  yield takeEvery(GET_PRODUCT_ID, fetchProductReviewsSaga);
+	yield takeLatest(ADD_PRODUCT_REVIEW, addProductReviewSaga);
+	yield takeEvery(GET_PRODUCT_ID, fetchProductReviewsSaga);
 }

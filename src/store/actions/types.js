@@ -23,6 +23,9 @@ export const CHANGE_CART = 'CHANGE_CART';
 export const CART_FETCHED = 'CART_FETCHED';
 export const CART_FETCHING = 'CART_FETCHING';
 
+export const LOG_IN = 'LOG_IN';
+export const SET_TOKEN = 'SET_TOKEN';
+export const GET_TOKEN = 'GET_TOKEN';
 export const GET_USER = 'GET_USER';
 export const SET_USER = 'SET_USER';
 export const UPDATE_USER = 'UPDATE_USER';
