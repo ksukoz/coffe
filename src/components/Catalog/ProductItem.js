@@ -339,7 +339,7 @@ class ProductItem extends PureComponent {
 						) : null}
 						<TouchableOpacity
 							onPress={() => {
-								this.props.addToCart(item.id);
+								filteredCart.length > 0 ? '' : this.props.addToCart(item.id);
 								this.props.navigation.push('OrderSingle', {
 									itemId: item.id
 								});
@@ -373,7 +373,7 @@ class ProductItem extends PureComponent {
 					</View>
 					<TouchableOpacity
 						onPress={() => {
-							this.props.addToCart(item.id);
+							filteredCart.length > 0 ? '' : this.props.addToCart(item.id);
 							this.props.navigation.push('OrderSingle', {
 								itemId: item.id
 							});
