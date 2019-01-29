@@ -293,12 +293,9 @@ export default class DepartmentScreen extends Component {
 
   handleBackPress = () => {
     if (this.props.navigation.getParam("linkName")) {
-      this.props.navigation.navigate(
-        this.props.navigation.getParam("linkName"),
-        {
-          linkName: this.props.navigation.getParam("linkName")
-        }
-      );
+      this.props.navigation.push(this.props.navigation.getParam("linkName"), {
+        linkName: this.props.navigation.getParam("linkName")
+      });
     }
 
     return true;
@@ -310,7 +307,10 @@ export default class DepartmentScreen extends Component {
       this.props.navigation.navigate(
         this.props.navigation.getParam("linkName"),
         {
-          linkName: this.props.navigation.getParam("linkName")
+          linkName: this.props.navigation.getParam("linkName"),
+          itemId: this.props.navigation.getParam("itemId")
+            ? this.props.navigation.getParam("itemId")
+            : ""
         }
       );
     }
