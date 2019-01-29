@@ -145,68 +145,80 @@ class CartScreen extends Component {
 						name="ios-search"
 						onPress={() => this.setState({ search: true })}
 					/>
-					<ScrollView
-						style={{
-							marginTop: !this.state.search ? scaleSize(10) : scaleSize(100)
-						}}
-					>
-						{notFound}
-						<FlatList
-							style={{
-								marginLeft: scaleSize(10),
-								marginRight: scaleSize(10),
-								marginBottom: scaleSize(20),
-								zIndex: 2
-							}}
-							keyExtractor={(item) => item.id}
-							getItemLayout={(data, index) => ({
-								length: 100 - 1,
-								index
-							})}
-							initialNumToRender={6}
-							removeClippedSubviews={true}
-							maxToRenderPerBatch={4}
-							windowSize={1}
-							data={this.props.cart}
-							extraData={this.props}
-							renderItem={({ item }) => (
-								<CartItem
-									cart={this.props.cart}
-									item={item}
-									categories={categories}
-									onDeletePressHandler={this.onDeletePressHandler}
-								/>
-							)}
-							viewabilityConfig={this.viewabilityConfig}
-						/>
+					{this.props.cart && this.props.cart.length < 1 ? (
 						<View
 							style={{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-								paddingLeft: scaleSize(10),
-								paddingRight: scaleSize(10)
+								marginTop: !this.state.search ? scaleSize(10) : scaleSize(100)
 							}}
 						>
-							<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>Итого:</Text>
-							<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>
-								{this.props.cart ? (
-									this.props.cart
-										.map((item) => item.qty * item.price)
-										.reduce((sum, item) => sum + item)
-								) : (
-									''
-								)}{' '}
-								грн
+							<Text style={{ alignSelf: 'center', color: '#fff', fontSize: scaleSize(14) }}>
+								У вас нет товаров в корзине
 							</Text>
 						</View>
-						<TouchableOpacity
-							onPress={() => this.props.navigation.push('Order')}
-							style={styles.btn}
-							activeOpacity={0.9}
+					) : (
+						<ScrollView
+							style={{
+								marginTop: !this.state.search ? scaleSize(10) : scaleSize(100)
+							}}
 						>
-							<Text style={styles.btnText}>{'Оформить сейчас'.toUpperCase()}</Text>
-						</TouchableOpacity>
-					</ScrollView>
+							<FlatList
+								style={{
+									marginLeft: scaleSize(10),
+									marginRight: scaleSize(10),
+									marginBottom: scaleSize(20),
+									zIndex: 2
+								}}
+								keyExtractor={(item) => item.id}
+								getItemLayout={(data, index) => ({
+									length: 100 - 1,
+									index
+								})}
+								initialNumToRender={6}
+								removeClippedSubviews={true}
+								maxToRenderPerBatch={4}
+								windowSize={1}
+								data={this.props.cart}
+								extraData={this.props}
+								renderItem={({ item }) => (
+									<CartItem
+										cart={this.props.cart}
+										cartFetch={this.props.cartFetch}
+										item={item}
+										categories={categories}
+										onDeletePressHandler={this.onDeletePressHandler}
+									/>
+								)}
+								viewabilityConfig={this.viewabilityConfig}
+							/>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									paddingLeft: scaleSize(10),
+									paddingRight: scaleSize(10)
+								}}
+							>
+								<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>Итого:</Text>
+								<Text style={{ fontSize: scaleSize(16), color: '#fff' }}>
+									{this.props.cart ? (
+										this.props.cart
+											.map((item) => item.qty * item.price)
+											.reduce((sum, item) => sum + item)
+									) : (
+										''
+									)}{' '}
+									грн
+								</Text>
+							</View>
+							<TouchableOpacity
+								onPress={() => this.props.navigation.push('Order')}
+								style={styles.btn}
+								activeOpacity={0.9}
+							>
+								<Text style={styles.btnText}>{'Оформить заказ'.toUpperCase()}</Text>
+							</TouchableOpacity>
+						</ScrollView>
+					)}
 					<Modal
 						backdropTransitionInTiming={0}
 						backdropTransitionOutTiming={0}
@@ -334,8 +346,8 @@ const styles = StyleSheet.create({
 		fontSize: scaleSize(14),
 		textAlign: 'center',
 		color: '#f8f8f8',
-		paddingTop: scaleSize(7),
-		paddingBottom: scaleSize(7),
+		paddingTop: scaleSize(8),
+		paddingBottom: scaleSize(8),
 		paddingRight: scaleSize(7),
 		paddingLeft: scaleSize(7)
 		// fontWeight: "400"
