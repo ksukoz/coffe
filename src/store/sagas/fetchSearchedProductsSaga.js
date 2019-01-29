@@ -1,4 +1,4 @@
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeEvery, put, call, all } from "redux-saga/effects";
 import {
   findProducts,
   getEndProducts,
@@ -9,6 +9,7 @@ import { GET_CATEGORY, FETCHED, FETCHING, SET_SEARCH } from "../actions/types";
 export function* fetchSearchedProductsSaga(item) {
   const { payload } = item;
   if (payload && payload.page) {
+    console.log(payload);
     yield put(setProductsStatus(FETCHING));
     const response = yield call(
       fetch,
@@ -17,13 +18,13 @@ export function* fetchSearchedProductsSaga(item) {
       )}/${payload.category}/both//10/${payload.page}}`
     );
     const { items } = yield response.json();
-    items.length > 0
+    items.length === 10
       ? yield put(findProducts(items))
-      : yield put(getEndProducts());
+      : yield all([put(findProducts(items)), put(getEndProducts())]);
   }
   yield put(setProductsStatus(FETCHED));
 }
 
 export function* watchFetchSearchedProductsSaga() {
-  yield takeLatest(SET_SEARCH, fetchSearchedProductsSaga);
+  yield takeEvery(SET_SEARCH, fetchSearchedProductsSaga);
 }

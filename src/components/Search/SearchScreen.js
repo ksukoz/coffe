@@ -173,13 +173,11 @@ class SearchScreen extends Component {
               }}
               keyExtractor={item => item.id}
               onEndReached={() =>
-                this.props.fetch
-                  ? false
-                  : !this.props.end
+                !this.state.end && !this.props.fetch
                   ? this.setState(
                       {
                         loading: true,
-                        page: this.state.page + 10
+                        page: +this.state.page + 10
                       },
                       () => this.handleEnd()
                     )
