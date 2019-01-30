@@ -116,7 +116,7 @@ export default class HeaderBar extends Component {
 									size={scaleSize(26)}
 									name={
 										this.props.cart && this.props.cart.length > 0 ? (
-											'cart-with-buy-actionbar'
+											'design_navigation_search-cart-no-buy'
 										) : (
 											'cart-actionbar'
 										)

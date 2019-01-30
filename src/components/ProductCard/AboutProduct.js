@@ -86,10 +86,10 @@ class AboutProduct extends Component {
 ${item.pid == '3' || item.pid == '4' ? `<p>Количество: ${item.quantity} шт.</p>` : ''}
             <p>Упаковка: ${item.package}.</p>
 						<p>Страна производитель: ${item.country}</p>
-						${item.energy_value ? '<p>Энергитическая ценность, ккал на 100 г: ' + item.energy_value + '</p>' : ''}
+						${item.energy_value ? '<p>Энергетическая ценность: ' + item.energy_value + 'ккал</p>' : ''}
 						${item.nutritional_value ? '<p>Питательная ценность, б/ж/у на 100 г: ' + item.nutritional_value + '</p>' : ''}
-						${item.shelf_life ? '<p>Срок годности: ' + item.shelf_life + '</p>' : ''}
-						${item.storage_conditions ? '<p>Условия хранения: ' + item.storage_conditions + '</p>' : ''}
+						${item.shelf_life ? '<p>Срок годности: ' + item.shelf_life + 'мес.</p>' : ''}
+						${item.storage_conditions ? '<p>Условия хранения: ' + item.storage_conditions + '.</p>' : ''}
 						`
 					}}
 				/>
