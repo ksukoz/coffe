@@ -144,6 +144,8 @@ class PaymentScreen extends Component {
                 }
                 value={this.state.number}
                 onChangeText={value => this.changeHandler(value, "number")}
+                keyboadrType={"number-pad"}
+                maxLength={this.state.type === "legal" ? 8 : 10}
               />
               <Text style={styles.defaultSmall}>Расчетный счет</Text>
               <Input
@@ -151,6 +153,7 @@ class PaymentScreen extends Component {
                 placeholder={"Расчетный счет"}
                 value={this.state.account}
                 onChangeText={value => this.changeHandler(value, "account")}
+                keyboadrType={"number-pad"}
               />
               <Text style={styles.defaultSmall}>МФО</Text>
               <Input
@@ -158,6 +161,8 @@ class PaymentScreen extends Component {
                 placeholder={"Код банка в котором открыт счет"}
                 value={this.state.mfo}
                 onChangeText={value => this.changeHandler(value, "mfo")}
+                keyboadrType={"number-pad"}
+                maxLength={6}
               />
               <Text style={styles.defaultSmall}>Примечание</Text>
               <Input
@@ -172,6 +177,7 @@ class PaymentScreen extends Component {
                 placeholder={"На этот адрес будет отправлен счет"}
                 value={this.state.email}
                 onChangeText={value => this.changeHandler(value, "email")}
+                textContentType="emailAddress"
               />
             </View>
             <TouchableOpacity
@@ -183,7 +189,7 @@ class PaymentScreen extends Component {
               style={styles.btn}
               activeOpacity={0.9}
             >
-              <Text style={styles.btnText}>{"Оплатить".toUpperCase()}</Text>
+              <Text style={styles.btnText}>{"Отправить".toUpperCase()}</Text>
             </TouchableOpacity>
           </Content>
         </View>
