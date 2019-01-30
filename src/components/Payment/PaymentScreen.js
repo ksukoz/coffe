@@ -160,7 +160,7 @@ class PaymentScreen extends Component {
 							style={styles.btn}
 							activeOpacity={0.9}
 						>
-							<Text style={styles.btnText}>{'Оплатить'.toUpperCase()}</Text>
+							<Text style={styles.btnText}>{'Отправить'.toUpperCase()}</Text>
 						</TouchableOpacity>
 					</Content>
 				</View>
