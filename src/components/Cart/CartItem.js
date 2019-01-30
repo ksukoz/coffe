@@ -155,7 +155,7 @@ class CartItem extends PureComponent {
 								fontWeight: '300'
 							}}
 						>
-							{(+item.price).toFixed()} грн
+							{(+item.price * item.qty).toFixed()} грн
 						</Text>
 					</View>
 				</View>
