@@ -1159,7 +1159,10 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: "VISA, MasterCard"
+                            payment:
+                              payment === "VISA, MasterCard"
+                                ? ""
+                                : "VISA, MasterCard"
                           })
                         }
                       >
@@ -1219,7 +1222,7 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: "Privat 24"
+                            payment: payment === "Privat 24" ? "" : "Privat 24"
                           })
                         }
                       >
@@ -1738,6 +1741,7 @@ const styles = StyleSheet.create({
   },
   profileInputPhone: {
     fontSize: scaleSize(16),
+    height: scaleSize(45),
     borderBottomColor: "#89a6aa",
     borderBottomWidth: 1,
     width: "100%",

@@ -1744,6 +1744,7 @@ const styles = StyleSheet.create({
   },
   profileInputPhone: {
     fontSize: scaleSize(16),
+    height: scaleSize(45),
     borderBottomColor: "#89a6aa",
     borderBottomWidth: 1,
     width: "100%",
