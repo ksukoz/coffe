@@ -11,19 +11,19 @@ import KawaIcon from "./KawaIcon";
 import { Text, Container, List, ListItem, Content } from "native-base";
 
 const routes = {
-  1: { name: "Главная", route: "Home", icon: "house" },
+  1: { name: "Главная", route: "HomeScreen", icon: "house" },
   2: { name: "Личные данные", route: "Profile", icon: "menu-personal-info" },
   3: { name: "Корзина", route: "Cart", icon: "menu-cart" },
-  4: { name: "Мои заказы", route: "Home", icon: "menu-my-orders" },
-  5: { name: "Мои оценки", route: "Home", icon: "menu-my-appraisal" },
-  6: { name: "Добавлено мной", route: "Home", icon: "menu-my_addition" },
+  4: { name: "Мои заказы", route: "HomeScreen", icon: "menu-my-orders" },
+  5: { name: "Мои оценки", route: "HomeScreen", icon: "menu-my-appraisal" },
+  6: { name: "Добавлено мной", route: "HomeScreen", icon: "menu-my_addition" },
   7: { name: "Мой кофе", route: "MyCoffee", icon: "menu-my-coffee" },
   8: {
     name: "Любимые рецепты",
     route: "RecipeFavoriteScreen",
     icon: "menu-recipes-favorite"
   },
-  9: { name: "Гадание", route: "Home", icon: "menu-divination" },
+  9: { name: "Гадание", route: "HomeScreen", icon: "menu-divination" },
   10: { name: "Информация", route: "Info", icon: "menu-info" }
 };
 
