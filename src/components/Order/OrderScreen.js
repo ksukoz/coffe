@@ -929,7 +929,7 @@ class OrderScreen extends Component {
                             <TextTicker
                               style={[styles.defaultText, { zIndex: 1 }]}
                               loop={false}
-                              marqueeOnMount={false}
+                              marqueeOnMount={true}
                               scroll={false}
                               ref="upStand"
                             >
@@ -1156,7 +1156,7 @@ class OrderScreen extends Component {
                             <TextTicker
                               style={[styles.defaultText, { zIndex: 1 }]}
                               loop={true}
-                              marqueeOnMount={false}
+                              marqueeOnMount={true}
                               scroll={false}
                               // onMarqueeComplete={() =>
                               //   console.error("Scroll Completed!")
