@@ -479,22 +479,29 @@ class OrderSingleScreen extends Component {
                             }}
                             onPress={() =>
                               this.setState({
-                                deliveryCompany: {
-                                  delivery: "np",
-                                  courier: "0",
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "np" &&
-                                            item.courier === "0"
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : "",
-                                  payment: 1
-                                }
+                                deliveryCompany:
+                                  deliveryCompany.delivery === "np" &&
+                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.payment === 1
+                                    ? {}
+                                    : {
+                                        delivery: "np",
+                                        courier: "0",
+                                        cost:
+                                          this.props.delivery.length > 5
+                                            ? this.props.delivery.filter(
+                                                item => {
+                                                  if (
+                                                    item.delivery === "np" &&
+                                                    item.courier === "0"
+                                                  ) {
+                                                    return item;
+                                                  }
+                                                }
+                                              )[0].cost
+                                            : "",
+                                        payment: 1
+                                      }
                               })
                             }
                           />
@@ -582,14 +589,14 @@ class OrderSingleScreen extends Component {
                                     ? {}
                                     : {
                                         delivery: "np",
-                                        courier: 1,
+                                        courier: "0",
                                         cost:
                                           this.props.delivery.length > 5
                                             ? this.props.delivery.filter(
                                                 item => {
                                                   if (
                                                     item.delivery === "np" &&
-                                                    item.courier === 1
+                                                    item.courier === "0"
                                                   ) {
                                                     return item;
                                                   }
@@ -631,21 +638,25 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            deliveryCompany: {
-                              delivery: "np",
-                              courier: 1,
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "np" &&
-                                        item.courier === 1
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
+                            deliveryCompany:
+                              deliveryCompany.delivery === "np" &&
+                              deliveryCompany.courier === 1
+                                ? {}
+                                : {
+                                    delivery: "np",
+                                    courier: 1,
+                                    cost:
+                                      this.props.delivery.length > 5
+                                        ? this.props.delivery.filter(item => {
+                                            if (
+                                              item.delivery === "np" &&
+                                              item.courier === 1
+                                            ) {
+                                              return item;
+                                            }
+                                          })[0].cost
+                                        : ""
+                                  }
                           })
                         }
                       >
@@ -669,21 +680,27 @@ class OrderSingleScreen extends Component {
                             }}
                             onPress={() =>
                               this.setState({
-                                deliveryCompany: {
-                                  delivery: "np",
-                                  courier: 1,
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "np" &&
-                                            item.courier === 1
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
+                                deliveryCompany:
+                                  deliveryCompany.delivery === "np" &&
+                                  deliveryCompany.courier === 1
+                                    ? {}
+                                    : {
+                                        delivery: "np",
+                                        courier: 1,
+                                        cost:
+                                          this.props.delivery.length > 5
+                                            ? this.props.delivery.filter(
+                                                item => {
+                                                  if (
+                                                    item.delivery === "np" &&
+                                                    item.courier === 1
+                                                  ) {
+                                                    return item;
+                                                  }
+                                                }
+                                              )[0].cost
+                                            : ""
+                                      }
                               })
                             }
                           />
@@ -760,21 +777,27 @@ class OrderSingleScreen extends Component {
                             }}
                             onPress={() =>
                               this.setState({
-                                deliveryCompany: {
-                                  delivery: "up",
-                                  courier: "0",
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "up" &&
-                                            item.courier === "0"
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
+                                deliveryCompany:
+                                  deliveryCompany.delivery === "up" &&
+                                  deliveryCompany.courier === "0"
+                                    ? {}
+                                    : {
+                                        delivery: "up",
+                                        courier: "0",
+                                        cost:
+                                          this.props.delivery.length > 5
+                                            ? this.props.delivery.filter(
+                                                item => {
+                                                  if (
+                                                    item.delivery === "up" &&
+                                                    item.courier === "0"
+                                                  ) {
+                                                    return item;
+                                                  }
+                                                }
+                                              )[0].cost
+                                            : ""
+                                      }
                               })
                             }
                           />
@@ -809,21 +832,25 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            deliveryCompany: {
-                              delivery: "es",
-                              courier: "0",
-                              cost:
-                                this.props.delivery.length > 5
-                                  ? this.props.delivery.filter(item => {
-                                      if (
-                                        item.delivery === "es" &&
-                                        item.courier === "0"
-                                      ) {
-                                        return item;
-                                      }
-                                    })[0].cost
-                                  : ""
-                            }
+                            deliveryCompany:
+                              deliveryCompany.delivery === "es" &&
+                              deliveryCompany.courier === "0"
+                                ? {}
+                                : {
+                                    delivery: "es",
+                                    courier: "0",
+                                    cost:
+                                      this.props.delivery.length > 5
+                                        ? this.props.delivery.filter(item => {
+                                            if (
+                                              item.delivery === "es" &&
+                                              item.courier === "0"
+                                            ) {
+                                              return item;
+                                            }
+                                          })[0].cost
+                                        : ""
+                                  }
                           })
                         }
                       >
@@ -944,21 +971,27 @@ class OrderSingleScreen extends Component {
                             }}
                             onPress={() =>
                               this.setState({
-                                deliveryCompany: {
-                                  delivery: "up",
-                                  courier: 1,
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "up" &&
-                                            item.courier === 1
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
+                                deliveryCompany:
+                                  deliveryCompany.delivery === "up" &&
+                                  deliveryCompany.courier === 1
+                                    ? {}
+                                    : {
+                                        delivery: "up",
+                                        courier: 1,
+                                        cost:
+                                          this.props.delivery.length > 5
+                                            ? this.props.delivery.filter(
+                                                item => {
+                                                  if (
+                                                    item.delivery === "up" &&
+                                                    item.courier === 1
+                                                  ) {
+                                                    return item;
+                                                  }
+                                                }
+                                              )[0].cost
+                                            : ""
+                                      }
                               })
                             }
                           />
@@ -1035,21 +1068,27 @@ class OrderSingleScreen extends Component {
                             }}
                             onPress={() =>
                               this.setState({
-                                deliveryCompany: {
-                                  delivery: "es",
-                                  courier: 1,
-                                  cost:
-                                    this.props.delivery.length > 5
-                                      ? this.props.delivery.filter(item => {
-                                          if (
-                                            item.delivery === "es" &&
-                                            item.courier === 1
-                                          ) {
-                                            return item;
-                                          }
-                                        })[0].cost
-                                      : ""
-                                }
+                                deliveryCompany:
+                                  deliveryCompany.delivery === "es" &&
+                                  deliveryCompany.courier === 1
+                                    ? {}
+                                    : {
+                                        delivery: "es",
+                                        courier: 1,
+                                        cost:
+                                          this.props.delivery.length > 5
+                                            ? this.props.delivery.filter(
+                                                item => {
+                                                  if (
+                                                    item.delivery === "es" &&
+                                                    item.courier === 1
+                                                  ) {
+                                                    return item;
+                                                  }
+                                                }
+                                              )[0].cost
+                                            : ""
+                                      }
                               })
                             }
                           />
