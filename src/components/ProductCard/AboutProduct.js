@@ -106,10 +106,11 @@ ${
                 : ""
             }
 						${
-              item.nutritional_value
-                ? "<p>Питательная ценность, б/ж/у на 100 г: " +
-                  item.nutritional_value +
-                  "</p>"
+              item.proteins && item.fats && item.carbohydrates
+                ? `<p>Питательная ценность:
+                белки — ${item.proteins} г
+                жиры — ${item.fats} г
+                углеводы — ${item.carbohydrates} г</p>`
                 : ""
             }
 						${item.shelf_life ? "<p>Срок годности: " + item.shelf_life + "мес.</p>" : ""}
@@ -151,7 +152,9 @@ ${
         package: productItem.package,
         country: productItem.country,
         energy_value: productItem.energy_value,
-        nutritional_value: productItem.nutritional_value,
+        proteins: productItem.proteins,
+        fat: productItem.fat,
+        carbohydrates: productItem.carbohydrates,
         shelf_life: productItem.shelf_life,
         storage_conditions: productItem.storage_conditions
       });
