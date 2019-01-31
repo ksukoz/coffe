@@ -38,7 +38,7 @@ import TextInputMask from "react-native-text-input-mask";
 import KawaIcon from "../KawaIcon";
 
 Input.defaultProps.selectionColor = "#ea9308";
-TextInputMask.defaultProps.selectionColor = "#ea9308";
+TextInputMask.defaultProps.underlineColorAndroid = "rgba(0,0,0,0)";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
@@ -149,9 +149,11 @@ class OrderScreen extends Component {
           );
         }
         if (name == "department") {
-          this.setState({
-            department: value
-          });
+          if (this.state.deliveryCompany.courier == "0") {
+            this.setState({
+              department: value
+            });
+          }
         }
       }
     } catch (error) {}
@@ -299,6 +301,7 @@ class OrderScreen extends Component {
                     Телефон
                   </Label>
                   <TextInputMask
+                    ref="mask"
                     placeholder={"+38 (___) ___ __ __"}
                     placeholderTextColor="#000"
                     keyboardType="phone-pad"
@@ -1113,11 +1116,11 @@ class OrderScreen extends Component {
                               borderBottomWidth: 1
                             }}
                           >
-                            {department
+                            {department && deliveryCompany.courier === "0"
                               ? department
-                              : deliveryCompany.courier === "0"
-                              ? "Номер отделения, адрес"
-                              : "Адрес (улица, дом) доставки"}
+                              : deliveryCompany.courier === 1
+                              ? "Адрес доставки"
+                              : "Номер отделения, адрес"}
                           </Text>
                           <KawaIcon
                             style={{
@@ -1154,29 +1157,29 @@ class OrderScreen extends Component {
                         onPress={() =>
                           this.setState({
                             payment:
-                              payment === "VISA, MasterCard"
+                              payment === "VISA, Mastercard"
                                 ? ""
-                                : "VISA, MasterCard"
+                                : "VISA, Mastercard"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
                             checked={
-                              payment === "VISA, MasterCard" ? true : false
+                              payment === "VISA, Mastercard" ? true : false
                             }
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "VISA, MasterCard"
+                                payment === "VISA, Mastercard"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment: "VISA, MasterCard"
+                                payment: "VISA, Mastercard"
                               })
                             }
                           />
@@ -1238,15 +1241,31 @@ class OrderScreen extends Component {
                               })
                             }
                           />
-                          <Text style={styles.defaultText}>Privat 24</Text>
+                          <Text style={styles.defaultText}>
+                            LiqPay, Privat 24
+                          </Text>
                         </View>
-                        <Image
-                          source={require("../../static/img/privat24.png")}
+                        <View
                           style={{
-                            width: scaleSize(102),
-                            height: scaleSize(20)
+                            flexDirection: "row",
+                            alignItems: "center"
                           }}
-                        />
+                        >
+                          <Image
+                            source={require("../../static/img/liqpay.png")}
+                            style={{
+                              width: scaleSize(15),
+                              height: scaleSize(16)
+                            }}
+                          />
+                          <Image
+                            source={require("../../static/img/privat24.png")}
+                            style={{
+                              width: scaleSize(102),
+                              height: scaleSize(20)
+                            }}
+                          />
+                        </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{
@@ -1350,15 +1369,31 @@ class OrderScreen extends Component {
                               })
                             }
                           />
-                          <Text style={styles.defaultText}>Masterpass</Text>
+                          <Text style={styles.defaultText}>
+                            VISA Checkout, Masterpass
+                          </Text>
                         </View>
-                        <Image
-                          source={require("../../static/img/masterpass2.png")}
+                        <View
                           style={{
-                            width: scaleSize(30),
-                            height: scaleSize(24)
+                            flexDirection: "row",
+                            alignItems: "center"
                           }}
-                        />
+                        >
+                          <Image
+                            source={require("../../static/img/visa-checkout.png")}
+                            style={{
+                              width: scaleSize(40),
+                              height: scaleSize(20)
+                            }}
+                          />
+                          <Image
+                            source={require("../../static/img/masterpass2.png")}
+                            style={{
+                              width: scaleSize(30),
+                              height: scaleSize(24)
+                            }}
+                          />
+                        </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{

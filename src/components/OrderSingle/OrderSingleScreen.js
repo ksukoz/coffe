@@ -38,7 +38,7 @@ import TextInputMask from "react-native-text-input-mask";
 import KawaIcon from "../KawaIcon";
 
 Input.defaultProps.selectionColor = "#ea9308";
-TextInputMask.defaultProps.selectionColor = "#ea9308";
+TextInputMask.defaultProps.underlineColorAndroid = "rgba(0,0,0,0)";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
