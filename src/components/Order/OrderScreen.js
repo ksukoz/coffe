@@ -1255,8 +1255,10 @@ class OrderScreen extends Component {
                             source={require("../../static/img/liqpay.png")}
                             style={{
                               width: scaleSize(15),
-                              height: scaleSize(16)
+                              height: scaleSize(16),
+                              marginRight: scaleSize(16)
                             }}
+                            resizeMode="contain"
                           />
                           <Image
                             source={require("../../static/img/privat24.png")}
@@ -1264,6 +1266,7 @@ class OrderScreen extends Component {
                               width: scaleSize(102),
                               height: scaleSize(20)
                             }}
+                            resizeMode="contain"
                           />
                         </View>
                       </TouchableOpacity>
@@ -1325,6 +1328,7 @@ class OrderScreen extends Component {
                               width: scaleSize(50),
                               height: scaleSize(23)
                             }}
+                            resizeMode="contain"
                           />
                         ) : (
                           <Image
@@ -1334,6 +1338,7 @@ class OrderScreen extends Component {
                               width: scaleSize(58),
                               height: scaleSize(23)
                             }}
+                            resizeMode="contain"
                           />
                         )}
                       </TouchableOpacity>
@@ -1383,15 +1388,18 @@ class OrderScreen extends Component {
                             source={require("../../static/img/visa-checkout.png")}
                             style={{
                               width: scaleSize(40),
-                              height: scaleSize(20)
+                              height: scaleSize(20),
+                              marginRight: scaleSize(5)
                             }}
+                            resizeMode="contain"
                           />
                           <Image
                             source={require("../../static/img/masterpass2.png")}
                             style={{
-                              width: scaleSize(30),
-                              height: scaleSize(24)
+                              width: scaleSize(27),
+                              height: scaleSize(20)
                             }}
+                            resizeMode="contain"
                           />
                         </View>
                       </TouchableOpacity>

@@ -1176,18 +1176,18 @@ class OrderSingleScreen extends Component {
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "VISA, MasterCard"
+                                payment === "VISA, Mastercard"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment: "VISA, MasterCard"
+                                payment: "VISA, Mastercard"
                               })
                             }
                           />
                           <Text style={styles.defaultText}>
-                            VISA, MasterCard
+                            VISA, Mastercard
                           </Text>
                         </View>
                         <View
@@ -1246,13 +1246,30 @@ class OrderSingleScreen extends Component {
                           />
                           <Text style={styles.defaultText}>Privat 24</Text>
                         </View>
-                        <Image
-                          source={require("../../static/img/privat24.png")}
+                        <View
                           style={{
-                            width: scaleSize(102),
-                            height: scaleSize(20)
+                            flexDirection: "row",
+                            alignItems: "center"
                           }}
-                        />
+                        >
+                          <Image
+                            source={require("../../static/img/liqpay.png")}
+                            style={{
+                              width: scaleSize(15),
+                              height: scaleSize(16),
+                              marginRight: scaleSize(16)
+                            }}
+                            resizeMode="contain"
+                          />
+                          <Image
+                            source={require("../../static/img/privat24.png")}
+                            style={{
+                              width: scaleSize(102),
+                              height: scaleSize(20)
+                            }}
+                            resizeMode="contain"
+                          />
+                        </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{
@@ -1350,15 +1367,34 @@ class OrderSingleScreen extends Component {
                               })
                             }
                           />
-                          <Text style={styles.defaultText}>Masterpass</Text>
+                          <Text style={styles.defaultText}>
+                            VISA Checkout, Masterpass
+                          </Text>
                         </View>
-                        <Image
-                          source={require("../../static/img/masterpass2.png")}
+                        <View
                           style={{
-                            width: scaleSize(30),
-                            height: scaleSize(24)
+                            flexDirection: "row",
+                            alignItems: "center"
                           }}
-                        />
+                        >
+                          <Image
+                            source={require("../../static/img/visa-checkout.png")}
+                            style={{
+                              width: scaleSize(40),
+                              height: scaleSize(20),
+                              marginRight: scaleSize(5)
+                            }}
+                            resizeMode="contain"
+                          />
+                          <Image
+                            source={require("../../static/img/masterpass2.png")}
+                            style={{
+                              width: scaleSize(27),
+                              height: scaleSize(20)
+                            }}
+                            resizeMode="contain"
+                          />
+                        </View>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{
