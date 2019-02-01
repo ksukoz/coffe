@@ -232,14 +232,16 @@ ${
                           <Lightbox
                             springConfig={{
                               tension: 15,
-                              friction: 7,
-                              zIndex: 2
+                              friction: 7
                             }}
+                            style={{ flex: 1, flexGrow: 1 }}
                             // swipeToDismiss={false}
                             renderContent={() => (
                               <Carousel
                                 width={SCREEN_WIDTH - scaleSize(20)}
                                 height={SCREEN_HEIGHT}
+                                style={{ flex: 1, flexGrow: 1 }}
+                                resizeMethod="scale"
                                 initialPage={this.state.index}
                                 indicatorAtBottom={true}
                                 indicatorSize={20}
@@ -261,6 +263,7 @@ ${
                                         width: SCREEN_WIDTH - scaleSize(20),
                                         height: SCREEN_HEIGHT - scaleSize(20)
                                       }}
+                                      resizeMethod="scale"
                                       resizeMode="contain"
                                       source={{
                                         uri: `http://kawa.gumione.pro${url}`

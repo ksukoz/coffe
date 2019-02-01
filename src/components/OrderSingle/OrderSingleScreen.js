@@ -37,6 +37,8 @@ import TextInputMask from "react-native-text-input-mask";
 
 import KawaIcon from "../KawaIcon";
 
+import TextTicker from "react-native-text-ticker";
+
 Input.defaultProps.selectionColor = "#ea9308";
 TextInputMask.defaultProps.underlineColorAndroid = "rgba(0,0,0,0)";
 

@@ -96,7 +96,6 @@ class OrderScreen extends Component {
   }
 
   componentDidMount() {
-    console.error(TextTicker.defaultProps);
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload =>
@@ -1158,9 +1157,6 @@ class OrderScreen extends Component {
                               loop={true}
                               marqueeOnMount={true}
                               scroll={false}
-                              // onMarqueeComplete={() =>
-                              //   console.error("Scroll Completed!")
-                              // }
                               ref="upEksp"
                             >
                               Укрпочта Экспресс, при получении
