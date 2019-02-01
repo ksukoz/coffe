@@ -153,7 +153,9 @@ class SearchBar extends Component {
       this.unFocus();
     } else {
       this.props.clearAutocomplete();
-      this.props.clearAlphabet();
+      this.props.navigation.state.routeName !== "HomeScreen"
+        ? this.props.clearAlphabet()
+        : "";
       this.props.navigation.pop();
     }
     return true;
