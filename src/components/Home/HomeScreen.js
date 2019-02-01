@@ -43,8 +43,17 @@ StatusBar.setTranslucent(true);
 const MAIN_BG = "../../static/img/background.png";
 
 class HomeScreen extends Component {
+  _didFocusSubscription;
+  _willBlurSubscription;
+
   constructor(props) {
     super(props);
+    this._didFocusSubscription = this.props.navigation.addListener(
+      "didFocus",
+      payload => {
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+      }
+    );
     this.state = {
       search: "",
       categories: [],
@@ -59,6 +68,14 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload =>
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          this.handleBackPress
+        )
+    );
     this.props.logIn("diec@ukr.net", "test");
     // this.props.logIn("info@wrevery.com", "testtest");
     this.props.navigation.addListener("didFocus", payload => {
@@ -164,6 +181,11 @@ class HomeScreen extends Component {
       </ScrollView>
     );
   }
+
+  handleBackPress = () => {
+    this.props.navigation.pop();
+    return true;
+  };
 
   render() {
     if (this.state.loading) {

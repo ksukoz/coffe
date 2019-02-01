@@ -1,5 +1,5 @@
 import React from "react";
-import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
+import NavigationActions from "react-navigation";
 import HomeScreen from "./HomeScreen.js";
 import HomeOther from "../HomeOther/index.js";
 import HomeDishes from "../HomeDishes/index.js";
@@ -72,6 +72,21 @@ const HomeScreenRouter = createDrawerNavigator(
     initialRouteName: "Home",
     drawerWidth: Dimensions.get("window").width * 0.85
   }
+);
+
+const navigateOnce = getStateForAction => (action, state) => {
+  const { type, routeName } = action;
+  return state &&
+    type === NavigationActions.NAVIGATE &&
+    routeName === state.routes[state.routes.length - 1].routeName
+    ? null
+    : getStateForAction(action, state);
+  // you might want to replace 'null' with 'state' if you're using redux (see comments below)
+};
+
+Home.router.getStateForAction = navigateOnce(Home.router.getStateForAction);
+HomeScreenRouter.router.getStateForAction = navigateOnce(
+  HomeScreenRouter.router.getStateForAction
 );
 
 export default HomeScreenRouter;
