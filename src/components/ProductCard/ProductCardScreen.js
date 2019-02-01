@@ -44,9 +44,16 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class ProductCardScreen extends Component {
+  _didFocusSubscription;
+  _willBlurSubscription;
   constructor(props) {
     super(props);
-
+    this._didFocusSubscription = this.props.navigation.addListener(
+      "didFocus",
+      payload => {
+        BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+      }
+    );
     this.state = {
       cart: this.props.cart,
       modalVisible: false,
@@ -73,6 +80,15 @@ class ProductCardScreen extends Component {
   }
 
   componentDidMount() {
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload =>
+        BackHandler.removeEventListener(
+          "hardwareBackPress",
+          this.handleBackPress
+        )
+    );
+
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.focus) {
         this.props.searchFocused();
@@ -109,6 +125,11 @@ class ProductCardScreen extends Component {
       reviewsFormShow: !this.state.reviewsFormShow
     });
   }
+
+  handleBackPress = () => {
+    this.props.navigation.pop();
+    return true;
+  };
 
   render() {
     const categories = [
