@@ -5,7 +5,8 @@ import {
   Image,
   View,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  BackHandler
 } from "react-native";
 import KawaIcon from "./KawaIcon";
 import { Text, Container, List, ListItem, Content } from "native-base";
@@ -59,10 +60,31 @@ class RowComponent extends React.Component {
 }
 
 export default class SideBar extends React.Component {
+  _didFocusSubscription;
+  _willBlurSubscription;
   constructor(props) {
     super(props);
+    this._didFocusSubscription = this.props.navigation.addListener(
+      "didFocus",
+      payload => {
+        BackHandler.addEventListener("hardwareBackPress", () => {
+          return true;
+        });
+      }
+    );
     self = this;
   }
+
+  componentDidMount() {
+    this._willBlurSubscription = this.props.navigation.addListener(
+      "willBlur",
+      payload =>
+        BackHandler.removeEventListener("hardwareBackPress", () => {
+          return true;
+        })
+    );
+  }
+
   routeMove(route: string) {
     this.props.navigation.navigate(route);
     this.props.navigation.closeDrawer();
