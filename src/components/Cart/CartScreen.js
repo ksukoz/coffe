@@ -70,7 +70,9 @@ class CartScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getCart();
+    this.props.navigation.addListener("didFocus", payload => {
+      this.props.getCart();
+    });
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload => {}

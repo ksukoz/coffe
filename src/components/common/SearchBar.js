@@ -74,11 +74,14 @@ class SearchBar extends Component {
     }
     if (
       prevProps.navigation &&
+      this.props.navigation &&
       prevProps.navigation.getParam("search") !==
         this.props.navigation.getParam("search")
     ) {
       this.setState({
-        search: this.props.navigation.getParam("search")
+        search: this.props.navigation
+          ? this.props.navigation.getParam("search")
+          : ""
       });
     }
     if (this.props.focus !== prevProps.focus) {
@@ -111,7 +114,9 @@ class SearchBar extends Component {
         this.setState({ search: text }, () => {
           this.props.getSearch(
             text,
-            this.props.navigation.getParam("categoryId", "0")
+            this.props.navigation
+              ? this.props.navigation.getParam("categoryId", "0")
+              : ""
           );
         });
       } else {
@@ -124,14 +129,20 @@ class SearchBar extends Component {
   handleSearch = e => {
     this.props.setSearch(
       typeof e === "string" ? e : this.state.search,
-      this.props.navigation.getParam("categoryId", "0"),
+      this.props.navigation
+        ? this.props.navigation.getParam("categoryId", "0")
+        : "",
       "0"
     );
     Keyboard.dismiss();
-    this.props.navigation.push("Search", {
-      categoryId: this.props.navigation.getParam("categoryId", "0"),
-      search: typeof e === "string" ? e : this.state.search
-    });
+    this.props.navigation
+      ? this.props.navigation.push("Search", {
+          categoryId: this.props.navigation
+            ? this.props.navigation.getParam("categoryId", "0")
+            : "",
+          search: typeof e === "string" ? e : this.state.search
+        })
+      : "";
     this.props.clearAutocomplete();
     this.props.clearSearchedProducts();
     this.props.searchFocused();
@@ -156,7 +167,7 @@ class SearchBar extends Component {
       this.props.navigation.state.routeName !== "HomeScreen"
         ? this.props.clearAlphabet()
         : "";
-      this.props.navigation.pop();
+      this.props.navigation ? this.props.navigation.pop() : "";
     }
     return true;
   };
