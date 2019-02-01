@@ -1154,7 +1154,7 @@ class OrderScreen extends Component {
                           >
                             <TextTicker
                               style={[styles.defaultText, { zIndex: 1 }]}
-                              loop={true}
+                              loop={false}
                               marqueeOnMount={true}
                               scroll={false}
                               ref="upEksp"

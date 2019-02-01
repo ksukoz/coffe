@@ -6,8 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-  StyleSheet,
-  findNodeHandle
+  StyleSheet
 } from "react-native";
 import { Text, Input, Accordion, Card, CardItem } from "native-base";
 import KawaIcon from "../KawaIcon";
@@ -42,10 +41,6 @@ class AboutProduct extends Component {
     };
     Input.defaultProps.selectionColor = "#000";
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //
-  // }
 
   _renderHeader(item, expanded) {
     return (
@@ -174,7 +169,6 @@ ${
                 textAlign: "center",
                 alignItems: "center"
               }}
-              // onTouchStart={(e, state, context) => this.refs.modal.open()}
             >
               {product.new == 1 && Date.now() <= +`${product.new_date}000` ? (
                 <View style={styles.imgHit}>
@@ -235,43 +229,18 @@ ${
                               friction: 7
                             }}
                             style={{ flex: 1, flexGrow: 1 }}
-                            // swipeToDismiss={false}
                             renderContent={() => (
-                              <Carousel
-                                width={SCREEN_WIDTH - scaleSize(20)}
-                                height={SCREEN_HEIGHT}
-                                style={{ flex: 1, flexGrow: 1 }}
+                              <Image
+                                style={{
+                                  flex: 1,
+                                  height: scaleSize(154)
+                                }}
                                 resizeMethod="scale"
-                                initialPage={this.state.index}
-                                indicatorAtBottom={true}
-                                indicatorSize={20}
-                                animate={false}
-                                indicatorColor="#89a6aa"
-                                onPageChange={number =>
-                                  this.setState({ index: number })
-                                }
-                                onScroll={() =>
-                                  this.refs.carousel.props.onPageChange(
-                                    number => this.setState({ index: number })
-                                  )
-                                }
-                              >
-                                {this.props.productItem.file.map(url => (
-                                  <View>
-                                    <Image
-                                      style={{
-                                        width: SCREEN_WIDTH - scaleSize(20),
-                                        height: SCREEN_HEIGHT - scaleSize(20)
-                                      }}
-                                      resizeMethod="scale"
-                                      resizeMode="contain"
-                                      source={{
-                                        uri: `http://kawa.gumione.pro${url}`
-                                      }}
-                                    />
-                                  </View>
-                                ))}
-                              </Carousel>
+                                resizeMode="contain"
+                                source={{
+                                  uri: `http://kawa.gumione.pro${url}`
+                                }}
+                              />
                             )}
                             style={{ flex: 1, flexGrow: 1 }}
                             navigator={this.props.navigator}
