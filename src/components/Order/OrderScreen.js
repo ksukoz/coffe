@@ -1490,7 +1490,7 @@ class OrderScreen extends Component {
                             }
                           />
                           <Text style={styles.defaultText}>
-                            VISA, MasterCard
+                            VISA, Mastercard
                           </Text>
                         </View>
                         <View
@@ -1549,7 +1549,7 @@ class OrderScreen extends Component {
                             }
                           />
                           <Text style={styles.defaultText}>
-                            LiqPay, Privat 24
+                            LiqPay, Privat24
                           </Text>
                         </View>
                         <View
