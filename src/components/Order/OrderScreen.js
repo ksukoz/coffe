@@ -24,7 +24,7 @@ import { getCart } from "../../store/actions/cartActions";
 import { getUser, updateUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
 
-import TextTicker from "react-native-text-ticker";
+import TextTicker from "../common/TextTicker";
 
 import {
   searchFocused,
@@ -96,7 +96,6 @@ class OrderScreen extends Component {
   }
 
   componentDidMount() {
-    console.error(this.refs.upEksp);
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload =>

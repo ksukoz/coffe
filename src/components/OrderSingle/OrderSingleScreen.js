@@ -37,7 +37,7 @@ import TextInputMask from "react-native-text-input-mask";
 
 import KawaIcon from "../KawaIcon";
 
-import TextTicker from "react-native-text-ticker";
+import TextTicker from "../common/TextTicker";
 
 Input.defaultProps.selectionColor = "#ea9308";
 TextInputMask.defaultProps.underlineColorAndroid = "rgba(0,0,0,0)";
@@ -926,7 +926,7 @@ class OrderSingleScreen extends Component {
                             <TextTicker
                               style={[styles.defaultText, { zIndex: 1 }]}
                               loop={false}
-                              marqueeOnMount={true}
+                              marqueeOnMount={false}
                               scroll={false}
                               ref="upStand"
                             >
@@ -1153,7 +1153,7 @@ class OrderSingleScreen extends Component {
                             <TextTicker
                               style={[styles.defaultText, { zIndex: 1 }]}
                               loop={false}
-                              marqueeOnMount={true}
+                              marqueeOnMount={false}
                               scroll={false}
                               ref="upEksp"
                             >
