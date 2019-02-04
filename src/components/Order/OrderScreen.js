@@ -363,7 +363,6 @@ class OrderScreen extends Component {
                     onChangeText={value =>
                       this.changeHandler(value, "lastname")
                     }
-                    onEndEditing={() => this.userModalHandler("lastname")}
                   />
                   <View style={styles.cardFullCity}>
                     <View

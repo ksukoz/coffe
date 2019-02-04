@@ -127,6 +127,7 @@ class DeliveryScreen extends Component {
           <Image source={require(MAIN_BG)} style={styles.background} />
           <View style={styles.container}>
             <HeaderBar
+              style={{ marginBottom: scaleSize(30) }}
               navigation={this.props.navigation}
               title="Доставка и оплата"
             />

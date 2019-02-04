@@ -76,8 +76,8 @@ class HomeScreen extends Component {
           this.handleBackPress
         )
     );
-    // this.props.logIn("diec@ukr.net", "test");
-    this.props.logIn("info@wrevery.com", "testtest");
+    this.props.logIn("diec@ukr.net", "test");
+    // this.props.logIn("info@wrevery.com", "testtest");
     this.props.navigation.addListener("didFocus", payload => {
       if (this.props.categories.length > 0) {
         this.setState({ loading: false });
