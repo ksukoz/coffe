@@ -15,6 +15,7 @@ import {
   Platform,
   StyleSheet,
   Linking,
+  findNodeHandle,
   ActivityIndicator
 } from "react-native";
 
@@ -76,7 +77,8 @@ class OrderScreen extends Component {
       department: "",
       modalVisible: false,
       modalVisible2: false,
-      opacity: 0
+      opacity: 0,
+      canceled: false
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -131,12 +133,6 @@ class OrderScreen extends Component {
     }
   }
 
-  userModalHandler = type => {
-    if (this.props.user[type] !== this.state[type]) {
-      this.setState({ modalVisible2: true });
-    }
-  };
-
   retrieveData = async name => {
     try {
       const value = await AsyncStorage.getItem(name);
@@ -145,7 +141,8 @@ class OrderScreen extends Component {
         if (name == "user_city_name") {
           this.setState(
             {
-              city: value
+              city: value,
+              canceled: false
             },
             () => this.props.getDeliveryCost(value)
           );
@@ -171,7 +168,33 @@ class OrderScreen extends Component {
   }
 
   changeHandler = (value, name) => {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, canceled: false });
+  };
+
+  handleScroll = event => {
+    const value = event.nativeEvent.contentOffset.y;
+    const UIManager = require("NativeModules").UIManager;
+    const handle = findNodeHandle(this.refs.deliveryView);
+    UIManager.measureLayoutRelativeToParent(
+      handle,
+      e => {
+        console.error(e);
+      },
+      (x, y, w, h) => {
+        if (value > w + y && !this.state.canceled) {
+          if (
+            this.state.email !== this.props.user.email ||
+            this.state.firstname !== this.props.user.firstname ||
+            this.state.lastname !== this.props.user.lastname ||
+            this.state.phone !== this.props.user.phone ||
+            (this.state.city !== this.props.user.city &&
+              this.state.city !== "Город, область")
+          ) {
+            this.setState({ modalVisible2: true });
+          }
+        }
+      }
+    );
   };
 
   render() {
@@ -200,7 +223,7 @@ class OrderScreen extends Component {
         />
         <View style={{ flex: 1 }}>
           <ScrollView
-            keyboardShouldPersistTaps={"handled"}
+            removeClippedSubviews
             style={{
               position: "absolute",
               top: 0,
@@ -225,7 +248,10 @@ class OrderScreen extends Component {
               animating
             />
           ) : (
-            <Content style={{ marginTop: scaleSize(99) }}>
+            <Content
+              style={{ marginTop: scaleSize(99) }}
+              onScroll={e => this.handleScroll(e)}
+            >
               <FlatList
                 style={{
                   marginLeft: scaleSize(10),
@@ -287,12 +313,6 @@ class OrderScreen extends Component {
                     placeholder={"Электронная почта"}
                     value={this.state.email}
                     onChangeText={value => this.changeHandler(value, "email")}
-                    onEndEditing={
-                      () => {}
-                      // user.email !== this.state.email
-                      // 	? this.setState({ modalVisible2: true })
-                      // 	: ''
-                    }
                   />
                   <Label
                     style={{
@@ -308,12 +328,9 @@ class OrderScreen extends Component {
                     placeholderTextColor="#000"
                     keyboardType="phone-pad"
                     mask={"+38 ([000]) [000] [00] [00]"}
-                    // onBlur={() => this.onUnFocus('phone')}
-                    // onFocus={() => this.onFocus('phone')}
                     style={styles.profileInputPhone}
                     value={this.state.phone}
                     onChangeText={value => this.changeHandler(value, "phone")}
-                    onEndEditing={() => this.userModalHandler("firstname")}
                   />
                   <Label
                     style={{
@@ -330,7 +347,6 @@ class OrderScreen extends Component {
                     onChangeText={value =>
                       this.changeHandler(value, "firstname")
                     }
-                    onEndEditing={() => this.userModalHandler("firstname")}
                   />
                   <Label
                     style={{
@@ -1376,7 +1392,7 @@ class OrderScreen extends Component {
                         )}
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.cardFullCity}>
+                    <View style={styles.cardFullCity} ref="deliveryView">
                       <View
                         style={{
                           width: "100%",
@@ -1941,7 +1957,7 @@ class OrderScreen extends Component {
                   alignSelf: "flex-end"
                 }}
                 onPress={() => {
-                  this.setState({ modalVisible2: false });
+                  this.setState({ modalVisible2: false, canceled: true });
                 }}
               >
                 <Text

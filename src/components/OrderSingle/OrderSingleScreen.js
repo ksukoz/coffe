@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Text,
-  FlatList,
+  findNodeHandle,
   ScrollView,
   BackHandler,
   AsyncStorage,
@@ -75,7 +75,8 @@ class OrderSingleScreen extends Component {
       department: "",
       modalVisible: false,
       modalVisible2: false,
-      opacity: 0
+      opacity: 0,
+      canseled: false
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -179,13 +180,39 @@ class OrderSingleScreen extends Component {
   }
 
   changeHandler = (value, name) => {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, canceled: false });
   };
 
-  userModalHandler = type => {
-    if (this.props.user[type] !== this.state[type]) {
-      this.setState({ modalVisible2: true });
-    }
+  // userModalHandler = type => {
+  //   if (this.props.user[type] !== this.state[type]) {
+  //     this.setState({ modalVisible2: true });
+  //   }
+  // };
+
+  handleScroll = event => {
+    const value = event.nativeEvent.contentOffset.y;
+    const UIManager = require("NativeModules").UIManager;
+    const handle = findNodeHandle(this.refs.deliveryView);
+    UIManager.measureLayoutRelativeToParent(
+      handle,
+      e => {
+        console.error(e);
+      },
+      (x, y, w, h) => {
+        if (value > w + y && !this.state.canceled) {
+          if (
+            this.state.email !== this.props.user.email ||
+            this.state.firstname !== this.props.user.firstname ||
+            this.state.lastname !== this.props.user.lastname ||
+            this.state.phone !== this.props.user.phone ||
+            (this.state.city !== this.props.user.city &&
+              this.state.city !== "Город, область")
+          ) {
+            this.setState({ modalVisible2: true });
+          }
+        }
+      }
+    );
   };
 
   render() {
@@ -239,7 +266,10 @@ class OrderSingleScreen extends Component {
               animating
             />
           ) : (
-            <Content style={{ marginTop: scaleSize(99) }}>
+            <Content
+              style={{ marginTop: scaleSize(99) }}
+              onScroll={e => this.handleScroll(e)}
+            >
               <View
                 style={{
                   paddingLeft: scaleSize(10),
@@ -287,12 +317,6 @@ class OrderSingleScreen extends Component {
                     placeholder={"Электронная почта"}
                     value={this.state.email}
                     onChangeText={value => this.changeHandler(value, "email")}
-                    onEndEditing={
-                      () => {}
-                      // user.email !== this.state.email
-                      // 	? this.setState({ modalVisible2: true })
-                      // 	: ''
-                    }
                   />
                   <Label
                     style={{
@@ -307,12 +331,9 @@ class OrderSingleScreen extends Component {
                     placeholderTextColor="#000"
                     keyboardType="phone-pad"
                     mask={"+38 ([000]) [000] [00] [00]"}
-                    // onBlur={() => this.onUnFocus('phone')}
-                    // onFocus={() => this.onFocus('phone')}
                     style={styles.profileInputPhone}
                     value={this.state.phone}
                     onChangeText={value => this.changeHandler(value, "phone")}
-                    onEndEditing={() => this.userModalHandler("firstname")}
                   />
                   <Label
                     style={{
@@ -329,7 +350,6 @@ class OrderSingleScreen extends Component {
                     onChangeText={value =>
                       this.changeHandler(value, "firstname")
                     }
-                    onEndEditing={() => this.userModalHandler("firstname")}
                   />
                   <Label
                     style={{
@@ -346,7 +366,6 @@ class OrderSingleScreen extends Component {
                     onChangeText={value =>
                       this.changeHandler(value, "lastname")
                     }
-                    onEndEditing={() => this.userModalHandler("lastname")}
                   />
                   <View style={styles.cardFullCity}>
                     <View
@@ -1374,7 +1393,7 @@ class OrderSingleScreen extends Component {
                         )}
                       </TouchableOpacity>
                     </View>
-                    <View style={styles.cardFullCity}>
+                    <View style={styles.cardFullCity} ref="deliveryView">
                       <View
                         style={{
                           width: "100%",
@@ -1916,7 +1935,7 @@ class OrderSingleScreen extends Component {
                   alignSelf: "flex-end"
                 }}
                 onPress={() => {
-                  this.setState({ modalVisible2: false });
+                  this.setState({ modalVisible2: false, canceled: true });
                 }}
               >
                 <Text
