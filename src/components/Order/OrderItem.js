@@ -49,7 +49,8 @@ class OrderItem extends PureComponent {
             </View>
           ) : null}
           <Image
-            resizeMode="contain"
+            resizeMode={product ? "contain" : "cover"}
+            resizeMethod={product ? "auto" : "resize"}
             source={{ uri: "http://kawa.gumione.pro" + item.file }}
             style={
               this.props.product
@@ -203,25 +204,32 @@ class OrderItem extends PureComponent {
                     paddingTop: scaleSize(5),
                     paddingBottom: scaleSize(5)
                   }}
-                  onPress={() =>
-                    item.qty == "1" ||
-                    (filteredCart[0] && filteredCart[0].qty == "1")
-                      ? false
-                      : product &&
-                        filteredCart[0] &&
-                        filteredCart[0].qty === qty
-                      ? this.setState({ qty: +qty - 1 }, () =>
-                          this.props.updateCart(
-                            item.id,
+                  onPress={
+                    () =>
+                      item.qty == "1" ||
+                      (filteredCart[0] && filteredCart[0].qty == "1")
+                        ? false
+                        : product && filteredCart[0]
+                        ? this.props.onCartUpdateHandler(
+                            filteredCart[0].id,
                             +filteredCart[0].qty - 1
                           )
-                        )
-                      : item.qty == qty
-                      ? this.setState(
-                          { qty: +item.qty - 1 },
-                          this.props.updateCart(item.id, +item.qty - 1)
-                        )
-                      : false
+                        : this.props.onCartUpdateHandler(item.id, +item.qty - 1)
+                    // product &&
+                    //   filteredCart[0] &&
+                    //   filteredCart[0].qty === qty
+                    // ? this.setState({ qty: +qty - 1 }, () =>
+                    //     this.props.updateCart(
+                    //       item.id,
+                    //       +filteredCart[0].qty - 1
+                    //     )
+                    //   )
+                    // : item.qty == qty
+                    // ? this.setState(
+                    //     { qty: +item.qty - 1 },
+                    //     this.props.updateCart(item.id, +item.qty - 1)
+                    //   )
+                    // : false
                   }
                   activeOpacity={0.9}
                 >
@@ -248,7 +256,7 @@ class OrderItem extends PureComponent {
                     paddingRight: scaleSize(7)
                   }}
                 >
-                  {qty}
+                  {product && filteredCart[0] ? filteredCart[0].qty : item.qty}
                 </Text>
                 <TouchableOpacity
                   style={{
@@ -256,20 +264,27 @@ class OrderItem extends PureComponent {
                     paddingTop: scaleSize(5),
                     paddingBottom: scaleSize(5)
                   }}
-                  onPress={() =>
-                    product && filteredCart[0] && filteredCart[0].qty === qty
-                      ? this.setState({ qty: +qty + 1 }, () =>
-                          this.props.updateCart(
-                            item.id,
+                  onPress={
+                    () =>
+                      product && filteredCart[0]
+                        ? //  && filteredCart[0].qty === qty
+                          this.props.onCartUpdateHandler(
+                            filteredCart[0].id,
                             +filteredCart[0].qty + 1
                           )
-                        )
-                      : item.qty == qty
-                      ? this.setState(
-                          { qty: +item.qty + 1 },
-                          this.props.updateCart(item.id, +item.qty + 1)
-                        )
-                      : false
+                        : this.props.onCartUpdateHandler(item.id, +item.qty + 1)
+                    // ? this.setState({ qty: +qty + 1 }, () =>
+                    //     this.props.updateCart(
+                    //       item.id,
+                    //       +filteredCart[0].qty + 1
+                    //     )
+                    //   )
+                    // : item.qty == qty
+                    // ? this.setState(
+                    //     { qty: +item.qty + 1 },
+                    //     this.props.updateCart(item.id, +item.qty + 1)
+                    //   )
+                    // : false
                   }
                   activeOpacity={0.9}
                 >

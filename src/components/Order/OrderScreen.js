@@ -21,7 +21,7 @@ import {
 
 import Modal from "react-native-modal";
 
-import { getCart } from "../../store/actions/cartActions";
+import { getCart, updateCart } from "../../store/actions/cartActions";
 import { getUser, updateUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
 
@@ -120,8 +120,11 @@ class OrderScreen extends Component {
   componentWillUnmount() {}
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.cart) {
+      this.setState({ cart: nextProps.cart });
+    }
     if (nextProps.user) {
-      console.error(nextProps.user);
+      // console.error(nextProps.user);
       this.setState({
         email: nextProps.user.email,
         firstname: nextProps.user.firstname,
@@ -282,14 +285,15 @@ class OrderScreen extends Component {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={4}
                 windowSize={1}
-                data={this.props.cart}
-                extraData={this.props}
+                data={this.state.cart}
+                extraData={this.state}
                 renderItem={({ item }) => (
                   <OrderItem
-                    cart={this.props.cart}
+                    cart={this.state.cart}
                     item={item}
                     categories={categories}
                     navigation={this.props.navigation}
+                    onCartUpdateHandler={this.onCartUpdateHandler}
                   />
                 )}
                 viewabilityConfig={this.viewabilityConfig}
@@ -2201,7 +2205,8 @@ const mapDispatchToProps = dispatch => ({
   searchFocused: () => dispatch(searchFocused()),
   getUser: () => dispatch(getUser()),
   updateUser: (firstName, lastName, city) =>
-    dispatch(updateUser(firstName, lastName, city))
+    dispatch(updateUser(firstName, lastName, city)),
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
 });
 
 export default connect(

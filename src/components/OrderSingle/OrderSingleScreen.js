@@ -20,7 +20,7 @@ import {
 
 import Modal from "react-native-modal";
 
-import { getCart } from "../../store/actions/cartActions";
+import { getCart, updateCart } from "../../store/actions/cartActions";
 import { getUser, updateUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
 
@@ -76,7 +76,8 @@ class OrderSingleScreen extends Component {
       modalVisible: false,
       modalVisible2: false,
       opacity: 0,
-      canseled: false
+      canseled: false,
+      cart: []
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -183,12 +184,6 @@ class OrderSingleScreen extends Component {
     this.setState({ [name]: value, canceled: false });
   };
 
-  // userModalHandler = type => {
-  //   if (this.props.user[type] !== this.state[type]) {
-  //     this.setState({ modalVisible2: true });
-  //   }
-  // };
-
   handleScroll = event => {
     const value = event.nativeEvent.contentOffset.y;
     const UIManager = require("NativeModules").UIManager;
@@ -215,6 +210,18 @@ class OrderSingleScreen extends Component {
     );
   };
 
+  onCartUpdateHandler = (id, qty) => {
+    this.setState({
+      cart: this.state.cart.map(item => {
+        if (item.id === id) {
+          item.qty = qty;
+        }
+        return item;
+      })
+    });
+    // console.log(id, qty);
+  };
+
   render() {
     const categories = [
       ...this.props.categories,
@@ -222,7 +229,7 @@ class OrderSingleScreen extends Component {
       ...this.props.dishes
     ];
     let notFound;
-    const { cart } = this.props;
+    const { cart } = this.state;
     const { deliveryCompany, payment, product, department } = this.state;
 
     return (
@@ -277,11 +284,12 @@ class OrderSingleScreen extends Component {
                 }}
               >
                 <OrderItem
-                  cart={this.props.cart}
+                  cart={this.state.cart}
                   product={true}
                   item={product}
                   categories={categories}
                   navigation={this.props.navigation}
+                  onCartUpdateHandler={this.onCartUpdateHandler}
                 />
               </View>
 
@@ -2163,7 +2171,8 @@ const mapDispatchToProps = dispatch => ({
   getProductID: id => dispatch(getProductID(id)),
   getDeliveryCost: city => dispatch(getDeliveryCost(city)),
   searchFocused: () => dispatch(searchFocused()),
-  getUser: () => dispatch(getUser())
+  getUser: () => dispatch(getUser()),
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
 });
 
 export default connect(

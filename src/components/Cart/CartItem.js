@@ -12,7 +12,7 @@ import { Icon } from "native-base";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
-import { updateCart } from "../../store/actions/cartActions";
+// import { updateCart } from "../../store/actions/cartActions";
 
 class CartItem extends PureComponent {
   constructor(props) {
@@ -216,11 +216,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
-});
+// const mapDispatchToProps = dispatch => ({
+//   updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
+// });
 
 export default connect(
   null,
-  mapDispatchToProps
+  // mapDispatchToProps
+  null
 )(CartItem);
