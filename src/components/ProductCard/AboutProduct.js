@@ -87,17 +87,17 @@ class AboutProduct extends Component {
             html: `<style>p {color: #302c23;}</style>${item.content}<br/>
             <p>Вес: ${item.weight} г.</p>
 ${
-              item.pid == "3" || item.pid == "4"
-                ? `<p>Количество: ${item.quantity} шт.</p>`
-                : ""
-            }
+  item.pid == "3" || item.pid == "4"
+    ? `<p>Количество: ${item.quantity} шт.</p>`
+    : ""
+}
             <p>Упаковка: ${item.package}.</p>
 						<p>Страна производитель: ${item.country}</p>
 						${
               item.energy_value
                 ? "<p>Энергетическая ценность: " +
                   item.energy_value +
-                  "ккал</p>"
+                  " ккал.</p>"
                 : ""
             }
 						${
@@ -108,7 +108,7 @@ ${
                 углеводы — ${item.carbohydrates} г</p>`
                 : ""
             }
-						${item.shelf_life ? "<p>Срок годности: " + item.shelf_life + "мес.</p>" : ""}
+						${item.shelf_life ? "<p>Срок годности: " + item.shelf_life + " мес.</p>" : ""}
 						${
               item.storage_conditions
                 ? "<p>Условия хранения: " + item.storage_conditions + ".</p>"

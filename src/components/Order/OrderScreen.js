@@ -96,6 +96,7 @@ class OrderScreen extends Component {
   }
 
   componentDidMount() {
+    console.error(this.refs.upEksp);
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload =>
@@ -926,9 +927,9 @@ class OrderScreen extends Component {
                             }}
                           >
                             <TextTicker
-                              style={[styles.defaultText, { zIndex: 1 }]}
+                              style={styles.defaultText}
                               loop={false}
-                              marqueeOnMount={true}
+                              marqueeOnMount={false}
                               scroll={false}
                               ref="upStand"
                             >
@@ -1153,9 +1154,9 @@ class OrderScreen extends Component {
                             }}
                           >
                             <TextTicker
-                              style={[styles.defaultText, { zIndex: 1 }]}
+                              style={styles.defaultText}
                               loop={false}
-                              marqueeOnMount={true}
+                              marqueeOnMount={false}
                               scroll={false}
                               ref="upEksp"
                             >
@@ -2086,6 +2087,7 @@ const styles = StyleSheet.create({
   },
   defaultText: {
     fontSize: scaleSize(16),
+    opacity: 1,
     color: "#302c23"
   },
   searchInput: {
