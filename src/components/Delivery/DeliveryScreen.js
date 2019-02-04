@@ -126,11 +126,11 @@ class DeliveryScreen extends Component {
         <View style={{ flex: 1 }}>
           <Image source={require(MAIN_BG)} style={styles.background} />
           <View style={styles.container}>
+            <HeaderBar
+              navigation={this.props.navigation}
+              title="Доставка и оплата"
+            />
             <Content>
-              <HeaderBar
-                navigation={this.props.navigation}
-                title="Доставка и оплата"
-              />
               <View style={styles.cardFullCity}>
                 <View
                   style={{
