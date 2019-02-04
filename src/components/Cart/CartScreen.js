@@ -84,15 +84,31 @@ class CartScreen extends Component {
     if (nextProps.end || nextProps.end === false) {
       this.setState({ loading: false, end: nextProps.end });
     }
+    if (nextProps.cart) {
+      this.setState({ cart: nextProps.cart });
+    }
   }
 
   handleBackPress = () => {
+    this.state.cart.map(item => this.props.updateCart(item.id, item.qty));
     this.props.navigation.pop();
     return true;
   };
 
   onDeletePressHandler = (id, name) => {
     this.setState({ id, name, modalVisible: true });
+  };
+
+  onCartUpdateHandler = (id, qty) => {
+    this.setState({
+      cart: this.state.cart.map(item => {
+        if (item.id === id) {
+          item.qty = qty;
+        }
+        return item;
+      })
+    });
+    // console.log(id, qty);
   };
 
   render() {
@@ -156,7 +172,13 @@ class CartScreen extends Component {
               color: "#fff"
             }}
             name="ios-search"
-            onPress={() => this.setState({ search: true })}
+            onPress={() =>
+              this.setState({ search: true }, () =>
+                this.state.cart.map(item =>
+                  this.props.updateCart(item.id, item.qty)
+                )
+              )
+            }
           />
           {this.props.cart && this.props.cart.length < 1 ? (
             <View
@@ -196,15 +218,16 @@ class CartScreen extends Component {
                 removeClippedSubviews={true}
                 maxToRenderPerBatch={4}
                 windowSize={1}
-                data={this.props.cart}
-                extraData={this.props}
+                data={this.state.cart}
+                extraData={this.state}
                 renderItem={({ item }) => (
                   <CartItem
-                    cart={this.props.cart}
+                    cart={this.state.cart}
                     cartFetch={this.props.cartFetch}
                     item={item}
                     categories={categories}
                     onDeletePressHandler={this.onDeletePressHandler}
+                    onCartUpdateHandler={this.onCartUpdateHandler}
                   />
                 )}
                 viewabilityConfig={this.viewabilityConfig}
@@ -230,7 +253,12 @@ class CartScreen extends Component {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => this.props.navigation.push("Order")}
+                onPress={() => {
+                  this.state.cart.map(item =>
+                    this.props.updateCart(item.id, item.qty)
+                  );
+                  this.props.navigation.push("Order");
+                }}
                 style={styles.btn}
                 activeOpacity={0.9}
               >
@@ -291,9 +319,12 @@ class CartScreen extends Component {
                     alignSelf: "flex-end"
                   }}
                   onPress={() => {
-                    this.setState({ modalVisible: false }, () =>
-                      this.props.updateCart(this.state.id, 0)
-                    );
+                    this.setState({ modalVisible: false }, () => {
+                      this.state.cart.map(item =>
+                        this.props.updateCart(item.id, item.qty)
+                      );
+                      this.props.updateCart(this.state.id, 0);
+                    });
                   }}
                 >
                   <Text
