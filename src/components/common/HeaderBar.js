@@ -124,9 +124,10 @@ export default class HeaderBar extends Component {
                   style={styles.icons}
                   size={scaleSize(26)}
                   name={
-                    this.props.cart && this.props.cart.length > 0
-                      ? "design_navigation_search-cart-no-buy"
-                      : "cart-actionbar"
+                    // this.props.cart && this.props.cart.length > 0
+                    //   ? "design_navigation_search-cart-no-buy"
+                    //   :
+                    "cart-actionbar"
                   }
                 />
                 <View
