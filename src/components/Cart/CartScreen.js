@@ -108,7 +108,6 @@ class CartScreen extends Component {
         return item;
       })
     });
-    // console.log(id, qty);
   };
 
   render() {

@@ -121,11 +121,13 @@ class OrderScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.user) {
+      console.error(nextProps.user);
       this.setState({
         email: nextProps.user.email,
         firstname: nextProps.user.firstname,
         lastname: nextProps.user.lastname,
-        phone: nextProps.user.phone
+        phone: nextProps.user.phone,
+        city: nextProps.user.city
       });
     }
     if (nextProps.focus || !nextProps.focus) {
@@ -195,6 +197,18 @@ class OrderScreen extends Component {
         }
       }
     );
+  };
+
+  onCartUpdateHandler = (id, qty) => {
+    this.setState({
+      cart: this.state.cart.map(item => {
+        if (item.id === id) {
+          item.qty = qty;
+        }
+        return item;
+      })
+    });
+    // console.log(id, qty);
   };
 
   render() {

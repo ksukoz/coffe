@@ -102,10 +102,10 @@ ${
             }
 						${
               item.proteins && item.fats && item.carbohydrates
-                ? `<p>Питательная ценность:
-                белки — ${item.proteins} г
-                жиры — ${item.fats} г
-                углеводы — ${item.carbohydrates} г</p>`
+                ? `<p>Питательная ценность:<br>
+                &emsp;белки — ${item.proteins} г<br>
+                &emsp;жиры — ${item.fats} г<br>
+                &emsp;углеводы — ${item.carbohydrates} г</p>`
                 : ""
             }
 						${item.shelf_life ? "<p>Срок годности: " + item.shelf_life + " мес.</p>" : ""}
@@ -148,7 +148,7 @@ ${
         country: productItem.country,
         energy_value: productItem.energy_value,
         proteins: productItem.proteins,
-        fat: productItem.fat,
+        fats: productItem.fats,
         carbohydrates: productItem.carbohydrates,
         shelf_life: productItem.shelf_life,
         storage_conditions: productItem.storage_conditions
