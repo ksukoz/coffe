@@ -74,37 +74,6 @@ export default class TextTicker extends PureComponent {
     this.start(timeDelay);
   };
 
-  animateScroll = () => {
-    const {
-      duration,
-      marqueeDelay,
-      loop,
-      useNativeDriver,
-      repeatSpacer,
-      easing,
-      children,
-      onMarqueeComplete
-    } = this.props;
-    this.setTimeout(() => {
-      Animated.timing(this.animatedValue, {
-        toValue: -this.textWidth - repeatSpacer,
-        duration: duration || children.length * 150,
-        easing: easing,
-        useNativeDriver: useNativeDriver
-      }).start(({ finished }) => {
-        if (finished) {
-          if (onMarqueeComplete) {
-            onMarqueeComplete();
-          }
-          if (loop) {
-            this.animatedValue.setValue(0);
-            this.animateScroll();
-          }
-        }
-      });
-    }, marqueeDelay);
-  };
-
   animateBounce = () => {
     const {
       duration,
@@ -117,14 +86,14 @@ export default class TextTicker extends PureComponent {
     this.setTimeout(() => {
       Animated.sequence([
         Animated.timing(this.animatedValue, {
-          toValue: -this.distance - 10,
-          duration: duration || children.length * 50,
+          toValue: -this.textWidth + this.containerWidth,
+          duration: children.length * 100,
           easing: easing,
           useNativeDriver: useNativeDriver
         }),
         Animated.timing(this.animatedValue, {
-          toValue: 10,
-          duration: duration || children.length * 50,
+          toValue: 0,
+          duration: children.length * 100,
           easing: easing,
           useNativeDriver: useNativeDriver
         })
@@ -132,6 +101,7 @@ export default class TextTicker extends PureComponent {
         if (loop) {
           this.animateBounce();
         }
+        this.setState({ animating: false });
       });
     }, marqueeDelay);
   };
@@ -179,7 +149,7 @@ export default class TextTicker extends PureComponent {
 
         this.containerWidth = containerWidth;
         this.textWidth = textWidth;
-        this.distance = textWidth - containerWidth;
+        this.distance = textWidth - containerWidth * 1.3;
 
         this.setState({
           // Is 1 instead of 0 to get round rounding errors from:
@@ -187,7 +157,13 @@ export default class TextTicker extends PureComponent {
           contentFits: this.distance <= 1,
           shouldBounce: this.distance < this.containerWidth / 8
         });
-        // console.log(`distance: ${this.distance}, contentFits: ${this.state.contentFits}`)
+        // console.log(
+        //   `distance: ${this.distance}, contentFits: ${
+        //     this.state.contentFits
+        //   }, textWidth: ${this.textWidth} , containerWidth: ${
+        //     this.containerWidth
+        //   }, shouldBounce: ${this.distance < this.containerWidth / 8}`
+        // );
         resolve([]);
       } catch (error) {
         console.warn(
@@ -241,11 +217,7 @@ export default class TextTicker extends PureComponent {
           onScroll={this.onScroll}
           showsHorizontalScrollIndicator={false}
           style={StyleSheet.absoluteFillObject}
-          display={
-            // animating ?
-            "flex"
-            //  : "none"
-          }
+          display={"flex"}
           onContentSizeChange={() => this.calculateMetrics()}
         >
           <Animated.Text
