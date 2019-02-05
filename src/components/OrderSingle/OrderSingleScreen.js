@@ -420,7 +420,8 @@ class OrderSingleScreen extends Component {
                       <Text
                         style={{
                           color: "#302c23",
-                          fontSize: scaleSize(12)
+                          fontSize: scaleSize(12),
+                          marginBottom: scaleSize(8)
                         }}
                       >
                         Доставка
@@ -998,7 +999,7 @@ class OrderSingleScreen extends Component {
                                             payment: 2
                                           }
                                   },
-                                  () => this.refs.upStand.startAnimation(10)
+                                  () => this.refs.upxStand.startAnimation(10)
                                 )
                               }
                             />
@@ -1030,7 +1031,13 @@ class OrderSingleScreen extends Component {
                         </TouchableOpacity>
                       ) : null}
                     </View>
-                    <View style={styles.cardFullCity} ref="deliveryView">
+                    <View
+                      style={[
+                        styles.cardFullCity,
+                        { display: np || up || upx ? "flex" : "none" }
+                      ]}
+                      ref="deliveryView"
+                    >
                       <View
                         style={{
                           width: "100%",
