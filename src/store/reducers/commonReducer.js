@@ -3,6 +3,7 @@ import {
   GET_LETTERS,
   GET_DELIVERY_COST,
   SET_DELIVERY_COST,
+  SET_MASS_DELIVERY_COST,
   SET_LANG,
   SET_SEARCH,
   GET_SEARCH,
@@ -17,6 +18,7 @@ const initialState = {
   search: "",
   focus: false,
   delivery: [],
+  massDelivery: null,
   city: ""
 };
 
@@ -44,6 +46,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         city: action.payload
+      };
+    case SET_MASS_DELIVERY_COST:
+      return {
+        ...state,
+        massDelivery: action.payload
       };
     case SET_LANG:
       return {

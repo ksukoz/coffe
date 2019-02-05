@@ -109,7 +109,6 @@ class OrderScreen extends Component {
 
     this.props.navigation.addListener("didFocus", () => {
       this.setState({ loading: false });
-      // this.retrieveData('user_region_name');
       this.retrieveData("user_city_name");
       this.retrieveData("department");
     });
@@ -124,13 +123,13 @@ class OrderScreen extends Component {
       this.setState({ cart: nextProps.cart });
     }
     if (nextProps.user) {
-      // console.error(nextProps.user);
+      console.log(nextProps.user);
       this.setState({
         email: nextProps.user.email,
         firstname: nextProps.user.firstname,
         lastname: nextProps.user.lastname,
         phone: nextProps.user.phone,
-        city: nextProps.user.city
+        city: nextProps.user.city ? nextProps.user.city : this.state.city
       });
     }
     if (nextProps.focus || !nextProps.focus) {
@@ -147,9 +146,12 @@ class OrderScreen extends Component {
           this.setState(
             {
               city: value,
+              department: "",
               canceled: false
             },
-            () => this.props.getDeliveryCost(value)
+            () => {
+              this.props.getDeliveryCost(value);
+            }
           );
         }
         if (name == "department") {
@@ -212,7 +214,6 @@ class OrderScreen extends Component {
         return item;
       })
     });
-    // console.log(id, qty);
   };
 
   render() {
@@ -221,8 +222,37 @@ class OrderScreen extends Component {
       ...this.props.subcategories,
       ...this.props.dishes
     ];
+    const { cart, user, massDelivery } = this.props;
+
     let notFound;
-    const { cart, user } = this.props;
+    let np;
+    let up;
+    let upx;
+
+    if (massDelivery) {
+      if (massDelivery.np) {
+        np = [];
+
+        for (let key in massDelivery.np) {
+          np.push({ cost: massDelivery.np[key].total, value: key });
+        }
+      }
+      if (massDelivery.up) {
+        up = [];
+
+        for (let key in massDelivery.up) {
+          up.push({ cost: massDelivery.up[key].total, value: key });
+        }
+      }
+      if (massDelivery.upx) {
+        upx = [];
+
+        for (let key in massDelivery.upx) {
+          upx.push({ cost: massDelivery.upx[key].total, value: key });
+        }
+      }
+    }
+
     const { deliveryCompany, payment, product, department } = this.state;
 
     return (
@@ -463,957 +493,553 @@ class OrderScreen extends Component {
                   </View>
                   <View>
                     <View>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 1
-                                ? {}
-                                : {
-                                    delivery:
-                                      deliveryCompany.delvery === "np"
-                                        ? ""
-                                        : "np",
-                                    courier: "0",
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "np" &&
-                                              item.courier === "0"
-                                            ) {
-                                              return item;
+                      {np
+                        ? np.map(item =>
+                            item.value === "warehouse_cod" ? null : (
+                              <View>
+                                <TouchableOpacity
+                                  key={`np_${item.value}`}
+                                  style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginBottom: scaleSize(16)
+                                  }}
+                                  activeOpacity={0.9}
+                                  onPress={() =>
+                                    this.setState({
+                                      deliveryCompany:
+                                        deliveryCompany.delivery === "np" &&
+                                        deliveryCompany.courier ===
+                                          (item.value === "courier"
+                                            ? 1
+                                            : "0") &&
+                                        deliveryCompany.payment === 1
+                                          ? {}
+                                          : {
+                                              delivery: "np",
+                                              courier:
+                                                item.value === "courier"
+                                                  ? 1
+                                                  : "0",
+                                              cost: item.cost,
+                                              payment: 1
                                             }
-                                          })[0].cost
-                                        : "",
-                                    payment: 1
+                                    })
                                   }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0" &&
-                                deliveryCompany.payment === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "np" &&
-                                  deliveryCompany.courier === "0" &&
-                                  deliveryCompany.payment === 1
-                                    ? {}
-                                    : {
-                                        delivery: "np",
-                                        courier: "0",
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "np" &&
-                                                    item.courier === "0"
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : "",
-                                        payment: 1
+                                >
+                                  <View style={{ flexDirection: "row" }}>
+                                    <CheckBox
+                                      checked={
+                                        deliveryCompany.delivery === "np" &&
+                                        deliveryCompany.courier ===
+                                          (item.value === "courier"
+                                            ? 1
+                                            : "0") &&
+                                        deliveryCompany.payment === 1
+                                          ? true
+                                          : false
                                       }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Новая Почта, отделение
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "np" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 2
-                                ? {}
-                                : {
-                                    delivery: "np",
-                                    courier: "0",
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "np" &&
-                                              item.courier === "0"
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : "",
-                                    payment: 2
-                                  }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 2
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
+                                      style={{
+                                        left: 0,
+                                        marginRight: scaleSize(16),
+                                        borderColor: "#302c23",
+                                        backgroundColor:
+                                          deliveryCompany.delivery === "np" &&
+                                          deliveryCompany.courier ===
+                                            (item.value === "courier"
+                                              ? 1
+                                              : "0") &&
+                                          deliveryCompany.payment === 1
+                                            ? "#302c23"
+                                            : "transparent"
+                                      }}
+                                      onPress={() =>
+                                        this.setState({
+                                          deliveryCompany:
+                                            deliveryCompany.delivery === "np" &&
+                                            deliveryCompany.courier ===
+                                              (item.value === "courier"
+                                                ? 1
+                                                : "0") &&
+                                            deliveryCompany.payment === 1
+                                              ? {}
+                                              : {
+                                                  delivery: "np",
+                                                  courier:
+                                                    item.value === "courier"
+                                                      ? 1
+                                                      : "0",
+                                                  cost: item.cost,
+                                                  payment: 1
+                                                }
+                                        })
+                                      }
+                                    />
+                                    <Text style={styles.defaultText}>
+                                      {item.value === "courier"
+                                        ? "Новая Почта, курьер"
+                                        : "Новая Почта, отделение"}
+                                    </Text>
+                                  </View>
+                                  <Text style={styles.defaultText}>
+                                    {item.cost} грн
+                                  </Text>
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          )
+                        : null}
+                      {np ? (
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginBottom: scaleSize(16)
+                          }}
+                          activeOpacity={0.9}
+                          onPress={() =>
+                            this.setState({
+                              deliveryCompany:
                                 deliveryCompany.delivery === "np" &&
                                 deliveryCompany.courier === "0" &&
                                 deliveryCompany.payment === 2
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany:
+                                  ? {}
+                                  : {
+                                      delivery: "np",
+                                      courier: "0",
+                                      cost: np.filter(
+                                        item => item.value === "warehouse"
+                                      )[0].cost,
+                                      payment: 2
+                                    }
+                            })
+                          }
+                        >
+                          <View style={{ flexDirection: "row" }}>
+                            <CheckBox
+                              checked={
+                                deliveryCompany.delivery === "np" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? true
+                                  : false
+                              }
+                              style={{
+                                left: 0,
+                                marginRight: scaleSize(16),
+                                borderColor: "#302c23",
+                                backgroundColor:
                                   deliveryCompany.delivery === "np" &&
                                   deliveryCompany.courier === "0" &&
                                   deliveryCompany.payment === 2
-                                    ? {}
-                                    : {
-                                        delivery: "np",
-                                        courier: "0",
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "np" &&
-                                                    item.courier === "0"
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : "",
-                                        payment: 2
-                                      }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Новая Почта, при получении
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "np" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === 1
-                                ? {}
-                                : {
-                                    delivery: "np",
-                                    courier: 1,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "np" &&
-                                              item.courier === 1
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "np" &&
-                              deliveryCompany.courier === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "np" &&
-                                  deliveryCompany.courier === 1
-                                    ? {}
-                                    : {
-                                        delivery: "np",
-                                        courier: 1,
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "np" &&
-                                                    item.courier === 1
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : ""
-                                      }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Новая Почта, курьер
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "np" &&
-                                    item.courier == 1
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 1
-                                ? {}
-                                : {
-                                    delivery: "up",
-                                    courier: "0",
-                                    payment: 1,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "up" &&
-                                              item.courier === "0"
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
-                                deliveryCompany.payment === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "up" &&
-                                  deliveryCompany.courier === "0" &&
-                                  deliveryCompany.payment === 1
-                                    ? {}
-                                    : {
-                                        delivery: "up",
-                                        courier: "0",
-                                        payment: 1,
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "up" &&
-                                                    item.courier === "0"
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : ""
-                                      }
-                              })
-                            }
-                          />
-                          <Text style={styles.defaultText}>
-                            Укрпочта Стандарт
-                          </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "up" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() => {
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 2
-                                ? {}
-                                : {
-                                    delivery: "up",
-                                    courier: "0",
-                                    payment: 2,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "up" &&
-                                              item.courier === "0"
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          });
-                          this.refs.upStand.startAnimation(10);
-                        }}
-                      >
-                        <View style={{ flexDirection: "row", width: "80%" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 2
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
-                                deliveryCompany.payment === 2
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() => {
-                              {
+                                    ? "#302c23"
+                                    : "transparent"
+                              }}
+                              onPress={() =>
                                 this.setState({
                                   deliveryCompany:
-                                    deliveryCompany.delivery === "up" &&
+                                    deliveryCompany.delivery === "np" &&
                                     deliveryCompany.courier === "0" &&
                                     deliveryCompany.payment === 2
                                       ? {}
                                       : {
-                                          delivery: "up",
+                                          delivery: "np",
                                           courier: "0",
-                                          payment: 2,
-                                          cost:
-                                            this.props.delivery.length > 5
-                                              ? this.props.delivery.filter(
-                                                  item => {
-                                                    if (
-                                                      item.delivery === "up" &&
-                                                      item.courier === "0"
-                                                    ) {
-                                                      return item;
-                                                    }
-                                                  }
-                                                )[0].cost
-                                              : ""
+                                          cost: np.filter(
+                                            item => item.value === "warehouse"
+                                          )[0].cost,
+                                          payment: 2
                                         }
-                                });
-                                this.refs.upStand.startAnimation(10);
+                                })
                               }
-                            }}
-                          />
-                          <View
-                            style={{
-                              width: "80%",
-                              justifyContent: "center",
-                              alignItems: "center"
-                            }}
-                          >
-                            <TextTicker
-                              style={styles.defaultText}
-                              loop={false}
-                              marqueeOnMount={false}
-                              scroll={false}
-                              ref="upStand"
-                            >
-                              Укрпочта Стандарт, при получении
-                            </TextTicker>
+                            />
+                            <Text style={styles.defaultText}>
+                              Новая Почта, при получении
+                            </Text>
                           </View>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text
-                            style={[
-                              styles.defaultText,
-                              { zIndex: 10, alignSelf: "flex-start" }
-                            ]}
-                          >
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "up" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 1
-                                ? {}
-                                : {
-                                    delivery: "es",
-                                    courier: "0",
-                                    payment: 1,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "es" &&
-                                              item.courier === "0"
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "es" &&
-                                deliveryCompany.courier === "0" &&
-                                deliveryCompany.payment === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "es" &&
-                                  deliveryCompany.courier === "0" &&
-                                  deliveryCompany.payment === 1
-                                    ? {}
-                                    : {
-                                        delivery: "es",
-                                        courier: "0",
-                                        payment: 1,
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "es" &&
-                                                    item.courier === "0"
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : ""
-                                      }
-                              })
-                            }
-                          />
                           <Text style={styles.defaultText}>
-                            Укрпочта Экспресс
+                            {
+                              np.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            }{" "}
+                            грн
                           </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "es" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() => {
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 2
-                                ? {}
-                                : {
-                                    delivery: "es",
-                                    courier: "0",
-                                    payment: 2,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "es" &&
-                                              item.courier === "0"
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          });
-                          this.refs.upEksp.startAnimation(10);
-                        }}
-                      >
-                        <View style={{ flexDirection: "row", width: "80%" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === "0" &&
-                              deliveryCompany.payment === 2
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "es" &&
-                                deliveryCompany.courier === "0" &&
-                                deliveryCompany.payment === 2
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() => {
-                              this.setState({
+                        </TouchableOpacity>
+                      ) : null}
+                      {up
+                        ? up.map(item => (
+                            <View>
+                              <TouchableOpacity
+                                key={`up_${item.value}`}
+                                style={{
+                                  flexDirection: "row",
+                                  justifyContent: "space-between",
+                                  marginBottom: scaleSize(16)
+                                }}
+                                activeOpacity={0.9}
+                                onPress={() =>
+                                  this.setState({
+                                    deliveryCompany:
+                                      deliveryCompany.delivery === "up" &&
+                                      deliveryCompany.courier ===
+                                        (item.value === "courier" ? 1 : "0") &&
+                                      deliveryCompany.payment === 1
+                                        ? {}
+                                        : {
+                                            delivery: "up",
+                                            courier:
+                                              item.value === "courier"
+                                                ? 1
+                                                : "0",
+                                            cost: item.cost,
+                                            payment: 1
+                                          }
+                                  })
+                                }
+                              >
+                                <View style={{ flexDirection: "row" }}>
+                                  <CheckBox
+                                    checked={
+                                      deliveryCompany.delivery === "up" &&
+                                      deliveryCompany.courier ===
+                                        (item.value === "courier" ? 1 : "0") &&
+                                      deliveryCompany.payment === 1
+                                        ? true
+                                        : false
+                                    }
+                                    style={{
+                                      left: 0,
+                                      marginRight: scaleSize(16),
+                                      borderColor: "#302c23",
+                                      backgroundColor:
+                                        deliveryCompany.delivery === "up" &&
+                                        deliveryCompany.courier ===
+                                          (item.value === "courier"
+                                            ? 1
+                                            : "0") &&
+                                        deliveryCompany.payment === 1
+                                          ? "#302c23"
+                                          : "transparent"
+                                    }}
+                                    onPress={() =>
+                                      this.setState({
+                                        deliveryCompany:
+                                          deliveryCompany.delivery === "up" &&
+                                          deliveryCompany.courier ===
+                                            (item.value === "courier"
+                                              ? 1
+                                              : "0") &&
+                                          deliveryCompany.payment === 1
+                                            ? {}
+                                            : {
+                                                delivery: "up",
+                                                courier:
+                                                  item.value === "courier"
+                                                    ? 1
+                                                    : "0",
+                                                cost: item.cost,
+                                                payment: 1
+                                              }
+                                      })
+                                    }
+                                  />
+                                  <Text style={styles.defaultText}>
+                                    {item.value === "courier"
+                                      ? "Укрпочта Стандарт, курьер"
+                                      : "Укрпочта Стандарт"}
+                                  </Text>
+                                </View>
+                                <Text style={styles.defaultText}>
+                                  {item.cost} грн
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          ))
+                        : null}
+                      {up ? (
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginBottom: scaleSize(16)
+                          }}
+                          activeOpacity={0.9}
+                          onPress={() =>
+                            this.setState(
+                              {
                                 deliveryCompany:
-                                  deliveryCompany.delivery === "es" &&
+                                  deliveryCompany.delivery === "up" &&
                                   deliveryCompany.courier === "0" &&
                                   deliveryCompany.payment === 2
                                     ? {}
                                     : {
-                                        delivery: "es",
-                                        courier: "0",
-                                        payment: 2,
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "es" &&
-                                                    item.courier === "0"
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : ""
-                                      }
-                              });
-                              this.refs.upEksp.startAnimation(10);
-                            }}
-                          />
-                          <View
-                            style={{
-                              width: "80%",
-                              justifyContent: "center",
-                              alignItems: "center"
-                            }}
-                          >
-                            <TextTicker
-                              style={styles.defaultText}
-                              loop={false}
-                              marqueeOnMount={false}
-                              scroll={false}
-                              ref="upEksp"
-                            >
-                              Укрпочта Экспресс, при получении
-                            </TextTicker>
-                          </View>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "es" &&
-                                    item.courier === "0"
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === 1
-                                ? {}
-                                : {
-                                    delivery: "up",
-                                    courier: 1,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "up" &&
-                                              item.courier === 1
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "up" &&
-                              deliveryCompany.courier === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "up" &&
-                                  deliveryCompany.courier === 1
-                                    ? {}
-                                    : {
                                         delivery: "up",
-                                        courier: 1,
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "up" &&
-                                                    item.courier === 1
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : ""
+                                        courier: "0",
+                                        cost: up.filter(
+                                          item => item.value === "warehouse"
+                                        )[0].cost,
+                                        payment: 2
                                       }
-                              })
-                            }
-                          />
+                              },
+                              () => this.refs.upStand.startAnimation(10)
+                            )
+                          }
+                        >
+                          <View style={{ flexDirection: "row", width: "80%" }}>
+                            <CheckBox
+                              checked={
+                                deliveryCompany.delivery === "up" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? true
+                                  : false
+                              }
+                              style={{
+                                left: 0,
+                                marginRight: scaleSize(16),
+                                borderColor: "#302c23",
+                                backgroundColor:
+                                  deliveryCompany.delivery === "up" &&
+                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.payment === 2
+                                    ? "#302c23"
+                                    : "transparent"
+                              }}
+                              onPress={() =>
+                                this.setState(
+                                  {
+                                    deliveryCompany:
+                                      deliveryCompany.delivery === "up" &&
+                                      deliveryCompany.courier === "0" &&
+                                      deliveryCompany.payment === 2
+                                        ? {}
+                                        : {
+                                            delivery: "up",
+                                            courier: "0",
+                                            cost: up.filter(
+                                              item => item.value === "warehouse"
+                                            )[0].cost,
+                                            payment: 2
+                                          }
+                                  },
+                                  () => this.refs.upStand.startAnimation(10)
+                                )
+                              }
+                            />
+                            <View
+                              style={{
+                                width: "80%",
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}
+                            >
+                              <TextTicker
+                                style={styles.defaultText}
+                                loop={false}
+                                marqueeOnMount={false}
+                                scroll={false}
+                                ref="upStand"
+                              >
+                                Укрпочта Стандарт, при получении
+                              </TextTicker>
+                            </View>
+                          </View>
                           <Text style={styles.defaultText}>
-                            Укрпочта Стандарт, курьер
+                            {
+                              up.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            }{" "}
+                            грн
                           </Text>
-                        </View>
-                        {this.state.city !== "Город, область" &&
-                        this.props.delivery.length < 6 ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "up" &&
-                                    item.courier === 1
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          marginBottom: scaleSize(16)
-                        }}
-                        activeOpacity={0.9}
-                        onPress={() =>
-                          this.setState({
-                            deliveryCompany:
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === 1
-                                ? {}
-                                : {
-                                    delivery: "es",
-                                    courier: 1,
-                                    cost:
-                                      this.props.delivery.length > 5
-                                        ? this.props.delivery.filter(item => {
-                                            if (
-                                              item.delivery === "es" &&
-                                              item.courier === 1
-                                            ) {
-                                              return item;
-                                            }
-                                          })[0].cost
-                                        : ""
-                                  }
-                          })
-                        }
-                      >
-                        <View style={{ flexDirection: "row" }}>
-                          <CheckBox
-                            checked={
-                              deliveryCompany.delivery === "es" &&
-                              deliveryCompany.courier === 1
-                                ? true
-                                : false
-                            }
-                            style={{
-                              left: 0,
-                              marginRight: scaleSize(16),
-                              borderColor: "#302c23",
-                              backgroundColor:
-                                deliveryCompany.delivery === "es" &&
-                                deliveryCompany.courier === 1
-                                  ? "#302c23"
-                                  : "transparent"
-                            }}
-                            onPress={() =>
-                              this.setState({
+                        </TouchableOpacity>
+                      ) : null}
+                      {upx
+                        ? upx.map(item => (
+                            <View>
+                              <TouchableOpacity
+                                key={`upx_${item.value}`}
+                                style={{
+                                  flexDirection: "row",
+                                  justifyContent: "space-between",
+                                  marginBottom: scaleSize(16)
+                                }}
+                                activeOpacity={0.9}
+                                onPress={() =>
+                                  this.setState({
+                                    deliveryCompany:
+                                      deliveryCompany.delivery === "upx" &&
+                                      deliveryCompany.courier ===
+                                        (item.value === "courier" ? 1 : "0") &&
+                                      deliveryCompany.payment === 1
+                                        ? {}
+                                        : {
+                                            delivery: "upx",
+                                            courier:
+                                              item.value === "courier"
+                                                ? 1
+                                                : "0",
+                                            cost: item.cost,
+                                            payment: 1
+                                          }
+                                  })
+                                }
+                              >
+                                <View style={{ flexDirection: "row" }}>
+                                  <CheckBox
+                                    checked={
+                                      deliveryCompany.delivery === "upx" &&
+                                      deliveryCompany.courier ===
+                                        (item.value === "courier" ? 1 : "0") &&
+                                      deliveryCompany.payment === 1
+                                        ? true
+                                        : false
+                                    }
+                                    style={{
+                                      left: 0,
+                                      marginRight: scaleSize(16),
+                                      borderColor: "#302c23",
+                                      backgroundColor:
+                                        deliveryCompany.delivery === "upx" &&
+                                        deliveryCompany.courier ===
+                                          (item.value === "courier"
+                                            ? 1
+                                            : "0") &&
+                                        deliveryCompany.payment === 1
+                                          ? "#302c23"
+                                          : "transparent"
+                                    }}
+                                    onPress={() =>
+                                      this.setState({
+                                        deliveryCompany:
+                                          deliveryCompany.delivery === "upx" &&
+                                          deliveryCompany.courier ===
+                                            (item.value === "courier"
+                                              ? 1
+                                              : "0") &&
+                                          deliveryCompany.payment === 1
+                                            ? {}
+                                            : {
+                                                delivery: "upx",
+                                                courier:
+                                                  item.value === "courier"
+                                                    ? 1
+                                                    : "0",
+                                                cost: item.cost,
+                                                payment: 1
+                                              }
+                                      })
+                                    }
+                                  />
+                                  <Text style={styles.defaultText}>
+                                    {item.value === "courier"
+                                      ? "Укрпочта Экспресс, курьер"
+                                      : "Укрпочта Экспресс"}
+                                  </Text>
+                                </View>
+                                <Text style={styles.defaultText}>
+                                  {item.cost} грн
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
+                          ))
+                        : null}
+                      {up ? (
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginBottom: scaleSize(16)
+                          }}
+                          activeOpacity={0.9}
+                          onPress={() =>
+                            this.setState(
+                              {
                                 deliveryCompany:
-                                  deliveryCompany.delivery === "es" &&
-                                  deliveryCompany.courier === 1
+                                  deliveryCompany.delivery === "upx" &&
+                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.payment === 2
                                     ? {}
                                     : {
-                                        delivery: "es",
-                                        courier: 1,
-                                        cost:
-                                          this.props.delivery.length > 5
-                                            ? this.props.delivery.filter(
-                                                item => {
-                                                  if (
-                                                    item.delivery === "es" &&
-                                                    item.courier === 1
-                                                  ) {
-                                                    return item;
-                                                  }
-                                                }
-                                              )[0].cost
-                                            : ""
+                                        delivery: "upx",
+                                        courier: "0",
+                                        cost: upx.filter(
+                                          item => item.value === "warehouse"
+                                        )[0].cost,
+                                        payment: 2
                                       }
-                              })
-                            }
-                          />
+                              },
+                              () => this.refs.upxStand.startAnimation(10)
+                            )
+                          }
+                        >
+                          <View style={{ flexDirection: "row", width: "80%" }}>
+                            <CheckBox
+                              checked={
+                                deliveryCompany.delivery === "upx" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? true
+                                  : false
+                              }
+                              style={{
+                                left: 0,
+                                marginRight: scaleSize(16),
+                                borderColor: "#302c23",
+                                backgroundColor:
+                                  deliveryCompany.delivery === "upx" &&
+                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.payment === 2
+                                    ? "#302c23"
+                                    : "transparent"
+                              }}
+                              onPress={() =>
+                                this.setState(
+                                  {
+                                    deliveryCompany:
+                                      deliveryCompany.delivery === "upx" &&
+                                      deliveryCompany.courier === "0" &&
+                                      deliveryCompany.payment === 2
+                                        ? {}
+                                        : {
+                                            delivery: "upx",
+                                            courier: "0",
+                                            cost: up.filter(
+                                              item => item.value === "warehouse"
+                                            )[0].cost,
+                                            payment: 2
+                                          }
+                                  },
+                                  () => this.refs.upStand.startAnimation(10)
+                                )
+                              }
+                            />
+                            <View
+                              style={{
+                                width: "80%",
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}
+                            >
+                              <TextTicker
+                                style={styles.defaultText}
+                                loop={false}
+                                marqueeOnMount={false}
+                                scroll={false}
+                                ref="upxStand"
+                              >
+                                Укрпочта Экспресс, при получении
+                              </TextTicker>
+                            </View>
+                          </View>
                           <Text style={styles.defaultText}>
-                            Укрпочта Экспресс, курьер
+                            {
+                              upx.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            }{" "}
+                            грн
                           </Text>
-                        </View>
-                        {this.props.delivery.length < 6 &&
-                        this.state.city !== "Город, область" ? (
-                          <ActivityIndicator color="#89a6aa" size="small" />
-                        ) : (
-                          <Text style={styles.defaultText}>
-                            {this.props.delivery.length > 5
-                              ? this.props.delivery.filter(item => {
-                                  if (
-                                    item.delivery === "es" &&
-                                    item.courier === 1
-                                  ) {
-                                    return item;
-                                  }
-                                })[0].cost + " грн"
-                              : ""}
-                          </Text>
-                        )}
-                      </TouchableOpacity>
+                        </TouchableOpacity>
+                      ) : null}
                     </View>
                     <View style={styles.cardFullCity} ref="deliveryView">
                       <View
@@ -2201,7 +1827,8 @@ const mapStateToProps = state => ({
   categories: state.catalog.categories,
   subcategories: state.catalog.subcategories,
   dishes: state.catalog.dishes,
-  user: state.user.info
+  user: state.user.info,
+  massDelivery: state.common.massDelivery
 });
 
 const mapDispatchToProps = dispatch => ({
