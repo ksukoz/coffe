@@ -713,7 +713,7 @@ class DeliveryScreen extends Component {
                   </View>
                 </View>
                 <Text style={[styles.defaultFont, { flex: 1 }]}>
-                  безналичная оплата для предприятий и организаций
+                  Безналичная оплата для предприятий и организаций
                 </Text>
               </View>
             </Content>

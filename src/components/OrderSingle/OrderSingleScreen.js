@@ -754,26 +754,28 @@ class OrderSingleScreen extends Component {
                             marginBottom: scaleSize(16)
                           }}
                           activeOpacity={0.9}
-                          onPress={() =>
-                            this.setState(
-                              {
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "up" &&
-                                  deliveryCompany.courier === "0" &&
-                                  deliveryCompany.payment === 2
-                                    ? {}
-                                    : {
-                                        delivery: "up",
-                                        courier: "0",
-                                        cost: up.filter(
-                                          item => item.value === "warehouse"
-                                        )[0].cost,
-                                        payment: 2
-                                      }
-                              },
-                              () => this.refs.upStand.startAnimation(10)
-                            )
-                          }
+                          onPress={() => {
+                            deliveryCompany.delivery === "up" &&
+                            deliveryCompany.courier === "0" &&
+                            deliveryCompany.payment === 2
+                              ? ""
+                              : this.refs.upStand.startAnimation(10);
+                            this.setState({
+                              deliveryCompany:
+                                deliveryCompany.delivery === "up" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? {}
+                                  : {
+                                      delivery: "up",
+                                      courier: "0",
+                                      cost: up.filter(
+                                        item => item.value === "warehouse"
+                                      )[0].cost,
+                                      payment: 2
+                                    }
+                            });
+                          }}
                         >
                           <View style={{ flexDirection: "row", width: "80%" }}>
                             <CheckBox
@@ -795,26 +797,28 @@ class OrderSingleScreen extends Component {
                                     ? "#302c23"
                                     : "transparent"
                               }}
-                              onPress={() =>
-                                this.setState(
-                                  {
-                                    deliveryCompany:
-                                      deliveryCompany.delivery === "up" &&
-                                      deliveryCompany.courier === "0" &&
-                                      deliveryCompany.payment === 2
-                                        ? {}
-                                        : {
-                                            delivery: "up",
-                                            courier: "0",
-                                            cost: up.filter(
-                                              item => item.value === "warehouse"
-                                            )[0].cost,
-                                            payment: 2
-                                          }
-                                  },
-                                  () => this.refs.upStand.startAnimation(10)
-                                )
-                              }
+                              onPress={() => {
+                                deliveryCompany.delivery === "up" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? ""
+                                  : this.refs.upStand.startAnimation(10);
+                                this.setState({
+                                  deliveryCompany:
+                                    deliveryCompany.delivery === "up" &&
+                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.payment === 2
+                                      ? {}
+                                      : {
+                                          delivery: "up",
+                                          courier: "0",
+                                          cost: up.filter(
+                                            item => item.value === "warehouse"
+                                          )[0].cost,
+                                          payment: 2
+                                        }
+                                });
+                              }}
                             />
                             <View
                               style={{
@@ -941,26 +945,28 @@ class OrderSingleScreen extends Component {
                             marginBottom: scaleSize(16)
                           }}
                           activeOpacity={0.9}
-                          onPress={() =>
-                            this.setState(
-                              {
-                                deliveryCompany:
-                                  deliveryCompany.delivery === "upx" &&
-                                  deliveryCompany.courier === "0" &&
-                                  deliveryCompany.payment === 2
-                                    ? {}
-                                    : {
-                                        delivery: "upx",
-                                        courier: "0",
-                                        cost: upx.filter(
-                                          item => item.value === "warehouse"
-                                        )[0].cost,
-                                        payment: 2
-                                      }
-                              },
-                              () => this.refs.upxStand.startAnimation(10)
-                            )
-                          }
+                          onPress={() => {
+                            deliveryCompany.delivery === "upx" &&
+                            deliveryCompany.courier === "0" &&
+                            deliveryCompany.payment === 2
+                              ? ""
+                              : this.refs.upxStand.startAnimation(10);
+                            this.setState({
+                              deliveryCompany:
+                                deliveryCompany.delivery === "upx" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? {}
+                                  : {
+                                      delivery: "upx",
+                                      courier: "0",
+                                      cost: upx.filter(
+                                        item => item.value === "warehouse"
+                                      )[0].cost,
+                                      payment: 2
+                                    }
+                            });
+                          }}
                         >
                           <View style={{ flexDirection: "row", width: "80%" }}>
                             <CheckBox
@@ -982,26 +988,28 @@ class OrderSingleScreen extends Component {
                                     ? "#302c23"
                                     : "transparent"
                               }}
-                              onPress={() =>
-                                this.setState(
-                                  {
-                                    deliveryCompany:
-                                      deliveryCompany.delivery === "upx" &&
-                                      deliveryCompany.courier === "0" &&
-                                      deliveryCompany.payment === 2
-                                        ? {}
-                                        : {
-                                            delivery: "upx",
-                                            courier: "0",
-                                            cost: up.filter(
-                                              item => item.value === "warehouse"
-                                            )[0].cost,
-                                            payment: 2
-                                          }
-                                  },
-                                  () => this.refs.upxStand.startAnimation(10)
-                                )
-                              }
+                              onPress={() => {
+                                deliveryCompany.delivery === "upx" &&
+                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.payment === 2
+                                  ? ""
+                                  : this.refs.upxStand.startAnimation(10);
+                                this.setState({
+                                  deliveryCompany:
+                                    deliveryCompany.delivery === "upx" &&
+                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.payment === 2
+                                      ? {}
+                                      : {
+                                          delivery: "upx",
+                                          courier: "0",
+                                          cost: up.filter(
+                                            item => item.value === "warehouse"
+                                          )[0].cost,
+                                          payment: 2
+                                        }
+                                });
+                              }}
                             />
                             <View
                               style={{
