@@ -22,23 +22,11 @@ class OrderItem extends PureComponent {
     super(props);
     this.state = {
       search: ""
-      // qty:
-      //   this.props.product &&
-      //   this.props.cart.filter(
-      //     cartItem => cartItem.id === this.props.item.id
-      //   )[0]
-      //     ? this.props.cart.filter(
-      //         cartItem => cartItem.id === this.props.item.id
-      //       )[0].qty
-      //     : this.props.item.qty
     };
   }
 
   render() {
-    const { cart, item, product } = this.props;
-    // const { qty } = this.state;
-    const filteredCart =
-      cart && product ? cart.filter(cartItem => cartItem.id === item.id) : [];
+    const { item, product } = this.props;
 
     return (
       <View style={this.props.product ? styles.productItem : styles.product}>
@@ -114,10 +102,7 @@ class OrderItem extends PureComponent {
                 fontWeight: "300"
               }}
             >
-              {product && filteredCart[0]
-                ? (filteredCart[0].qty * item.price).toFixed()
-                : (item.qty * item.price).toFixed()}{" "}
-              грн
+              {(item.qty * item.price).toFixed()} грн
             </Text>
           </View>
           <View
@@ -208,32 +193,10 @@ class OrderItem extends PureComponent {
                     paddingTop: scaleSize(5),
                     paddingBottom: scaleSize(5)
                   }}
-                  onPress={
-                    () =>
-                      item.qty == "1" ||
-                      (filteredCart[0] && filteredCart[0].qty == "1")
-                        ? false
-                        : product && filteredCart[0]
-                        ? this.props.onCartUpdateHandler(
-                            filteredCart[0].id,
-                            +filteredCart[0].qty - 1
-                          )
-                        : this.props.onCartUpdateHandler(item.id, +item.qty - 1)
-                    // product &&
-                    //   filteredCart[0] &&
-                    //   filteredCart[0].qty === qty
-                    // ? this.setState({ qty: +qty - 1 }, () =>
-                    //     this.props.updateCart(
-                    //       item.id,
-                    //       +filteredCart[0].qty - 1
-                    //     )
-                    //   )
-                    // : item.qty == qty
-                    // ? this.setState(
-                    //     { qty: +item.qty - 1 },
-                    //     this.props.updateCart(item.id, +item.qty - 1)
-                    //   )
-                    // : false
+                  onPress={() =>
+                    item.qty == "1"
+                      ? false
+                      : this.props.onCartUpdateHandler(item.id, +item.qty - 1)
                   }
                   activeOpacity={0.9}
                 >
@@ -241,12 +204,7 @@ class OrderItem extends PureComponent {
                     style={{
                       color: "#7e7a71",
                       fontSize: scaleSize(18),
-                      opacity:
-                        product && filteredCart[0] && filteredCart[0].qty == "1"
-                          ? 0.5
-                          : item.qty == "1"
-                          ? 0.5
-                          : 1
+                      opacity: item.qty == "1" ? 0.5 : 1
                     }}
                     name="remove-circle-outline"
                     type="MaterialIcons"
@@ -260,7 +218,7 @@ class OrderItem extends PureComponent {
                     paddingRight: scaleSize(7)
                   }}
                 >
-                  {product && filteredCart[0] ? filteredCart[0].qty : item.qty}
+                  {item.qty}
                 </Text>
                 <TouchableOpacity
                   style={{
@@ -268,27 +226,8 @@ class OrderItem extends PureComponent {
                     paddingTop: scaleSize(5),
                     paddingBottom: scaleSize(5)
                   }}
-                  onPress={
-                    () =>
-                      product && filteredCart[0]
-                        ? //  && filteredCart[0].qty === qty
-                          this.props.onCartUpdateHandler(
-                            filteredCart[0].id,
-                            +filteredCart[0].qty + 1
-                          )
-                        : this.props.onCartUpdateHandler(item.id, +item.qty + 1)
-                    // ? this.setState({ qty: +qty + 1 }, () =>
-                    //     this.props.updateCart(
-                    //       item.id,
-                    //       +filteredCart[0].qty + 1
-                    //     )
-                    //   )
-                    // : item.qty == qty
-                    // ? this.setState(
-                    //     { qty: +item.qty + 1 },
-                    //     this.props.updateCart(item.id, +item.qty + 1)
-                    //   )
-                    // : false
+                  onPress={() =>
+                    this.props.onCartUpdateHandler(item.id, +item.qty + 1)
                   }
                   activeOpacity={0.9}
                 >

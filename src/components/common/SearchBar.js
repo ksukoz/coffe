@@ -160,6 +160,10 @@ class SearchBar extends Component {
   };
 
   handleBackPress = () => {
+    if (this.props.cartChanged) {
+      this.props.cartChanged();
+      // this.props.navigation.pop();
+    }
     if (this.props.focus) {
       this.unFocus();
     } else {

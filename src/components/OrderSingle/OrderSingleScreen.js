@@ -88,9 +88,6 @@ class OrderSingleScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (JSON.stringify(prevProps.cart) !== JSON.stringify(this.props.cart)) {
-    //   this.setState({ loading: false, cart: this.props.cart });
-    // }
     if (prevProps.focus !== this.props.focus) {
       this.setState({ loading: false, focus: this.props.focus });
     }
@@ -172,6 +169,7 @@ class OrderSingleScreen extends Component {
   };
 
   handleBackPress = () => {
+    this.props.updateCart(this.state.product.id, this.state.product.qty);
     this.props.navigation.pop();
     return true;
   };
@@ -260,6 +258,12 @@ class OrderSingleScreen extends Component {
             placeholder={"Найти кофе"}
             style={{ marginBottom: scaleSize(20) }}
             navigation={this.props.navigation}
+            cartChanged={() =>
+              this.props.updateCart(
+                this.state.product.id,
+                this.state.product.qty
+              )
+            }
           />
 
           {this.state.loading ? (
@@ -1856,11 +1860,15 @@ class OrderSingleScreen extends Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() =>
+                  onPress={() => {
+                    this.props.updateCart(
+                      this.state.product.id,
+                      this.state.product.qty
+                    );
                     payment === "Безналичная оплата, счет на Email"
                       ? this.props.navigation.push("Payment")
-                      : ""
-                  }
+                      : "";
+                  }}
                   style={styles.btn}
                   activeOpacity={0.9}
                 >

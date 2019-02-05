@@ -164,6 +164,7 @@ class OrderScreen extends Component {
   };
 
   handleBackPress = () => {
+    this.state.cart.map(item => this.props.updateCart(item.id, item.qty));
     this.props.navigation.pop();
     return true;
   };
@@ -255,6 +256,11 @@ class OrderScreen extends Component {
             placeholder={"Найти кофе"}
             style={{ marginBottom: scaleSize(20) }}
             navigation={this.props.navigation}
+            cartChanged={() =>
+              this.state.cart.map(item =>
+                this.props.updateCart(item.id, item.qty)
+              )
+            }
           />
 
           {this.state.loading ? (
