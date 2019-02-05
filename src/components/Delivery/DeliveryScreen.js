@@ -22,7 +22,8 @@ import { getDeliveryCost } from "../../store/actions/commonActions";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
-import TextTicker from "react-native-text-ticker";
+// import TextTicker from "react-native-text-ticker";
+import TextTicker from "../common/TextTicker";
 
 Input.defaultProps.selectionColor = "#ea9308";
 TextInputMask.defaultProps.selectionColor = "#ea9308";
@@ -331,7 +332,11 @@ class DeliveryScreen extends Component {
                       flex: 1
                     }}
                   >
-                    <View
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => {
+                        this.refs.upStand.startAnimation(10);
+                      }}
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between"
@@ -355,8 +360,12 @@ class DeliveryScreen extends Component {
                             : ""}
                         </Text>
                       )}
-                    </View>
-                    <View
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => {
+                        this.refs.upStand.startAnimation(10);
+                      }}
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between"
@@ -371,9 +380,8 @@ class DeliveryScreen extends Component {
                       >
                         <TextTicker
                           style={styles.defaultFont}
-                          duration={8000}
                           loop={false}
-                          marqueeOnMount={true}
+                          marqueeOnMount={false}
                           scroll={false}
                           ref="upStand"
                         >
@@ -397,8 +405,12 @@ class DeliveryScreen extends Component {
                             : ""}
                         </Text>
                       )}
-                    </View>
-                    <View
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => {
+                        this.refs.upEksp.startAnimation(10);
+                      }}
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between"
@@ -422,8 +434,12 @@ class DeliveryScreen extends Component {
                             : ""}
                         </Text>
                       )}
-                    </View>
-                    <View
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => {
+                        this.refs.upEksp.startAnimation(10);
+                      }}
                       style={{
                         flexDirection: "row",
                         justifyContent: "space-between"
@@ -440,9 +456,9 @@ class DeliveryScreen extends Component {
                           style={styles.defaultFont}
                           duration={8000}
                           loop={false}
-                          marqueeOnMount={true}
+                          marqueeOnMount={false}
                           scroll={false}
-                          ref="upStand"
+                          ref="upEksp"
                         >
                           Укрпочта Экспресс, при получении
                         </TextTicker>
@@ -464,7 +480,7 @@ class DeliveryScreen extends Component {
                             : ""}
                         </Text>
                       )}
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View

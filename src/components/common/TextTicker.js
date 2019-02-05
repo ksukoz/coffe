@@ -98,9 +98,6 @@ export default class TextTicker extends PureComponent {
           useNativeDriver: useNativeDriver
         })
       ]).start(({ finished }) => {
-        if (loop) {
-          this.animateBounce();
-        }
         this.setState({ animating: false });
       });
     }, marqueeDelay);
@@ -154,7 +151,7 @@ export default class TextTicker extends PureComponent {
         this.setState({
           // Is 1 instead of 0 to get round rounding errors from:
           // https://github.com/facebook/react-native/commit/a534672
-          contentFits: this.distance <= 1,
+          contentFits: false,
           shouldBounce: this.distance < this.containerWidth / 8
         });
         // console.log(
@@ -190,16 +187,6 @@ export default class TextTicker extends PureComponent {
     this.clearTimeout();
     this.timer = setTimeout(fn, time);
   }
-
-  onScroll = () => {
-    this.clearTimeout();
-    this.setState({ isScrolling: true });
-    this.animatedValue.setValue(0);
-    this.setTimeout(() => {
-      this.setState({ isScrolling: false });
-      this.start();
-    }, this.props.marqueeDelay || 3000);
-  };
 
   render() {
     const { style, children, repeatSpacer, scroll, ...props } = this.props;
