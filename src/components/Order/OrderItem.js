@@ -21,18 +21,22 @@ class OrderItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      search: "",
-      qty: this.props.product
-        ? this.props.cart.filter(
-            cartItem => cartItem.id === this.props.item.id
-          )[0].qty
-        : this.props.item.qty
+      search: ""
+      // qty:
+      //   this.props.product &&
+      //   this.props.cart.filter(
+      //     cartItem => cartItem.id === this.props.item.id
+      //   )[0]
+      //     ? this.props.cart.filter(
+      //         cartItem => cartItem.id === this.props.item.id
+      //       )[0].qty
+      //     : this.props.item.qty
     };
   }
 
   render() {
     const { cart, item, product } = this.props;
-    const { qty } = this.state;
+    // const { qty } = this.state;
     const filteredCart =
       cart && product ? cart.filter(cartItem => cartItem.id === item.id) : [];
 

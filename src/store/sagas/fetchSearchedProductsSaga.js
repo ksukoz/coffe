@@ -9,15 +9,26 @@ import { GET_CATEGORY, FETCHED, FETCHING, SET_SEARCH } from "../actions/types";
 export function* fetchSearchedProductsSaga(item) {
   const { payload } = item;
   if (payload && payload.page) {
-    console.log(payload);
     yield put(setProductsStatus(FETCHING));
     const response = yield call(
       fetch,
       `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
         payload.search
-      )}/${payload.category}/both//10/${payload.page}}`
+      )}/${
+        payload.search.includes("/")
+          ? payload.search.split("/")[0]
+          : payload.search
+      }/both/10/${payload.page}}`
     );
+    // console.log(
+    //   `http://kawaapi.gumione.pro/api/catalog/search/${encodeURI(
+    //     payload.search.includes("/")
+    //       ? payload.search.split("/")[0]
+    //       : payload.search
+    //   )}/${payload.category}/both/10/${payload.page}}`
+    // );
     const { items } = yield response.json();
+    // console.log(items);
     items.length === 10
       ? yield put(findProducts(items))
       : yield all([put(findProducts(items)), put(getEndProducts())]);

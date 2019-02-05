@@ -212,14 +212,11 @@ class OrderSingleScreen extends Component {
 
   onCartUpdateHandler = (id, qty) => {
     this.setState({
-      cart: this.state.cart.map(item => {
-        if (item.id === id) {
-          item.qty = qty;
-        }
-        return item;
-      })
+      product: {
+        ...this.state.product,
+        qty
+      }
     });
-    // console.log(id, qty);
   };
 
   render() {
