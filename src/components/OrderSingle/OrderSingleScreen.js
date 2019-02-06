@@ -125,6 +125,7 @@ class OrderSingleScreen extends Component {
       });
     }
     if (
+      !this.state.product &&
       nextProps.cart &&
       nextProps.cart.length > 0 &&
       nextProps.cart.filter(
@@ -217,12 +218,21 @@ class OrderSingleScreen extends Component {
   };
 
   onCartUpdateHandler = (id, qty) => {
-    this.setState({
-      product: {
-        ...this.state.product,
-        qty
-      }
-    });
+    this.setState(
+      {
+        product: {
+          ...this.state.product,
+          qty
+        }
+      },
+      () =>
+        this.state.city && this.state.city !== "Город, область"
+          ? this.props.getSingleDeliveryCost({
+              city: this.state.city,
+              item: this.state.product
+            })
+          : ""
+    );
   };
 
   render() {
