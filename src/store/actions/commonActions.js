@@ -2,7 +2,7 @@ import {
   GET_LETTERS,
   GET_DELIVERY_COST,
   SET_DELIVERY_COST,
-  GET_MASS_DELIVERY_COST,
+  GET_DELIVERY_COST_SINGLE,
   SET_MASS_DELIVERY_COST,
   GET_SEARCH_FOCUS,
   SET_LANG,
@@ -36,6 +36,13 @@ export const getDeliveryCost = city => dispatch => {
   dispatch({
     type: GET_DELIVERY_COST,
     payload: city
+  });
+};
+
+export const getSingleDeliveryCost = item => dispatch => {
+  dispatch({
+    type: GET_DELIVERY_COST_SINGLE,
+    payload: item
   });
 };
 

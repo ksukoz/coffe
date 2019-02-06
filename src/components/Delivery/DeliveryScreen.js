@@ -113,6 +113,35 @@ class DeliveryScreen extends Component {
   }
 
   render() {
+    const { massDelivery } = this.props;
+    let np;
+    let up;
+    let upx;
+
+    if (massDelivery) {
+      if (massDelivery.np) {
+        np = [];
+
+        for (let key in massDelivery.np) {
+          np.push({ cost: massDelivery.np[key].total, value: key });
+        }
+      }
+      if (massDelivery.up) {
+        up = [];
+
+        for (let key in massDelivery.up) {
+          up.push({ cost: massDelivery.up[key].total, value: key });
+        }
+      }
+      if (massDelivery.upx) {
+        upx = [];
+
+        for (let key in massDelivery.upx) {
+          upx.push({ cost: massDelivery.upx[key].total, value: key });
+        }
+      }
+    }
+
     if (this.state.loading) {
       return this.renderLoadingView();
     }
@@ -210,9 +239,9 @@ class DeliveryScreen extends Component {
                 <View
                   style={{
                     flexDirection: "row",
-                    // alignItems: "center",
                     width: "100%",
-                    marginBottom: scaleSize(10)
+                    marginBottom: scaleSize(10),
+                    display: massDelivery && !np ? "none" : "flex"
                   }}
                 >
                   <Image
@@ -225,7 +254,12 @@ class DeliveryScreen extends Component {
                   />
                   <View
                     style={{
-                      flex: 1
+                      flex: 1,
+                      display: !massDelivery
+                        ? "flex"
+                        : np && np.filter(item => item.value === "warehouse")[0]
+                        ? "flex"
+                        : "none"
                     }}
                   >
                     <View
@@ -237,77 +271,62 @@ class DeliveryScreen extends Component {
                       <Text style={styles.defaultFont}>
                         Новая Почта, отделение
                       </Text>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "np" &&
-                                  item.courier === "0"
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}
-                    >
                       <Text style={styles.defaultFont}>
-                        Новая Почта, при получении
+                        {np
+                          ? `${
+                              np.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            } грн`
+                          : ""}
                       </Text>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "np" &&
-                                  item.courier === "0"
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
                     </View>
+
                     <View
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : np && np.filter(item => item.value === "courier")[0]
+                          ? "flex"
+                          : "none"
                       }}
                     >
                       <Text style={styles.defaultFont}>
                         Новая Почта, курьер
                       </Text>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "np" &&
-                                  item.courier == 1
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
+                      <Text style={styles.defaultFont}>
+                        {np
+                          ? `${
+                              np.filter(item => item.value === "courier")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : np &&
+                            np.filter(item => item.value === "warehouse")[0]
+                          ? "flex"
+                          : "none"
+                      }}
+                    >
+                      <Text style={styles.defaultFont}>
+                        Новая Почта, при получении
+                      </Text>
+                      <Text style={styles.defaultFont}>
+                        {np
+                          ? `${
+                              np.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -315,7 +334,8 @@ class DeliveryScreen extends Component {
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    alignItems: "center"
+                    alignItems: "center",
+                    display: massDelivery && !up && !upx ? "none" : "flex"
                   }}
                 >
                   <Image
@@ -332,6 +352,28 @@ class DeliveryScreen extends Component {
                       flex: 1
                     }}
                   >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : up &&
+                            up.filter(item => item.value === "warehouse")[0]
+                          ? "flex"
+                          : "none"
+                      }}
+                    >
+                      <Text style={styles.defaultFont}>Укрпочта Стандарт</Text>
+                      <Text style={styles.defaultFont}>
+                        {up
+                          ? `${
+                              up.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
+                    </View>
                     <TouchableOpacity
                       activeOpacity={1}
                       onPress={() => {
@@ -339,27 +381,25 @@ class DeliveryScreen extends Component {
                       }}
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : up && up.filter(item => item.value === "courier")[0]
+                          ? "flex"
+                          : "none"
                       }}
                     >
-                      <Text style={styles.defaultFont}>Укрпочта Стандарт</Text>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "up" &&
-                                  item.courier === "0"
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
+                      <Text style={styles.defaultFont}>
+                        Укрпочта Стандарт, курьер
+                      </Text>
+                      <Text style={styles.defaultFont}>
+                        {up
+                          ? `${
+                              up.filter(item => item.value === "courier")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       activeOpacity={1}
@@ -368,7 +408,13 @@ class DeliveryScreen extends Component {
                       }}
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : up &&
+                            up.filter(item => item.value === "warehouse")[0]
+                          ? "flex"
+                          : "none"
                       }}
                     >
                       <View
@@ -388,52 +434,79 @@ class DeliveryScreen extends Component {
                           Укрпочта Стандарт, при получении
                         </TextTicker>
                       </View>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "up" &&
-                                  item.courier === "0"
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
+                      <Text style={styles.defaultFont}>
+                        {up
+                          ? `${
+                              up.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      onPress={() => {
-                        this.refs.upEksp.startAnimation(10);
-                      }}
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      marginLeft: scaleSize(25 + 17 + 6)
+                    }}
+                  >
+                    <View
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : upx &&
+                            upx.filter(item => item.value === "warehouse")[0]
+                          ? "flex"
+                          : "none"
                       }}
                     >
                       <Text style={styles.defaultFont}>Укрпочта Экспресс</Text>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "es" &&
-                                  item.courier === "0"
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
+                      <Text style={styles.defaultFont}>
+                        {upx
+                          ? `${
+                              upx.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      onPress={() => {
+                        this.refs.upEksp.startAnimation(10);
+                      }}
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : upx &&
+                            upx.filter(item => item.value === "courier")[0]
+                          ? "flex"
+                          : "none"
+                      }}
+                    >
+                      <Text style={styles.defaultFont}>
+                        Укрпочта Экспресс, курьер
+                      </Text>
+                      <Text style={styles.defaultFont}>
+                        {upx
+                          ? `${
+                              upx.filter(item => item.value === "courier")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       activeOpacity={1}
@@ -442,7 +515,13 @@ class DeliveryScreen extends Component {
                       }}
                       style={{
                         flexDirection: "row",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
+                        display: !massDelivery
+                          ? "flex"
+                          : upx &&
+                            upx.filter(item => item.value === "warehouse")[0]
+                          ? "flex"
+                          : "none"
                       }}
                     >
                       <View
@@ -463,93 +542,15 @@ class DeliveryScreen extends Component {
                           Укрпочта Экспресс, при получении
                         </TextTicker>
                       </View>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "es" &&
-                                  item.courier === "0"
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
+                      <Text style={styles.defaultFont}>
+                        {upx
+                          ? `${
+                              upx.filter(item => item.value === "warehouse")[0]
+                                .cost
+                            } грн`
+                          : ""}
+                      </Text>
                     </TouchableOpacity>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center"
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      marginLeft: scaleSize(25 + 17 + 6)
-                    }}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <Text style={styles.defaultFont}>
-                        Укрпочта Стандарт, курьер
-                      </Text>
-                      {this.state.city_name !== "Выберите город" &&
-                      this.props.delivery.length < 6 ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "up" &&
-                                  item.courier === 1
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <Text style={styles.defaultFont}>
-                        Укрпочта Экспресс, курьер
-                      </Text>
-                      {this.props.delivery.length < 6 &&
-                      this.state.city_name !== "Выберите город" ? (
-                        <ActivityIndicator color="#89a6aa" size="small" />
-                      ) : (
-                        <Text style={styles.defaultFont}>
-                          {this.props.delivery.length > 5
-                            ? this.props.delivery.filter(item => {
-                                if (
-                                  item.delivery === "es" &&
-                                  item.courier === 1
-                                ) {
-                                  return item;
-                                }
-                              })[0].cost + " грн"
-                            : ""}
-                        </Text>
-                      )}
-                    </View>
                   </View>
                 </View>
               </View>
@@ -743,7 +744,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   city: state.common.city,
-  delivery: state.common.delivery
+  delivery: state.common.delivery,
+  massDelivery: state.common.massDelivery
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -78,7 +78,8 @@ class OrderScreen extends Component {
       modalVisible: false,
       modalVisible2: false,
       opacity: 0,
-      canceled: false
+      canceled: false,
+      updatedCart: false
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -123,7 +124,6 @@ class OrderScreen extends Component {
       this.setState({ cart: nextProps.cart });
     }
     if (nextProps.user) {
-      console.log(nextProps.user);
       this.setState({
         email: nextProps.user.email,
         firstname: nextProps.user.firstname,
@@ -147,7 +147,8 @@ class OrderScreen extends Component {
             {
               city: value,
               department: "",
-              canceled: false
+              canceled: false,
+              updateCart: true
             },
             () => {
               this.props.getDeliveryCost(value);
@@ -183,6 +184,7 @@ class OrderScreen extends Component {
     const value = event.nativeEvent.contentOffset.y;
     const UIManager = require("NativeModules").UIManager;
     const handle = findNodeHandle(this.refs.deliveryView);
+    const handle2 = findNodeHandle(this.refs.cityView);
     UIManager.measureLayoutRelativeToParent(
       handle,
       e => {
@@ -203,6 +205,21 @@ class OrderScreen extends Component {
         }
       }
     );
+    UIManager.measureLayoutRelativeToParent(
+      handle2,
+      e => {
+        console.error(e);
+      },
+      (x, y, w, h) => {
+        if (value > w + y && !this.state.updatedCart) {
+          this.setState({ updatedCart: true }, () =>
+            this.state.city && this.state.city !== "Город, область"
+              ? this.props.getDeliveryCost(this.state.city)
+              : ""
+          );
+        }
+      }
+    );
   };
 
   onCartUpdateHandler = (id, qty) => {
@@ -212,7 +229,8 @@ class OrderScreen extends Component {
           item.qty = qty;
         }
         return item;
-      })
+      }),
+      updatedCart: false
     });
   };
 
@@ -450,6 +468,7 @@ class OrderScreen extends Component {
                           width: "100%",
                           flexDirection: "row"
                         }}
+                        ref="cityView"
                       >
                         <Text
                           onFocus={() =>
@@ -668,94 +687,100 @@ class OrderScreen extends Component {
                         </TouchableOpacity>
                       ) : null}
                       {up
-                        ? up.map(item => (
-                            <View>
-                              <TouchableOpacity
-                                key={`up_${item.value}`}
-                                style={{
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  marginBottom: scaleSize(16)
-                                }}
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                  this.setState({
-                                    deliveryCompany:
-                                      deliveryCompany.delivery === "up" &&
-                                      deliveryCompany.courier ===
-                                        (item.value === "courier" ? 1 : "0") &&
-                                      deliveryCompany.payment === 1
-                                        ? {}
-                                        : {
-                                            delivery: "up",
-                                            courier:
-                                              item.value === "courier"
-                                                ? 1
-                                                : "0",
-                                            cost: item.cost,
-                                            payment: 1
-                                          }
-                                  })
-                                }
-                              >
-                                <View style={{ flexDirection: "row" }}>
-                                  <CheckBox
-                                    checked={
-                                      deliveryCompany.delivery === "up" &&
-                                      deliveryCompany.courier ===
-                                        (item.value === "courier" ? 1 : "0") &&
-                                      deliveryCompany.payment === 1
-                                        ? true
-                                        : false
-                                    }
-                                    style={{
-                                      left: 0,
-                                      marginRight: scaleSize(16),
-                                      borderColor: "#302c23",
-                                      backgroundColor:
+                        ? up.map(item =>
+                            item.value === "warehouse_cod" ? null : (
+                              <View>
+                                <TouchableOpacity
+                                  key={`up_${item.value}`}
+                                  style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginBottom: scaleSize(16)
+                                  }}
+                                  activeOpacity={0.9}
+                                  onPress={() =>
+                                    this.setState({
+                                      deliveryCompany:
                                         deliveryCompany.delivery === "up" &&
                                         deliveryCompany.courier ===
                                           (item.value === "courier"
                                             ? 1
                                             : "0") &&
                                         deliveryCompany.payment === 1
-                                          ? "#302c23"
-                                          : "transparent"
-                                    }}
-                                    onPress={() =>
-                                      this.setState({
-                                        deliveryCompany:
+                                          ? {}
+                                          : {
+                                              delivery: "up",
+                                              courier:
+                                                item.value === "courier"
+                                                  ? 1
+                                                  : "0",
+                                              cost: item.cost,
+                                              payment: 1
+                                            }
+                                    })
+                                  }
+                                >
+                                  <View style={{ flexDirection: "row" }}>
+                                    <CheckBox
+                                      checked={
+                                        deliveryCompany.delivery === "up" &&
+                                        deliveryCompany.courier ===
+                                          (item.value === "courier"
+                                            ? 1
+                                            : "0") &&
+                                        deliveryCompany.payment === 1
+                                          ? true
+                                          : false
+                                      }
+                                      style={{
+                                        left: 0,
+                                        marginRight: scaleSize(16),
+                                        borderColor: "#302c23",
+                                        backgroundColor:
                                           deliveryCompany.delivery === "up" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
                                               ? 1
                                               : "0") &&
                                           deliveryCompany.payment === 1
-                                            ? {}
-                                            : {
-                                                delivery: "up",
-                                                courier:
-                                                  item.value === "courier"
-                                                    ? 1
-                                                    : "0",
-                                                cost: item.cost,
-                                                payment: 1
-                                              }
-                                      })
-                                    }
-                                  />
+                                            ? "#302c23"
+                                            : "transparent"
+                                      }}
+                                      onPress={() =>
+                                        this.setState({
+                                          deliveryCompany:
+                                            deliveryCompany.delivery === "up" &&
+                                            deliveryCompany.courier ===
+                                              (item.value === "courier"
+                                                ? 1
+                                                : "0") &&
+                                            deliveryCompany.payment === 1
+                                              ? {}
+                                              : {
+                                                  delivery: "up",
+                                                  courier:
+                                                    item.value === "courier"
+                                                      ? 1
+                                                      : "0",
+                                                  cost: item.cost,
+                                                  payment: 1
+                                                }
+                                        })
+                                      }
+                                    />
+                                    <Text style={styles.defaultText}>
+                                      {item.value === "courier"
+                                        ? "Укрпочта Стандарт, курьер"
+                                        : "Укрпочта Стандарт"}
+                                    </Text>
+                                  </View>
                                   <Text style={styles.defaultText}>
-                                    {item.value === "courier"
-                                      ? "Укрпочта Стандарт, курьер"
-                                      : "Укрпочта Стандарт"}
+                                    {item.cost} грн
                                   </Text>
-                                </View>
-                                <Text style={styles.defaultText}>
-                                  {item.cost} грн
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-                          ))
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          )
                         : null}
                       {up ? (
                         <TouchableOpacity
@@ -859,94 +884,101 @@ class OrderScreen extends Component {
                         </TouchableOpacity>
                       ) : null}
                       {upx
-                        ? upx.map(item => (
-                            <View>
-                              <TouchableOpacity
-                                key={`upx_${item.value}`}
-                                style={{
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  marginBottom: scaleSize(16)
-                                }}
-                                activeOpacity={0.9}
-                                onPress={() =>
-                                  this.setState({
-                                    deliveryCompany:
-                                      deliveryCompany.delivery === "upx" &&
-                                      deliveryCompany.courier ===
-                                        (item.value === "courier" ? 1 : "0") &&
-                                      deliveryCompany.payment === 1
-                                        ? {}
-                                        : {
-                                            delivery: "upx",
-                                            courier:
-                                              item.value === "courier"
-                                                ? 1
-                                                : "0",
-                                            cost: item.cost,
-                                            payment: 1
-                                          }
-                                  })
-                                }
-                              >
-                                <View style={{ flexDirection: "row" }}>
-                                  <CheckBox
-                                    checked={
-                                      deliveryCompany.delivery === "upx" &&
-                                      deliveryCompany.courier ===
-                                        (item.value === "courier" ? 1 : "0") &&
-                                      deliveryCompany.payment === 1
-                                        ? true
-                                        : false
-                                    }
-                                    style={{
-                                      left: 0,
-                                      marginRight: scaleSize(16),
-                                      borderColor: "#302c23",
-                                      backgroundColor:
+                        ? upx.map(item =>
+                            item.value === "warehouse_cod" ? null : (
+                              <View>
+                                <TouchableOpacity
+                                  key={`upx_${item.value}`}
+                                  style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginBottom: scaleSize(16)
+                                  }}
+                                  activeOpacity={0.9}
+                                  onPress={() =>
+                                    this.setState({
+                                      deliveryCompany:
                                         deliveryCompany.delivery === "upx" &&
                                         deliveryCompany.courier ===
                                           (item.value === "courier"
                                             ? 1
                                             : "0") &&
                                         deliveryCompany.payment === 1
-                                          ? "#302c23"
-                                          : "transparent"
-                                    }}
-                                    onPress={() =>
-                                      this.setState({
-                                        deliveryCompany:
+                                          ? {}
+                                          : {
+                                              delivery: "upx",
+                                              courier:
+                                                item.value === "courier"
+                                                  ? 1
+                                                  : "0",
+                                              cost: item.cost,
+                                              payment: 1
+                                            }
+                                    })
+                                  }
+                                >
+                                  <View style={{ flexDirection: "row" }}>
+                                    <CheckBox
+                                      checked={
+                                        deliveryCompany.delivery === "upx" &&
+                                        deliveryCompany.courier ===
+                                          (item.value === "courier"
+                                            ? 1
+                                            : "0") &&
+                                        deliveryCompany.payment === 1
+                                          ? true
+                                          : false
+                                      }
+                                      style={{
+                                        left: 0,
+                                        marginRight: scaleSize(16),
+                                        borderColor: "#302c23",
+                                        backgroundColor:
                                           deliveryCompany.delivery === "upx" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
                                               ? 1
                                               : "0") &&
                                           deliveryCompany.payment === 1
-                                            ? {}
-                                            : {
-                                                delivery: "upx",
-                                                courier:
-                                                  item.value === "courier"
-                                                    ? 1
-                                                    : "0",
-                                                cost: item.cost,
-                                                payment: 1
-                                              }
-                                      })
-                                    }
-                                  />
+                                            ? "#302c23"
+                                            : "transparent"
+                                      }}
+                                      onPress={() =>
+                                        this.setState({
+                                          deliveryCompany:
+                                            deliveryCompany.delivery ===
+                                              "upx" &&
+                                            deliveryCompany.courier ===
+                                              (item.value === "courier"
+                                                ? 1
+                                                : "0") &&
+                                            deliveryCompany.payment === 1
+                                              ? {}
+                                              : {
+                                                  delivery: "upx",
+                                                  courier:
+                                                    item.value === "courier"
+                                                      ? 1
+                                                      : "0",
+                                                  cost: item.cost,
+                                                  payment: 1
+                                                }
+                                        })
+                                      }
+                                    />
+                                    <Text style={styles.defaultText}>
+                                      {item.value === "courier"
+                                        ? "Укрпочта Экспресс, курьер"
+                                        : "Укрпочта Экспресс"}
+                                    </Text>
+                                  </View>
                                   <Text style={styles.defaultText}>
-                                    {item.value === "courier"
-                                      ? "Укрпочта Экспресс, курьер"
-                                      : "Укрпочта Экспресс"}
+                                    {item.cost} грн
                                   </Text>
-                                </View>
-                                <Text style={styles.defaultText}>
-                                  {item.cost} грн
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-                          ))
+                                </TouchableOpacity>
+                              </View>
+                            )
+                          )
                         : null}
                       {upx ? (
                         <TouchableOpacity

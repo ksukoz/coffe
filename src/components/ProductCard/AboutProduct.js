@@ -103,9 +103,9 @@ ${
 						${
               item.proteins && item.fats && item.carbohydrates
                 ? `<p>Питательная ценность:<br>
-                &emsp;белки — ${item.proteins} г<br>
-                &emsp;жиры — ${item.fats} г<br>
-                &emsp;углеводы — ${item.carbohydrates} г</p>`
+                &emsp;белки — ${item.proteins} г.<br>
+                &emsp;жиры — ${item.fats} г.<br>
+                &emsp;углеводы — ${item.carbohydrates} г.</p>`
                 : ""
             }
 						${item.shelf_life ? "<p>Срок годности: " + item.shelf_life + " мес.</p>" : ""}
