@@ -70,8 +70,8 @@ export function* getMassDeliverySaga(item) {
   let data = new FormData();
 
   data.append("city", city);
-  cart.map(item => data.append("id", item.id));
-  cart.map(item => data.append("q", item.qty));
+  cart.map(item => data.append("id[]", item.id));
+  cart.map(item => data.append("q[]", item.qty));
 
   const response = yield call(
     fetch,
@@ -85,7 +85,7 @@ export function* getMassDeliverySaga(item) {
     }
   );
   const { cost } = yield response.json();
-  console.log(cost);
+  console.log(city, cost);
   yield put(setMassDelivery(cost));
 }
 
@@ -95,8 +95,8 @@ export function* getSingleDeliverySaga(item) {
   let data = new FormData();
 
   data.append("city", product.city);
-  data.append("id", product.item.id);
-  data.append("q", product.item.qty);
+  data.append("id[]", product.item.id);
+  data.append("q[]", product.item.qty);
 
   const response = yield call(
     fetch,
