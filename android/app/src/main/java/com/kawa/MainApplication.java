@@ -3,6 +3,9 @@ package com.kawa;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativepayments.ReactNativePaymentsPackage;
+import com.vasilich6107.rnliqpay.RNLiqpayPackage;
+import com.react_native_g_pay.GooglePayPackage;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 
@@ -34,6 +37,9 @@ public class MainApplication extends Application implements ShareApplication, Re
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativePaymentsPackage(),
+            new RNLiqpayPackage(),
+            new GooglePayPackage(),
             new RNSharePackage(),
             new CustomWebViewPackage(),
             new OrientationPackage(),
