@@ -5,7 +5,9 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.reactnativepayments.ReactNativePaymentsPackage;
 import com.vasilich6107.rnliqpay.RNLiqpayPackage;
-import com.react_native_g_pay.GooglePayPackage;
+// import com.reactlibrary.RNGpayPackage;
+import com.reactnativepayments.ReactNativePaymentsPackage;
+import com.vasilich6107.rnliqpay.RNLiqpayPackage;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 
@@ -39,7 +41,7 @@ public class MainApplication extends Application implements ShareApplication, Re
           new MainReactPackage(),
             new ReactNativePaymentsPackage(),
             new RNLiqpayPackage(),
-            new GooglePayPackage(),
+            // new RNGpayPackage(),
             new RNSharePackage(),
             new CustomWebViewPackage(),
             new OrientationPackage(),

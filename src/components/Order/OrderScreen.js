@@ -23,7 +23,7 @@ import Modal from "react-native-modal";
 
 import { getCart, updateCart } from "../../store/actions/cartActions";
 import { getUser, updateUser } from "../../store/actions/userActions";
-import { getProductID } from "../../store/actions/catalogActions";
+import { getOrder } from "../../store/actions/orderActions";
 
 import TextTicker from "../common/TextTicker";
 
@@ -73,6 +73,8 @@ class OrderScreen extends Component {
       phone: "",
       deliveryCompany: {},
       payment: "",
+      house: "",
+      street: "",
       product: null,
       department: "",
       modalVisible: false,
@@ -147,6 +149,7 @@ class OrderScreen extends Component {
             {
               city: value,
               department: "",
+              departmentId: "",
               canceled: false,
               updateCart: true
             },
@@ -156,9 +159,12 @@ class OrderScreen extends Component {
           );
         }
         if (name == "department") {
-          if (this.state.deliveryCompany.courier == "0") {
+          let department = JSON.parse(value);
+          if (this.state.deliveryCompany.courier == 1) {
+            console.log(department);
             this.setState({
-              department: value
+              department: department.name,
+              departmentId: department.id
             });
           }
         }
@@ -530,17 +536,15 @@ class OrderScreen extends Component {
                                       deliveryCompany:
                                         deliveryCompany.delivery === "np" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? {}
                                           : {
                                               delivery: "np",
                                               courier:
                                                 item.value === "courier"
-                                                  ? 1
-                                                  : "0",
+                                                  ? 2
+                                                  : 1,
                                               cost: item.cost,
                                               payment: 1
                                             }
@@ -552,9 +556,7 @@ class OrderScreen extends Component {
                                       checked={
                                         deliveryCompany.delivery === "np" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? true
                                           : false
@@ -567,8 +569,8 @@ class OrderScreen extends Component {
                                           deliveryCompany.delivery === "np" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
-                                              ? 1
-                                              : "0") &&
+                                              ? 2
+                                              : 1) &&
                                           deliveryCompany.payment === 1
                                             ? "#302c23"
                                             : "transparent"
@@ -579,16 +581,16 @@ class OrderScreen extends Component {
                                             deliveryCompany.delivery === "np" &&
                                             deliveryCompany.courier ===
                                               (item.value === "courier"
-                                                ? 1
-                                                : "0") &&
+                                                ? 2
+                                                : 1) &&
                                             deliveryCompany.payment === 1
                                               ? {}
                                               : {
                                                   delivery: "np",
                                                   courier:
                                                     item.value === "courier"
-                                                      ? 1
-                                                      : "0",
+                                                      ? 2
+                                                      : 1,
                                                   cost: item.cost,
                                                   payment: 1
                                                 }
@@ -621,12 +623,12 @@ class OrderScreen extends Component {
                             this.setState({
                               deliveryCompany:
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? {}
                                   : {
                                       delivery: "np",
-                                      courier: "0",
+                                      courier: 1,
                                       cost: np.filter(
                                         item => item.value === "warehouse"
                                       )[0].cost,
@@ -639,7 +641,7 @@ class OrderScreen extends Component {
                             <CheckBox
                               checked={
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? true
                                   : false
@@ -650,7 +652,7 @@ class OrderScreen extends Component {
                                 borderColor: "#302c23",
                                 backgroundColor:
                                   deliveryCompany.delivery === "np" &&
-                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.courier === 1 &&
                                   deliveryCompany.payment === 2
                                     ? "#302c23"
                                     : "transparent"
@@ -659,7 +661,7 @@ class OrderScreen extends Component {
                                 this.setState({
                                   deliveryCompany:
                                     deliveryCompany.delivery === "np" &&
-                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.courier === 1 &&
                                     deliveryCompany.payment === 2
                                       ? {}
                                       : {
@@ -703,17 +705,15 @@ class OrderScreen extends Component {
                                       deliveryCompany:
                                         deliveryCompany.delivery === "up" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? {}
                                           : {
                                               delivery: "up",
                                               courier:
                                                 item.value === "courier"
-                                                  ? 1
-                                                  : "0",
+                                                  ? 2
+                                                  : 1,
                                               cost: item.cost,
                                               payment: 1
                                             }
@@ -725,9 +725,7 @@ class OrderScreen extends Component {
                                       checked={
                                         deliveryCompany.delivery === "up" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? true
                                           : false
@@ -740,8 +738,8 @@ class OrderScreen extends Component {
                                           deliveryCompany.delivery === "up" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
-                                              ? 1
-                                              : "0") &&
+                                              ? 2
+                                              : 1) &&
                                           deliveryCompany.payment === 1
                                             ? "#302c23"
                                             : "transparent"
@@ -752,16 +750,16 @@ class OrderScreen extends Component {
                                             deliveryCompany.delivery === "up" &&
                                             deliveryCompany.courier ===
                                               (item.value === "courier"
-                                                ? 1
-                                                : "0") &&
+                                                ? 2
+                                                : 1) &&
                                             deliveryCompany.payment === 1
                                               ? {}
                                               : {
                                                   delivery: "up",
                                                   courier:
                                                     item.value === "courier"
-                                                      ? 1
-                                                      : "0",
+                                                      ? 2
+                                                      : 1,
                                                   cost: item.cost,
                                                   payment: 1
                                                 }
@@ -792,19 +790,19 @@ class OrderScreen extends Component {
                           activeOpacity={0.9}
                           onPress={() => {
                             deliveryCompany.delivery === "up" &&
-                            deliveryCompany.courier === "0" &&
+                            deliveryCompany.courier === 1 &&
                             deliveryCompany.payment === 2
                               ? ""
                               : this.refs.upStand.startAnimation(10);
                             this.setState({
                               deliveryCompany:
                                 deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? {}
                                   : {
                                       delivery: "up",
-                                      courier: "0",
+                                      courier: 1,
                                       cost: up.filter(
                                         item => item.value === "warehouse"
                                       )[0].cost,
@@ -817,7 +815,7 @@ class OrderScreen extends Component {
                             <CheckBox
                               checked={
                                 deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? true
                                   : false
@@ -828,26 +826,26 @@ class OrderScreen extends Component {
                                 borderColor: "#302c23",
                                 backgroundColor:
                                   deliveryCompany.delivery === "up" &&
-                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.courier === 1 &&
                                   deliveryCompany.payment === 2
                                     ? "#302c23"
                                     : "transparent"
                               }}
                               onPress={() => {
                                 deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? ""
                                   : this.refs.upStand.startAnimation(10);
                                 this.setState({
                                   deliveryCompany:
                                     deliveryCompany.delivery === "up" &&
-                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.courier === 1 &&
                                     deliveryCompany.payment === 2
                                       ? {}
                                       : {
                                           delivery: "up",
-                                          courier: "0",
+                                          courier: 1,
                                           cost: up.filter(
                                             item => item.value === "warehouse"
                                           )[0].cost,
@@ -900,17 +898,15 @@ class OrderScreen extends Component {
                                       deliveryCompany:
                                         deliveryCompany.delivery === "upx" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? {}
                                           : {
                                               delivery: "upx",
                                               courier:
                                                 item.value === "courier"
-                                                  ? 1
-                                                  : "0",
+                                                  ? 2
+                                                  : 1,
                                               cost: item.cost,
                                               payment: 1
                                             }
@@ -922,9 +918,7 @@ class OrderScreen extends Component {
                                       checked={
                                         deliveryCompany.delivery === "upx" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? true
                                           : false
@@ -937,8 +931,8 @@ class OrderScreen extends Component {
                                           deliveryCompany.delivery === "upx" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
-                                              ? 1
-                                              : "0") &&
+                                              ? 2
+                                              : 1) &&
                                           deliveryCompany.payment === 1
                                             ? "#302c23"
                                             : "transparent"
@@ -950,16 +944,16 @@ class OrderScreen extends Component {
                                               "upx" &&
                                             deliveryCompany.courier ===
                                               (item.value === "courier"
-                                                ? 1
-                                                : "0") &&
+                                                ? 2
+                                                : 1) &&
                                             deliveryCompany.payment === 1
                                               ? {}
                                               : {
                                                   delivery: "upx",
                                                   courier:
                                                     item.value === "courier"
-                                                      ? 1
-                                                      : "0",
+                                                      ? 2
+                                                      : 1,
                                                   cost: item.cost,
                                                   payment: 1
                                                 }
@@ -990,19 +984,19 @@ class OrderScreen extends Component {
                           activeOpacity={0.9}
                           onPress={() => {
                             deliveryCompany.delivery === "upx" &&
-                            deliveryCompany.courier === "0" &&
+                            deliveryCompany.courier === 1 &&
                             deliveryCompany.payment === 2
                               ? ""
                               : this.refs.upxStand.startAnimation(10);
                             this.setState({
                               deliveryCompany:
                                 deliveryCompany.delivery === "upx" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? {}
                                   : {
                                       delivery: "upx",
-                                      courier: "0",
+                                      courier: 1,
                                       cost: upx.filter(
                                         item => item.value === "warehouse"
                                       )[0].cost,
@@ -1015,7 +1009,7 @@ class OrderScreen extends Component {
                             <CheckBox
                               checked={
                                 deliveryCompany.delivery === "upx" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? true
                                   : false
@@ -1026,14 +1020,14 @@ class OrderScreen extends Component {
                                 borderColor: "#302c23",
                                 backgroundColor:
                                   deliveryCompany.delivery === "upx" &&
-                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.courier === 1 &&
                                   deliveryCompany.payment === 2
                                     ? "#302c23"
                                     : "transparent"
                               }}
                               onPress={() => {
                                 deliveryCompany.delivery === "upx" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? ""
                                   : this.refs.upxStand.startAnimation(10);
@@ -1041,12 +1035,12 @@ class OrderScreen extends Component {
                                   {
                                     deliveryCompany:
                                       deliveryCompany.delivery === "upx" &&
-                                      deliveryCompany.courier === "0" &&
+                                      deliveryCompany.courier === 1 &&
                                       deliveryCompany.payment === 2
                                         ? {}
                                         : {
                                             delivery: "upx",
-                                            courier: "0",
+                                            courier: 1,
                                             cost: up.filter(
                                               item => item.value === "warehouse"
                                             )[0].cost,
@@ -1055,7 +1049,7 @@ class OrderScreen extends Component {
                                   },
                                   () =>
                                     deliveryCompany.delivery === "upx" &&
-                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.courier === 1 &&
                                     deliveryCompany.payment === 2
                                       ? ""
                                       : this.refs.upxStand.startAnimation(10)
@@ -1108,7 +1102,7 @@ class OrderScreen extends Component {
                       >
                         <TouchableOpacity
                           onPress={() => {
-                            if (deliveryCompany.courier === "0") {
+                            if (deliveryCompany.courier === 1) {
                               this.props.navigation.navigate("Department", {
                                 city: this.state.city,
                                 post:
@@ -1139,7 +1133,7 @@ class OrderScreen extends Component {
                               borderBottomWidth: 1
                             }}
                           >
-                            {department && deliveryCompany.courier === "0"
+                            {department && deliveryCompany.courier === 1
                               ? department
                               : deliveryCompany.courier === 1
                               ? "Адрес доставки"
@@ -1443,36 +1437,23 @@ class OrderScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment:
-                              payment === "Безналичная оплата, счет на Email"
-                                ? ""
-                                : "Безналичная оплата, счет на Email"
+                            payment: payment === "email" ? "" : "email"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={
-                              payment === "Безналичная оплата, счет на Email"
-                                ? true
-                                : false
-                            }
+                            checked={payment === "email" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Безналичная оплата, счет на Email"
-                                  ? "#302c23"
-                                  : "transparent"
+                                payment === "email" ? "#302c23" : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment:
-                                  payment ===
-                                  "Безналичная оплата, счет на Email"
-                                    ? ""
-                                    : "Безналичная оплата, счет на Email"
+                                payment: payment === "email" ? "" : "email"
                               })
                             }
                           />
@@ -1578,11 +1559,24 @@ class OrderScreen extends Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() =>
-                    payment === "Безналичная оплата, счет на Email"
-                      ? this.props.navigation.push("Payment")
-                      : ""
-                  }
+                  onPress={() => {
+                    if (payment === "email" && deliveryCompany.delivery) {
+                      this.props.navigation.push("Payment", {
+                        delivery_system: deliveryCompany.delivery,
+                        city: this.state.city,
+                        delivery_type: deliveryCompany.courier,
+                        warehouse: this.state.departmentId,
+                        payment: deliveryCompany.payment
+                      });
+                      this.props.getOrder(
+                        deliveryCompany.delivery,
+                        this.state.city,
+                        deliveryCompany.courier,
+                        this.state.departmentId,
+                        deliveryCompany.payment
+                      );
+                    }
+                  }}
                   style={styles.btn}
                 >
                   <Text style={styles.btnText}>{"Оплатить".toUpperCase()}</Text>
@@ -1888,13 +1882,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
-  getProductID: id => dispatch(getProductID(id)),
   getDeliveryCost: city => dispatch(getDeliveryCost(city)),
   searchFocused: () => dispatch(searchFocused()),
   getUser: () => dispatch(getUser()),
   updateUser: (firstName, lastName, city) =>
     dispatch(updateUser(firstName, lastName, city)),
-  updateCart: (id, quantity) => dispatch(updateCart(id, quantity))
+  updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
+  getOrder: (delivery_system, city, delivery_type, warehouse, payment) =>
+    dispatch(getOrder(delivery_system, city, delivery_type, warehouse, payment))
 });
 
 export default connect(
