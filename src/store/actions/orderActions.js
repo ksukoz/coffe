@@ -1,4 +1,4 @@
-import { GET_ORDER, SET_ORDER } from "./types";
+import { GET_ORDER, GET_PAYER_INFO, SET_ORDER } from "./types";
 
 export const setOrder = id => dispatch => {
   dispatch({
@@ -7,23 +7,18 @@ export const setOrder = id => dispatch => {
   });
 };
 
-export const getOrder = (
-  delivery_system,
-  city,
-  delivery_type,
-  warehouse,
-  payment,
-  flat
-) => dispatch => {
+export const getOrder = params => dispatch => {
   dispatch({
     type: GET_ORDER,
     payload: {
-      delivery_system,
-      city,
-      delivery_type,
-      warehouse,
-      payment,
-      flat
+      params
     }
+  });
+};
+
+export const getPayerInfo = params => dispatch => {
+  dispatch({
+    type: GET_PAYER_INFO,
+    payload: params
   });
 };

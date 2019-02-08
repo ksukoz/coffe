@@ -25,6 +25,7 @@ export const CART_FETCHING = "CART_FETCHING";
 
 export const GET_ORDER = "GET_ORDER";
 export const SET_ORDER = "SET_ORDER";
+export const GET_PAYER_INFO = "GET_PAYER_INFO";
 
 export const LOG_IN = "LOG_IN";
 export const SET_TOKEN = "SET_TOKEN";

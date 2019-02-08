@@ -7,38 +7,35 @@ import {
   fork,
   select
 } from "redux-saga/effects";
-import { GET_ORDER, SET_ORDER } from "../actions/types";
-// import { setCart, getCart } from '../actions/cartActions';
+import { GET_ORDER, GET_PAYER_INFO } from "../actions/types";
 
 const getToken = state => state.user.token;
 
 export function* setOrderSaga(item) {
-  const { payload } = item;
-  console.log(payload);
-  // if (payload) {
-  //   const token = yield select(getToken);
+  const { payload, type } = item;
+  const token = yield select(getToken);
+  let data = new FormData();
 
-  //   let data = new FormData();
+  Object.keys(payload).forEach(key => data.append(key, payload[key]));
 
-  //   data.append("item_id", payload.id);
-  //   data.append("qty", payload.qty);
+  const response = yield call(
+    fetch,
+    `http://kawaapi.gumione.pro/api/users/make_order`,
+    {
+      headers: new Headers({
+        Authorization: "Bearer " + token
+      }),
+      method: "POST",
+      body: data
+    }
+  );
 
-  //   const response = yield call(
-  //     fetch,
-  //     `http://kawaapi.gumione.pro/api/catalog/cart_update`,
-  //     {
-  //       headers: new Headers({
-  //         Authorization: "Bearer " + token
-  //       }),
-  //       method: "POST",
-  //       body: data
-  //     }
-  //   );
-
-  //   yield call(fetchCartSaga);
-  // }
+  if (type === GET_ORDER) {
+    yield put(setOrder(yield response.json().id));
+  }
 }
 
 export function* watchOrderSaga() {
   yield takeLatest(GET_ORDER, setOrderSaga);
+  yield takeLatest(GET_PAYER_INFO, setOrderSaga);
 }

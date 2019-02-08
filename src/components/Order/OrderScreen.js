@@ -1239,26 +1239,23 @@ class OrderScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: payment === "Privat 24" ? "" : "Privat 24"
+                            payment: payment === "LiqPay" ? "" : "LiqPay"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={payment === "Privat 24" ? true : false}
+                            checked={payment === "LiqPay" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Privat 24"
-                                  ? "#302c23"
-                                  : "transparent"
+                                payment === "LiqPay" ? "#302c23" : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment:
-                                  payment === "Privat 24" ? "" : "Privat 24"
+                                payment: payment === "LiqPay" ? "" : "LiqPay"
                               })
                             }
                           />
@@ -1568,13 +1565,15 @@ class OrderScreen extends Component {
                         warehouse: this.state.departmentId,
                         payment: deliveryCompany.payment
                       });
-                      this.props.getOrder(
-                        deliveryCompany.delivery,
-                        this.state.city,
-                        deliveryCompany.courier,
-                        this.state.departmentId,
-                        deliveryCompany.payment
-                      );
+                    } else if (payment === "LiqPay") {
+                      this.props.navigation.push("Liqpay");
+                      this.props.getOrder({
+                        delivery_system: deliveryCompany.delivery,
+                        city: this.state.city,
+                        delivery_type: deliveryCompany.courier,
+                        warehouse: this.state.departmentId,
+                        payment: deliveryCompany.payment
+                      });
                     }
                   }}
                   style={styles.btn}
@@ -1888,8 +1887,7 @@ const mapDispatchToProps = dispatch => ({
   updateUser: (firstName, lastName, city) =>
     dispatch(updateUser(firstName, lastName, city)),
   updateCart: (id, quantity) => dispatch(updateCart(id, quantity)),
-  getOrder: (delivery_system, city, delivery_type, warehouse, payment) =>
-    dispatch(getOrder(delivery_system, city, delivery_type, warehouse, payment))
+  getOrder: params => dispatch(getOrder(params))
 });
 
 export default connect(

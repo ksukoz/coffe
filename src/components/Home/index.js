@@ -27,6 +27,7 @@ import Order from "../Order/index.js";
 import OrderSingle from "../OrderSingle/index.js";
 import Payment from "../Payment/index.js";
 import Department from "../Department/index.js";
+import Liqpay from "../Liqpay/index.js";
 
 const prefix = "http://";
 
@@ -46,7 +47,8 @@ const Home = createStackNavigator(
     Department: { screen: Department },
     ProfileEdit: { screen: ProfileEdit },
     SelectRegion: { screen: SelectRegion },
-    SelectCity: { screen: SelectCity }
+    SelectCity: { screen: SelectCity },
+    Liqpay: { screen: Liqpay }
   },
   {
     headerMode: "none"

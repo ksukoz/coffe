@@ -15,6 +15,8 @@ import {
 import { scaleSize } from "../../helpers/scaleSize";
 import HeaderBar from "../common/HeaderBar";
 
+import { getPayerInfo } from "../../store/actions/orderActions";
+
 import RadioGroup, { Radio } from "react-native-radio-input";
 
 import TextInputMask from "react-native-text-input-mask";
@@ -45,7 +47,7 @@ class PaymentScreen extends Component {
       mfo: "",
       add: "",
       email: "",
-      type: "legal"
+      type: 1
     };
     Input.defaultProps.selectionColor = "#000";
   }
@@ -62,6 +64,20 @@ class PaymentScreen extends Component {
   }
 
   componentWillUnmount() {}
+
+  onPressHandler = () => {
+    const { params } = this.props.navigation.state;
+    this.props.getPayerInfo({
+      ...params,
+      fio: this.state.name,
+      inn: this.state.number,
+      account: this.state.account,
+      mfo: this.state.mfo,
+      note: this.state.add,
+      email: this.state.email,
+      ownership_type: this.state.type
+    });
+  };
 
   changeHandler = (value, name) => {
     this.setState({ [name]: value });
@@ -114,38 +130,38 @@ class PaymentScreen extends Component {
                   color: "#302c23"
                 }}
               >
-                <Radio label={"Юридическое"} value={"legal"} />
-                <Radio label={"Физическое"} value={"phys"} />
+                <Radio label={"Юридическое"} value={1} />
+                <Radio label={"Физическое"} value={2} />
               </RadioGroup>
             </View>
             <View style={[styles.block, { marginBottom: scaleSize(24) }]}>
               <Text style={styles.defaultSmall}>
-                {this.state.type === "legal"
+                {this.state.type === 1
                   ? "Название предприятия"
                   : "ФИО предпринимателя"}
               </Text>
               <Input
                 style={styles.profileInput}
                 placeholder={
-                  this.state.type === "legal" ? "" : "Фамилия Имя Отчество"
+                  this.state.type === 1 ? "" : "Фамилия Имя Отчество"
                 }
                 value={this.state.name}
                 onChangeText={value => this.changeHandler(value, "name")}
               />
               <Text style={styles.defaultSmall}>
-                {this.state.type === "legal"
+                {this.state.type === 1
                   ? "ЕГРПОУ предприятия"
                   : "ИНН предпринимателя"}
               </Text>
               <Input
                 style={styles.profileInput}
                 placeholder={
-                  this.state.type === "legal" ? "" : "Номер налогоплательщика"
+                  this.state.type === 1 ? "" : "Номер налогоплательщика"
                 }
                 value={this.state.number}
                 onChangeText={value => this.changeHandler(value, "number")}
                 keyboardType="phone-pad"
-                maxLength={this.state.type === "legal" ? 8 : 10}
+                maxLength={this.state.type === 1 ? 8 : 10}
               />
               <Text style={styles.defaultSmall}>Расчетный счет</Text>
               <Input
@@ -182,11 +198,7 @@ class PaymentScreen extends Component {
               />
             </View>
             <TouchableOpacity
-              // onPress={() =>
-              //   payment === "Безналичная оплата, счет на Email"
-              //     ? this.props.navigation.push("Payment")
-              //     : ""
-              // }
+              onPress={() => this.onPressHandler()}
               style={styles.btn}
               activeOpacity={0.9}
             >
@@ -240,8 +252,6 @@ const styles = StyleSheet.create({
     paddingLeft: 0
   },
   btn: {
-    // marginLeft: scaleSize(10),
-    // width: "100%",
     alignItems: "center",
     marginBottom: scaleSize(10),
     marginTop: scaleSize(5),
@@ -261,22 +271,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   // city: state.common.city,
-  // focus: state.common.focus,
-  // delivery: state.common.delivery,
-  // cart: state.cart.items,
-  // product: state.catalog.product,
-  // categories: state.catalog.categories,
-  // subcategories: state.catalog.subcategories,
-  // dishes: state.catalog.dishes,
-  // user: state.user.info
 });
 
 const mapDispatchToProps = dispatch => ({
-  // getCart: () => dispatch(getCart()),
-  // getProductID: id => dispatch(getProductID(id)),
-  // getDeliveryCost: city => dispatch(getDeliveryCost(city)),
-  // searchFocused: () => dispatch(searchFocused()),
-  // getUser: () => dispatch(getUser())
+  getPayerInfo: params => dispatch(getPayerInfo(params))
 });
 
 export default connect(
