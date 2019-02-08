@@ -1,4 +1,4 @@
-import { SET_ORDER } from "../actions/types";
+import { GET_ORDER, SET_ORDER } from "../actions/types";
 
 const initialState = {
   orderId: null

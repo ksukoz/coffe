@@ -79,8 +79,8 @@
 		2D3CD6707636410A81E29C40 /* libRCTYouTube.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1488EEA52C449C1B2717861 /* libRCTYouTube.a */; };
 		243D50097939463E8AB8AFC3 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88B0436C65274A77ADF37039 /* libRCTOrientation.a */; };
 		13286F21FD0F4B51BC32A932 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D544C2E9FCD241EBBD7D6232 /* libRNShare.a */; };
-		9413A977E95143B1A4532EDB /* libRNLiqpay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BACFFF16B3924090B55C2A97 /* libRNLiqpay.a */; };
 		B8D1597BC195462B9624651B /* libReactNativePayments.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDF3036D62534A6A9E8C1C8D /* libReactNativePayments.a */; };
+		98ECDCBD28A94DF685E5B773 /* libRNLiqpay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3516303F2B244651BF78EFED /* libRNLiqpay.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -462,10 +462,10 @@
 		88B0436C65274A77ADF37039 /* libRCTOrientation.a */ = {isa = PBXFileReference; name = "libRCTOrientation.a"; path = "libRCTOrientation.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		5833044D3EE240C7BE075650 /* RNShare.xcodeproj */ = {isa = PBXFileReference; name = "RNShare.xcodeproj"; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		D544C2E9FCD241EBBD7D6232 /* libRNShare.a */ = {isa = PBXFileReference; name = "libRNShare.a"; path = "libRNShare.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		B679E2BD81484DC1B0F04C73 /* RNLiqpay.xcodeproj */ = {isa = PBXFileReference; name = "RNLiqpay.xcodeproj"; path = "../node_modules/react-native-liqpay/ios/RNLiqpay.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		BACFFF16B3924090B55C2A97 /* libRNLiqpay.a */ = {isa = PBXFileReference; name = "libRNLiqpay.a"; path = "libRNLiqpay.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		A9AA0F9842574A80B579634E /* ReactNativePayments.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativePayments.xcodeproj"; path = "../node_modules/react-native-payments/lib/ios/ReactNativePayments.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		FDF3036D62534A6A9E8C1C8D /* libReactNativePayments.a */ = {isa = PBXFileReference; name = "libReactNativePayments.a"; path = "libReactNativePayments.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		CC507C32568142EE97CBFF3E /* RNLiqpay.xcodeproj */ = {isa = PBXFileReference; name = "RNLiqpay.xcodeproj"; path = "../node_modules/react-native-liqpay/ios/RNLiqpay.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		3516303F2B244651BF78EFED /* libRNLiqpay.a */ = {isa = PBXFileReference; name = "libRNLiqpay.a"; path = "libRNLiqpay.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,8 +502,8 @@
 				2D3CD6707636410A81E29C40 /* libRCTYouTube.a in Frameworks */,
 				243D50097939463E8AB8AFC3 /* libRCTOrientation.a in Frameworks */,
 				13286F21FD0F4B51BC32A932 /* libRNShare.a in Frameworks */,
-				9413A977E95143B1A4532EDB /* libRNLiqpay.a in Frameworks */,
 				B8D1597BC195462B9624651B /* libReactNativePayments.a in Frameworks */,
+				98ECDCBD28A94DF685E5B773 /* libRNLiqpay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,8 +723,8 @@
 				F11900B33E4246899FC0EEEF /* RCTYouTube.xcodeproj */,
 				9576F59CD0B7489B83E6BEF1 /* RCTOrientation.xcodeproj */,
 				5833044D3EE240C7BE075650 /* RNShare.xcodeproj */,
-				B679E2BD81484DC1B0F04C73 /* RNLiqpay.xcodeproj */,
 				A9AA0F9842574A80B579634E /* ReactNativePayments.xcodeproj */,
+				CC507C32568142EE97CBFF3E /* RNLiqpay.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1450,19 +1450,14 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = KawaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1489,19 +1484,14 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = KawaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1530,8 +1520,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = Kawa/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1561,8 +1551,8 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = Kawa/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1598,18 +1588,13 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = "Kawa-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1646,18 +1631,13 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = "Kawa-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1693,18 +1673,13 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = "Kawa-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1740,18 +1715,13 @@
 					"$(SRCROOT)\..\node_modules\react-native-youtube/**",
 					"$(SRCROOT)\..\node_modules\react-native-orientation\iOS\RCTOrientation/**",
 					"$(SRCROOT)\..\node_modules\react-native-share\ios",
-					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-payments\lib\ios/**",
+					"$(SRCROOT)\..\node_modules\react-native-liqpay\ios/**",
 				);
 				INFOPLIST_FILE = "Kawa-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (

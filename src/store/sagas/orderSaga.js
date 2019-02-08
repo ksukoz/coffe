@@ -8,6 +8,7 @@ import {
   select
 } from "redux-saga/effects";
 import { GET_ORDER, GET_PAYER_INFO } from "../actions/types";
+import { setOrder } from "../actions/orderActions";
 
 const getToken = state => state.user.token;
 
@@ -31,7 +32,8 @@ export function* setOrderSaga(item) {
   );
 
   if (type === GET_ORDER) {
-    yield put(setOrder(yield response.json().id));
+    const { id } = yield response.json();
+    yield put(setOrder(id));
   }
 }
 

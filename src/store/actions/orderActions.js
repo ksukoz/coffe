@@ -10,9 +10,7 @@ export const setOrder = id => dispatch => {
 export const getOrder = params => dispatch => {
   dispatch({
     type: GET_ORDER,
-    payload: {
-      params
-    }
+    payload: params
   });
 };
 

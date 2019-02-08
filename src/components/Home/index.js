@@ -27,7 +27,7 @@ import Order from "../Order/index.js";
 import OrderSingle from "../OrderSingle/index.js";
 import Payment from "../Payment/index.js";
 import Department from "../Department/index.js";
-import Liqpay from "../Liqpay/index.js";
+import LiqpayScreen from "../Liqpay/LiqpayScreen.js";
 
 const prefix = "http://";
 
@@ -48,7 +48,7 @@ const Home = createStackNavigator(
     ProfileEdit: { screen: ProfileEdit },
     SelectRegion: { screen: SelectRegion },
     SelectCity: { screen: SelectCity },
-    Liqpay: { screen: Liqpay }
+    Liqpay: { screen: LiqpayScreen }
   },
   {
     headerMode: "none"

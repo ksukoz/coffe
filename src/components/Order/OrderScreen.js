@@ -1566,7 +1566,7 @@ class OrderScreen extends Component {
                         payment: deliveryCompany.payment
                       });
                     } else if (payment === "LiqPay") {
-                      this.props.navigation.push("Liqpay");
+                      this.props.navigation.push("LiqpayScreen");
                       this.props.getOrder({
                         delivery_system: deliveryCompany.delivery,
                         city: this.state.city,

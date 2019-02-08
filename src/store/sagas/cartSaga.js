@@ -77,8 +77,6 @@ export function* updateCartSaga(item) {
       }
     );
 
-    console.log(data, yield response.json);
-
     yield call(fetchCartSaga);
   }
 }
