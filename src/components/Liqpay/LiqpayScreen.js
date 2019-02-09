@@ -27,9 +27,6 @@ const MAIN_BG = '../../static/img/background.png';
 const LIQPAY_PUBLIC_KEY = 'i68068890264';
 const LIQPAY_PRIVATE_KEY = 'QTEH4Q3yX8c2LlsLJGd3nW39pKpzkr9QKAVGJIsW';
 
-const LIQPAY_PUBLIC_KEY = 'i68068890264';
-const LIQPAY_PRIVATE_KEY = 'QTEH4Q3yX8c2LlsLJGd3nW39pKpzkr9QKAVGJIsW';
-
 class LiqpayScreen extends Component {
 	_didFocusSubscription;
 	_willBlurSubscription;
@@ -80,44 +77,21 @@ class LiqpayScreen extends Component {
 		let notFound;
 
 		return (
-			// <Container style={styles.default}>
+			<Container style={styles.default}>
+				<StatusBar
+					barStyle="light-content"
+					hidden={false}
+					translucent={true}
+					backgroundColor={`rgba(225,225,225,1)`}
+				/>
 
-			// <StatusBar
-			//   barStyle="light-content"
-			//   hidden={false}
-			//   translucent={true}
-			//   backgroundColor={`rgba(0,0,0,${
-			//     this.state.focus ? 0.1 : this.state.modalVisible ? 0.7 : 0
-			//   })`}
-			// />
-			//  <View style={{ flex: 1 }}>
-			//  <ScrollView
-			//     keyboardShouldPersistTaps={"handled"}
-			//     style={{
-			//       position: "absolute",
-			//       top: 0,
-			//       bottom: 0,
-			//       width: "100%",
-			//       backgroundColor: `rgba(0,0,0,${this.state.focus ? 0.7 : 0})`,
-			//       zIndex: this.state.focus ? 10 : 0
-			//     }}
-			//   />
-			// //   <Button
-			//   onPress={this.handlePress}
-			//   title="Pay with Liqpay"
-			//   color="#841584"
-			// />
-			//  {this.state.liqpay && ( */}
-			<LiqpayCheckout
-				privateKey={LIQPAY_PRIVATE_KEY}
-				onLiqpayError={this.handleError}
-				onLiqpaySuccess={this.handleSuccess}
-				params={this.params}
-			/>
-
-			//   {/* </View> */}
-			// </Container>
-			// <Text>Hi</Text>
+				<LiqpayCheckout
+					privateKey={LIQPAY_PRIVATE_KEY}
+					onLiqpayError={this.handleError}
+					onLiqpaySuccess={this.handleSuccess}
+					params={this.params}
+				/>
+			</Container>
 		);
 	}
 }

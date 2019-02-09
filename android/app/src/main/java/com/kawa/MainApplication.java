@@ -3,15 +3,13 @@ package com.kawa;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.reactnativepayments.ReactNativePaymentsPackage;
 import com.vasilich6107.rnliqpay.RNLiqpayPackage;
+import com.reactnativepayments.ReactNativePaymentsPackage;
 // import com.reactlibrary.RNGpayPackage;
 import com.reactnativepayments.ReactNativePaymentsPackage;
-import com.vasilich6107.rnliqpay.RNLiqpayPackage;
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
 
-import com.airship.customwebview.CustomWebViewPackage;
 import com.airship.customwebview.CustomWebViewPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
@@ -39,8 +37,8 @@ public class MainApplication extends Application implements ShareApplication, Re
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ReactNativePaymentsPackage(),
             new RNLiqpayPackage(),
+            new ReactNativePaymentsPackage(),
             // new RNGpayPackage(),
             new RNSharePackage(),
             new CustomWebViewPackage(),

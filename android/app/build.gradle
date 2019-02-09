@@ -160,6 +160,7 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-android-fullscreen-webview-video')
      compile project(':react-native-share')
+     compile project(':react-native-liqpay')
     //  releaseImplementation project(':react-native-gpay')
      compile project(':react-native-payments')
 
