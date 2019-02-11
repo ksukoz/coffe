@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import LiqpayScreen from "./LiqpayScreen.js";
+import OrderHistoryScreen from "./OrderHistoryScreen.js";
 
 import { StackNavigator } from "react-navigation";
 export default (DrawNav = StackNavigator(
   {
-    LiqpayScreen: { screen: LiqpayScreen }
+    OrderHistoryScreen: { screen: OrderHistoryScreen }
   },
   {
     headerMode: "none"

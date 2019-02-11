@@ -27,7 +27,8 @@ import Order from "../Order/index.js";
 import OrderSingle from "../OrderSingle/index.js";
 import Payment from "../Payment/index.js";
 import Department from "../Department/index.js";
-import LiqpayScreen from "../Liqpay/LiqpayScreen.js";
+import Liqpay from "../Liqpay/index.js";
+import OrderHistory from "../OrderHistory/index.js";
 
 const prefix = "http://";
 
@@ -43,12 +44,13 @@ const Home = createStackNavigator(
     Cart: { screen: Cart },
     Order: { screen: Order },
     OrderSingle: { screen: OrderSingle },
+    OrderHistory: { screen: OrderHistory },
     Payment: { screen: Payment },
     Department: { screen: Department },
     ProfileEdit: { screen: ProfileEdit },
     SelectRegion: { screen: SelectRegion },
     SelectCity: { screen: SelectCity },
-    Liqpay: { screen: LiqpayScreen }
+    Liqpay: { screen: Liqpay }
   },
   {
     headerMode: "none"

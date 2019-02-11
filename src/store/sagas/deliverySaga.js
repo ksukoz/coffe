@@ -85,7 +85,7 @@ export function* getMassDeliverySaga(item) {
     }
   );
   const { cost } = yield response.json();
-  console.log(city, cost);
+  // console.log(city, cost);
   yield put(setMassDelivery(cost));
 }
 
