@@ -267,6 +267,52 @@ class OrderScreen extends Component {
         warehouse: departmentId,
         payment: deliveryCompany.payment
       });
+    } else if (payment === "Portmone") {
+      if (this.props.orderId) {
+        Linking.canOpenURL(
+          `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
+            .map(item => item.qty * item.price)
+            .reduce((sum, item) => sum + item) +
+            (deliveryCompany.cost
+              ? +deliveryCompany.cost
+              : 0)}.56&shop_order_number=${
+            this.props.orderId
+          }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
+        ).then(supported => {
+          if (supported) {
+            Linking.openURL(
+              `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
+                .map(item => item.qty * item.price)
+                .reduce((sum, item) => sum + item) +
+                (deliveryCompany.cost
+                  ? +deliveryCompany.cost
+                  : 0)}.56&shop_order_number=${
+                this.props.orderId
+              }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
+            );
+          } else {
+            console.log(
+              "Don't know how to open URI: " +
+                `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
+                  .map(item => item.qty * item.price)
+                  .reduce((sum, item) => sum + item) +
+                  (deliveryCompany.cost
+                    ? +deliveryCompany.cost
+                    : 0)}.56&shop_order_number=${
+                  this.props.orderId
+                }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
+            );
+          }
+        });
+      } else {
+        this.props.getOrder({
+          delivery_system: deliveryCompany.delivery,
+          city: city,
+          delivery_type: deliveryCompany.courier,
+          warehouse: departmentId,
+          payment: deliveryCompany.payment
+        });
+      }
     }
   };
 
@@ -1201,33 +1247,26 @@ class OrderScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment:
-                              payment === "VISA, Mastercard"
-                                ? ""
-                                : "VISA, Mastercard"
+                            payment: payment === "Portmone" ? "" : "Portmone"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={
-                              payment === "VISA, Mastercard" ? true : false
-                            }
+                            checked={payment === "Portmone" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "VISA, Mastercard"
+                                payment === "Portmone"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
                                 payment:
-                                  payment === "VISA, Mastercard"
-                                    ? ""
-                                    : "VISA, Mastercard"
+                                  payment === "Portmone" ? "" : "Portmone"
                               })
                             }
                           />
@@ -1400,27 +1439,26 @@ class OrderScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment:
-                              payment === "Masterpass" ? "" : "Masterpass"
+                            payment: payment === "Portmone" ? "" : "Portmone"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={payment === "Masterpass" ? true : false}
+                            checked={payment === "Portmone" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Masterpass"
+                                payment === "Portmone"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
                                 payment:
-                                  payment === "Masterpass" ? "" : "Masterpass"
+                                  payment === "Portmone" ? "" : "Portmone"
                               })
                             }
                           />
