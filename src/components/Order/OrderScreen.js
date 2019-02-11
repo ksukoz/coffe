@@ -267,16 +267,23 @@ class OrderScreen extends Component {
         warehouse: departmentId,
         payment: deliveryCompany.payment
       });
-    } else if (payment === "Portmone") {
-      if (this.props.orderId) {
+    } else if (payment === "Portmone" || payment === "Portmone2") {
+      this.props.getOrder({
+        delivery_system: deliveryCompany.delivery,
+        city: city,
+        delivery_type: deliveryCompany.courier,
+        warehouse: departmentId,
+        payment: deliveryCompany.payment
+      });
+      setTimeout(() => {
         Linking.canOpenURL(
-          `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
+          `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.state.cart
             .map(item => item.qty * item.price)
             .reduce((sum, item) => sum + item) +
             (deliveryCompany.cost
               ? +deliveryCompany.cost
               : 0)}.56&shop_order_number=${
-            this.props.orderId
+            this.state.orderId
           }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
         ).then(supported => {
           if (supported) {
@@ -304,15 +311,7 @@ class OrderScreen extends Component {
             );
           }
         });
-      } else {
-        this.props.getOrder({
-          delivery_system: deliveryCompany.delivery,
-          city: city,
-          delivery_type: deliveryCompany.courier,
-          warehouse: departmentId,
-          payment: deliveryCompany.payment
-        });
-      }
+      }, 300);
     }
   };
 
@@ -1439,26 +1438,26 @@ class OrderScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: payment === "Portmone" ? "" : "Portmone"
+                            payment: payment === "Portmone2" ? "" : "Portmone2"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={payment === "Portmone" ? true : false}
+                            checked={payment === "Portmone2" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Portmone"
+                                payment === "Portmone2"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
                                 payment:
-                                  payment === "Portmone" ? "" : "Portmone"
+                                  payment === "Portmone2" ? "" : "Portmone2"
                               })
                             }
                           />
@@ -1923,7 +1922,8 @@ const mapStateToProps = state => ({
   subcategories: state.catalog.subcategories,
   dishes: state.catalog.dishes,
   user: state.user.info,
-  massDelivery: state.common.massDelivery
+  massDelivery: state.common.massDelivery,
+  orderId: state.order.orderId
 });
 
 const mapDispatchToProps = dispatch => ({
