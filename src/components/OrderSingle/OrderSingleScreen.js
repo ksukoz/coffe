@@ -23,6 +23,7 @@ import Modal from "react-native-modal";
 import { getCart, updateCart } from "../../store/actions/cartActions";
 import { getUser, updateUser } from "../../store/actions/userActions";
 import { getProductID } from "../../store/actions/catalogActions";
+import { getOrder } from "../../store/actions/orderActions";
 
 import {
   searchFocused,
@@ -78,7 +79,8 @@ class OrderSingleScreen extends Component {
       modalVisible2: false,
       opacity: 0,
       canceled: false,
-      cart: []
+      cart: [],
+      updatedCart: false
     };
     this.viewabilityConfig = {
       waitForInteraction: true,
@@ -105,7 +107,6 @@ class OrderSingleScreen extends Component {
     );
 
     this.props.navigation.addListener("didFocus", () => {
-      this.retrieveData("user_region_name");
       this.retrieveData("user_city_name");
       this.retrieveData("department");
       this.props.getCart();
@@ -150,11 +151,11 @@ class OrderSingleScreen extends Component {
 
       if (value) {
         if (name == "user_city_name") {
+          console.log(value);
           this.setState(
             {
               city: value,
               department: "",
-
               canceled: false
             },
             () =>
@@ -164,11 +165,15 @@ class OrderSingleScreen extends Component {
               })
           );
         }
-      }
-      if (name == "department") {
-        this.setState({
-          department: value
-        });
+        if (name == "department") {
+          let department = JSON.parse(value);
+          if (this.state.deliveryCompany.courier == 1) {
+            this.setState({
+              department: department.name,
+              departmentId: department.id
+            });
+          }
+        }
       }
     } catch (error) {}
   };
@@ -195,6 +200,8 @@ class OrderSingleScreen extends Component {
     const value = event.nativeEvent.contentOffset.y;
     const UIManager = require("NativeModules").UIManager;
     const handle = findNodeHandle(this.refs.deliveryView);
+    const handle2 = findNodeHandle(this.refs.cityView);
+
     UIManager.measureLayoutRelativeToParent(
       handle,
       e => {
@@ -206,12 +213,31 @@ class OrderSingleScreen extends Component {
             this.state.email !== this.props.user.email ||
             this.state.firstname !== this.props.user.firstname ||
             this.state.lastname !== this.props.user.lastname ||
-            this.state.phone !== this.props.user.phone ||
-            (this.state.city !== this.props.user.city &&
-              this.state.city !== "Город, область")
+            this.state.phone !== this.props.user.phone
+            //  ||
+            // (this.state.city !== this.props.user.city &&
+            //   this.state.city !== "Город, область")
           ) {
             this.setState({ modalVisible2: true });
           }
+        }
+      }
+    );
+    UIManager.measureLayoutRelativeToParent(
+      handle2,
+      e => {
+        console.error(e);
+      },
+      (x, y, w, h) => {
+        if (value > w + y && !this.state.updatedCart) {
+          this.setState({ updatedCart: true }, () =>
+            this.state.city && this.state.city !== "Город, область"
+              ? this.props.getSingleDeliveryCost({
+                  city: value,
+                  item: this.state.product
+                })
+              : ""
+          );
         }
       }
     );
@@ -229,10 +255,46 @@ class OrderSingleScreen extends Component {
         this.state.city && this.state.city !== "Город, область"
           ? this.props.getSingleDeliveryCost({
               city: this.state.city,
-              item: this.state.product
+              item: this.state.product,
+              qty: this.state.product
             })
           : ""
     );
+  };
+
+  handlePayment = () => {
+    const {
+      payment,
+      deliveryCompany,
+      departmentId,
+      city,
+      product
+    } = this.state;
+
+    this.props.updateCart(this.state.product.id, this.state.product.qty);
+
+    if (payment === "email" && deliveryCompany.delivery) {
+      this.props.navigation.push("Payment", {
+        delivery_system: deliveryCompany.delivery,
+        city: city,
+        delivery_type: deliveryCompany.courier,
+        warehouse: departmentId,
+        payment: deliveryCompany.payment
+      });
+    } else if (payment === "LiqPay") {
+      this.props.navigation.push("Liqpay", {
+        price: deliveryCompany.cost
+          ? product.qty * product.price + +deliveryCompany.cost
+          : product.qty * product.price
+      });
+      this.props.getOrder({
+        delivery_system: deliveryCompany.delivery,
+        city: city,
+        delivery_type: deliveryCompany.courier,
+        warehouse: departmentId,
+        payment: deliveryCompany.payment
+      });
+    }
   };
 
   render() {
@@ -454,6 +516,7 @@ class OrderSingleScreen extends Component {
                           width: "100%",
                           flexDirection: "row"
                         }}
+                        ref="cityView"
                       >
                         <Text
                           onFocus={() =>
@@ -515,17 +578,15 @@ class OrderSingleScreen extends Component {
                                       deliveryCompany:
                                         deliveryCompany.delivery === "np" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? {}
                                           : {
                                               delivery: "np",
                                               courier:
                                                 item.value === "courier"
-                                                  ? 1
-                                                  : "0",
+                                                  ? 2
+                                                  : 1,
                                               cost: item.cost,
                                               payment: 1
                                             }
@@ -537,9 +598,7 @@ class OrderSingleScreen extends Component {
                                       checked={
                                         deliveryCompany.delivery === "np" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? true
                                           : false
@@ -552,8 +611,8 @@ class OrderSingleScreen extends Component {
                                           deliveryCompany.delivery === "np" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
-                                              ? 1
-                                              : "0") &&
+                                              ? 2
+                                              : 1) &&
                                           deliveryCompany.payment === 1
                                             ? "#302c23"
                                             : "transparent"
@@ -564,16 +623,16 @@ class OrderSingleScreen extends Component {
                                             deliveryCompany.delivery === "np" &&
                                             deliveryCompany.courier ===
                                               (item.value === "courier"
-                                                ? 1
-                                                : "0") &&
+                                                ? 2
+                                                : 1) &&
                                             deliveryCompany.payment === 1
                                               ? {}
                                               : {
                                                   delivery: "np",
                                                   courier:
                                                     item.value === "courier"
-                                                      ? 1
-                                                      : "0",
+                                                      ? 2
+                                                      : 1,
                                                   cost: item.cost,
                                                   payment: 1
                                                 }
@@ -606,12 +665,12 @@ class OrderSingleScreen extends Component {
                             this.setState({
                               deliveryCompany:
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? {}
                                   : {
                                       delivery: "np",
-                                      courier: "0",
+                                      courier: 1,
                                       cost: np.filter(
                                         item => item.value === "warehouse"
                                       )[0].cost,
@@ -624,7 +683,7 @@ class OrderSingleScreen extends Component {
                             <CheckBox
                               checked={
                                 deliveryCompany.delivery === "np" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? true
                                   : false
@@ -635,7 +694,7 @@ class OrderSingleScreen extends Component {
                                 borderColor: "#302c23",
                                 backgroundColor:
                                   deliveryCompany.delivery === "np" &&
-                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.courier === 1 &&
                                   deliveryCompany.payment === 2
                                     ? "#302c23"
                                     : "transparent"
@@ -644,12 +703,12 @@ class OrderSingleScreen extends Component {
                                 this.setState({
                                   deliveryCompany:
                                     deliveryCompany.delivery === "np" &&
-                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.courier === 1 &&
                                     deliveryCompany.payment === 2
                                       ? {}
                                       : {
                                           delivery: "np",
-                                          courier: "0",
+                                          courier: 1,
                                           cost: np.filter(
                                             item => item.value === "warehouse"
                                           )[0].cost,
@@ -688,17 +747,15 @@ class OrderSingleScreen extends Component {
                                       deliveryCompany:
                                         deliveryCompany.delivery === "up" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? {}
                                           : {
                                               delivery: "up",
                                               courier:
                                                 item.value === "courier"
-                                                  ? 1
-                                                  : "0",
+                                                  ? 2
+                                                  : 1,
                                               cost: item.cost,
                                               payment: 1
                                             }
@@ -710,9 +767,7 @@ class OrderSingleScreen extends Component {
                                       checked={
                                         deliveryCompany.delivery === "up" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? true
                                           : false
@@ -725,8 +780,8 @@ class OrderSingleScreen extends Component {
                                           deliveryCompany.delivery === "up" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
-                                              ? 1
-                                              : "0") &&
+                                              ? 2
+                                              : 1) &&
                                           deliveryCompany.payment === 1
                                             ? "#302c23"
                                             : "transparent"
@@ -737,16 +792,16 @@ class OrderSingleScreen extends Component {
                                             deliveryCompany.delivery === "up" &&
                                             deliveryCompany.courier ===
                                               (item.value === "courier"
-                                                ? 1
-                                                : "0") &&
+                                                ? 2
+                                                : 1) &&
                                             deliveryCompany.payment === 1
                                               ? {}
                                               : {
                                                   delivery: "up",
                                                   courier:
                                                     item.value === "courier"
-                                                      ? 1
-                                                      : "0",
+                                                      ? 2
+                                                      : 1,
                                                   cost: item.cost,
                                                   payment: 1
                                                 }
@@ -777,19 +832,19 @@ class OrderSingleScreen extends Component {
                           activeOpacity={0.9}
                           onPress={() => {
                             deliveryCompany.delivery === "up" &&
-                            deliveryCompany.courier === "0" &&
+                            deliveryCompany.courier === 1 &&
                             deliveryCompany.payment === 2
                               ? ""
                               : this.refs.upStand.startAnimation(10);
                             this.setState({
                               deliveryCompany:
                                 deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? {}
                                   : {
                                       delivery: "up",
-                                      courier: "0",
+                                      courier: 1,
                                       cost: up.filter(
                                         item => item.value === "warehouse"
                                       )[0].cost,
@@ -802,7 +857,7 @@ class OrderSingleScreen extends Component {
                             <CheckBox
                               checked={
                                 deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? true
                                   : false
@@ -813,21 +868,21 @@ class OrderSingleScreen extends Component {
                                 borderColor: "#302c23",
                                 backgroundColor:
                                   deliveryCompany.delivery === "up" &&
-                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.courier === 1 &&
                                   deliveryCompany.payment === 2
                                     ? "#302c23"
                                     : "transparent"
                               }}
                               onPress={() => {
                                 deliveryCompany.delivery === "up" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? ""
                                   : this.refs.upStand.startAnimation(10);
                                 this.setState({
                                   deliveryCompany:
                                     deliveryCompany.delivery === "up" &&
-                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.courier === 1 &&
                                     deliveryCompany.payment === 2
                                       ? {}
                                       : {
@@ -885,17 +940,15 @@ class OrderSingleScreen extends Component {
                                       deliveryCompany:
                                         deliveryCompany.delivery === "upx" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? {}
                                           : {
                                               delivery: "upx",
                                               courier:
                                                 item.value === "courier"
-                                                  ? 1
-                                                  : "0",
+                                                  ? 2
+                                                  : 1,
                                               cost: item.cost,
                                               payment: 1
                                             }
@@ -907,9 +960,7 @@ class OrderSingleScreen extends Component {
                                       checked={
                                         deliveryCompany.delivery === "upx" &&
                                         deliveryCompany.courier ===
-                                          (item.value === "courier"
-                                            ? 1
-                                            : "0") &&
+                                          (item.value === "courier" ? 2 : 1) &&
                                         deliveryCompany.payment === 1
                                           ? true
                                           : false
@@ -922,8 +973,8 @@ class OrderSingleScreen extends Component {
                                           deliveryCompany.delivery === "upx" &&
                                           deliveryCompany.courier ===
                                             (item.value === "courier"
-                                              ? 1
-                                              : "0") &&
+                                              ? 2
+                                              : 1) &&
                                           deliveryCompany.payment === 1
                                             ? "#302c23"
                                             : "transparent"
@@ -935,16 +986,16 @@ class OrderSingleScreen extends Component {
                                               "upx" &&
                                             deliveryCompany.courier ===
                                               (item.value === "courier"
-                                                ? 1
-                                                : "0") &&
+                                                ? 2
+                                                : 1) &&
                                             deliveryCompany.payment === 1
                                               ? {}
                                               : {
                                                   delivery: "upx",
                                                   courier:
                                                     item.value === "courier"
-                                                      ? 1
-                                                      : "0",
+                                                      ? 2
+                                                      : 1,
                                                   cost: item.cost,
                                                   payment: 1
                                                 }
@@ -975,19 +1026,19 @@ class OrderSingleScreen extends Component {
                           activeOpacity={0.9}
                           onPress={() => {
                             deliveryCompany.delivery === "upx" &&
-                            deliveryCompany.courier === "0" &&
+                            deliveryCompany.courier === 1 &&
                             deliveryCompany.payment === 2
                               ? ""
                               : this.refs.upxStand.startAnimation(10);
                             this.setState({
                               deliveryCompany:
                                 deliveryCompany.delivery === "upx" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? {}
                                   : {
                                       delivery: "upx",
-                                      courier: "0",
+                                      courier: 1,
                                       cost: upx.filter(
                                         item => item.value === "warehouse"
                                       )[0].cost,
@@ -1000,7 +1051,7 @@ class OrderSingleScreen extends Component {
                             <CheckBox
                               checked={
                                 deliveryCompany.delivery === "upx" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? true
                                   : false
@@ -1011,26 +1062,26 @@ class OrderSingleScreen extends Component {
                                 borderColor: "#302c23",
                                 backgroundColor:
                                   deliveryCompany.delivery === "upx" &&
-                                  deliveryCompany.courier === "0" &&
+                                  deliveryCompany.courier === 1 &&
                                   deliveryCompany.payment === 2
                                     ? "#302c23"
                                     : "transparent"
                               }}
                               onPress={() => {
                                 deliveryCompany.delivery === "upx" &&
-                                deliveryCompany.courier === "0" &&
+                                deliveryCompany.courier === 1 &&
                                 deliveryCompany.payment === 2
                                   ? ""
                                   : this.refs.upxStand.startAnimation(10);
                                 this.setState({
                                   deliveryCompany:
                                     deliveryCompany.delivery === "upx" &&
-                                    deliveryCompany.courier === "0" &&
+                                    deliveryCompany.courier === 1 &&
                                     deliveryCompany.payment === 2
                                       ? {}
                                       : {
                                           delivery: "upx",
-                                          courier: "0",
+                                          courier: 1,
                                           cost: up.filter(
                                             item => item.value === "warehouse"
                                           )[0].cost,
@@ -1085,7 +1136,7 @@ class OrderSingleScreen extends Component {
                       >
                         <TouchableOpacity
                           onPress={() => {
-                            if (deliveryCompany.courier === "0") {
+                            if (deliveryCompany.courier === 1) {
                               this.props.navigation.navigate("Department", {
                                 city: this.state.city,
                                 post:
@@ -1118,7 +1169,7 @@ class OrderSingleScreen extends Component {
                           >
                             {department
                               ? department
-                              : deliveryCompany.courier === "0"
+                              : deliveryCompany.courier === 1
                               ? "Номер отделения, адрес"
                               : "Адрес (улица, дом) доставки"}
                           </Text>
@@ -1219,25 +1270,23 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: payment === "Privat 24" ? "" : "Privat 24"
+                            payment: payment === "LiqPay" ? "" : "LiqPay"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={payment === "Privat 24" ? true : false}
+                            checked={payment === "LiqPay" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Privat 24"
-                                  ? "#302c23"
-                                  : "transparent"
+                                payment === "LiqPay" ? "#302c23" : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment: "Privat 24"
+                                payment: "LiqPay"
                               })
                             }
                           />
@@ -1404,29 +1453,23 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: "Безналичная оплата, счет на Email"
+                            payment: "email"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={
-                              payment === "Безналичная оплата, счет на Email"
-                                ? true
-                                : false
-                            }
+                            checked={payment === "email" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Безналичная оплата, счет на Email"
-                                  ? "#302c23"
-                                  : "transparent"
+                                payment === "email" ? "#302c23" : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment: "Безналичная оплата, счет на Email"
+                                payment: "email"
                               })
                             }
                           />
@@ -1493,10 +1536,7 @@ class OrderSingleScreen extends Component {
                     ? deliveryCompany.cost
                       ? product.qty * product.price + +deliveryCompany.cost
                       : product.qty * product.price
-                    : this.props.cart
-                        .map(item => item.qty * item.price)
-                        .reduce((sum, item) => sum + item) +
-                      (deliveryCompany.cost ? +deliveryCompany.cost : 0)}{" "}
+                    : ""}{" "}
                   грн
                 </Text>
               </View>
@@ -1531,15 +1571,7 @@ class OrderSingleScreen extends Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => {
-                    this.props.updateCart(
-                      this.state.product.id,
-                      this.state.product.qty
-                    );
-                    payment === "Безналичная оплата, счет на Email"
-                      ? this.props.navigation.push("Payment")
-                      : "";
-                  }}
+                  onPress={() => this.handlePayment()}
                   style={styles.btn}
                   activeOpacity={0.9}
                 >
@@ -1846,6 +1878,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getCart: () => dispatch(getCart()),
   getProductID: id => dispatch(getProductID(id)),
+  getOrder: params => dispatch(getOrder(params)),
   getDeliveryCost: city => dispatch(getDeliveryCost(city)),
   getSingleDeliveryCost: product => dispatch(getSingleDeliveryCost(product)),
   searchFocused: () => dispatch(searchFocused()),

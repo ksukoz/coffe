@@ -48,7 +48,6 @@ StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 const MAIN_BG = "../../static/img/background.png";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class OrderScreen extends Component {
   _didFocusSubscription;
@@ -161,7 +160,6 @@ class OrderScreen extends Component {
         if (name == "department") {
           let department = JSON.parse(value);
           if (this.state.deliveryCompany.courier == 1) {
-            console.log(department);
             this.setState({
               department: department.name,
               departmentId: department.id
@@ -239,6 +237,37 @@ class OrderScreen extends Component {
       }),
       updatedCart: false
     });
+  };
+
+  handlePayment = () => {
+    const { payment, deliveryCompany, departmentId, city } = this.state;
+
+    this.state.cart.map(item => this.props.updateCart(item.id, item.qty));
+
+    if (payment === "email" && deliveryCompany.delivery) {
+      this.props.navigation.push("Payment", {
+        delivery_system: deliveryCompany.delivery,
+        city: city,
+        delivery_type: deliveryCompany.courier,
+        warehouse: departmentId,
+        payment: deliveryCompany.payment
+      });
+    } else if (payment === "LiqPay") {
+      this.props.navigation.push("Liqpay", {
+        price:
+          this.props.cart
+            .map(item => item.qty * item.price)
+            .reduce((sum, item) => sum + item) +
+          (deliveryCompany.cost ? +deliveryCompany.cost : 0)
+      });
+      this.props.getOrder({
+        delivery_system: deliveryCompany.delivery,
+        city: city,
+        delivery_type: deliveryCompany.courier,
+        warehouse: departmentId,
+        payment: deliveryCompany.payment
+      });
+    }
   };
 
   render() {
@@ -1555,32 +1584,7 @@ class OrderScreen extends Component {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => {
-                    if (payment === "email" && deliveryCompany.delivery) {
-                      this.props.navigation.push("Payment", {
-                        delivery_system: deliveryCompany.delivery,
-                        city: this.state.city,
-                        delivery_type: deliveryCompany.courier,
-                        warehouse: this.state.departmentId,
-                        payment: deliveryCompany.payment
-                      });
-                    } else if (payment === "LiqPay") {
-                      this.props.navigation.push("Liqpay", {
-                        price:
-                          this.props.cart
-                            .map(item => item.qty * item.price)
-                            .reduce((sum, item) => sum + item) +
-                          (deliveryCompany.cost ? +deliveryCompany.cost : 0)
-                      });
-                      this.props.getOrder({
-                        delivery_system: deliveryCompany.delivery,
-                        city: this.state.city,
-                        delivery_type: deliveryCompany.courier,
-                        warehouse: this.state.departmentId,
-                        payment: deliveryCompany.payment
-                      });
-                    }
-                  }}
+                  onPress={() => this.handlePayment()}
                   style={styles.btn}
                 >
                   <Text style={styles.btnText}>{"Оплатить".toUpperCase()}</Text>
