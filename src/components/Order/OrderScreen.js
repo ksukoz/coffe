@@ -275,52 +275,52 @@ class OrderScreen extends Component {
         warehouse: departmentId,
         payment: deliveryCompany.payment
       });
-      // this.props.navigation.push("Portmone", {
-      //   bill_amount:
-      //     this.state.cart
-      //       .map(item => item.qty * item.price)
-      //       .reduce((sum, item) => sum + item) +
-      //     (deliveryCompany.cost ? +deliveryCompany.cost : 0),
-      //   success: "kawaapp://kawa/order-success",
-      //   failure: "kawaapp://kawa/order-fail"
-      // });
-      setTimeout(() => {
-        Linking.canOpenURL(
-          `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.state.cart
+      this.props.navigation.push("Portmone", {
+        bill_amount:
+          this.state.cart
             .map(item => item.qty * item.price)
             .reduce((sum, item) => sum + item) +
-            (deliveryCompany.cost
-              ? +deliveryCompany.cost
-              : 0)}&shop_order_number=${
-            this.state.orderId
-          }&description=My%20test&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail`
-        ).then(supported => {
-          if (supported) {
-            Linking.openURL(
-              `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
-                .map(item => item.qty * item.price)
-                .reduce((sum, item) => sum + item) +
-                (deliveryCompany.cost
-                  ? +deliveryCompany.cost
-                  : 0)}&shop_order_number=${
-                this.props.orderId
-              }&description=My%20test&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail`
-            );
-          } else {
-            console.log(
-              "Don't know how to open URI: " +
-                `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
-                  .map(item => item.qty * item.price)
-                  .reduce((sum, item) => sum + item) +
-                  (deliveryCompany.cost
-                    ? +deliveryCompany.cost
-                    : 0)}&shop_order_number=${
-                  this.props.orderId
-                }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
-            );
-          }
-        });
-      }, 500);
+          (deliveryCompany.cost ? +deliveryCompany.cost : 0),
+        success: "kawaapp://kawa/order-success",
+        failure: "kawaapp://kawa/order-fail"
+      });
+      // setTimeout(() => {
+      //   Linking.canOpenURL(
+      //     `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.state.cart
+      //       .map(item => item.qty * item.price)
+      //       .reduce((sum, item) => sum + item) +
+      //       (deliveryCompany.cost
+      //         ? +deliveryCompany.cost
+      //         : 0)}&shop_order_number=${
+      //       this.state.orderId
+      //     }&description=My%20test&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail`
+      //   ).then(supported => {
+      //     if (supported) {
+      //       Linking.openURL(
+      //         `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
+      //           .map(item => item.qty * item.price)
+      //           .reduce((sum, item) => sum + item) +
+      //           (deliveryCompany.cost
+      //             ? +deliveryCompany.cost
+      //             : 0)}&shop_order_number=${
+      //           this.props.orderId
+      //         }&description=My%20test&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail`
+      //       );
+      //     } else {
+      //       console.log(
+      //         "Don't know how to open URI: " +
+      //           `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.cart
+      //             .map(item => item.qty * item.price)
+      //             .reduce((sum, item) => sum + item) +
+      //             (deliveryCompany.cost
+      //               ? +deliveryCompany.cost
+      //               : 0)}&shop_order_number=${
+      //             this.props.orderId
+      //           }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
+      //       );
+      //     }
+      //   });
+      // }, 500);
     }
   };
 

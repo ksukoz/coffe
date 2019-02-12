@@ -1,17 +1,24 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Container } from "native-base";
-import { StatusBar, Dimensions, BackHandler, StyleSheet } from "react-native";
+import {
+  StatusBar,
+  Dimensions,
+  BackHandler,
+  StyleSheet,
+  View,
+  Text,
+  Image
+} from "react-native";
 
-import { LiqpayCheckout } from "react-native-liqpay";
+import MyWebView from "react-native-webview-autoheight";
 
 import { scaleSize } from "../../helpers/scaleSize";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
 
-const LIQPAY_PUBLIC_KEY = "i68068890264";
-const LIQPAY_PRIVATE_KEY = "QTEH4Q3yX8c2LlsLJGd3nW39pKpzkr9QKAVGJIsW";
+const MAIN_BG = "../../static/img/background.png";
 
 class PortmoneScreen extends Component {
   _didFocusSubscription;
@@ -25,12 +32,19 @@ class PortmoneScreen extends Component {
         BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
       }
     );
+    this.state = {
+      url: "no url"
+    };
   }
 
   componentDidMount() {
-    this.props.navigation.addListener("didFocus", payload => {
-      this.state.navigate ? this.props.navigation.pop() : "";
-    });
+    console.log(
+      `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.navigation.getParam(
+        "bill_amount"
+      )}&shop_order_number=${
+        this.props.orderId
+      }&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail&type=portmone&card=Y&masterpass=Y&visacheckout=Y&priorityPaymentTypes=1`
+    );
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload => {}
@@ -43,6 +57,28 @@ class PortmoneScreen extends Component {
   handleBackPress = () => {
     this.props.navigation.pop();
     return true;
+  };
+
+  openExternalLink = req => {
+    const isHTTPS = req.url.search("https://") !== -1;
+
+    if (isHTTPS) {
+      return true;
+    } else {
+      if (req.url.startsWith("customurl://")) {
+        this.setState({ url: req.url });
+        this.props.navigation.push("OrderHistory");
+      }
+      return false;
+    }
+  };
+
+  onNavigationStateChange = navState => {
+    if (navState.url === "kawaapp://kawa/order-success") {
+      this.props.navigation.push("OrderHistory");
+    } else if (navState.url === "kawaapp://kawa/order-fail") {
+      this.props.navigation.pop();
+    }
   };
 
   render() {
@@ -64,7 +100,22 @@ class PortmoneScreen extends Component {
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <Text style={styles.default}>Не удалось оплатить заказ</Text>
+            <Text>{this.state.url}</Text>
+            {this.props.orderId ? (
+              <MyWebView
+                // onShouldStartLoadWithRequest={this.openExternalLink}
+                onNavigationStateChange={this.onNavigationStateChange}
+                ref="portmone"
+                source={{
+                  uri: `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.navigation.getParam(
+                    "bill_amount"
+                  )}&shop_order_number=${
+                    this.props.orderId
+                  }&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail&type=portmone&card=y&priorityPaymentTypes=1`
+                }}
+              />
+            ) : null}
+            {/* <Text style={styles.default}>Не удалось оплатить заказ</Text> */}
           </View>
         </View>
       </Container>

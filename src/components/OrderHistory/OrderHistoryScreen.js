@@ -109,7 +109,7 @@ class OrderHistoryScreen extends Component {
           />
           <Image source={require(MAIN_BG)} style={styles.background} />
           <HeaderBar
-            style={{ display: !this.state.search ? "flex" : "none" }}
+            style={{ display: "flex" }}
             menu={true}
             title={"История заказов"}
             navigation={this.props.navigation.dangerouslyGetParent()}

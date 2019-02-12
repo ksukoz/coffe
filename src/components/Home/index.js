@@ -45,14 +45,14 @@ const Home = createStackNavigator(
     Cart: { screen: Cart },
     Order: { screen: Order },
     OrderSingle: { screen: OrderSingle },
-    OrderHistory: { screen: OrderHistory, path: "kawa/order-success" },
+    OrderHistory: { screen: OrderHistory },
     Payment: { screen: Payment },
     Department: { screen: Department },
     ProfileEdit: { screen: ProfileEdit },
     SelectRegion: { screen: SelectRegion },
     SelectCity: { screen: SelectCity },
     Liqpay: { screen: Liqpay },
-    Portmone: { screen: Portmone, path: "kawa/order-fail" }
+    Portmone: { screen: Portmone }
   },
   {
     headerMode: "none"
