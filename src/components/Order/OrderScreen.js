@@ -275,6 +275,15 @@ class OrderScreen extends Component {
         warehouse: departmentId,
         payment: deliveryCompany.payment
       });
+      // this.props.navigation.push("Portmone", {
+      //   bill_amount:
+      //     this.state.cart
+      //       .map(item => item.qty * item.price)
+      //       .reduce((sum, item) => sum + item) +
+      //     (deliveryCompany.cost ? +deliveryCompany.cost : 0),
+      //   success: "kawaapp://kawa/order-success",
+      //   failure: "kawaapp://kawa/order-fail"
+      // });
       setTimeout(() => {
         Linking.canOpenURL(
           `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.state.cart
@@ -282,9 +291,9 @@ class OrderScreen extends Component {
             .reduce((sum, item) => sum + item) +
             (deliveryCompany.cost
               ? +deliveryCompany.cost
-              : 0)}.56&shop_order_number=${
+              : 0)}&shop_order_number=${
             this.state.orderId
-          }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
+          }&description=My%20test&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail`
         ).then(supported => {
           if (supported) {
             Linking.openURL(
@@ -293,9 +302,9 @@ class OrderScreen extends Component {
                 .reduce((sum, item) => sum + item) +
                 (deliveryCompany.cost
                   ? +deliveryCompany.cost
-                  : 0)}.56&shop_order_number=${
+                  : 0)}&shop_order_number=${
                 this.props.orderId
-              }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
+              }&description=My%20test&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail`
             );
           } else {
             console.log(
@@ -305,13 +314,13 @@ class OrderScreen extends Component {
                   .reduce((sum, item) => sum + item) +
                   (deliveryCompany.cost
                     ? +deliveryCompany.cost
-                    : 0)}.56&shop_order_number=${
+                    : 0)}&shop_order_number=${
                   this.props.orderId
                 }&description=My%20test&success_url=customurl://success&failure_url=customurl://failure`
             );
           }
         });
-      }, 300);
+      }, 500);
     }
   };
 

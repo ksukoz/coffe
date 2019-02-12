@@ -28,6 +28,7 @@ import OrderSingle from "../OrderSingle/index.js";
 import Payment from "../Payment/index.js";
 import Department from "../Department/index.js";
 import Liqpay from "../Liqpay/index.js";
+import Portmone from "../Portmone/index.js";
 import OrderHistory from "../OrderHistory/index.js";
 
 const prefix = "http://";
@@ -44,13 +45,14 @@ const Home = createStackNavigator(
     Cart: { screen: Cart },
     Order: { screen: Order },
     OrderSingle: { screen: OrderSingle },
-    OrderHistory: { screen: OrderHistory },
+    OrderHistory: { screen: OrderHistory, path: "kawa/order-success" },
     Payment: { screen: Payment },
     Department: { screen: Department },
     ProfileEdit: { screen: ProfileEdit },
     SelectRegion: { screen: SelectRegion },
     SelectCity: { screen: SelectCity },
-    Liqpay: { screen: Liqpay }
+    Liqpay: { screen: Liqpay },
+    Portmone: { screen: Portmone, path: "kawa/order-fail" }
   },
   {
     headerMode: "none"
