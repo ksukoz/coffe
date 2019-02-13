@@ -32,19 +32,9 @@ class PortmoneScreen extends Component {
         BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
       }
     );
-    this.state = {
-      url: "no url"
-    };
   }
 
   componentDidMount() {
-    console.log(
-      `https://www.portmone.com.ua/gateway/?payee_id=${17448}&bill_amount=${this.props.navigation.getParam(
-        "bill_amount"
-      )}&shop_order_number=${
-        this.props.orderId
-      }&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail&type=portmone&card=Y&masterpass=Y&visacheckout=Y&priorityPaymentTypes=1`
-    );
     this._willBlurSubscription = this.props.navigation.addListener(
       "willBlur",
       payload => {}
@@ -97,10 +87,7 @@ class PortmoneScreen extends Component {
             style={styles.background}
             resizeMode="cover"
           />
-          <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Text>{this.state.url}</Text>
+          <View style={{ flex: 1, paddingTop: StatusBar.currentHeight }}>
             {this.props.orderId ? (
               <MyWebView
                 // onShouldStartLoadWithRequest={this.openExternalLink}
@@ -111,7 +98,9 @@ class PortmoneScreen extends Component {
                     "bill_amount"
                   )}&shop_order_number=${
                     this.props.orderId
-                  }&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail&type=portmone&card=y&priorityPaymentTypes=1`
+                  }&success_url=kawaapp://kawa/order-success&failure_url=kawaapp://kawa/order-fail&type=portmone&card=y&priorityPaymentTypes=0
+                  `
+                  // &priorityPaymentTypes=1
                 }}
               />
             ) : null}

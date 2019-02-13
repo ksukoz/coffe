@@ -144,13 +144,6 @@ class HomeScreen extends Component {
     if (routeName === "kawa-share.surge.sh") {
       navigate("ProductCard", { id });
     }
-    if (routeName === "kawa") {
-      id === "order-fail"
-        ? navigate("Portmone")
-        : id === "order-success"
-        ? navigate("OrderHistory")
-        : "";
-    }
   };
 
   componentWillUnmount() {
