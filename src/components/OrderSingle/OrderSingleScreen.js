@@ -117,7 +117,7 @@ class OrderSingleScreen extends Component {
   componentWillUnmount() {}
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user) {
+    if (nextProps.user && nextProps.user.email) {
       this.setState({
         email: nextProps.user.email,
         firstname: nextProps.user.firstname,
@@ -263,15 +263,9 @@ class OrderSingleScreen extends Component {
   };
 
   handlePayment = () => {
-    const {
-      payment,
-      deliveryCompany,
-      departmentId,
-      city,
-      product
-    } = this.state;
+    const { payment, deliveryCompany, departmentId, city } = this.state;
 
-    this.props.updateCart(this.state.product.id, this.state.product.qty);
+    this.state.cart.map(item => this.props.updateCart(item.id, item.qty));
 
     if (payment === "email" && deliveryCompany.delivery) {
       this.props.navigation.push("Payment", {
@@ -293,6 +287,21 @@ class OrderSingleScreen extends Component {
         delivery_type: deliveryCompany.courier,
         warehouse: departmentId,
         payment: deliveryCompany.payment
+      });
+    } else if (payment === "Portmone" || payment === "Portmone2") {
+      this.props.getOrder({
+        delivery_system: deliveryCompany.delivery,
+        city: city,
+        delivery_type: deliveryCompany.courier,
+        warehouse: departmentId,
+        payment: deliveryCompany.payment
+      });
+      this.props.navigation.push("Portmone", {
+        bill_amount: tdeliveryCompany.cost
+          ? product.qty * product.price + +deliveryCompany.cost
+          : product.qty * product.price,
+        success: "kawaapp://kawa/order-success",
+        failure: "kawaapp://kawa/order-fail"
       });
     }
   };
@@ -1207,30 +1216,25 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment:
-                              payment === "VISA, MasterCard"
-                                ? ""
-                                : "VISA, MasterCard"
+                            payment: payment === "Portmone" ? "" : "Portmone"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={
-                              payment === "VISA, MasterCard" ? true : false
-                            }
+                            checked={payment === "Portmone" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "VISA, Mastercard"
+                                payment === "Portmone"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment: "VISA, Mastercard"
+                                payment: "Portmone"
                               })
                             }
                           />
@@ -1393,25 +1397,25 @@ class OrderSingleScreen extends Component {
                         activeOpacity={0.9}
                         onPress={() =>
                           this.setState({
-                            payment: "Masterpass"
+                            payment: "Portmone2"
                           })
                         }
                       >
                         <View style={{ flexDirection: "row" }}>
                           <CheckBox
-                            checked={payment === "Masterpass" ? true : false}
+                            checked={payment === "Portmone2" ? true : false}
                             style={{
                               left: 0,
                               marginRight: scaleSize(16),
                               borderColor: "#302c23",
                               backgroundColor:
-                                payment === "Masterpass"
+                                payment === "Portmone2"
                                   ? "#302c23"
                                   : "transparent"
                             }}
                             onPress={() =>
                               this.setState({
-                                payment: "Masterpass"
+                                payment: "Portmone2"
                               })
                             }
                           />

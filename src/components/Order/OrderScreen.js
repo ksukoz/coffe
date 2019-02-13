@@ -124,7 +124,7 @@ class OrderScreen extends Component {
     if (nextProps.cart) {
       this.setState({ cart: nextProps.cart });
     }
-    if (nextProps.user) {
+    if (nextProps.user && nextProps.user.email) {
       this.setState({
         email: nextProps.user.email,
         firstname: nextProps.user.firstname,
