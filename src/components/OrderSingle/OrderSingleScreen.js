@@ -275,7 +275,7 @@ class OrderSingleScreen extends Component {
         warehouse: departmentId,
         payment: deliveryCompany.payment
       });
-    } else if (payment === "LiqPay") {
+    } else if (payment === "LiqPay" && deliveryCompany.delivery) {
       this.props.navigation.push("Liqpay", {
         price: deliveryCompany.cost
           ? this.state.product.qty * this.state.product.price +
@@ -289,7 +289,10 @@ class OrderSingleScreen extends Component {
         warehouse: departmentId,
         payment: deliveryCompany.payment
       });
-    } else if (payment === "Portmone" || payment === "Portmone2") {
+    } else if (
+      (payment === "Portmone" || payment === "Portmone2") &&
+      deliveryCompany.delivery
+    ) {
       this.props.getOrder({
         delivery_system: deliveryCompany.delivery,
         city: city,
