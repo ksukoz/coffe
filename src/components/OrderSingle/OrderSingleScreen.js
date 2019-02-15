@@ -210,7 +210,7 @@ class OrderSingleScreen extends Component {
       (x, y, w, h) => {
         if (value > w + y && !this.state.canceled) {
           if (
-            this.state.email !== this.props.user.email ||
+            (this.props.user && this.state.email !== this.props.user.email) ||
             this.state.firstname !== this.props.user.firstname ||
             this.state.lastname !== this.props.user.lastname ||
             this.state.phone !== this.props.user.phone
@@ -278,8 +278,9 @@ class OrderSingleScreen extends Component {
     } else if (payment === "LiqPay") {
       this.props.navigation.push("Liqpay", {
         price: deliveryCompany.cost
-          ? product.qty * product.price + +deliveryCompany.cost
-          : product.qty * product.price
+          ? this.state.product.qty * this.state.product.price +
+            +deliveryCompany.cost
+          : this.state.product.qty * this.state.product.price
       });
       this.props.getOrder({
         delivery_system: deliveryCompany.delivery,
@@ -297,11 +298,11 @@ class OrderSingleScreen extends Component {
         payment: deliveryCompany.payment
       });
       this.props.navigation.push("Portmone", {
-        bill_amount: tdeliveryCompany.cost
-          ? product.qty * product.price + +deliveryCompany.cost
-          : product.qty * product.price,
-        success: "kawaapp://kawa/order-success",
-        failure: "kawaapp://kawa/order-fail"
+        bill_amount: deliveryCompany.cost
+          ? this.state.product.qty * this.state.product.price +
+            +deliveryCompany.cost
+          : this.state.product.qty * this.state.product.price,
+        card: payment === "Portmone" ? "card" : "masterpass"
       });
     }
   };

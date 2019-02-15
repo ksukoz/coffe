@@ -197,7 +197,7 @@ class OrderScreen extends Component {
       (x, y, w, h) => {
         if (value > w + y && !this.state.canceled) {
           if (
-            this.state.email !== this.props.user.email ||
+            (this.props.user && this.state.email !== this.props.user.email) ||
             this.state.firstname !== this.props.user.firstname ||
             this.state.lastname !== this.props.user.lastname ||
             this.state.phone !== this.props.user.phone
