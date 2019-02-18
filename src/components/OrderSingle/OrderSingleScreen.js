@@ -167,7 +167,7 @@ class OrderSingleScreen extends Component {
         }
         if (name == "department") {
           let department = JSON.parse(value);
-          if (this.state.deliveryCompany.courier == 1) {
+          if (this.state.deliveryCompany.courier === 1) {
             this.setState({
               department: department.name,
               departmentId: department.id
@@ -1180,11 +1180,11 @@ class OrderSingleScreen extends Component {
                               borderBottomWidth: 1
                             }}
                           >
-                            {department
+                            {department && deliveryCompany.courier === 1
                               ? department
-                              : deliveryCompany.courier === 1
-                              ? "Номер отделения, адрес"
-                              : "Адрес (улица, дом) доставки"}
+                              : deliveryCompany.courier === 2
+                              ? "Адрес доставки"
+                              : "Номер отделения, адрес"}
                           </Text>
                           <KawaIcon
                             style={{
@@ -1327,7 +1327,7 @@ class OrderSingleScreen extends Component {
                           />
                         </View>
                       </TouchableOpacity>
-                      <TouchableOpacity
+                      {/* <TouchableOpacity
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
@@ -1391,7 +1391,7 @@ class OrderSingleScreen extends Component {
                             }}
                           />
                         )}
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                       <TouchableOpacity
                         style={{
                           flexDirection: "row",

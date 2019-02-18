@@ -47,103 +47,104 @@ class PortmoneScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      (nextProps.orderId &&
-        nextProps.user &&
-        nextProps.user.email &&
-        nextProps.navigation.getParam("bill_amount"),
-      nextProps.navigation.getParam("card"))
-    ) {
-      var formData = new FormData();
+    if (nextProps.orderId && nextProps.user) {
+      if (
+        (nextProps.user.email && nextProps.navigation.getParam("bill_amount"),
+        nextProps.navigation.getParam("card"))
+      ) {
+        var formData = new FormData();
 
-      formData.append(
-        "bodyRequest",
-        JSON.stringify({
-          paymentTypes: {
-            card: nextProps.navigation.getParam("card") === "card" ? "Y" : "N",
-            portmone: "N",
-            token: "N",
-            masterpass:
-              nextProps.navigation.getParam("card") === "masterpass"
-                ? "Y"
-                : "N",
-            visacheckout:
-              nextProps.navigation.getParam("card") === "masterpass"
-                ? "Y"
-                : "N",
-            createtokenonly: "N",
-            createtokenonlyp2p: "N"
-          },
-          priorityPaymentTypes: {
-            card: nextProps.navigation.getParam("card") === "card" ? "2" : "0",
-            portmone:
-              nextProps.navigation.getParam("card") === "card" ? "3" : "0",
-            qr: "0",
-            masterpass:
-              nextProps.navigation.getParam("card") === "masterpass"
-                ? "2"
-                : "0",
-            token: nextProps.navigation.getParam("card") === "card" ? "2" : "0",
-            visacheckout:
-              nextProps.navigation.getParam("card") === "masterpass"
-                ? "3"
-                : "0",
-            createtokenonly: "0",
-            createtokenonlyp2p: "0"
-          },
-          payee: {
-            payeeId: "17448",
-            login: "",
-            dt: "",
-            signature: "",
-            shopSiteId: ""
-          },
-          order: {
-            shopOrderNumber: nextProps.orderId,
-            billAmount: nextProps.navigation.getParam("bill_amount"),
-            attribute1: "1",
-            attribute2: "2",
-            attribute3: "3",
-            attribute4: "4",
-            attribute5: "",
-            successUrl: "",
-            failureUrl: "",
-            preauthFlag: "N",
-            billCurrency: "UAH",
-            encoding: "",
-            successUrl: "kawaapp://kawa/order-success",
-            failureUrl: "kawaapp://kawa/order-fail"
-          },
-          token: {
-            tokenFlag: "N",
-            returnToken: "N",
-            token: "18343534393739353......932DB",
-            cardMask: "414950******7665",
-            otherPaymentMethods: "Y",
-            sellerToken: ""
-          },
-          payer: {
-            lang: "ru",
-            emailAddress: nextProps.user.email,
-            showEmail: "Y"
-          },
-          style: {
-            type: "brand",
-            logo: "https://kawa.surge.sh/images/logo/kawa.png",
-            logoWidth: "150px",
-            logoHeight: "50px",
-            backgroundColorHeader: "#ffffff",
-            backgroundColorButtons: "#ea9308",
-            colorTextAndIcons: "#000000",
-            borderColorList: "#89a6aa",
-            bcMain: "#ffffff"
-          }
-        })
-      );
-      formData.append("typeRequest", "json");
-      this.setState({ formData }, () =>
-        this.state.formData ? this.sendData(this.state.formData) : ""
-      );
+        formData.append(
+          "bodyRequest",
+          JSON.stringify({
+            paymentTypes: {
+              card:
+                nextProps.navigation.getParam("card") === "card" ? "Y" : "N",
+              portmone: "N",
+              token: "N",
+              masterpass:
+                nextProps.navigation.getParam("card") === "masterpass"
+                  ? "Y"
+                  : "N",
+              visacheckout:
+                nextProps.navigation.getParam("card") === "masterpass"
+                  ? "Y"
+                  : "N",
+              createtokenonly: "N",
+              createtokenonlyp2p: "N"
+            },
+            priorityPaymentTypes: {
+              card:
+                nextProps.navigation.getParam("card") === "card" ? "2" : "0",
+              portmone: "0",
+              qr: "0",
+              masterpass:
+                nextProps.navigation.getParam("card") === "masterpass"
+                  ? "2"
+                  : "0",
+              token:
+                nextProps.navigation.getParam("card") === "card" ? "2" : "0",
+              visacheckout:
+                nextProps.navigation.getParam("card") === "masterpass"
+                  ? "3"
+                  : "0",
+              createtokenonly: "0",
+              createtokenonlyp2p: "0"
+            },
+            payee: {
+              payeeId: "17448",
+              login: "",
+              dt: "",
+              signature: "",
+              shopSiteId: ""
+            },
+            order: {
+              shopOrderNumber: nextProps.orderId,
+              billAmount: nextProps.navigation.getParam("bill_amount"),
+              attribute1: "1",
+              attribute2: "2",
+              attribute3: "3",
+              attribute4: "4",
+              attribute5: "",
+              successUrl: "",
+              failureUrl: "",
+              preauthFlag: "N",
+              billCurrency: "UAH",
+              encoding: "",
+              successUrl: "kawaapp://kawa/order-success",
+              failureUrl: "kawaapp://kawa/order-fail"
+            },
+            token: {
+              tokenFlag: "N",
+              returnToken: "N",
+              token: "18343534393739353......932DB",
+              cardMask: "414950******7665",
+              otherPaymentMethods: "Y",
+              sellerToken: ""
+            },
+            payer: {
+              lang: "ru",
+              emailAddress: nextProps.user.email,
+              showEmail: "Y"
+            },
+            style: {
+              type: "brand",
+              logo: "https://kawa.surge.sh/images/logo/kawa.png",
+              logoWidth: "150px",
+              logoHeight: "50px",
+              backgroundColorHeader: "#ffffff",
+              backgroundColorButtons: "#ea9308",
+              colorTextAndIcons: "#000000",
+              borderColorList: "#89a6aa",
+              bcMain: "#ffffff"
+            }
+          })
+        );
+        formData.append("typeRequest", "json");
+        this.setState({ formData }, () =>
+          this.state.formData ? this.sendData(this.state.formData) : ""
+        );
+      }
     }
   }
 
@@ -162,15 +163,21 @@ class PortmoneScreen extends Component {
         this.setState({ url: req.url });
         this.props.navigation.push("OrderHistory");
       }
-      return false;
     }
   };
 
   onNavigationStateChange = navState => {
-    if (navState.url === "kawaapp://kawa/order-success") {
-      this.props.navigation.push("OrderHistory");
-    } else if (navState.url === "kawaapp://kawa/order-fail") {
-      this.props.navigation.pop();
+    const isHTTPS = navState.url.search("https://") !== -1;
+    if (isHTTPS) {
+      return true;
+    } else {
+      if (navState.url === "kawaapp://kawa/order-success") {
+        this.props.navigation.push("OrderHistory");
+      } else if (navState.url === "kawaapp://kawa/order-fail") {
+        this.props.navigation.pop();
+      } else {
+        return false;
+      }
     }
   };
 

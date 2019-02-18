@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Container } from "native-base";
-import { StatusBar, Dimensions, BackHandler, StyleSheet } from "react-native";
+import {
+  StatusBar,
+  Dimensions,
+  BackHandler,
+  StyleSheet,
+  Platform,
+  PermissionsAndroid,
+  Image,
+  View
+} from "react-native";
 
 import { LiqpayCheckout } from "react-native-liqpay";
 
@@ -9,6 +18,8 @@ import { scaleSize } from "../../helpers/scaleSize";
 
 StatusBar.setBarStyle("light-content", true);
 StatusBar.setBackgroundColor("rgba(0,0,0,0)");
+
+const MAIN_BG = "../../static/img/background.png";
 
 const LIQPAY_PUBLIC_KEY = "i68068890264";
 const LIQPAY_PRIVATE_KEY = "QTEH4Q3yX8c2LlsLJGd3nW39pKpzkr9QKAVGJIsW";
@@ -25,7 +36,8 @@ class LiqpayScreen extends Component {
       action: "pay",
       currency: "UAH",
       sandbox: "1",
-      amount: this.props.navigation.getParam("price")
+      amount: this.props.navigation.getParam("price"),
+      language: "ru"
     };
     this._didFocusSubscription = this.props.navigation.addListener(
       "didFocus",
@@ -34,10 +46,25 @@ class LiqpayScreen extends Component {
       }
     );
 
-    this.state = { navigate: false };
+    this.state = { navigate: false, liqpay: false };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    if (Platform.OS === "android") {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE
+        );
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          this.setState({ liqpay: true });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      this.setState({ liqpay: true });
+    }
     this.props.navigation.addListener("didFocus", payload => {
       this.state.navigate ? this.props.navigation.pop() : "";
     });
@@ -52,11 +79,12 @@ class LiqpayScreen extends Component {
 
   handleSuccess = event => {
     console.log(JSON.parse(event.nativeEvent.data), this.props.orderId);
-    this.setState({ navigate: true });
+    this.setState({ navigate: true, liqpay: false });
     this.props.navigation.push("OrderHistory", { fromOrder: true });
   };
 
   handleError = event => {
+    this.setState({ liqpay: false });
     console.log(event.nativeEvent);
     this.props.navigation.pop();
   };
@@ -75,14 +103,22 @@ class LiqpayScreen extends Component {
           translucent={true}
           backgroundColor={`rgba(0,0,0,0)`}
         />
-
-        <LiqpayCheckout
-          privateKey={LIQPAY_PRIVATE_KEY}
-          params={this.params}
-          order_id={this.props.orderId}
-          onLiqpaySuccess={this.handleSuccess}
-          onLiqpayError={this.handleError}
+        <Image
+          source={require(MAIN_BG)}
+          style={styles.background}
+          resizeMode="cover"
         />
+        <View style={{ flex: 1 }}>
+          {this.state.liqpay ? (
+            <LiqpayCheckout
+              privateKey={LIQPAY_PRIVATE_KEY}
+              params={this.params}
+              order_id={this.props.orderId}
+              onLiqpaySuccess={this.handleSuccess}
+              onLiqpayError={this.handleError}
+            />
+          ) : null}
+        </View>
       </Container>
     );
   }

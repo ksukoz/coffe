@@ -1182,7 +1182,7 @@ class OrderScreen extends Component {
                           >
                             {department && deliveryCompany.courier === 1
                               ? department
-                              : deliveryCompany.courier === 1
+                              : deliveryCompany.courier === 2
                               ? "Адрес доставки"
                               : "Номер отделения, адрес"}
                           </Text>
@@ -1328,7 +1328,7 @@ class OrderScreen extends Component {
                           />
                         </View>
                       </TouchableOpacity>
-                      <TouchableOpacity
+                      {/* <TouchableOpacity
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
@@ -1402,7 +1402,7 @@ class OrderScreen extends Component {
                             resizeMode="contain"
                           />
                         )}
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                       <TouchableOpacity
                         style={{
                           flexDirection: "row",

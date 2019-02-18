@@ -638,7 +638,7 @@ class DeliveryScreen extends Component {
                     />
                   </View>
                 </View>
-                {Platform.OS === "ios" ? (
+                {/* {Platform.OS === "ios" ? (
                   <View
                     style={{
                       flexDirection: "row",
@@ -676,7 +676,7 @@ class DeliveryScreen extends Component {
                       />
                     </View>
                   </View>
-                )}
+                )} */}
                 <View
                   style={{
                     flexDirection: "row",
